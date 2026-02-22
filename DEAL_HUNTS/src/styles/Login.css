@@ -1,0 +1,95 @@
+/* Parent container to center everything */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+/* Center text inside container */
+.center-content {
+  text-align: center;
+}
+
+/* Error message styling */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* ================= LOGIN BOX ================= */
+.form-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;               /* Space between inputs/buttons */
+  width: 400px;            /* Width of the box */
+  padding: 40px;           /* Padding inside box */
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+/* Input fields */
+input {
+  padding: 12px 15px;      /* Height & spacing inside input */
+  font-size: 18px;
+  border-radius: 8px;
+  border: 1px solid #181212; /* dark border */
+}
+
+/* Button styling */
+button {
+  padding: 12px 30px;
+  font-size: 20px;
+  border-radius: 8px;
+  border: 2px solid #3030E8;
+  background-color: #5151CD;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background-color: #3030E8;
+  border-color: #5151CD;
+}
+
+/* Body font */
+body {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+/* Actions container */
+.actions {
+  margin-top: 40px;
+  text-align: center;
+}
+
+/* Login actions (like remember me + forgot) */
+.login-actions {
+  display: flex;
+  justify-content: space-between; /* Fixes too much gap issue */
+  align-items: center;
+  width: 100%;
+}
+
+/* Links */
+.register-link,
+.forgot-link {
+  color: blue;
+  transition: 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+  line-height: 1;
+  display: inline-block;
+  font-size: 0.9rem;
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+.register-link,.forgot-link{
+  color:darkblue;
+}
+.login-link{
+  text-decoration: none;
+}

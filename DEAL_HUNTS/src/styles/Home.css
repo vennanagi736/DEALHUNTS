@@ -1,0 +1,88 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  font-size: 17px;
+}
+
+/* ================= HEADER ================= */
+.header {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid black;
+  backdrop-filter: blur(10px);
+}
+
+/* ================= MAIN ================= */
+.main {
+  background-color: #FFFFFF;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+}
+
+/* ================= LOGO ================= */
+.Gold {
+  color: gold;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.Black {
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* ================= NAVIGATION ================= */
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 25px; /* space between links */
+}
+
+.navigation a {
+  color: black;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.navigation a:hover {
+  color: gold;
+}
+
+/* ================= BUTTON ================= */
+.navigation .home-Login {
+  margin-left: auto; /* push button to the right */
+  padding: 8px 20px;
+  background-color: gold;
+  border: 2px solid black;
+  border-radius: 5px;
+  color: black;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.navigation .home-Login:hover {
+  background-color: black;
+  color: gold;
+  border: 2px solid gold;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  background-color: white;
+  color: black;
+  text-align: center;
+  padding: 20px;
+  border-top: 3px solid black;
+}
