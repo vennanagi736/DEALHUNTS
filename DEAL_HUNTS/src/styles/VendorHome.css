@@ -1,0 +1,184 @@
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  font-size: 17px;
+}
+body {
+  background-color: lightgray;
+}
+
+/* ================= HEADER ================= */
+.header {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #e0e0e0;
+  backdrop-filter: blur(10px);
+}
+.Gold {
+  color: gold;
+  font-size: 24px;
+  font-weight: bold;
+}
+.Black {
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+}
+.Vendor {
+  display: flex;              
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+
+  margin-top: 10px;
+  font-size: 16px;
+  font-family: cursive;
+}
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.navigation a {
+  color: black;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+.navigation a:hover {
+  color: gold;
+}
+.navigation .home-Login {
+  margin-left: auto; 
+  padding: 8px 20px;
+  background-color: gold;
+  border: 2px solid black;
+  border-radius: 5px;
+  color: black;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.navigation .home-Login:hover {
+  background-color: black;
+  color: gold;
+  border: 2px solid gold;
+}
+
+/* ================= MAIN ================= */
+ .home-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+} 
+.main {
+  flex: 1;
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+}
+
+/* ================= VENDOR REGISTER FORM ================= */
+.vendor-register {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 500px;
+  max-width: 90%;
+  padding: 40px;
+  margin: 80px auto;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+.vendor-register h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.vendor-register input {
+  padding: 12px 15px;
+  font-size: 18px;
+  border-radius: 8px;
+  border: 1px solid #181212;
+  width: 100%;
+}
+.vendor-register button {
+  padding: 12px 30px;
+  font-size: 20px;
+  font-family: sans-serif;
+  border-radius: 8px;
+  border: 2px solid black;
+  background-color: gold;
+  color: black;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.vendor-register .error-message {
+  color: red;
+}
+.vendor-register .response-message {
+  font-weight: bold;
+}
+
+/* ================= VENDOR PRODUCT GRID (VENDORHOME) ================= */
+.vendor-product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-top: 30px;
+  justify-content: center; /* center items in row */
+}
+.vendor-product-card {
+  flex: 0 1 220px;  /* min width 220px, flexible */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 15px 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s;
+}
+.vendor-product-card:hover {
+  transform: scale(1.03);
+}
+.vendor-product-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.vendor-product-card button {
+  align-self: center;
+  padding: 8px 15px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  background-color: #5151CD;
+  color: white;
+  cursor: pointer;
+}
+.vendor-product-card button:hover {
+  background-color: #3030E8;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  background-color: white;
+  color: black;
+  text-align: center;
+  padding: 20px;
+  border-top: 2px solid #e0e0e0;
+}

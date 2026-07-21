@@ -1,0 +1,21 @@
+category,brand,name,description,image,variant,processor,displaySize,battery,color,hexCode
+Mobiles,Samsung,Galaxy S25 Ultra,Samsung flagship smartphone,,12GB + 256GB,Snapdragon 8 Elite,6.9 inch,5000 mAh,Titanium Black,#1E1E1E
+Mobiles,Samsung,Galaxy S25+,Samsung premium smartphone,,12GB + 256GB,Snapdragon 8 Elite,6.7 inch,4900 mAh,Navy,#000080
+Mobiles,Samsung,Galaxy S25,Samsung flagship smartphone,,12GB + 256GB,Snapdragon 8 Elite,6.2 inch,4000 mAh,Icy Blue,#8EC5FC
+Mobiles,Samsung,Galaxy S24 Ultra,Samsung flagship smartphone,,12GB + 256GB,Snapdragon 8 Gen 3,6.8 inch,5000 mAh,Titanium Gray,#808080
+Mobiles,Samsung,Galaxy A56,Mid-range smartphone,,8GB + 256GB,Exynos 1580,6.7 inch,5000 mAh,Olive,#556B2F
+Mobiles,Apple,iPhone 16 Pro Max,Apple flagship smartphone,,256GB,A18 Pro,6.9 inch,4685 mAh,Black Titanium,#2B2B2B
+Mobiles,Apple,iPhone 16 Pro,Apple flagship smartphone,,256GB,A18 Pro,6.3 inch,3582 mAh,Natural Titanium,#B8B8B8
+Mobiles,Apple,iPhone 16,Apple premium smartphone,,128GB,A18,6.1 inch,3561 mAh,Teal,#008080
+Mobiles,OnePlus,OnePlus 13,OnePlus flagship smartphone,,16GB + 512GB,Snapdragon 8 Elite,6.82 inch,6000 mAh,Black Eclipse,#111111
+Mobiles,OnePlus,OnePlus 13R,OnePlus premium smartphone,,12GB + 256GB,Snapdragon 8 Gen 3,6.78 inch,6000 mAh,Nebula Noir,#202020
+Mobiles,vivo,X300 Ultra,vivo flagship smartphone,,16GB + 512GB,Snapdragon 8 Elite,6.82 inch,6000 mAh,Titanium Black,#1C1C1C
+Mobiles,vivo,V60,vivo premium smartphone,,12GB + 256GB,Snapdragon 7 Gen 4,6.67 inch,6500 mAh,Moonlight Blue,#5DADE2
+Laptops,HP,Omen Max 16,Flagship gaming laptop,,32GB + 1TB,Intel Core Ultra 9 275HX,16 inch,83Wh,Shadow Black,#101010
+Laptops,HP,Omen 16,Gaming laptop,,16GB + 1TB,AMD Ryzen 9 8945HX,16 inch,83Wh,Ceramic White,#F5F5F5
+Laptops,HP,Victus 16,Gaming laptop,,16GB + 512GB,Intel Core i7-14650HX,16.1 inch,70Wh,Performance Blue,#1F75FE
+Laptops,HP,Spectre x360 14,Premium convertible laptop,,32GB + 1TB,Intel Core Ultra 7 258V,14 inch,68Wh,Nightfall Black,#0D0D0D
+Laptops,ASUS,ROG Strix G16,Gaming laptop,,32GB + 1TB,Intel Core Ultra 9 275HX,16 inch,90Wh,Eclipse Gray,#444444
+Laptops,ASUS,ROG Zephyrus G16,Premium gaming laptop,,32GB + 1TB,AMD Ryzen AI 9 HX 370,16 inch,90Wh,Platinum White,#F8F8FF
+Laptops,ASUS,TUF Gaming A15,Gaming laptop,,16GB + 512GB,AMD Ryzen 7 8845HS,15.6 inch,90Wh,Mecha Gray,#6E6E6E
+Laptops,ASUS,Vivobook S15,Productivity laptop,,16GB + 1TB,Intel Core Ultra 7 258V,15.6 inch,75Wh,Cool Silver,#C0C0C0

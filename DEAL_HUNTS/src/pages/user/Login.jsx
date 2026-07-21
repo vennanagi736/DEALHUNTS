@@ -1,114 +1,118 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // ADD useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../api/UserApi";
+import Layout from "../../components/Layout";
 import "../../styles/Login.css";
-import Layout from "../../components/UserLayout";
-import Details from "../../components/UserDetails";
+import {useRole} from "../../context/UseRole";
+import LoginDetails from "../../components/LoginDetails";
 import { validateLogin } from "../../components/validation";
 
 function Login() {
-
-  const navigate = useNavigate(); // INITIALIZE useNavigate
+  const navigate = useNavigate();
+  const {updateRole} = useRole();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+  e.preventDefault();
 
-    // Frontend validation
-    const errorMessage = validateLogin(email, password);
-    if (errorMessage) {
-      setError(errorMessage);
-      return;
+  const errorMessage = validateLogin(email, password);
+  if (errorMessage) {
+    setError(errorMessage);
+    return;
+  }
+
+  setError("");
+  setMessage("");
+  setLoading(true);
+
+  try {
+    const response = await loginUser(email, password);
+    if (response.data.success) {
+  const role = response.data.role || "ROLE_USER";
+
+  localStorage.setItem("jwtToken", response.data.token);
+  localStorage.setItem("email", response.data.email);
+  localStorage.setItem("role", role);
+
+  updateRole(role);
+
+  setSuccess(true);
+  setMessage("Login Successful");
+
+  const normalizedRole = role.replace("ROLE_", "").toLowerCase();
+
+  if (normalizedRole === "admin") {
+    navigate("/adminDashboard");
+  } else if (normalizedRole === "vendor") {
+    navigate("/vendorHome");
+  } else {
+    navigate("/home");
+  }
+}
+     else {
+      setSuccess(false);
+      setMessage(response.data.message);
     }
 
-    setError("");
-    setMessage("");
-
-    try {
-      const response = await loginUser(email, password);
-
-      if (response.data.success) {
-
-        // 🔐 STORE TOKEN
-        localStorage.setItem("token",response.data.token);
-        navigate("/Home");
-        setMessage("Login Successful");
-
-        console.log("TOKEN:", response.data.token);
-
-        // 🚀 Redirect after login
-        navigate("/Home");
-
-      } else {
-        setMessage("Login Unsuccessful");
-      }
-
-    } catch (err) {
-      setMessage("Server Error");
-      console.error(err);
-    }
-  };
-
+  } catch (err) {
+    setMessage("Server Error");
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
   return (
-    <Layout title="Login Form">
+    <Layout>
+      <div className="login-page">
+        <form onSubmit={handleLogin}>
+          <div className="login-box">
+            <h2 className="login-title">Login-Form</h2>
 
-      <Details
-        email={email}
-        setEmail={setEmail}
-        password={password}
-        setPassword={setPassword}
-      />
+            <LoginDetails
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+            />
 
-      {/* Validation error */}
-      {error && <p className="error-message">{error}</p>}
+            {error && <p className="error-message">{error}</p>}
+            {message && (
+              <p
+                className="response-message"
+                style={{ color: success ? "green" : "red" }}
+              >
+                {message}
+              </p>
+            )}
 
-      {/* Backend message */}
-      {message && (
-        <p
-          className="response-message"
-          style={{
-            color: message.includes("Successful")
-              ? "green"
-              : "red"
-          }}
-        >
-          {message}
-        </p>
-      )}
+            <div className="login-actions">
+              <button type="submit" disabled={!email || !password || loading}>
+                {loading ? "Logging in..." : "Login"}
+              </button>
+            </div>
 
-      <div className="login-actions">
-        <button
-          onClick={handleLogin}
-          disabled={!email || !password}
-        >
-          Login
-        </button>
+            <p className="forgot-password">
+              <Link to="/forgot-password" className="userregister-link">
+                Forgot Password?
+              </Link>
+            </p>
 
-        <p>
-          <Link
-            to="/forgot-password"
-            className="register-Link"
-          >
-            Forgot Password?
-          </Link>
-        </p>
+            <p className="register">
+              I don't have an account?{" "}
+              <Link to="/Register" className="userregister-link">
+                Register
+              </Link>
+            </p>
+
+          </div>
+        </form>
       </div>
-
-      <div className="actions">
-        <p>
-          I don't have an account.?{" "}
-          <Link
-            to="/register"
-            className="register-link"
-          >
-            Register
-          </Link>
-        </p>
-      </div>
-
     </Layout>
   );
 }

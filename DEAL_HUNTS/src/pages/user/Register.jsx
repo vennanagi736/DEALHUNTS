@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; 
-import Layout from "../../components/UserLayout";
-import Details from "../../components/UserDetails";
+import { Link} from "react-router-dom";
+import Layout from "../../components/Layout";
+import UserRegistrationDetails from "../../components/UserRegistrationDetails";
 import { validateRegister } from "../../components/validation";
 import { registerUser } from "../../api/UserApi";
-import "../../styles/Login.css";
-
+import "../../styles/Register.css";
 
 function Register() {
-  const navigate = useNavigate(); // INITIALIZE useNavigate
+  // const navigate = useNavigate();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,12 +16,18 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [error, setError] = useState("");
-  const [message, setMessage] = useState(""); // ✅ success msg
+  const [message, setMessage] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    console.log("FORM VALUES:", {
+  firstName,
+  lastName,
+  email,
+  password,
+  confirmPassword
+});
 
-    // Frontend validation
     const errorMessage = validateRegister(
       firstName,
       lastName,
@@ -40,70 +46,70 @@ function Register() {
     setMessage("");
 
     try {
-      const response = await registerUser(
-        firstName,
-        lastName,
-        email,
-        password
-      );
-
-      if (response.data.success) {
-        setMessage("Registration Successful");
-        navigate("/Home");
-      } else {
-        setMessage("Registration Unsuccessful");
-      }
-
-    } catch (err) {
-      setMessage("Server Error");
-      console.error(err);
+  const response = await registerUser(
+    firstName,
+    lastName,
+    email,
+    password,
+    confirmPassword
+  );
+   console.log("RESPONSE:", response.data);
+  // Make sure message is a string
+  setMessage(
+  response.data?.message ||
+  response.data ||
+  "Register successful"
+);
+  if (response.data.success && response.data) {
+    console.log("Successfully Registered");
+  }
+} catch (err) {
+  setMessage("Server Error");
+  console.error(err);
     }
-  };
+  }
 
   return (
-    <Layout title="Register Form">
+    <Layout>
+      <form onSubmit={handleRegister}>
+        <div className="register-box">
+          <h2 className="register-title">Register</h2>
 
-      <Details
-        firstName={firstName}
-        setFirstName={setFirstName}
-        lastName={lastName}
-        setLastName={setLastName}
-        email={email}
-        setEmail={setEmail}
-        password={password}
-        setPassword={setPassword}
-        confirmPassword={confirmPassword}
-        setConfirmPassword={setConfirmPassword}
-      />
+          <UserRegistrationDetails
+            firstName={firstName}
+            setFirstName={setFirstName}
+            lastName={lastName}
+            setLastName={setLastName}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            confirmPassword={confirmPassword}
+            setConfirmPassword={setConfirmPassword}
+          />
 
-      {/* Validation error */}
-      {error && <p className="error-message">{error}</p>}
+          {error && <p className="error-message">{error}</p>}
+          {message && (
+            <p
+              className="response-message"
+              style={{ color: message.includes("Successful") ? "green" : "red" }}
+            >
+              {message}
+            </p>
+          )}
 
-      {/* Backend message */}
-      {message && (
-        <p
-          className="response-message"
-          style={{
-            color: message.includes("Successful") ? "green" : "red"
-          }}
-        >
-          {message}
-        </p>
-      )}
+          <button type="submit" className="register-button">
+            Register
+          </button>
 
-      <button type="button" onClick={handleRegister}>
-        Register
-      </button>
-
-      <div className="AA">
-        <p>
-          Already have an account?.{" "}
-          <Link to="/login" className="login-link">
-            Login
-          </Link>
-        </p>
-      </div>
-
+          <p className="login-link-container">
+            Already have an account?{" "}
+            <Link to="/Login" className="login-link">
+              Login
+            </Link>
+          </p>
+        </div>
+      </form>
     </Layout>
   );
 }

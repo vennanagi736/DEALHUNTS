@@ -1,0 +1,172 @@
+.autocomplete-container, .autocomplete-container input{
+  width: 100%;
+}
+.header {
+  padding: 25px 40px;
+}
+.product-form-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+}
+.back-btn {
+  font-size: 32px;        
+  font-weight: bold;      
+  cursor: pointer;
+  color: #222;           
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;    
+  transition: 0.2s;
+  border:2px solid black;
+  background-color: gold;
+}
+.Vendor {
+  display: flex;              
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+  font-size: 16px;
+  font-family: cursive;
+}
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 400px;
+  min-height: auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product-form input,
+.product-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.product-form textarea {
+  resize: none;
+  height: 100px;
+}
+
+.product-form button {
+  padding: 10px;
+  background-color: black;
+  color: white;
+  border: 2px solid white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: cursive;
+  font-weight: 550;
+}
+.product-form button:hover{
+  background-color: gold;
+  color: black;
+  border: 2px solid black;
+}
+.suggestion-list{
+  border:1px solid #ccc;
+  list-style:none;
+  padding:0;
+  margin:0;
+  max-height:150px;
+  overflow-y:auto;
+  background: white;
+}
+
+.suggestion-list li{
+  padding:8px;
+  cursor:pointer;
+}
+
+.suggestion-list li:hover{
+  background:#f2f2f2;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: white;
+  padding: 20px;
+  height: auto;
+  border-radius: 10px;
+  width: 400px;
+  position: relative;
+  text-align: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+.preview-container{
+  margin-top: 15px;
+  border-radius: 8px;
+  border: 2px solid black;
+}
+
+.preview-container img {
+  width: 80px;
+  margin: 5px;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+}
+.buttons{
+  display: flex;
+  padding: 5px;
+  margin-left: 20px;
+  gap:50px;
+
+}
+.done-btn{
+  padding: 8px 15px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  background-color:gold;
+  color:black;
+  border: 2px solid black;
+  font-family: sans-serif;
+  font-weight: 550;
+}
+
+.restrictions {
+  margin-top: 20px;
+  text-align: left;
+  font-size: 14px;
+}
+.restrictions ol{
+  text-align: left;
+  display: inline-block;
+  padding-left: 20px;
+}
+
+.error {
+  color: red;
+}

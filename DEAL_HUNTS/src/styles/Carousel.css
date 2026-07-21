@@ -1,0 +1,98 @@
+.main{
+  background:#fff;
+  min-height:70vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:40px;
+  text-align:center;
+}
+/* 🔲 OUTER BOX */
+.carousel-container {
+  width: 100%;
+  border-radius: 18px;
+  border: 3px solid white;
+  background-color: white;
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 🧱 INNER BOX (IMAGE AREA) */
+.carousel-item {
+  width: 100%;
+  height: 380px;
+  position: relative; 
+  border-radius: 12px;
+  overflow: hidden;   
+  background-color: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  /* box-shadow: 0 0 10px rgba(255,215,0,0.6); */
+}
+.carousel-item:hover {
+  transform: translateY(-8px) scale(1.02); /* lift + slight zoom */
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(255, 215, 0, 0.7); /* gold glow */
+}
+.carousel-item img{
+  transition :transform 0.3s ease;
+}
+.carousel-item :hover img{
+  transform: scale(1.05);
+}
+/* 🔘 BUTTONS ON IMAGE */
+.nav-btn {
+  position: absolute;   
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  color: black;
+  border: none;
+  font-size: 1.5rem;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+/* left button */
+.nav-btn.prev {
+  left: 10px;
+}
+
+/* right button */
+.nav-btn.next {
+  right: 10px;
+}
+
+.dots-container {
+  position: absolute;
+  bottom: 10px; 
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+/* dots */
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: black;
+  border: 2px solid black;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* active dot */
+.dot.active {
+  background-color: gold;
+  transform: scale(1.3);
+}

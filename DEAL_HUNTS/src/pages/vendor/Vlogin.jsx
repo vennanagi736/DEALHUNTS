@@ -1,107 +1,128 @@
 import React, { useState } from "react";
-import Layout from "../../components/UserLayout"; // can keep generic layout
-import Details from "../../components/UserDetails"; // form inputs
 import { Link, useNavigate } from "react-router-dom";
-import { vendorUser } from "../../api/UserApi.jsx";
+import LoginDetails from "../../components/LoginDetails";
+import { vendorLogin } from "../../api/VendorApi";
+import { useRole } from "../../context/UseRole";
 import "../../styles/Login.css";
-import { validateLogin } from "../../components/Validation.jsx";
 
-function VendorForm() {
-
+function VendorLogin() {
   const navigate = useNavigate();
+  const {updateRole} = useRole();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+ 
+  const handleVendorLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-  const handleVendorLogin = async () => {
+  try {
+    const response = await vendorLogin(email, password);
 
-    // Frontend validation
-    const errorMessage = validateLogin(email, password);
-    if (errorMessage) {
-      setError(errorMessage);
+    console.log(response.data);
+
+    // Vendor exists but not approved yet
+    if (!response.data.success) {
+
+      if (
+        response.data.message === "PENDING" ||
+        response.data.message === "Waiting for admin approval"
+      ) {
+        navigate(`/request-status/${email}`);
+        return;
+      }
+
+      setError(response.data.message);
+      setMessage("");
       return;
     }
 
-    setError("");
-    setMessage("");
+    // Approved vendor login
+    if (response.data.success && response.data.token) {
+      localStorage.setItem("jwtToken", response.data.token);
+      localStorage.setItem("role", response.data.role);
+      localStorage.setItem("vendorId", response.data.id);
 
-    try {
-      const response = await vendorUser(email, password);
+      updateRole("ROLE_VENDOR");
 
-      if (response.data.success && response.data.role === "vendor") {
+      setError("");
+      setMessage(response.data.message);
 
-        // Store token
-        localStorage.setItem("token", response.data.token);
-        setMessage("✅ Login Successful");
-
-        console.log("TOKEN:", response.data.token);
-
-        // Redirect to Vendor Dashboard
-        setTimeout(() => {
-          navigate("/vendor-dashboard");
-        }, 100);
-
-      } else if (response.data.success && response.data.role !== "vendor") {
-        setMessage("❌ You are not a vendor!");
-      } else {
-        setMessage("❌ Login Unsuccessful");
-      }
-
-    } catch (err) {
-      setMessage("❌ Server Error / Invalid Credentials");
-      console.error(err);
+      navigate("/vendorHome");
     }
+
+  } catch (err) {
+    console.error(err);
+    setError("Invalid email or password");
+    setMessage("");
+  } finally {
+    setLoading(false);
+  }
   };
 
   return (
-    <Layout title="Vendor Login">
+    <>
+      <header className="header">
+        <div className="logo">
+          <span className="Gold">DEAL</span>
+          <span className="Black">HUNTS</span>
+          <span className="Vendor"> Vendor</span>
+        </div>
+        <div className="register-btn">
+          <button onClick={() => navigate("/VendorRegister")}>Register</button>
+        </div>
+      </header>
 
-      <Details
-        email={email}
-        setEmail={setEmail}
-        password={password}
-        setPassword={setPassword}
-      />
+      <div className="form-wrapper">
+        <form onSubmit={handleVendorLogin} className="login-box">
+          <h2 className="login-title">Vendor Login</h2>
 
-      {error && <p className="error-message">{error}</p>}
+          <LoginDetails
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            isLogin={true} 
+          />
 
-      {message && (
-        <p
-          className="response-message"
-          style={{ color: message.includes("Successful") ? "green" : "red" }}
-        >
-          {message}
-        </p>
-      )}
+          {error && <p className="error-message">{error}</p>}
 
-      <div className="login-actions">
-        <button
-          onClick={handleVendorLogin}
-          disabled={!email || !password}
-        >
-          Vendor Login
-        </button>
+          {message && (
+            <p
+              className="response-message"
+              style={{
+                color: message.toLowerCase().includes("success") ? "green" : "red",
+              }}
+            >
+              {message}
+            </p>
+          )}
 
-        <p>
-          <Link to="/forgot-password" className="register-link">
-            Forgot Password?
-          </Link>
-        </p>
+          <div className="login-actions">
+            <button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Vendor Login"}
+            </button>
+          </div>
+
+          <p className="forgot-password">
+            <Link to="/VendorForgotPassword" className="userregister-link">
+              Forgot Password?
+            </Link>
+          </p>
+
+          <p className="register">
+            I don't have an account?{" "}
+            <Link to="/VendorRegister" className="userregister-link">
+              Register
+            </Link>
+          </p>
+        </form>
       </div>
-
-      <div className="actions">
-        <p>
-          I don't have a vendor account?{" "}
-          <Link to="/vendor-register" className="register-link">
-            Register
-          </Link>
-        </p>
-      </div>
-
-    </Layout>
+    </>
   );
 }
 
-export default VendorForm;
+export default VendorLogin;

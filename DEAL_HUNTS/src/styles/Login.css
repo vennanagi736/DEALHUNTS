@@ -1,95 +1,109 @@
-/* Parent container to center everything */
-.container {
+.header {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px 40px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f0f0f0;
+  justify-content: space-between;
+  border-bottom: 2px solid #e0e0e0;
+  backdrop-filter: blur(10px);
 }
+.form-wrapper {
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  min-height: 100vh;       
+  background-color: #f5f5f5;
+  padding: 20px;
 
-/* Center text inside container */
-.center-content {
-  text-align: center;
 }
-
-/* Error message styling */
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-/* ================= LOGIN BOX ================= */
+/* Outer box */
 .form-box {
+  max-width: 450px;
+  margin: 80px auto; /* center horizontally */
+  padding: 20px;
+}
+/* Inner login box */
+.login-box {
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   display: flex;
   flex-direction: column;
-  gap: 20px;               /* Space between inputs/buttons */
-  width: 400px;            /* Width of the box */
-  padding: 40px;           /* Padding inside box */
-  border-radius: 15px;
-  background-color: white;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  gap: 25px;
+  margin-top: 50px;
+  align-items: center; /* center everything horizontally */
+}
+.login-title{
+    font-size: 25px;
 }
 
-/* Input fields */
-input {
-  padding: 12px 15px;      /* Height & spacing inside input */
-  font-size: 18px;
-  border-radius: 8px;
-  border: 1px solid #181212; /* dark border */
-}
-
-/* Button styling */
-button {
-  padding: 12px 30px;
-  font-size: 20px;
-  border-radius: 8px;
-  border: 2px solid #3030E8;
-  background-color: #5151CD;
-  color: white;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-button:hover {
-  background-color: #3030E8;
-  border-color: #5151CD;
-}
-
-/* Body font */
-body {
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-}
-
-/* Actions container */
-.actions {
-  margin-top: 40px;
-  text-align: center;
-}
-
-/* Login actions (like remember me + forgot) */
-.login-actions {
-  display: flex;
-  justify-content: space-between; /* Fixes too much gap issue */
-  align-items: center;
+/* Input fields full width */
+.login-box input {
   width: 100%;
+  padding: 14px 15px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
-/* Links */
-.register-link,
-.forgot-link {
-  color: blue;
-  transition: 0.3s ease;
-  text-decoration: none;
-  cursor: pointer;
-  line-height: 1;
-  display: inline-block;
+/* BIG login button */
+.login-box button{
+    width: 100%;
+    background-color: black;
+    color: white;
+    font-family: cursive;
+    border: 2px solid white;
+    font-size: 20px;
+    padding:  10px 110px;
+    border-radius: 8px;
+}
+.login-actions button:hover{
+    background-color: gold;
+    color: black;
+    border: 2px solid black;
+}
+
+.login-actions button:hover:not(:disabled) {
+  background-color: gold;
+  color: black;
+
+}
+/* Error & response messages */
+.error-message,
+.response-message {
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Forgot password & register links centered */
+.register {
+  text-align: center;
   font-size: 0.9rem;
-  white-space: nowrap; /* Prevent text from wrapping */
+  margin-top: 5px;
 }
-.register-link,.forgot-link{
-  color:darkblue;
-}
-.login-link{
+.userregister-link {
+  color: #1976d2;
   text-decoration: none;
+}
+
+.userregister-link:hover {
+  text-decoration: underline;
+}
+/*Vendor Login*/
+.register-btn button{
+   width: 100%;
+    background-color: black;
+    color: white;
+    font-family: cursive;
+    border: 2px solid white;
+    font-size: 20px;
+    padding:  10px 40px;
+    border-radius: 8px;
+}
+.register-btn button:hover{
+  color:black;
+  background-color: gold;
+  border: 2px solid black;
 }

@@ -1,88 +1,159 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-  font-size: 17px;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+  font-size:17px;
 }
 
-/* ================= HEADER ================= */
-.header {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 20px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 3px solid black;
-  backdrop-filter: blur(10px);
+.header{
+  background:white;
+  padding:20px 40px;
+  display:flex;
+  align-items:center;
+  border-bottom: 2px solid #e0e0e0;
+} 
+
+/* LOGO */
+.logo{
+  margin-right:auto;
 }
 
-/* ================= MAIN ================= */
-.main {
-  background-color: #FFFFFF;
-  min-height: 70vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-  text-align: center;
+.Gold{
+  color:gold;
+  font-size:24px;
+  font-weight:bold;
 }
 
-/* ================= LOGO ================= */
-.Gold {
-  color: gold;
-  font-size: 24px;
-  font-weight: bold;
+.Black{
+  color:black;
+  font-size:24px;
+  font-weight:bold;
 }
 
-.Black {
-  color: black;
-  font-size: 24px;
-  font-weight: bold;
+/* NAVIGATION */
+.navigation{
+  display:flex;
+  align-items:center;
+  gap:40px;
 }
 
-/* ================= NAVIGATION ================= */
-.navigation {
-  display: flex;
-  align-items: center;
-  gap: 25px; /* space between links */
+/* LEFT NAV LINKS */
+.nav-links{
+  display:flex;
+  gap:25px;
 }
 
-.navigation a {
-  color: black;
-  text-decoration: none;
-  transition: 0.3s ease;
+.navigation a{
+  text-decoration:none;
+  color:black;
+  font-size: 20px;
+  transition:0.3s;
 }
 
-.navigation a:hover {
-  color: gold;
+.navigation a:hover{
+  color:gold;
 }
 
-/* ================= BUTTON ================= */
-.navigation .home-Login {
-  margin-left: auto; /* push button to the right */
-  padding: 8px 20px;
-  background-color: gold;
-  border: 2px solid black;
-  border-radius: 5px;
-  color: black;
-  cursor: pointer;
-  transition: 0.3s ease;
+/* RIGHT SIDE (SEARCH + LOGIN) */
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:15px;
 }
 
-.navigation .home-Login:hover {
-  background-color: black;
-  color: gold;
-  border: 2px solid gold;
+/* SEARCH */
+.search-box{
+  display:flex;
+  align-items:center;
+  border:2px solid black;
+  border-radius:6px;
+  padding:4px 10px;
+  height: 43px;
+  width: 300px;
 }
 
-/* ================= FOOTER ================= */
-.footer {
-  background-color: white;
-  color: black;
-  text-align: center;
-  padding: 20px;
-  border-top: 3px solid black;
+.search-box input{
+  border:none;
+  outline:none;
+  width:250px;
+  font-size:16px;
+  height: 35px;
+}
+
+.icon{
+  cursor:pointer;
+  margin-left:6px;
+}
+
+/* LOGIN BUTTON */
+.home-Login{
+  padding:7px 20px;
+  background:gold;
+  border:2px solid black;
+  border-radius:8px;
+  cursor:pointer;
+  font-size: 20px;
+  transition:0.3s;
+  font-family: cursive;
+}
+
+.home-Login:hover{
+  background:black;
+  color:white;
+  border-radius: 8px;
+  border:2px solid white;
+}
+
+/* MAIN */
+ .main{
+  background:#fff;
+  min-height:70vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:40px;
+  text-align:center;
+}
+
+.product-layout{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:250px;
+  height:250px;
+  border:2px solid black;
+}
+
+/* PRODUCTS 
+.product-results{
+  display:flex;
+  flex-wrap:wrap;
+  gap:20px;
+  padding:20px 40px;
+}
+
+.product-card{
+  width:200px;
+  padding:10px;
+  text-align:center; 
+}  */
+
+/* FOOTER */
+.footer{
+  background:white;
+  text-align:center;
+  padding:20px;
+  border-top:1px solid #ddd;
+}
+
+.home-container{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.main{
+  flex:1;
 }

@@ -1,0 +1,532 @@
+/* ================= PAGE ================= */
+
+.product-form-page{
+    min-height:100vh;
+    background:#f5f7fb;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:40px;
+}
+
+/* ================= CARD ================= */
+
+.product-form{
+    width:850px;
+    background:#fff;
+    border-radius:14px;
+    padding:35px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+/* ================= TITLE ================= */
+
+.product-form h2{
+    text-align:center;
+    margin-bottom:30px;
+    font-size:30px;
+    font-weight:700;
+}
+
+/* ================= SECTION ================= */
+
+.form-section{
+    margin-bottom:28px;
+}
+
+.form-section h3{
+    margin-bottom:15px;
+    padding-bottom:8px;
+    border-bottom:2px solid gold;
+    font-size:20px;
+}
+
+/* ================= GRID ================= */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+/* ================= LABEL ================= */
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group label{
+    margin-bottom:6px;
+    font-size:15px;
+    font-weight:600;
+}
+
+/* ================= INPUT ================= */
+
+.product-form input,
+.product-form select,
+.product-form textarea{
+
+    width:100%;
+    padding:12px;
+    border:1px solid #d0d0d0;
+    border-radius:8px;
+    font-size:15px;
+    transition:.3s;
+    background:white;
+}
+
+.product-form textarea{
+    resize:none;
+    min-height:120px;
+}
+
+.product-form input:focus,
+.product-form select:focus,
+.product-form textarea:focus{
+
+    outline:none;
+    border:1px solid gold;
+    box-shadow:0 0 8px rgba(255,215,0,.3);
+}
+
+/* ================= BUTTON ================= */
+
+.product-form button{
+
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:8px;
+    background:gold;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+/* ================= IMAGE SECTION ================= */
+
+.image-section{
+    width:100%;
+    margin-top:25px;
+
+}
+
+
+/* IMAGE ROW */
+
+.preview-container{
+
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+
+    align-items:center;
+
+}
+
+
+
+/* IMAGE CARD */
+
+.preview-item{
+
+    width:90px;
+    height:120px;
+
+    position:relative;
+
+}
+
+
+
+/* PASSPORT SIZE IMAGE */
+
+.preview-item img{
+
+    width:90px;
+    height:120px;
+
+    object-fit:cover;
+
+    border-radius:8px;
+
+    border:2px solid black;
+
+}
+
+
+
+/* CHANGE BUTTON */
+
+.preview-item button{
+
+    position:absolute;
+
+    bottom:-28px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+
+    width:70px;
+
+    padding:4px;
+
+    font-size:12px;
+
+    border-radius:5px;
+
+    background:white;
+
+    border:1px solid black;
+
+}
+
+
+
+/* ADD IMAGE BUTTON */
+
+.add-image-btn{
+
+    width:90px !important;
+    height:120px;
+    background:white!important;
+    color:black;
+    border:2px dashed black !important;
+    border-radius:8px;
+    font-size: 30px;
+    cursor:pointer;
+}
+/* ================= ERROR ================= */
+
+.error{
+
+    color:red;
+    font-weight:600;
+    margin-top:10px;
+}
+
+/* ================= IMAGE POPUP ================= */
+
+.popup-overlay{
+
+    position: fixed;
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,0.6);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    z-index:1000;
+
+}
+
+/* PLUS IMAGE BUTTON INSIDE POPUP */
+
+.add-image-popup-btn{
+
+    width:90px;
+    height:120px;
+    border:2px dashed black;
+    border-radius:10px;
+    margin: auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:40px;
+    cursor:pointer;
+    background:#fafafa;
+}
+
+
+.add-image-popup-btn:hover{
+
+    background:#fffbea;
+
+    border-color:gold;
+
+}
+
+
+
+
+/* Image preview container */
+
+.popup-preview{
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+    margin:auto;
+}
+
+
+
+/* Individual image box */
+
+.popup-preview div{
+
+    position:relative;
+
+    width:90px;
+    height:120px;
+
+    border:2px solid black;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+}
+
+
+/* Preview image */
+
+.popup-preview img{
+
+    width:100%;
+
+    height:120px;
+
+    object-fit:cover;
+
+}
+
+
+
+/* Remove button */
+
+.popup-preview button{
+    position:absolute;
+
+    top:2px;
+    right:2px;
+
+    width:15px;
+    height:25px;
+    border-radius:30px;
+    background:white;
+
+    color:black;
+    border: 2px dashed black;
+    cursor:pointer;
+
+}
+
+
+
+/* Edit label */
+
+.popup-preview label{
+
+    position:absolute;
+    bottom:5px;
+    left: 50%;
+    transform:translateX(-50%);
+    background:white;
+    padding:2px 5px;
+    border-radius:3px;
+    cursor:pointer;
+    font-size:12px;
+
+}
+
+
+
+/* Text */
+
+.image-popup p{
+
+    text-align:center;
+
+    font-weight:bold;
+
+    margin:20px 0;
+
+}
+
+
+
+/* Popup buttons */
+
+.image-popup button[type="button"]{
+
+    padding:10px 20px;
+
+    margin:5px;
+
+    border-radius:8px;
+
+    border:2px solid black;
+
+    cursor:pointer;
+
+    font-family:cursive;
+
+}
+
+
+
+/* Confirm button */
+
+.image-popup button:first-of-type{
+
+    background:gold;
+
+}
+
+
+
+/* Cancel button */
+.image-popup button:last-child{
+    background:#ddd;
+}
+
+/* =========================
+      IMAGE SECTION
+========================= */
+
+.image-section{
+    width:100%;
+    border: 2px dashed black;
+    height: auto;
+    padding: 18px 0px 40px; 
+}
+
+/* IMAGE PREVIEW ROW */
+
+.preview-container{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+}
+
+
+/* IMAGE CARD */
+
+.preview-item{
+
+    width:90px;
+
+    height:120px;
+
+    position:relative;
+
+}
+
+
+/* PASSPORT SIZE IMAGE */
+
+.preview-item img{
+
+    width:90px;
+
+    height:120px;
+
+    object-fit:cover;
+
+    border-radius:8px;
+
+    border:2px solid black;
+
+}
+
+
+/* CHANGE BUTTON */
+
+.preview-item button{
+
+    position:absolute;
+
+    bottom:-25px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+
+    width:70px;
+
+    padding:4px;
+
+    font-size:12px;
+
+    background:white;
+
+    border:1px solid black;
+
+    border-radius:5px;
+
+}
+
+
+/* ADD IMAGE PLUS BOX */
+
+.image-action button{
+
+    margin-top:20px;
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:8px;
+
+    border:2px dashed black;
+
+    background:white;
+
+    font-size:40px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+/* HOVER */
+
+.image-action button:hover{
+
+    background:#fff7cc;
+
+    border-color:gold;
+
+}
+
+
+/* ADD PRODUCT BUTTON */
+
+.add-product-btn{
+
+    margin-top:30px;
+
+
+    width:200px;
+
+}
+.popup-btn{
+    background-color: gold;
+}
+.add-image-container{
+    height: auto;
+    padding: 10px;
+    display: flex;
+    margin: auto;
+    width: 500px;
+    border: 2px dashed black;
+}

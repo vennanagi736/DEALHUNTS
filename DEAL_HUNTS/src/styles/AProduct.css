@@ -1,0 +1,232 @@
+.header{
+  width:100%;                /* full page width */
+  background-color:white;
+  padding:15px 20px; 
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom: 2px solid #e0e0e0;
+}
+/* Container */
+.adminhome-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Return button */
+.admin-button1,
+.import-btn {
+  padding: 10px 20px;
+  background-color: gold;
+  border: 2px solid black;
+  color: black;
+  font-family: cursive;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.admin-button1:hover,
+.import-btn:hover {
+  transform: scale(1.05);
+  box-shadow:0 8px 18px rgba(0,0,0,0.25);
+
+}
+
+/* Container for arrow + logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between arrow and logo */
+}
+
+/* Arrow button */
+.back-btn {
+  font-size: 32px;
+  background-color: gold;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.admin-actions{
+  display:flex;
+  gap:20px;
+}
+
+.admin-navigation{
+  display: flex;
+  align-items: center;
+  gap: 5px;   /* reduce this to control space between buttons */
+}
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  width: 80%;
+}
+/* Logo */
+.Gold {
+  color: gold;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.Black {
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.Admin {
+  font-family: cursive;
+  margin-left: 10px;
+  font-size: 20px;
+  color: #333;
+}
+
+/* Main Section */
+.main {
+  flex: 1;
+  background-color: #FFFFFF;
+  padding: 40px;
+  text-align: center;
+}
+
+/* Product Table */
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  width: 80%;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: gold;
+  color: black;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Footer */
+.footer {
+  background-color: white;
+  color: black;
+  text-align: center;
+  padding: 20px;
+  border-top: 2px solid #e0e0e0;
+}
+
+/* ================= IMPORT PRODUCTS PAGE ================= */
+
+.import-container{
+    width: 50%;
+    margin: 50px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+
+.import-container h2{
+    font-size: 25px;
+    color:#222;
+    margin-bottom:10px;
+}
+
+
+/* FILE INPUT */
+
+.import-container input[type="file"]{
+    width: 80%;
+    padding: 12px;
+    border:2px dashed grey;
+    border-radius:10px;
+    background:#fafafa;
+    cursor:pointer;
+    font-size:15px;
+}
+
+
+/* SELECTED FILE TEXT */
+
+.import-container p{
+    font-size:16px;
+    color:#444;
+    font-weight:600;
+}
+
+
+/* UPLOAD BUTTON */
+
+.import-upload{
+
+    padding:12px 30px;
+    background:linear-gradient(135deg,#ffd700,#ffbf00);
+    border-radius:10px;
+
+    font-size:18px;
+    font-weight:600;
+    font-family:cursive;
+
+    cursor:pointer;
+    transition:all 0.3s ease;
+
+}
+
+
+/* HOVER */
+
+.import-upload:hover{
+
+    transform:translateY(-3px);
+    box-shadow:0 8px 18px rgba(0,0,0,0.25);
+
+}
+
+
+/* DISABLED BUTTON */
+
+.import-upload:disabled{
+
+    background:#ccc;
+    color:#777;
+    border-color:#aaa;
+    cursor:not-allowed;
+    transform:none;
+    box-shadow:none;
+
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+    .import-container{
+
+        width:85%;
+        padding:25px;
+
+    }
+
+
+    .import-container input[type="file"]{
+
+        width:100%;
+
+    }
+
+}
