@@ -1,0 +1,686 @@
+
+/* ==========================================================================
+   DEALHUNTS — VENDOR PRODUCT FORM & LIVE PREVIEW
+   Production stylesheet
+   Theme: white / light-gray surface with gold (#D4AF37) brand accent
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ==========================================================================
+   1. DESIGN TOKENS
+   ========================================================================== */
+:root{
+  /* Brand */
+  --gold:            #D4AF37;
+  --gold-dark:       #B8901F;
+  --gold-darker:     #8F6F17;
+  --gold-soft:       #FBF3D9;
+  --gold-soft-2:     #F5E9C2;
+
+  /* Neutrals */
+  --bg:              #F4F5F7;
+  --surface:         #FFFFFF;
+  --surface-muted:   #F8F9FB;
+  --border:          #E4E7EC;
+  --border-strong:   #D7DBE3;
+
+  /* Text */
+  --text:            #1B1F27;
+  --text-muted:       #667085;
+  --text-faint:      #98A2B3;
+
+  /* Feedback */
+  --danger:          #DC2626;
+  --danger-soft:     #FEE9E9;
+  --success:         #16794F;
+
+  /* Elevation */
+  --shadow-sm:       0 1px 3px rgba(16,24,40,.06), 0 1px 2px rgba(16,24,40,.04);
+  --shadow-md:       0 6px 20px rgba(16,24,40,.07);
+  --shadow-lg:       0 18px 40px rgba(16,24,40,.12);
+  --shadow-gold:     0 8px 22px rgba(212,175,55,.28);
+
+  /* Shape & Motion */
+  --radius-sm:       8px;
+  --radius-md:       14px;
+  --radius-lg:       20px;
+  --ease:            cubic-bezier(.4,0,.2,1);
+  --dur:             .22s;
+
+  /* Type */
+  --font-display:    'Plus Jakarta Sans', 'Inter', sans-serif;
+  --font-body:       'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ==========================================================================
+   2. GLOBAL RESET & BASE
+   ========================================================================== */
+*, *::before, *::after{ box-sizing: border-box; }
+
+body{
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h2, h3{ font-family: var(--font-display); color: var(--text); margin: 0; }
+
+button{ font-family: inherit; }
+
+input, select, textarea{ font-family: inherit; color: var(--text); }
+
+::selection{ background: var(--gold-soft-2); color: var(--text); }
+
+/* Visible keyboard focus everywhere (accessibility) */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible{
+  outline: 2px solid var(--gold-dark);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   3. HEADER / TOPBAR
+   ========================================================================== */
+.header{
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 28px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.left-section{ display: flex; align-items: center; }
+
+.logo{
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: .01em;
+}
+
+.logo .Gold{ color: var(--gold-dark); }
+.logo .Black{ color: var(--text); }
+.logo .Vendor{
+  margin-left: 8px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gold-darker);
+  background: var(--gold-soft);
+  border: 1px solid var(--gold-soft-2);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.back-btn {
+  font-size: 32px;
+  background-color: gold;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+ /*
+.back-btn:hover{ background: var(--gold-soft); border-color: var(--gold-soft-2); transform: translateX(-2px); }
+.back-btn:active{ transform: scale(.94); } */
+
+/* ==========================================================================
+   4. LAYOUT — VENDOR PAGE GRID
+   ========================================================================== */
+.master-layout{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 28px;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+/* ==========================================================================
+   5. FORM SECTION (LEFT — 60%)
+   ========================================================================== */
+.master-form-section{
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: var(--shadow-md);
+}
+
+.master-form-section > h2{
+  font-size: 22px;
+  font-weight: 800;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--gold-soft-2);
+  position: relative;
+}
+.master-form-section > h2::after{
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 64px;
+  height: 2px;
+  background: var(--gold);
+}
+
+/* ==========================================================================
+   6. SECTION HEADINGS & DIVIDERS
+   ========================================================================== */
+.master-form-section h3{
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text-muted);
+  margin-top: 28px;
+  margin-bottom: 14px;
+  padding-left: 12px;
+  border-left: 3px solid var(--gold);
+}
+.master-form-section h3:first-of-type{ margin-top: 6px; }
+
+/* ==========================================================================
+   7. FORM FIELDS — LABELS, INPUTS, SELECTS, TEXTAREAS
+   ========================================================================== */
+.master-form-section label{
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  margin-top: 12px;
+}
+
+.master-form-section input[type="text"],
+.master-form-section input[type="number"],
+.master-form-section select,
+.master-form-section textarea{
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--text);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+
+.master-form-section textarea{ min-height: 90px; resize: vertical; }
+
+.master-form-section input:hover,
+.master-form-section select:hover,
+.master-form-section textarea:hover{ border-color: var(--border-strong); }
+
+.master-form-section input:focus,
+.master-form-section select:focus,
+.master-form-section textarea:focus{
+  outline: none;
+  background: var(--surface);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px var(--gold-soft);
+}
+
+.master-form-section input[readOnly]{
+  background: var(--surface-muted);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.master-form-section select{
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23667085' stroke-width='1.6' fill='none' fill-rule='evenodd' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 34px;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   8. CHECKBOXES — SERVICE / PAYMENT TOGGLE CHIPS
+   ========================================================================== */
+.master-form-section label:has(input[type="checkbox"]){
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  width: auto;
+  margin: 0 10px 10px 0;
+  padding: 9px 16px 9px 12px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.master-form-section label:has(input[type="checkbox"]):hover{
+  border-color: var(--gold-soft-2);
+  transform: translateY(-1px);
+}
+
+.master-form-section label:has(input[type="checkbox"]:checked){
+  background: var(--gold-soft);
+  border-color: var(--gold);
+  color: var(--gold-darker);
+}
+
+.master-form-section input[type="checkbox"]{
+  width: 16px;
+  height: 16px;
+  accent-color: var(--gold-dark);
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   9. IMAGE UPLOAD GRID
+   ========================================================================== */
+.image-section{ margin-top: 8px; }
+
+.preview-container{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.preview-container .preview-item{
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+}
+
+.preview-container .preview-item img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .35s var(--ease);
+}
+
+.preview-container .preview-item:hover img{ transform: scale(1.08); }
+
+.preview-container .preview-item button{
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 7px 0;
+  border: none;
+  background: rgba(27,31,39,.72);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.preview-container .preview-item:hover button{ opacity: 1; transform: translateY(0); }
+
+.add-image-btn{
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-muted);
+  color: var(--text-faint);
+  font-size: 26px;
+  font-weight: 300;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+
+.add-image-btn:hover{
+  border-color: var(--gold);
+  color: var(--gold-dark);
+  background: var(--gold-soft);
+}
+
+/* ==========================================================================
+   10. BUTTONS
+   ========================================================================== */
+.add-product-btn{
+  margin-top: 28px;
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  color: #2A2100;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  cursor: pointer;
+  box-shadow: var(--shadow-gold);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), filter var(--dur) var(--ease);
+}
+
+.add-product-btn:hover:not(:disabled){
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(212,175,55,.36);
+  filter: brightness(1.03);
+}
+
+.add-product-btn:active:not(:disabled){ transform: translateY(0); }
+
+.add-product-btn:disabled{
+  background: var(--border);
+  color: var(--text-faint);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Legacy / shared action button (kept for compatibility with other pages) */
+.options-btn{
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  margin-left: 15px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  color: #2A2100;
+  font-family: var(--font-body);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: var(--shadow-gold);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.options-btn:hover{ transform: translateY(-3px); box-shadow: 0 14px 28px rgba(212,175,55,.34); }
+.options-btn:active{ transform: scale(.96); }
+
+/* ==========================================================================
+   11. PREVIEW SECTION (RIGHT — 40%) — STICKY PRODUCT CARD
+   ========================================================================== */
+.master-preview-section{
+  width: 40%;
+  position: sticky;
+  top: 92px;
+  align-self: flex-start;
+  max-height: calc(100vh - 112px);
+  overflow-y: auto;
+}
+
+.master-preview-section h2{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.master-preview-section h2::before{
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px var(--gold-soft);
+  animation: pulse-live 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-live{
+  0%, 100%{ box-shadow: 0 0 0 4px var(--gold-soft); }
+  50%{ box-shadow: 0 0 0 7px var(--gold-soft); }
+}
+
+.master-preview-card{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 26px 28px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Preview rows read like a spec sheet, not a form */
+.master-preview-card .preview-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.master-preview-card .preview-item:last-of-type{ border-bottom: none; }
+
+.master-preview-card .preview-item label{
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: capitalize;
+  letter-spacing: .03em;
+  color: var(--text-faint);
+  margin: 0;
+  flex: 0 0 auto;
+}
+
+.master-preview-card .preview-item input{
+  flex: 1;
+  text-align: right;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+.master-preview-card .preview-item input:focus{ outline: none; box-shadow: none; }
+
+/* ==========================================================================
+   12. PREVIEW IMAGES GRID
+   ========================================================================== */
+.master-preview-images{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.master-preview-images img{
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.master-preview-images img:hover{
+  transform: scale(1.06);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ==========================================================================
+   13. POPUP / MODAL — IMAGE MANAGER
+   ========================================================================== */
+.add-image-container{ display: flex; flex-direction: column; gap: 16px; }
+
+.popup-preview{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 14px;
+}
+
+.popup-preview > div{
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+}
+
+.popup-preview img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.popup-preview button{
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(27,31,39,.72);
+  color: #fff;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+.popup-preview button:hover{ background: var(--danger); }
+
+.popup-preview label{
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  right: 6px;
+  text-align: center;
+  padding: 5px 0;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .03em;
+  color: #fff;
+  background: rgba(27,31,39,.72);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.add-image-popup-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-faint);
+  font-size: 24px;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.add-image-popup-btn:hover{
+  border-color: var(--gold);
+  color: var(--gold-dark);
+  background: var(--gold-soft);
+}
+
+.popup-btn{
+  align-self: flex-end;
+  padding: 11px 22px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+  color: #2A2100;
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  box-shadow: var(--shadow-gold);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.popup-btn:hover{ transform: translateY(-2px); box-shadow: 0 12px 26px rgba(212,175,55,.34); }
+.popup-btn:active{ transform: translateY(0); }
+
+/* ==========================================================================
+   14. SCROLLABLE LISTS (legacy / shared)
+   ========================================================================== */
+.master-list-container{
+  max-height: 250px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+/* Legacy sticky side-panel wrapper kept for compatibility with older markup */
+.preview-section-aap{
+  width: 40%;
+  min-height: 450px;
+  align-self: flex-start;
+  position: sticky;
+  top: 20px;
+  background: var(--surface);
+  padding: 30px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+.preview-section-aap h2{ text-align: center; }
+
+/* ==========================================================================
+   15. RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+/* Tablet — keep two columns, tighten proportions and spacing */
+@media (max-width: 1024px){
+  .master-layout{ gap: 20px; padding: 20px; }
+
+  .master-form-section{ width: 58%; padding: 26px; }
+
+  .master-preview-section,
+  .master-preview-card{ width: 42%; }
+
+  .preview-container{ grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+}
+
+/* Mobile — stack preview below the form, drop sticky behaviour */
+@media (max-width: 768px){
+  .master-layout{ flex-direction: column; padding: 16px; gap: 18px; }
+
+  .master-form-section,
+  .master-preview-section,
+  .master-preview-card{
+    width: 100%;
+  }
+
+  .master-form-section{ padding: 22px; }
+
+  .master-preview-section{
+    position: static;
+    max-height: none;
+  }
+
+  .header{ padding: 12px 16px; }
+  .logo{ font-size: 18px; }
+}
+
+@media (max-width: 480px){
+  .preview-container{ grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); }
+  .master-preview-images{ grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
+}
+

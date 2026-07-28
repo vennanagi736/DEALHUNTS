@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect} from "react";
-import "../../styles/Admin.css";
 import SideWindow from "../../components/SideBar";
-
 import {
   addProduct,
   getAllCategories,
   getAllBrands
 } from "../../api/ProductApi";
+import "../../styles/ProductPreview.css";
+
 
 
 function AdminAddProduct() {
@@ -20,7 +20,6 @@ function AdminAddProduct() {
   brand: "",
   product: "",
   description: "",
-  image: "",
 
   variants:[
     {
@@ -197,82 +196,88 @@ const removeColor = (index)=>{
   }));
 
 };
+const handleSubmit = async (e) => {
 
-  const handleSubmit=async(e)=>{
     e.preventDefault();
-    if(
-      !productData.category ||
-      !productData.brand ||
-      !productData.product.trim()
-    ){
-      alert("Please fill all required fields");
-      return;
+
+    // Required fields
+    if (
+        !productData.category ||
+        !productData.brand ||
+        !productData.product.trim()
+    ) {
+        alert("Please fill all required fields");
+        return;
     }
-    try{
-    const product={
 
-name:productData.product,
-brand:productData.brand,
-category:productData.category,
-description:productData.description,
-image:productData.image,
+    // Specifications
+    if (
+        !productData.processor ||
+        !productData.displaySize ||
+        !productData.battery
+    ) {
+        alert("Please complete all specifications.");
+        return;
+    }
 
-processor:productData.processor,
-displaySize:productData.displaySize,
-battery:productData.battery,
+    // Variants
+    if (
+        productData.variants.some(
+            variant => !variant.ram || !variant.storage
+        )
+    ) {
+        alert("Please complete all variants.");
+        return;
+    }
 
-variants:productData.variants,
+    // Colors
+    if (
+        productData.colors.some(
+            color => !color.name || !color.hexCode
+        )
+    ) {
+        alert("Please complete all colors.");
+        return;
+    }
 
-colors:productData.colors
+    try {
+
+        const product = {
+
+            name: productData.product,
+            brand: productData.brand,
+            category: productData.category,
+            description: productData.description,
+
+            processor: productData.processor,
+            displaySize: productData.displaySize,
+            battery: productData.battery,
+
+            variants: productData.variants,
+            colors: productData.colors
+
+        };
+
+        console.log(product);
+        await addProduct(product);
+        alert("Product Added Successfully");
+        navigate("/admin/product-images");
+    }
+    catch (error) {
+        console.error(error);
+        alert("Failed to Add Product");
+    }
 
 };
-      console.log(product);
-
-      await addProduct(product);
-      alert("Product Added Successfully");
-      setProductData({
-        category:"",
-        brand:"",
-        product:"",
-        description:"",
-        image:"",
-        variants: [
-  {
-    ram:"",
-    storage:""
-  }
-],
-        processor:"",
-        displaySize:"",
-        battery:"",
-        colors:[
-  {
-    name:"",
-    hexCode:""
-  }
-]
-      });
-
-    }catch(error){
-      console.error(error);
-      alert("Failed to Add Product");
-    }
-  };
     return (
-
-<div className="adminhome-container">
-
-
+<>
 <header className="header">
-
 
 <div className="left-section">
 
 <SideWindow />
 
 </div>
-
-
 
 <div className="logo">
 
@@ -303,34 +308,22 @@ onClick={()=>navigate(-1)}
 &#8592;
 </div>
 </header>
-<main>
 <h1 className="page-title">
-Add New Market Product
+New Product
 </h1>
 <div className="master-layout">
 
-
-
-
-
-<div className="master-form-section">
-
-
-
-<form onSubmit={handleSubmit}>
-
+<form 
+className="master-form-section"
+onSubmit={handleSubmit}>
 
 <h2>
 Product Details
 </h2>
 
-
-
-
 <label>
 Category
 </label>
-
 
 <select
 
@@ -341,8 +334,6 @@ value={productData.category}
 onChange={handleChange}
 
 >
-
-
 <option value="">
 
 Select Category
@@ -470,41 +461,12 @@ Description
 name="description"
 
 placeholder="Enter Product Description"
-
+maxLength={1000}
 value={productData.description}
 
 onChange={handleChange}
 
 />
-
-
-
-
-
-
-<label>
-Product Image
-</label>
-
-
-<input
-
-type="text"
-
-name="image"
-
-placeholder="Enter Image URL"
-
-value={productData.image}
-
-onChange={handleChange}
-
-/>
-
-
-
-
-
 
 <h2>
 Variant Details
@@ -523,9 +485,8 @@ RAM
 <input
 
 type="text"
-
+name = "ram"
 value={variant.ram}
-
 onChange={(e)=>
 handleVariantChange(
 index,
@@ -533,10 +494,7 @@ index,
 e.target.value
 )
 }
-
 />
-
-
 
 <label>
 Storage
@@ -545,9 +503,8 @@ Storage
 <input
 
 type="text"
-
+name="storage"
 value={variant.storage}
-
 onChange={(e)=>
 handleVariantChange(
 index,
@@ -573,7 +530,6 @@ onClick={addVariant}
 >
 + Add Variant
 </button>
-
 
 <label>
 Processor
@@ -627,9 +583,8 @@ Color Name
 <input
 
 type="text"
-
+name="color"
 value={color.name}
-
 onChange={(e)=>
 handleColorChange(
 index,
@@ -637,23 +592,17 @@ index,
 e.target.value
 )
 }
-
 />
-
-
 
 <label>
 Hex Code
 </label>
 
 <input
-
 type="text"
-
+name="hexCode"
 value={color.hexCode}
-
 placeholder="#000000"
-
 onChange={(e)=>
 handleColorChange(
 index,
@@ -661,74 +610,118 @@ index,
 e.target.value
 )
 }
-
 />
 
-
-
 <button
-
 type="button"
-
 onClick={()=>removeColor(index)}
-
 >
 Remove
 </button>
-
-
 </div>
-
 ))
 }
 
-
-
 <button
-
 type="button"
-
 onClick={addColor}
-
 >
 + Add Color
 </button>
 <button
-className="save-master-btn"
+className="add-product-btn"
 type="submit"
 >
 Save Product
 </button>
 </form>
-</div>
-<div className="preview-section-aap">
-<h2>
-Added Details
-</h2>
 
-<div className="preview-box-aap">
-{
-Object.entries(productData).map(([key,value])=>(
-<div
-className="preview-item"
-key={key}
->
-<label>
-{key}
-</label>
-<input
-type="text"
-value={value}
-readOnly
-/>
+<div className="master-preview-section">
+
+    <h2>Live Preview Details</h2>
+
+    <div className="master-preview-card">
+
+        <div className="preview-item">
+            <label>Category</label>
+            <input readOnly value={productData.category} />
+        </div>
+
+        <div className="preview-item">
+            <label>Brand</label>
+            <input readOnly value={productData.brand} />
+        </div>
+
+        <div className="preview-item">
+            <label>Product</label>
+            <input readOnly value={productData.product} />
+        </div>
+
+        <div className="preview-item">
+            <label>Description</label>
+            <textarea readOnly value={productData.description} />
+        </div>
+
+        <div className="preview-item">
+            <label>Processor</label>
+            <input readOnly value={productData.processor} />
+        </div>
+
+        <div className="preview-item">
+            <label>Display</label>
+            <input readOnly value={productData.displaySize} />
+        </div>
+
+        <div className="preview-item">
+            <label>Battery</label>
+            <input readOnly value={productData.battery} />
+        </div>
+
+        <h3>Variants</h3>
+
+        {productData.variants.map((variant,index)=>(
+
+            <div
+                className="preview-item"
+                key={index}
+            >
+
+                <label>
+                    Variant {index+1}
+                </label>
+
+                <input
+                    readOnly
+                    value={`${variant.ram} | ${variant.storage}`}
+                />
+
+            </div>
+
+        ))}
+
+        <h3>Colors</h3>
+
+        {productData.colors.map((color,index)=>(
+
+            <div
+                className="preview-item"
+                key={index}
+            >
+
+                <label>
+                    Color {index+1}
+                </label>
+
+                <input
+                    readOnly
+                    value={`${color.name} (${color.hexCode})`}
+                />
+            </div>
+        ))}
+    </div>
 </div>
-))
-}
-</div>   
-</div>  
 </div>
-</main>
-</div>   
+</>
   );
 
 }

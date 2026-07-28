@@ -3,6 +3,7 @@ import { useState, useRef} from "react";
 import "../../styles/Admin.css";
 import SideWindow from "../../components/SideBar";
 import Popup from "../../components/Popup";
+
 import {
     getAllCategories,
     getAllBrands,
@@ -11,7 +12,15 @@ import {
     addCategory,
     addBrand,
     addColor,
-    addVariant
+    addVariant,
+    updateBrand,
+    updateCategory,
+    updateColor,
+    updateVariant,
+    deleteBrand,
+    deleteCategory,
+    deleteColor,
+    deleteVariant
 } from "../../api/ProductApi";
 
 function AdminMasterData() {
@@ -29,7 +38,9 @@ function AdminMasterData() {
   const [storage,setStorage] = useState("");
   const [colorName, setColorName] = useState("");
   const [hexCode, setHexCode] = useState("");
+  const [selectedItems, setSelectedItems] = useState([]);
 
+  const [editId, setEditId] = useState(null);
   
   const loadMasterData = async (type) => {
 
@@ -146,10 +157,138 @@ if (popupType === "color" && (!colorName.trim() || !hexCode.trim())) {
         alert("Failed");
 
     }
+}
+    const handleDelete = async (id) => {
 
+    try {
+
+        switch (popupType) {
+
+            case "category":
+                await deleteCategory(id);
+                break;
+
+            case "brand":
+                await deleteBrand(id);
+                break;
+
+            case "variant":
+                await deleteVariant(id);
+                break;
+
+            case "color":
+                await deleteColor(id);
+                break;
+        }
+
+        await loadMasterData(popupType);
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+   const handleDeleteSelected = async () => {
+
+    if (selectedItems.length === 0) {
+        alert("Select at least one item");
+        return;
+    }
+
+    try {
+
+        for (const id of selectedItems) {
+
+            switch (popupType) {
+
+                case "category":
+                    await deleteCategory(id);
+                    break;
+
+                case "brand":
+                    await deleteBrand(id);
+                    break;
+
+                case "variant":
+                    await deleteVariant(id);
+                    break;
+
+                case "color":
+                    await deleteColor(id);
+                    break;
+            }
+        }
+
+        await loadMasterData(popupType);
+        setSelectedItems([]);
+
+        alert("Deleted Successfully");
+
+    } catch (error) {
+        console.error(error);
+        alert("Delete Failed");
+    }
+}; 
+const handleEdit = (item) => {
+    setEditId(item.id);
+    if (popupType === "category" || popupType === "brand") {
+        setNewValue(item.name);
+    }
+    if (popupType === "variant") {
+        setRam(item.ram);
+        setStorage(item.storage);
+    }
+    if (popupType === "color") {
+        setColorName(item.name);
+        setHexCode(item.hexCode);
+    }
 };
-  
-  return (
+const handleUpdate = async () => {
+    try {
+        switch(popupType){
+            case "category":
+                await updateCategory(editId,{
+                    name:newValue
+                });
+                break;
+
+            case "brand":
+                await updateBrand(editId,{
+                    name:newValue
+                });
+                break;
+
+            case "variant":
+                await updateVariant(editId,{
+                    name:`${ram} + ${storage}`,
+                    ram,
+                    storage
+                });
+                break;
+
+            case "color":
+                await updateColor(editId,{
+                    name:colorName,
+                    hexCode
+                });
+                break;
+        }
+
+        await loadMasterData(popupType);
+
+        setEditId(null);
+        setNewValue("");
+        setRam("");
+        setStorage("");
+        setColorName("");
+        setHexCode("");
+        alert("Updated Successfully");
+    } catch(error){
+        console.error(error);
+        alert("Update Failed");
+    }
+};
+   
+return (
     <div className="adminhome-container">
       {/* HEADER */}
       <header className="header">
@@ -175,14 +314,14 @@ if (popupType === "color" && (!colorName.trim() || !hexCode.trim())) {
         </div>
       </header>
       <main>
-        <h1 className="page-title">
+        {/* <h1 className="page-title">
           Master Data Management
-        </h1>
+        </h1> */}
+         <h1 className="page-title">
+              Manage Product Options
+            </h1>
         <div className="master-layout">
           <div className="master-form-section">
-            <h2>
-              Manage Product Options
-            </h2>
             <button
               className="master-action-btn"
               onClick={ ()=>  openPopup("category")}
@@ -209,53 +348,6 @@ if (popupType === "color" && (!colorName.trim() || !hexCode.trim())) {
     Manage Color
 </button>
           </div>
-          <div className="preview-section">
-            <h2>
-              Available Master Data
-            </h2>
-            <div className="preview-box">
-              <div className="preview-item">
-                <label>
-                  Category
-                </label>
-                <input
-                type="text"
-                value="eg: electronics"
-                readOnly
-                />
-              </div>
-              <div className="preview-item">
-                <label>
-                  Brand
-                </label>
-                <input
-                type="text"
-                value="eg: Samsung"
-                readOnly
-                />
-              </div>
-              <div className="preview-item">
-                <label>
-                  Variant
-                </label>
-                <input
-                type="text"
-                value="eg: 12gb + 256gb"
-                readOnly
-                />
-              </div>
-              <div className="preview-item">
-                <label>
-                  Color
-                </label>
-                <input
-                type="text"
-                value="eg: black"
-                readOnly
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </main>
 
@@ -274,6 +366,7 @@ if (popupType === "color" && (!colorName.trim() || !hexCode.trim())) {
     setPopupType("");
     setNewValue("");
     setMasterData([]);
+    setSelectedItems([]);
   }}
 >
 {popupType === "category" && (
@@ -329,7 +422,7 @@ if (popupType === "color" && (!colorName.trim() || !hexCode.trim())) {
     </>
 )}
   <button className="save-master-btn"
-  onClick={handleAdd}
+  onClick={editId ? handleUpdate : handleAdd}
   >
     Save
   </button>
@@ -348,14 +441,27 @@ if (popupType === "color" && (!colorName.trim() || !hexCode.trim())) {
   </h3>
   <div className="category-row">
 
-    <input
-        type="checkbox"
-        className="category-checkbox"
-    />
-
+    <span className="count">
+      Total: {masterData.length}
+    </span>
     <span className="category-name">
         Select All
     </span>
+     <input
+        type="checkbox"
+        className="category-checkbox"
+        checked={
+            masterData.length > 0 && 
+            selectedItems.length === masterData.length
+        }
+        onChange={(e) => {
+            if(e.target.checked){
+                setSelectedItems(masterData.map(item=> item.id));
+            }else{
+                setSelectedItems([]);
+            }
+        }}
+    />
 
 </div>
 <div className="master-list-container">
@@ -365,26 +471,37 @@ if (popupType === "color" && (!colorName.trim() || !hexCode.trim())) {
         key={item.id}
         className="category-row"
     >
-
-        <input
-         type="checkbox"
-        />
-
         <span className="category-name">
             {item.name}
         </span>
 
         <div className="category-actions">
 
-            <button className="edit-master-btn">
+            <button className="edit-master-btn"
+            onClick={() => handleEdit(item)}>
                 ✏
             </button>
 
-            <button className="delete-master-btn">
-                🗑
+            <button className="delete-master-btn"
+            onClick={() => handleDelete(item.id)}>
+                🗑 
             </button>
 
+
         </div>
+          {/* <input
+         type="checkbox"
+         checked={selectedItems.includes(item.id)}
+         onChange={(e) => {
+            if(e.target.checked){
+                setSelectedItems(prev => [...prev, item.id]);
+            }else{
+                setSelectedItems(prev => 
+                    prev.filter(id => id !== item.id)
+                );
+            }
+         }}
+        /> */}
 
     </div>
 
@@ -393,7 +510,8 @@ if (popupType === "color" && (!colorName.trim() || !hexCode.trim())) {
   
   <div ref={deleteRef}>
 
-<button className="delete-selected-btn">
+<button className="delete-selected-btn"
+onClick={handleDeleteSelected}>
     🗑 Delete Selected
 </button>
 

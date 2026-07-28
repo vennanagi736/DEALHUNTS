@@ -25,17 +25,46 @@ public class Product {
     private String brand;
     private String category;
     private String description;
-    private String image;
+
+    
+    @JsonManagedReference
+    @OneToMany(
+        mappedBy="product",
+        cascade=CascadeType.ALL,
+        orphanRemoval=true
+    )
+    private List<Image> images = new ArrayList<>();
+
 
     @JsonManagedReference
-    @OneToMany(mappedBy="product",cascade=CascadeType.ALL)
+    @OneToMany(
+        mappedBy="product",
+        cascade=CascadeType.ALL,
+        orphanRemoval=true
+    )
     private List<Variant> variants = new ArrayList<>();
+
+
     private String processor;
     private String displaySize;
     private String battery;
+
+
     @JsonManagedReference
-    @OneToMany(mappedBy="product",cascade=CascadeType.ALL)
+    @OneToMany(
+        mappedBy="product",
+        cascade=CascadeType.ALL
+    )
     private List<Color> colors = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(
+        mappedBy="product",
+        cascade=CascadeType.ALL,
+        orphanRemoval=true
+    )
+    private List<Inventory> inventories = new ArrayList<>();
+
 
     public Long getId(){
         return id;
@@ -82,45 +111,65 @@ public class Product {
     }
 
 
-    public String getImage(){
-        return image;
+    public List<Image> getImages() {
+        return images;
     }
 
-    public void setImage(String image){
-        this.image = image;
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
-    
-   public List<Variant> getVariants() {
-    return variants;
-}
 
-public void setVariants(List<Variant> variants) {
-    this.variants = variants;
-}
 
-     public String getProcessor(){
+    public List<Variant> getVariants() {
+        return variants;
+    }
+
+    public void setVariants(List<Variant> variants) {
+        this.variants = variants;
+    }
+
+
+    public String getProcessor(){
         return processor;
     }
+
     public void setProcessor(String processor){
         this.processor = processor;
     }
-     public String getDisplaySize(){
+
+
+    public String getDisplaySize(){
         return displaySize;
     }
+
     public void setDisplaySize(String displaySize){
         this.displaySize = displaySize;
     }
-     public String getBattery(){
+
+
+    public String getBattery(){
         return battery;
     }
+
     public void setBattery(String battery){
         this.battery = battery;
     }
-    public List<Color> getColors() {
-    return colors;
-}
 
-public void setColors(List<Color> colors) {
-    this.colors = colors;
-}
+
+    public List<Color> getColors() {
+        return colors;
+    }
+
+    public void setColors(List<Color> colors) {
+        this.colors = colors;
+    }
+
+
+    public List<Inventory> getInventories() {
+        return inventories;
+    }
+
+    public void setInventories(List<Inventory> inventories) {
+        this.inventories = inventories;
+    }
 }

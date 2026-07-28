@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
-import "../../styles/Product.css";
 import SideWindow from "../../components/SideBar";
 import { useNavigate } from "react-router-dom";
-import Popup from "../../components/Popup";
-import { getAllProducts } from "../../api/ProductApi";
+import { getAllProducts,getProductById } from "../../api/ProductApi";
 import { addInventory } from "../../api/InventoryApi";
-import { getProductById } from "../../api/ProductApi";
-
+import "../../styles/ProductPreview.css";
 
 function VendorProductPage() {
 
   const navigate = useNavigate();
-
-
   const [inventory,setInventory] = useState({
 
     product:"",
@@ -39,31 +34,24 @@ function VendorProductPage() {
 
     returnPolicy:"",
 });
-
-
-const [productDetails,setProductDetails] = useState({
-
-brand:"",
-processor:"",
-displaySize:"",
-battery:"",
-variant:"",
-ram:"",
-storage:"",
-color:"",
-hexCode:""
-
-});
-
+  const [productInfo,setProductInfo] = useState(null);
 
   const [products,setProducts] = useState([]);
   const [variants,setVariants] = useState([]);
   const [colors,setColors] = useState([]);
-  const [images,setImages] = useState([]);
-  const [showImagePopup, setShowImagePopup] = useState(false);
-  const [previewImages,setPreviewImages] = useState([]);
-  const [tempImages,setTempImages] = useState([]);
+
   
+const selectedVariant =
+    variants.find(
+        v => v.id === Number(inventory.variantId)
+    ) || null;
+
+const selectedColor =
+    colors.find(
+        c => c.id === Number(inventory.colorId)
+    ) || null;
+
+
   // LOAD PRODUCTS FROM ADMIN PRODUCT TABLE
 useEffect(() => {
 
@@ -89,77 +77,88 @@ useEffect(() => {
 }, []);
   // CHANGE HANDLER
 
-  const handleChange = async(e)=>{
+  const handleChange = async (e) => {
 
-    const {name,value,type,checked}=e.target;
+    const { name, value, type, checked } = e.target;
+    const val = type === "checkbox" ? checked : value;
 
+    if (name !== "product") {
+        setInventory(prev => ({
+            ...prev,
+            [name]: val
+        }));
+        return;
+    }
 
-    const val = type==="checkbox" ? checked : value;
+    setInventory(prev => ({
+        ...prev,
+        product: value
+    }));
+    
+    if(name==="product"){
+      if (!value) {
+    setProductInfo(null);
+    setVariants([]);
+    setColors([]);
 
-
-    setInventory(prev=>({
-
-      ...prev,
-      [name]:val
-
+    setInventory(prev => ({
+        ...prev,
+        product: "",
+        variantId: "",
+        colorId: ""
     }));
 
-    if(name==="product"){
+    return;
+}
 
 
 try{
 
 const response = await getProductById(value);
+if (!response.data){
+  return;
+}
 
-const product=response.data;
-console.log(product);
-setInventory(prev=>({
+const product = response.data;
+
+setProductInfo(product);
+setInventory(prev => ({
     ...prev,
     variantId:"",
+    colorId:"",
+    sellingPrice:"",
+    stock:"",
+    discount:"",
+    warranty:"",
+    condition:"",
+    deliveryTime:"",
+    homeDelivery:false,
+    storePickup:false,
+    cod:false,
+    emi:false,
+    exchange:false,
+    offerTitle:"",
+    offerDescription:"",
+    returnPolicy:""
+}));
+setVariants(product.variants || []);
+setColors(product.colors || []);
+}catch(error){
+
+setProductInfo(null);
+setVariants([]);
+setColors([]);
+
+setInventory(prev=>({
+
+    ...prev,
+
+    variantId:"",
     colorId:""
+
 }));
 
-setProductDetails({
-
-brand: product.brand,
-processor: product.processor,
-displaySize: product.displaySize,
-battery: product.battery,
-
-variant: product.variant,
-ram: product.ram,
-storage: product.storage,
-
-color: product.color,
-hexCode: product.hexCode
-
-});
-
-
-// create dropdown data
-
-setVariants([
-{
- id: product.id,
- name: product.variant
-}
-]);
-
-
-setColors([
-{
- id: product.id,
- name: product.color
-}
-]);
-
-}
-catch(error){
-
-console.error(
-"Product loading failed",
-error
-);
+console.error(error);
 
 }
 
@@ -210,11 +209,34 @@ error
     returnPolicy: inventory.returnPolicy
 };
 
-      const response = await addInventory(inventoryData);
-
+const response = await addInventory(inventoryData);
       console.log(response.data);
 
       alert("Inventory Added Successfully");
+
+setInventory({
+    product:"",
+    variantId:"",
+    colorId:"",
+    sellingPrice:"",
+    stock:"",
+    discount:"",
+    warranty:"",
+    condition:"",
+    deliveryTime:"",
+    homeDelivery:false,
+    storePickup:false,
+    cod:false,
+    emi:false,
+    exchange:false,
+    offerTitle:"",
+    offerDescription:"",
+    returnPolicy:""
+});
+
+setProductInfo(null);
+setVariants([]);
+setColors([]);
 
     }
     catch(error){
@@ -224,197 +246,22 @@ error
       alert("Failed to add inventory");
 
     }
-}
-  const handleAddImage=(e)=>{
-
-const file=e.target.files[0];
-
-if(!file)
-return;
-
-const exists = tempImages.some(
-(img)=>img.name === file.name
-);
-
-if(exists){
-
-alert("Image already added");
-
-return;
-
-}
-
-
-// maximum 5 images
-
-if(tempImages.length >=5){
-
-alert("Maximum 5 images allowed");
-
-return;
-
-}
-
-
-// size validation
-
-if(file.size > 2 * 1024 * 1024){
-
-alert("Image size should be below 2MB");
-
-return;
-
-}
-
-
-// type validation
-
-const allowedTypes=[
-"image/jpeg",
-"image/png",
-"image/webp"
-];
-
-
-if(!allowedTypes.includes(file.type)){
-
-alert("Only JPG PNG WEBP allowed");
-
-return;
-
-}
-
-
-
-setTempImages(prev=>[
-
-...prev,
-
-file
-
-]);
-
-
-};
-
-const removeTempImage=(index)=>{
-
-
-setTempImages(prev=>
-
-prev.filter(
-(_,i)=>i!==index
-)
-);
-};
-
-const replaceImage=(index,e)=>{
-
-const file=e.target.files[0];
-
-if(!file)
-return;
-
-
-const exists=tempImages.some(
-(img,i)=>img.name === file.name && i !== index
-);
-
-if(exists){
-
-alert("Image already exists");
-
-return;
-
-}
-
-
-if(file.size > 2 * 1024 * 1024){
-
-alert("Image size should be below 2MB");
-
-return;
-
-}
-
-
-const allowedTypes=[
-"image/jpeg",
-"image/png",
-"image/webp"
-];
-
-if(!allowedTypes.includes(file.type)){
-
-alert("Only JPG PNG WEBP allowed");
-
-return;
-
-}
-
-setTempImages(prev=>{
-const updated=[...prev];
-updated[index]=file;
-return updated;
-});
 };
 
 const isProductReady = () => {
 
-  return (
+  return Boolean(
     inventory.product &&
     inventory.variantId &&
     inventory.colorId &&
     inventory.sellingPrice &&
     inventory.stock &&
-    inventory.condition &&
-    images.length >= 3
+    inventory.condition
   );
 
 };
-
-const confirmImages = () => {
-
-
-if(tempImages.length < 3){
-
-alert("Minimum 3 images required");
-
-return;
-
-}
-
-
-if(tempImages.length > 5){
-
-alert("Maximum 5 images allowed");
-
-return;
-
-}
-
-
-setImages(tempImages);
-
-
-setPreviewImages(
-tempImages.map(file =>
-URL.createObjectURL(file)
-)
-);
-
-setShowImagePopup(false);
-};
-const openImagePopup = () => {
-
-setTempImages(images);
-
-setShowImagePopup(true);
-};
-
-return (
-
-    <>
+return(
+   <>
 
 
       <header className="header">
@@ -447,51 +294,36 @@ return (
 
         </div>
       </header>
+      <h1 className="page-title">
+        New Product 
+      </h1>
 
-      <div className="product-form-page">
+      <div className="master-layout">
 
 
         <form 
-          className="product-form"
+          className="master-form-section" 
           onSubmit={handleSubmit}
         >
-
-
           <h2>
             Product Details
           </h2>
-
-
-
-
           {/* PRODUCT */}
-
           <h3>
             Product Name
           </h3>
-
           <select
-
             name="product"
-
             value={inventory.product}
-
             onChange={handleChange}
-
             required
-
           >
-
             <option value="">
               Select Product
             </option>
 
-
-
             {
-
               products.map((p)=>(
-
                 <option 
                   key={p.id}
                   value={p.id}
@@ -518,7 +350,7 @@ Brand
 
 type="text"
 
-value={productDetails.brand}
+value={productInfo?.brand || ""}
 
 readOnly
 
@@ -534,7 +366,7 @@ Processor
 
 type="text"
 
-value={productDetails.processor}
+value={productInfo?.processor || ""}
 
 readOnly
 
@@ -550,7 +382,7 @@ Display
 
 type="text"
 
-value={productDetails.displaySize}
+value={productInfo?.displaySize || ""}
 
 readOnly
 
@@ -566,7 +398,7 @@ Battery
 
 type="text"
 
-value={productDetails.battery}
+value={productInfo?.battery || ""}
 
 readOnly
 
@@ -650,15 +482,11 @@ Selling Price
 </label>
 
 <input
-
 type="number"
-
 name="sellingPrice"
-
 value={inventory.sellingPrice}
-
 onChange={handleChange}
-
+required
 />
 
 
@@ -669,13 +497,10 @@ Stock Quantity
 <input
 
 type="number"
-
 name="stock"
-
 value={inventory.stock}
-
 onChange={handleChange}
-
+required
 />
 
 
@@ -684,15 +509,10 @@ Discount
 </label>
 
 <input
-
 type="number"
-
 name="discount"
-
 value={inventory.discount}
-
 onChange={handleChange}
-
 />
 <h3>
 Product Condition
@@ -723,13 +543,10 @@ Condition
 </label>
 
 <select
-
 name="condition"
-
 value={inventory.condition}
-
 onChange={handleChange}
-
+required
 >
 
 <option value="">
@@ -920,57 +737,6 @@ value={inventory.returnPolicy}
 onChange={handleChange}
 
 />
-<h3>Images</h3>
-
-<div className="image-section">
-
-
-<div className="preview-container">
-
-
-{
-previewImages.map((img,index)=>(
-
-<div 
-className="preview-item"
-key={index}
->
-
-<img
-src={img}
-alt="preview"
-/>
-
-
-<button
-type="button"
-onClick={openImagePopup}
->
-Edit
-</button>
-
-
-</div>
-
-))
-}
-
-
-{
-images.length < 5 &&
-
-<button
-type="button"
-className="add-image-btn"
-onClick={openImagePopup}
->
-+
-</button>
-
-}
-</div>
-
-</div>
 <button 
 type="submit"
 className="add-product-btn"
@@ -980,129 +746,156 @@ disabled={!isProductReady()}
   </button>
 
 </form>
-<Popup
+<div className="master-preview-section">
 
-open={showImagePopup}
+    <h2>
+        Live Product Preview
+    </h2>
 
-title="Product Images"
-
-onClose={()=>{
-
-setTempImages(images);
-
-setShowImagePopup(false);
-
-}}
-
-width="600px"
-
->
-<div className="add-image-container">
-  <div className="popup-preview">
-
-{
-
-tempImages.map((img,index)=>(
-
-<div key={index}>
-
-
-<img
-
-src={URL.createObjectURL(img)}
-
-alt="preview"
-
-/>
-
-
-
-<button
-
-type="button"
-
-onClick={()=>removeTempImage(index)}
-
->
-
-X
-
-</button>
-
-
-
-<label>
-Edit
-
-
-<input
-
-type="file"
-
-hidden
-
-accept="image/*"
-
-onChange={(e)=>
-replaceImage(index,e)
-}
-
-/>
-
-
-</label>
-
-
+    <div className="master-preview-card">
+        <div className="preview-item">
+    <label>Product</label>
+    <input
+        readOnly
+        value={productInfo?.name || ""}
+    />
 </div>
 
-))
+        <div className="preview-item">
+            <label>Brand</label>
+            <input
+                readOnly
+                value={productInfo?.brand || ""}
+            />
+        </div>
 
-}
+        <div className="preview-item">
+            <label>Processor</label>
+            <input
+                readOnly
+                value={productInfo?.processor || ""}
+            />
+        </div>
 
+        <div className="preview-item">
+            <label>Display</label>
+            <input
+                readOnly
+                value={productInfo?.displaySize || ""}
+            />
+        </div>
 
+        <div className="preview-item">
+            <label>Battery</label>
+            <input
+                readOnly
+                value={productInfo?.battery || ""}
+            />
+        </div>
+        <div className="preview-item">
+    <label>RAM</label>
+    <input
+        readOnly
+        value={selectedVariant?.ram || ""}
+    />
 </div>
 
-<label className="add-image-popup-btn">
-+
-
-<input
-type="file"
-hidden
-accept="image/*"
-onChange={handleAddImage}
-/>
-</label>
+<div className="preview-item">
+    <label>Storage</label>
+    <input
+        readOnly
+        value={selectedVariant ? selectedVariant.storage :""}
+    />
+</div>
+      
+        <div className="preview-item">
+    <label>Color</label>
+    <input
+        readOnly
+        value={selectedColor ? selectedColor.name : ""}
+    />
 </div>
 
-
-
-<p>
-Images Added : {tempImages.length}/5
-</p>
-
-
-
-<button className="popup-btn"
-
-type="button"
-
-onClick={confirmImages}
-
->
-
-Add Images
-
-</button>
-
-
-</Popup>
-
-
-
+<div className="preview-item">
+    <label>Hex Code</label>
+    <input
+        readOnly
+        value={selectedColor?.hexCode || ""}
+    />
 </div>
-    </>
+        <div className="preview-item">
+            <label>Selling Price</label>
+            <input
+                readOnly
+                value={inventory.sellingPrice}
+            />
+        </div>
 
-  );
+        <div className="preview-item">
+            <label>Stock</label>
+            <input
+                readOnly
+                value={inventory.stock}
+            />
+        </div>
+
+        <div className="preview-item">
+            <label>Discount</label>
+            <input
+                readOnly
+                value={
+                    inventory.discount
+                        ? `${inventory.discount}%`
+                        : ""
+                }
+            />
+        </div>
+
+        <div className="preview-item">
+            <label>Warranty</label>
+            <input
+                readOnly
+                value={inventory.warranty}
+            />
+        </div>
+
+        <div className="preview-item">
+            <label>Condition</label>
+            <input
+                readOnly
+                value={inventory.condition}
+            />
+        </div>
+
+        <div className="preview-item">
+            <label>Delivery</label>
+            <input
+                readOnly
+                value={inventory.deliveryTime}
+            />
+        </div>
+
+        <div className="preview-item">
+            <label>Offer</label>
+            <input
+                readOnly
+                value={inventory.offerTitle}
+            />
+        </div>
+
+        <div className="preview-item">
+            <label>Return Policy</label>
+            <input
+                readOnly
+                value={inventory.returnPolicy}
+            />
+        </div>
+
+    </div>
+</div>
+</div>
+</>
+);
 }
 
 

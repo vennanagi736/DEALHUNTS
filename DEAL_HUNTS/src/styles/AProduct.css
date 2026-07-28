@@ -13,27 +13,6 @@
   display: flex;
   flex-direction: column;
 }
-
-/* Return button */
-.admin-button1,
-.import-btn {
-  padding: 10px 20px;
-  background-color: gold;
-  border: 2px solid black;
-  color: black;
-  font-family: cursive;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.admin-button1:hover,
-.import-btn:hover {
-  transform: scale(1.05);
-  box-shadow:0 8px 18px rgba(0,0,0,0.25);
-
-}
-
 /* Container for arrow + logo */
 .logo-container {
   display: flex;
@@ -49,16 +28,43 @@
   cursor: pointer;
 }
 
-.admin-actions{
+/* NAVIGATION */
+.admin-nav-links{
   display:flex;
-  gap:20px;
+  align-items:center;
+  gap:28px;
 }
 
-.admin-navigation{
-  display: flex;
-  align-items: center;
-  gap: 5px;   /* reduce this to control space between buttons */
+.admin-nav-links a{
+  text-decoration:none;
+  color:#333;
+  transition:0.3s ease;
+  font-size:18px;
+  font-family:"Inter", sans-serif;
+  font-weight:500;
+  position:relative;
 }
+
+.admin-nav-links a:hover{
+  color:goldenrod;
+}
+
+.admin-nav-links a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:0%;
+  height:2px;
+  background:gold;
+  transition:0.3s;
+}
+
+.admin-nav-links a:hover::after{
+  width:100%;
+}
+
+
 table {
   margin: 20px auto;
   border-collapse: collapse;
@@ -229,4 +235,32 @@ tr:nth-child(even) {
 
     }
 
+}
+
+.status{
+
+    padding:6px 14px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+
+.status.active{
+
+    background:#d4edda;
+
+    color:#155724;
+
+}
+
+
+
+.status.inactive{
+    background:#f8d7da;
+    color:#721c24;
 }

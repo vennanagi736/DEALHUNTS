@@ -2,14 +2,14 @@ package org.example.service;
 
 import java.util.List;
 
-
+import org.example.dto.InventoryTable;
+import org.example.entity.Inventory;
+import org.example.repository.ColorRepository;
+import org.example.repository.InventoryRepository;
 import org.example.repository.ProductRepository;
 import org.example.repository.VariantRepository;
-import org.example.repository.ColorRepository;
-import org.example.entity.Inventory;
-import org.example.repository.InventoryRepository;
 import org.springframework.stereotype.Service;
-import org.example.dto.InventoryTable;
+
 @Service
 public class InventoryService {
 
@@ -18,23 +18,23 @@ public class InventoryService {
     private final VariantRepository variantRepository;
     private final ColorRepository colorRepository;
 
-
     public InventoryService(
             InventoryRepository inventoryRepository,
             ProductRepository productRepository,
             VariantRepository variantRepository,
             ColorRepository colorRepository
-    ) {
+              ) {
 
         this.inventoryRepository = inventoryRepository;
         this.productRepository = productRepository;
         this.variantRepository = variantRepository;
         this.colorRepository = colorRepository;
-
     }
 
 
-    public Inventory saveInventory(InventoryTable dto) {
+    public Inventory saveInventory(
+        InventoryTable dto
+) {
 
 
         Inventory inventory = new Inventory();
@@ -57,40 +57,23 @@ public class InventoryService {
             .orElse(null)
         );
 
-
         inventory.setSellingPrice(dto.getSellingPrice());
-
         inventory.setStock(dto.getStock());
-
         inventory.setDiscount(dto.getDiscount());
-
         inventory.setCondition(dto.getCondition());
-
-        inventory.setWarranty(dto.getWarranty());
-
-        inventory.setDeliveryTime(dto.getDeliveryTime());
-
-
+        inventory.setWarranty(dto.getWarranty());        inventory.setDeliveryTime(dto.getDeliveryTime());
         inventory.setHomeDelivery(dto.getHomeDelivery());
-
         inventory.setStorePickup(dto.getStorePickup());
-
-
         inventory.setCod(dto.getCod());
-
         inventory.setEmi(dto.getEmi());
-
         inventory.setExchange(dto.getExchange());
-
-
         inventory.setOfferTitle(dto.getOfferTitle());
-
         inventory.setOfferDescription(dto.getOfferDescription());
-
         inventory.setReturnPolicy(dto.getReturnPolicy());
+Inventory savedInventory = inventoryRepository.save(inventory);
 
+return savedInventory;
 
-        return inventoryRepository.save(inventory);
 
     }
     public List<Inventory> getVendorInventory(Long vendorId) {

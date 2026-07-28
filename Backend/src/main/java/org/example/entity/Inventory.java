@@ -1,6 +1,15 @@
 package org.example.entity;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "inventory")
@@ -16,15 +25,18 @@ private Vendor vendor;
 
 @ManyToOne
 @JoinColumn(name="variant_id")
+@JsonIgnore
 private Variant variant;
 
 
 @ManyToOne
 @JoinColumn(name="color_id")
+@JsonIgnore
 private Color color;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     private Product product;
 
     @Column(name = "product_condition")
@@ -75,7 +87,6 @@ public void setVendor(Vendor vendor) {
 public void setVariant(Variant variant) {
     this.variant = variant;
 }
-
 
 public Color getColor() {
     return color;

@@ -185,31 +185,19 @@
 .category-checkbox{
 
     width: 18px;
-
     height: 18px;
-
     margin-right: 12px;
-
     cursor: pointer;
 }
 
-
-
 .category-name{
-
     flex: 1;
-
     font-size: 16px;
-
     font-weight: 500;
 }
 
-
-
 .category-actions{
-
     display: flex;
-
     gap: 5px;
 }
 
@@ -217,14 +205,195 @@
 
 .edit-master-btn,
 .delete-master-btn{
-
     border: none;
-
     background: transparent;
-
     cursor: pointer;
-
     font-size: 17px;
-
     padding: 3px;
+}
+
+/*Admin Product Page*?
+.image-management-popup{
+
+padding:20px;
+
+}
+
+
+/* PRODUCT HEADER */
+
+.popup-product-header{
+border-bottom:1px solid #ddd;
+padding-bottom:20px;
+}
+
+
+.popup-product-header h2{
+font-size:26px;
+margin-bottom:20px;
+}
+
+.product-info-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+}
+
+.product-info-grid p{
+display:flex;
+flex-direction:column;
+background:#fafafa;
+padding:12px;
+border-radius:10px;
+}
+
+.product-info-grid strong{
+font-size:13px;
+color:#777;
+}
+
+.product-info-grid span{
+font-size:16px;
+font-weight:600;
+margin-top:5px;
+}
+
+.status-badge{
+background:#d4edda;
+color:#155724;
+padding:5px 12px;
+border-radius:20px;
+width:max-content;
+}
+
+/* IMAGE SECTION */
+.images-section{
+margin-top:25px;
+}
+
+.image-title{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.select-all{
+font-size:14px;
+display: flex;
+height: 20px;
+gap:8px;
+margin-right: 15px;
+}
+.images-wrapper{
+    margin-top:20px;
+    border:2px dashed black;
+    border-radius:12px;
+    padding:15px;
+    height: 250px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    background:#fafafa;
+}
+.images-wrapper::-webkit-scrollbar{
+    width:8px;
+}
+
+.images-wrapper::-webkit-scrollbar-thumb{
+    background:#caa400;
+    border-radius:10px;
+}
+
+.images-wrapper::-webkit-scrollbar-track{
+    background:#ececec;
+}
+
+.image-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+gap:15px;
+margin-top:20px;
+}
+
+.image-card{
+position:relative;
+border-radius:12px;
+overflow:hidden;
+border:1px solid #ddd;
+background:white;
+}
+
+.image-card img{
+width:100%;
+height:120px;
+object-fit:cover;
+}
+
+.image-checkbox{
+position:absolute;
+top:10px;
+right:10px;
+width:20px;
+height:20px;
+z-index:2;
+}
+
+.image-name{
+text-align:center;
+font-size:13px;
+font-weight:600;
+}
+
+/* ADD IMAGE */
+.add-image-card{
+height:180px;
+border:2px dashed #aaa;
+border-radius:10px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+color: #caa400;
+transition: .25s;
+}
+
+.add-image-card label{
+font-size:45px;
+cursor:pointer;
+}
+.add-image-card:hover{
+    background: #fff8dc;
+}
+
+.selected-images-section{
+    border: 2px dashed black;
+    width: 400px;
+}
+
+/* ACTION BUTTONS */
+.image-actions{
+display:flex;
+justify-content:flex-end;
+gap:15px;
+margin-top:30px;
+}
+
+.change-btn,.upload-btn{
+background:#d4af37;
+color:black;
+}
+.delete-btn{
+background:#c0392b;
+color:white;
+}
+
+.image-actions button{
+padding:12px 25px;
+border:none;
+border-radius:25px;
+cursor:pointer;
+font-weight:bold;
+}
+.image-actions button:hover{
+transform:translateY(-2px);
 }

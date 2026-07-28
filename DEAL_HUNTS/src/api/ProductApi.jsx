@@ -110,3 +110,62 @@ export const getAllVariants = () => {
 export const getProductById = (id) => {
     return axios.get(`${BASE_URL}/admin/products/${id}`);
 };
+// ================= PRODUCT IMAGES =================
+
+export const uploadImages = (formData) => {
+    return axios.post(
+        `${BASE_URL}/admin/products/upload-images`,
+        formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        }
+    );
+};
+
+//edit options
+export const updateCategory = (id, data) => {
+    return axios.put(
+        `${BASE_URL}/admin/products/category/${id}`,
+        data
+    );
+};
+
+export const updateBrand = (id, data) => {
+    return axios.put(
+        `${BASE_URL}/admin/products/brand/${id}`,
+        data
+    );
+};
+
+export const updateColor = (id, data) => {
+    return axios.put(
+        `${BASE_URL}/admin/products/color/${id}`,
+        data
+    );
+};
+
+export const updateVariant = (id, data) => {
+    return axios.put(
+        `${BASE_URL}/admin/products/variant/${id}`,
+        data
+    );
+};
+
+//delete options
+export const deleteCategory = (id) => {
+    return axios.delete(`${BASE_URL}/admin/products/category/${id}`);
+};
+
+export const deleteBrand = (id) => {
+    return axios.delete(`${BASE_URL}/admin/products/brand/${id}`);
+};
+
+export const deleteColor = (id) => {
+    return axios.delete(`${BASE_URL}/admin/products/color/${id}`);
+};
+
+export const deleteVariant = (id) => {
+    return axios.delete(`${BASE_URL}/admin/products/variant/${id}`);
+};

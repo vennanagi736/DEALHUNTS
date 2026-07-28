@@ -1,4 +1,4 @@
-import React ,{useState} from "react";
+import React ,{useState, useRef} from "react";
 import axios from "axios";
 import "../../styles/AProduct.css";
 import SideWindow from "../../components/SideBar";
@@ -8,6 +8,7 @@ function AdminImportProducts() {
 
     const navigate = useNavigate();
     const [file, setFile] = useState(null);
+    const fileInputRef = useRef(null);
 
     const handleUpload = async () => {
 
@@ -28,6 +29,10 @@ function AdminImportProducts() {
             }
         );
         alert(response.data);
+        setFile(null);
+        if(fileInputRef.current){
+        fileInputRef.current.value = "";
+        }
     }catch(error){
         console.error(error);
         alert("Upload failed");
@@ -64,7 +69,9 @@ function AdminImportProducts() {
 
         <div className="import-container">
             <h2>Upload Product CSV</h2>
-            <input type="file"
+            <input 
+            ref = {fileInputRef}
+            type="file"
             accept=".csv"
             onChange={(e) => {
 

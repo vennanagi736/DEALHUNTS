@@ -4,11 +4,16 @@ const BASE_URL = "http://localhost:8080";
 
 
 // ADD INVENTORY
-export const addInventory = (inventory) => {
+export const addInventory = (formData) => {
 
     return axios.post(
         `${BASE_URL}/inventory/add`,
-        inventory
+        formData,
+        {
+            headers:{
+                "Content-Type":"multipart/form-data"
+            }
+        }
     );
 
 };
