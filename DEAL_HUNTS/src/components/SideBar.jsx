@@ -16,13 +16,15 @@ const MENU_CONFIG = {
     { label: "Add Product", path: "/vendorProductPage" }
   ],
   admin: [
-    { label: "Dashboard", path: "/adminDashboard" },
-    { label: "Users", path: "/manage-users" },
-    { label: "Vendors", path: "/manage-vendors" },
-    { label: "Sales", path: "/manage-sales" },
-    { label: "Vendor Requests", path: "/manage-request" },
-    { label: "Payments", path: "/manage-payments" }
-  ]
+  { label: "Dashboard", path: "/adminDashboard" },
+  { label: "Users", path: "/manage-users" },
+  { label: "Vendors", path: "/manage-vendors" },
+  { label: "Sales", path: "/manage-sales" },
+  { label: "Vendor Requests", path: "/manage-request" },
+  { label: "Payments", path: "/manage-payments" },
+  { label: "Manage Promotions", path: "/admin/manage-promotions" },
+  { label: "Import Products", path: "/admin/import-products" }
+]
 };
 
 function SideWindow() {

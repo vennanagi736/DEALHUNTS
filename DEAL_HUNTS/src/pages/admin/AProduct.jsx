@@ -5,6 +5,7 @@ import Popup from "../../components/Popup";
 import "../../styles/AProduct.css";
 import SideWindow from "../../components/SideBar";
 import {getAllProducts,uploadImages} from "../../api/ProductApi";
+import AdminManageTrending from "./ATrending";
 
 function AdminProducts() {
   const navigate = useNavigate();
@@ -156,7 +157,7 @@ const handleImageCheck = (id)=>{
   </div>
 
   <nav className="admin-nav-links">
-    <NavLink to="/admin/import-products">Import Products</NavLink>
+    <NavLink to="/admin/manage-promotions">Manage Promotions</NavLink>
     <NavLink to="/adminAddProduct">Add Product</NavLink>
     <NavLink>Manage Product</NavLink>
     

@@ -628,19 +628,6 @@ select:focus-visible, textarea:focus-visible{
   background: var(--surface);
 }
 
-/* Legacy sticky side-panel wrapper kept for compatibility with older markup */
-.preview-section-aap{
-  width: 40%;
-  min-height: 450px;
-  align-self: flex-start;
-  position: sticky;
-  top: 20px;
-  background: var(--surface);
-  padding: 30px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-}
-.preview-section-aap h2{ text-align: center; }
 
 /* ==========================================================================
    15. RESPONSIVE BREAKPOINTS

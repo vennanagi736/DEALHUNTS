@@ -1,65 +1,124 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTrendingItems } from "../api/TrendingApi";
+import "../styles/TrendingCarousel.css";
+
 
 const TrendingCarousel = () => {
-  const [trendingItems, setTrendingItems] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    getTrendingItems().then(data => setTrendingItems(data));
-  }, []);
+    const [items, setItems] = useState([]);
 
-  // Auto-slide every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (trendingItems.length > 0) {
-        setCurrentIndex(prev => (prev + 1) % trendingItems.length);
-      }
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [trendingItems]);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-  const prevItem = () => {
-    setCurrentIndex(prev =>
-      prev === 0 ? trendingItems.length - 1 : prev - 1
-    );
-  };
+    const navigate = useNavigate();
 
-  const nextItem = () => {
-    setCurrentIndex(prev => (prev + 1) % trendingItems.length);
-  };
 
-  if (trendingItems.length === 0) return <p>Loading trending items...</p>;
 
-  return (
+    // Load banners
+    useEffect(()=>{
+
+        const loadTrending = async()=>{
+
+            const data = await getTrendingItems();
+
+            console.log(
+                "Carousel Data:",
+                data
+            );
+
+            setItems(data);
+
+        };
+
+
+        loadTrending();
+
+
+    },[]);
+
+
+
+
+
+    // Auto slide
+    useEffect(()=>{
+
+        if(items.length <= 1)
+            return;
+
+
+        const interval = setInterval(()=>{
+
+            setCurrentIndex(prev =>
+                (prev + 1) % items.length
+            );
+
+
+        },5000);
+
+
+        return ()=>clearInterval(interval);
+
+
+    },[items]);
+
+    if(items.length === 0){
+
+        return (
+            <p>
+                No banners available
+            </p>
+        );
+
+    }
+return (
+
     <div className="carousel-container">
-      <div className="carousel-item">
-        <button className="nav-btn prev" onClick={prevItem}>{"<"}</button>
+        <div className="carousel-item">
 
-        <img
-          src={trendingItems[currentIndex].image}
-          alt={`Slide ${currentIndex + 1}`}
-          className="carousel-image"
-          style={{ cursor: "pointer" }}
-          onClick={() => navigate(trendingItems[currentIndex].url)}
-        />
+            <img
+                src={items[currentIndex].imageUrl}
+                className="carousel-image"
+                alt={items[currentIndex].title}
 
-        <button className="nav-btn next" onClick={nextItem}>{">"}</button>
+                onClick={() =>
+                    items[currentIndex].url &&
+                    navigate(items[currentIndex].url)
+                }
 
-        <div className="dots-container">
-          {trendingItems.map((_, index) => (
-            <span
-              key={index}
-              className={`dot ${currentIndex === index ? "active" : ""}`}
-              onClick={() => setCurrentIndex(index)}
-            ></span>
-          ))}
+            />
+            </div>
+
+
+            <div className="dots-container">
+
+                {
+                    items.map((_,index)=>(
+
+                        <span
+
+                            key={index}
+
+                            className={
+                                currentIndex === index
+                                ?
+                                "dot active"
+                                :
+                                "dot"
+                            }
+
+                            onClick={() =>
+                                setCurrentIndex(index)
+                            }
+                        >
+                        </span>
+                    ))
+                }
+            </div>
         </div>
-      </div>
-    </div>
-  );
+);
+
 };
+
 
 export default TrendingCarousel;

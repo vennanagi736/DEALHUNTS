@@ -56,10 +56,10 @@
 /* BIG login button */
 .login-box button{
     width: 100%;
-    background-color: black;
-    color: white;
+    background-color: gold;
+    color: color;
     font-family: cursive;
-    border: 2px solid white;
+    border: 2px solid white;   
     font-size: 20px;
     padding:  10px 110px;
     border-radius: 8px;
@@ -104,8 +104,8 @@
 /*Vendor Login*/
 .register-btn button{
    width: 100%;
-    background-color: black;
-    color: white;
+    background-color: gold;
+    color: black;
     font-family: cursive;
     border: 2px solid white;
     font-size: 20px;

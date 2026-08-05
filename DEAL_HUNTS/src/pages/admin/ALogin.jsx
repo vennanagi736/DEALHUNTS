@@ -22,39 +22,60 @@ function AdminLogin() {
 
     // Frontend validation
     const errorMessage = validateLogin(email, password);
-    if (errorMessage) {
-      setError(errorMessage);
-      setMessage("");
-      return;
-    }
 
-    setError("");
-    setMessage("");
-    setLoading(true);
+if (errorMessage) {
+  setError(errorMessage);
+  setMessage("");
+  return;
+}
 
-    try {
-      const response = await adminLogin(email, password);
 
-      if (response.data.success) {
-        // Store token securely
-        localStorage.setItem("jwtToken", response.data.token);
-        localStorage.setItem("email", response.data.email);
-        localStorage.setItem("role",response.data.role);
-        
-        setMessage("Login Successful");   
-         updateRole(response.data.role);
-        // Redirect to admin dashboard
-        navigate("/adminDashboard");
-      } else {
-        alert(response.data.message);
-      }
-    } catch (err) {
-      alert("Server Error");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+setError("");
+setMessage("");
+setLoading(true);
+
+
+try {
+
+  const response = await adminLogin(email, password);
+
+
+  if (response.data.success) {
+
+
+    localStorage.setItem(
+      "adminJwtToken",
+      response.data.token
+    );
+
+
+    localStorage.setItem(
+      "adminEmail",
+      response.data.email
+    );
+
+
+    localStorage.setItem(
+      "adminRole",
+      response.data.role
+    );
+
+    setMessage("Login Successful");
+    updateRole("ROLE_ADMIN");
+    console.log("Going to admin");
+    navigate("/adminDashboard");
+
+  } else {
+    alert(response.data.message);
+  }
+
+} catch(err) {
+  alert("Server Error");
+  console.error(err);
+} finally {
+  setLoading(false);
+}
+  }
 
   return (
     <Layout title="Admin Login">

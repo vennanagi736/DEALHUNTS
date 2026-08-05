@@ -4,16 +4,18 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import SideWindow from "../../components/SideBar";
 import "../../styles/SideBar.css";
+import TrendingCarousel from "../../components/TrendingCarousel";
+import "../../styles/VendorHome.css";
 
 function VendorHome() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [query, setQuery] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("jwtToken"));
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("vendorJwtToken"));
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const token = localStorage.getItem("jwtToken");
+      const token = localStorage.getItem("vendorJwtToken");
       const vendorId = localStorage.getItem("id");
 
       if (!token) {
@@ -48,7 +50,7 @@ function VendorHome() {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem("jwtToken");
+    localStorage.removeItem("vendorJwtToken");
     localStorage.removeItem("id");
     setIsLoggedIn(false);
     navigate("/VendorLogin");
@@ -103,37 +105,20 @@ function VendorHome() {
               </button>
             )}
           </div>
-
         </div>
-
       </header>
 
-      <main className="main">
-        <h1>My Products</h1>
-
-        <div className="vendor-product-grid">
-          {products.length === 0 ? (
-            <p>No products added yet.</p>
-          ) : (
-            products.map((product, index) => (
-              <div className="vendor-product-card" key={product.id || index}>
-                {product.image && (
-                  <img src={product.image} alt={product.name} width="100%" />
-                )}
-
-                <h3>{product.name}</h3>
-                <p>Price: ₹{product.price}</p>
-                <p>{product.description}</p>
-
-                <p>
-                  Stock: {product.stock} |{" "}
-                  {product.stock > 0 ? "Available" : "Out of stock"}
-                </p>
+       <main className="manage-main">
+            <section className="trending-section-vendor">
+              <div className="carousel-vendor">
+                <TrendingCarousel/>
               </div>
-            ))
-          )}
-        </div>
-      </main>
+            </section>
+            <section className="sales-report">
+              <div>
+              </div>
+            </section>
+        </main>
 
       <footer className="footer">
         <p>© 2026 Website. All rights reserved.</p>

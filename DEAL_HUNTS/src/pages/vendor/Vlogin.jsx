@@ -6,7 +6,9 @@ import { useRole } from "../../context/UseRole";
 import "../../styles/Login.css";
 
 function VendorLogin() {
-  const navigate = useNavigate();
+
+  console.log("vnenennenne");
+  const navigate = useNavigate();   
   const {updateRole} = useRole();
 
   const [email, setEmail] = useState("");
@@ -14,17 +16,20 @@ function VendorLogin() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
- 
+
   const handleVendorLogin = async (e) => {
   e.preventDefault();
-  setLoading(true);
 
+  console.log("Vendor login clicked");
+
+
+  setError("");
+  setMessage("");
+  setLoading(true);
   try {
     const response = await vendorLogin(email, password);
-
     console.log(response.data);
-
-    // Vendor exists but not approved yet
+    // Vendor exists but not approved
     if (!response.data.success) {
 
       if (
@@ -41,27 +46,39 @@ function VendorLogin() {
     }
 
     // Approved vendor login
-    if (response.data.success && response.data.token) {
-      localStorage.setItem("jwtToken", response.data.token);
-      localStorage.setItem("role", response.data.role);
-      localStorage.setItem("vendorId", response.data.id);
+    if(response.data.success && response.data.token){
 
+      localStorage.setItem(
+        "vendorJwtToken",
+        response.data.token
+      );
+      localStorage.setItem(
+        "vendorEmail",
+        response.data.email
+      );
+
+      localStorage.setItem(
+        "vendorId",
+        response.data.id
+      );
       updateRole("ROLE_VENDOR");
-
       setError("");
       setMessage(response.data.message);
+
+      console.log("Vendor Login");
+      console.log(response.data);
 
       navigate("/vendorHome");
     }
 
-  } catch (err) {
+  } catch(err){
     console.error(err);
     setError("Invalid email or password");
     setMessage("");
   } finally {
     setLoading(false);
   }
-  };
+};
 
   return (
     <>
@@ -70,9 +87,6 @@ function VendorLogin() {
           <span className="Gold">DEAL</span>
           <span className="Black">HUNTS</span>
           <span className="Vendor"> Vendor</span>
-        </div>
-        <div className="register-btn">
-          <button onClick={() => navigate("/VendorRegister")}>Register</button>
         </div>
       </header>
 

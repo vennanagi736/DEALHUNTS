@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import VendorRegistrationDetails from "../../components/VendorRegistrationDetails";
 import "../../styles/Register.css";
 import { vendorRegister } from "../../api/VendorApi";
+import { Link } from "react-router-dom";
 import { validateVendorRegister } from "../../components/Validation";
 
 function VendorRegister() {
   const navigate = useNavigate();
-
+ 
   const [fullName, setFullName] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
@@ -99,9 +100,9 @@ function VendorRegister() {
           <span className="Black">HUNTS</span>
           <span className="Vendor">Vendor</span>
         </div>
-        <div className="login-btn">
+        {/* <div className="login-btn">
           <button onClick={() => navigate("/VendorLogin")}>Login</button>
-        </div>
+        </div> */}
       </header>
 
       <div className="form-wrapper">
@@ -137,6 +138,12 @@ function VendorRegister() {
           {message && <p>{message}</p>}
 
           <button type="submit">Register</button>
+          <p className="login">
+            Already account exists?{" "}
+            <Link to="/VendorLogin" className="userregister-link">
+              Login
+            </Link>
+          </p>
         </form>
       </div>
     </>

@@ -3,7 +3,10 @@ import SideWindow from "./SideBar";
 import { useLocation } from "react-router-dom";
 
 function Layout({ title, children }) {
-  const isLoggedIn = !!localStorage.getItem("jwtToken");
+  const isLoggedIn = 
+  !!localStorage.getItem("userJwtToken") ||
+  !!localStorage.getItem("vendorJwtToken") ||
+  !!localStorage.getItem("adminJwtToken");
   
   const location = useLocation("");
 

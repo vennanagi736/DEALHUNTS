@@ -17,10 +17,10 @@ public class CloudinaryService {
     private Cloudinary cloudinary;
 
 
-    public Map uploadImage(MultipartFile file) throws IOException {
+    public Map<String, Object> uploadImage(MultipartFile file) throws IOException {
 
 
-    Map uploadResult = cloudinary.uploader().upload(
+    Map<String, Object> uploadResult = cloudinary.uploader().upload(
             file.getBytes(),
             ObjectUtils.emptyMap()
     );

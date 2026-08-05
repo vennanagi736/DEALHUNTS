@@ -6,8 +6,15 @@ const BASE_URL = "http://localhost:8080/vendor";
 export const vendorLogin = (email, password) => {
   return axios.post(
     `${BASE_URL}/login`,
-    { email: email.trim().toLowerCase(), password },
-    { headers: { "Content-Type": "application/json" } }
+    {
+      email: email.trim().toLowerCase(),
+      password,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
   );
 };
 
@@ -24,8 +31,11 @@ export const vendorProduct = (product, images) => {
 
   images.forEach((img) => formData.append("images", img));
 
-  const token = localStorage.getItem("jwtToken");
-  if (!token) throw new Error("No JWT token found. Please login.");
+  const token = localStorage.getItem("vendorJwtToken");
+
+  if (!token) {
+    throw new Error("No Vendor JWT token found. Please login.");
+  }
 
   return axios.post(`${BASE_URL}/addProduct`, formData, {
     headers: {
@@ -48,7 +58,6 @@ export const vendorRegister = (
   email,
   password
 ) => {
-
   const payload = {
     fullName,
     shopName,
@@ -61,18 +70,23 @@ export const vendorRegister = (
     phoneNo,
     email: email.trim().toLowerCase(),
     password,
-    role: "VENDOR"
+    role: "VENDOR",
   };
 
-
   return axios.post(`${BASE_URL}/register`, payload, {
-    headers: { "Content-Type": "application/json"}
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 };
+
 // ---------------- FETCH PRODUCTS ----------------
 export const fetchProductNames = (query = "") => {
-  const token = localStorage.getItem("jwtToken");
-  if (!token) throw new Error("No JWT token found. Please login.");
+  const token = localStorage.getItem("vendorJwtToken");
+
+  if (!token) {
+    throw new Error("No Vendor JWT token found. Please login.");
+  }
 
   return axios.get(`${BASE_URL}/allProducts`, {
     headers: {
@@ -85,8 +99,11 @@ export const fetchProductNames = (query = "") => {
 
 // ---------------- FETCH PRODUCT SUGGESTIONS ----------------
 export const fetchProductSuggestions = (name) => {
-  const token = localStorage.getItem("jwtToken");
-  if (!token) throw new Error("No JWT token found. Please login.");
+  const token = localStorage.getItem("vendorJwtToken");
+
+  if (!token) {
+    throw new Error("No Vendor JWT token found. Please login.");
+  }
 
   return axios.get(`${BASE_URL}/product-suggestions`, {
     headers: {

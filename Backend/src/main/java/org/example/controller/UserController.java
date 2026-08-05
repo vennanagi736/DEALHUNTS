@@ -7,14 +7,16 @@ import org.example.entity.User;
 import org.example.repository.UserRepository;
 import org.example.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     @Autowired
@@ -23,18 +25,28 @@ public class UserController {
     @Autowired
     private JWTUtil jwtUtil;
 
-    private BCryptPasswordEncoder passwordEncoder =
-            new BCryptPasswordEncoder();
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
   @PostMapping("/register")
 public ApiResponse register(@RequestBody User user) {
+
+    if(userRepository.findByEmail(user.getEmail())!= null){
+        return new ApiResponse(
+            false,
+            "Email already exists"
+        );
+    }
 
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setRole("ROLE_USER");
 
     userRepository.save(user);
 
-    return new ApiResponse(true, "User registered successfully");
+    return new ApiResponse(
+        true,
+        "User registered successfully"
+    );
 }
 
     @PostMapping("/login")

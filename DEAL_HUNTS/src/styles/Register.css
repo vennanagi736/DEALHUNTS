@@ -103,20 +103,19 @@
 
 /*Vendor Login*/
 .login-btn button{
-   width: 100%;
-    background-color: black;
-    color: white;
+    background-color: gold;
+    color: black;
+    border: none;
     font-family: cursive;
-    border: 2px solid white;
     font-size: 20px;
-    padding:  10px 30px;
+    padding: 5px 5px;
     border-radius: 8px;
 }
-.login-btn button:hover{
+/* .login-btn button:hover{
   color:black;
   background-color: gold;
   border: 2px solid black;
-}
+}  */
 
 .location button{
   color:white;

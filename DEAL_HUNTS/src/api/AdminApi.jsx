@@ -11,7 +11,7 @@ export const adminLogin = (email,password) =>{
 export const getAllVendors = () => {
     return axios.get(`${BASE_URL}/manage-vendors`,{
         headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+            Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,
         },
     });
 }

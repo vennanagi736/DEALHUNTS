@@ -648,3 +648,26 @@ main{
     width: 18px;
     height: 18px;
 }
+
+/*Trending carousel*/
+.admin-main{
+    position:relative;
+    min-height:100vh;
+}
+
+.right-strip{
+    width:400px;
+    height:200px;
+    margin: 10px;
+    padding-top: 5px;
+    position:absolute;
+    border-radius: 8px;
+    right:0;
+    border: 2px solid whitesmoke;
+    top:0;
+    background:whitesmoke;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}

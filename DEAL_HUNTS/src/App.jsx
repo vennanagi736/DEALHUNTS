@@ -32,6 +32,7 @@ import AdminVendorRequest from "./pages/admin/ARequest";
 import AdminAddProduct from "./pages/admin/AAddProduct";
 import AdminMasterData from "./pages/admin/AMasterData";
 import AdminImportProducts from "./pages/admin/AImportProducts";
+import AdminManageTrending from "./pages/admin/ATrending";
 
 function App() {
 return (
@@ -87,6 +88,7 @@ element={
 </ProtectedRoute>
 }
 />
+
 <Route
 path="/adminProducts"
 element={
@@ -186,6 +188,14 @@ element={
  <ProtectedRoute allowedRoles={["ROLE_ADMIN"]}>
     <AdminImportProducts />
     </ProtectedRoute>}
+/>
+<Route 
+path="/admin/manage-promotions"
+element={
+    <ProtectedRoute allowedRoles={["ROLE_ADMIN"]}>
+        <AdminManageTrending/>
+    </ProtectedRoute>
+}
 />
 
 {/* ================= PRODUCT ================= */}
