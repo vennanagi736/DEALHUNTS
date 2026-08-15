@@ -35,8 +35,8 @@ private Variant variant;
 private Color color;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
     @JsonIgnore
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @Column(name = "product_condition")

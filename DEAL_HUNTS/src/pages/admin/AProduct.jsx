@@ -1,443 +1,1258 @@
-import React, {useState, useEffect} from "react";
-import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import Popup from "../../components/Popup";
-import "../../styles/AProduct.css";
+import React, { useEffect, useState } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
+import ProductManagementPopup from "../../components/ProductPopupManagement";
+// import Popup from "../../components/Popup";
 import SideWindow from "../../components/SideBar";
-import {getAllProducts,uploadImages} from "../../api/ProductApi";
-import AdminManageTrending from "./ATrending";
+
+import "../../styles/AProduct.css";
+
+import {
+    getAllProducts,
+    deleteProduct,
+    restoreProduct,
+    uploadImages,
+    getProductImages,
+    getProductVariant,
+    deleteProductImage,
+    changeProductImage
+} from "../../api/ProductApi";
+
 
 function AdminProducts() {
-  const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
-  const [selectedProduct,SetSelectedProduct] = useState(null);
-  const [showPopup, setShowPopup] = useState(false);
-  const [previewImage,setPreviewImage] = useState(null);
-  const [selectedFiles,setSelectedFiles] = useState([]);
-  const [selectedImages,setSelectedImages] = useState([]);
-  
-  useEffect(() => {
 
-    const fetchProducts = async () => {
+    const navigate = useNavigate();
 
-        try {
+    // =====================================================
+    // PRODUCTS
+    // =====================================================
+    const [products, setProducts] = useState([]);
+    const [productView, setProductView] = useState("available");
+    const [productVariantMap, setProductVariantMap] = useState({});
+    const [selectedProducts, setSelectedProducts] = useState([]);
+    const [selectionMode, setSelectionMode] = useState(false);
 
-            const res = await getAllProducts();
-            setProducts(res.data);
-            console.log(res.data);
-            console.log("Hello:",res.data[0]);
-        } catch(err) {
-            console.error(err);
-        }
-    };
 
-    fetchProducts();
+    // =====================================================
+    // PRODUCT POPUP
+    // =====================================================
 
-}, []);
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
-const handleImageSelect = (e) => {
+    const [showPopup, setShowPopup] = useState(false);
 
-    const files = Array.from(e.target.files);
 
-    if (files.length === 0) return;
+    // =====================================================
+    // IMAGE MANAGEMENT
+    // =====================================================
 
-    let newFiles = [];
+    const [productImages, setProductImages] = useState([]);
 
-    files.forEach(file => {
+    const [productVariants, setProductVariants] = useState([]);
 
-        const existingDuplicate =
-            selectedProduct.images?.some(img =>
-                img.split("/").pop().toLowerCase() ===
-                file.name.toLowerCase()
-            );
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
-        const selectedDuplicate =
-            selectedFiles.some(existing =>
-                existing.name === file.name &&
-                existing.size === file.size &&
-                existing.lastModified === file.lastModified
-            );
+    const [selectedImages, setSelectedImages] = useState([]);
 
-        if (existingDuplicate || selectedDuplicate) {
-            alert(`${file.name} already exists`);
-            return;
-        }
+    const [previewImage, setPreviewImage] = useState(null);
 
-        newFiles.push(file);
+    const [changeImageId, setChangeImageId] = useState(null);
 
-    });
 
-    const totalImages =
-        (selectedProduct.images?.length ?? 0) +
-        selectedFiles.length +
-        newFiles.length;
+    // =====================================================
+    // AVAILABLE / UNAVAILABLE PRODUCTS
+    // =====================================================
 
-    if (totalImages > 5) {
-        alert("Maximum 5 images allowed.");
-        return;
-    }
-
-    setSelectedFiles(prev => [...prev, ...newFiles]);
-
-};
-
-const handleRefreshProduct = async () => {
-
-    const res = await getAllProducts();
-
-    setProducts(res.data);
-
-    const updated = res.data.find(
-        p => p.id === selectedProduct.id
+    const availableProducts = products.filter(
+        product => product.active
     );
 
-    SetSelectedProduct(updated);
+    const unavailableProducts = products.filter(
+        product => !product.active
+    );
+
+
+    const displayedProducts =
+        productView === "available"
+            ? availableProducts
+            : unavailableProducts;
+
+
+    // =====================================================
+    // FETCH PRODUCTS
+    // =====================================================
+
+    const fetchProducts = async () => {
+    try {
+        const res = await getAllProducts();
+
+        setProducts(res.data);
+
+        const variantMap = {};
+
+        for (const product of res.data) {
+            const variantRes = await getProductVariant(product.id);
+
+            variantMap[product.id] = variantRes.data;
+        }
+
+        setProductVariantMap(variantMap);
+
+        console.log("PRODUCTS:", res.data);
+        console.log("VARIANT MAP:", variantMap);
+
+    } catch (error) {
+        console.error(
+            "Failed to fetch products:",
+            error
+        );
+    }
 };
 
-const handleUploadImages = async()=>{
+useEffect(() => {
+    fetchProducts();
+}, []);
+    // =====================================================
+    // SELECT PRODUCT
+    // =====================================================
 
-    try{
+    const handleProductCheck = (productId) => {
 
-        const formData = new FormData();
+        setShowPopup(false);
+        setSelectedProducts(prev =>
+            prev.includes(productId)
+                ? prev.filter(id => id !== productId)
+                : [...prev, productId]
+        );
+    };
 
-        selectedFiles.forEach((file)=>{
-            formData.append("images", file);
-        });
+    // =====================================================
+    // SELECT ALL
+    // =====================================================
+
+    const handleSelectionMode = () => {
+
+    setSelectionMode(true);
+    setShowPopup(false);
+    setSelectedProducts([]);
+
+};
+
+    // =====================================================
+    // CLEAR SELECTION
+    // =====================================================
+
+    const handleClearSelection = async () => {
+
+        setSelectedProducts([]);
+
+        setSelectionMode(false);
+
+        // Refresh products
+        await fetchProducts();
+
+    };
 
 
-        formData.append(
-            "productId",
-            selectedProduct.id
+    // =====================================================
+    // DELETE / MAKE UNAVAILABLE
+    // =====================================================
+
+    const handleDeleteSelected = async () => {
+
+        if (selectedProducts.length === 0) {
+
+            alert(
+                "Please select at least one product."
+            );
+
+            return;
+
+        }
+
+        const confirmed = window.confirm(
+
+            `Are you sure you want to remove ${selectedProducts.length} product(s)?`
+
         );
 
 
-        console.log("FORM DATA");
+        if (!confirmed) return;
 
-        for(let pair of formData.entries()){
-            console.log(pair[0], pair[1]);
+
+        try {
+
+            for (const productId of selectedProducts) {
+
+                await deleteProduct(productId);
+
+            }
+
+
+            alert(
+                "Selected products marked as unavailable successfully."
+            );
+
+
+            setSelectedProducts([]);
+
+            setSelectionMode(false);
+
+
+            await fetchProducts();
+
+
+        } catch (error) {
+
+            console.error(
+                "Failed to update products:",
+                error
+            );
+
+
+            alert(
+                "Failed to update selected products."
+            );
+
+        }
+
+    };
+
+
+    // =====================================================
+    // RESTORE PRODUCTS
+    // =====================================================
+
+    const handleRestoreSelected = async () => {
+
+        if (selectedProducts.length === 0) {
+
+            alert(
+                "Please select at least one unavailable product."
+            );
+
+            return;
+
         }
 
 
-        await uploadImages(formData);
-
-        alert("Images uploaded successfully");
-
-
-    }catch(error){
-
-        console.log(error);
-
-    }
-};
-
-const handleImageCheck = (id)=>{
-
-    setSelectedImages(prev=>
-
-        prev.includes(id)
-        ? prev.filter(x=>x!==id)
-        : [...prev,id]
-
-    );
-  };
-
-  return (
-    <div className="adminhome-container">
-      {/* HEADER */}
-      <header className="header">
-        <div className="left-section">
-          <SideWindow />
-        </div>
-  <div className="logo-container">
-       <div className="logo">
-      <span className="Gold">DEAL</span>
-      <span className="Black">HUNTS</span>
-      <span className="Admin">Admin</span>
-    </div>
-  </div>
-
-  <nav className="admin-nav-links">
-    <NavLink to="/admin/manage-promotions">Manage Promotions</NavLink>
-    <NavLink to="/adminAddProduct">Add Product</NavLink>
-    <NavLink>Manage Product</NavLink>
-    
-    <div className="search-box">
-              <input
-                type="text"
-                placeholder="Search"
-              />
-              <span className="icon">🔍</span>
-            </div>
-    <div className="back-btn" onClick={() => navigate(-1)}>
-      &#8592;
-      </div>
-      </nav>
-</header>
-
-      {/* MAIN SECTION */}
-      <main className="main">
-        <h1>Product List</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Brand</th>
-              <th>Category</th>
-              <th>Variants</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-
-{products.map((product) => (
-
-<tr key={product.id}
-onClick={() => {
-  SetSelectedProduct(product);
-  setShowPopup(true);
-}}
-className="product-row">
-    <td>{product.id}</td>
-    <td>{product.name}</td>
-    <td>{product.brand}</td>
-    <td>{product.category}</td>
-    <td>
-        <span>{product.variants?.length || 0} Options</span>
-    </td>
-
-    <td>
-      <span
-      className={
-        product.status === "Active"
-      ? "status active"
-      : "status inactive"
-        }>{product.status}
-      </span>
-    </td>
-</tr>
+        const confirmed = window.confirm(
 
-))}
+            `Are you sure you want to restore ${selectedProducts.length} product(s)?`
 
-</tbody>
-        </table>
-        {
-previewImage && (
+        );
 
-<div className="image-preview">
 
-<img
-src={previewImage}
-alt="preview"
-/>
+        if (!confirmed) return;
 
-</div>
 
-)
-}
+        try {
 
-      </main>
+            for (const productId of selectedProducts) {
 
-      
-      <Popup
-open={showPopup}
-title="Image Management"
-onClose={()=>{
-    setShowPopup(false);
-    SetSelectedProduct(null);
-    setSelectedFiles([]);
-    setSelectedImages([]);
-    setPreviewImage(null);
-}}
-width="750px"
->
+                await restoreProduct(productId);
 
-{
-selectedProduct && (
+            }
 
-<div className="image-management-popup">
 
+            alert(
+                "Selected products restored successfully."
+            );
 
-{/* PRODUCT INFO */}
 
-<div className="popup-product-header">
+            setSelectedProducts([]);
 
-<h2>
-{selectedProduct.name}
-</h2>
+            setSelectionMode(false);
 
 
-<div className="product-info-grid">
+            await fetchProducts();
 
-<p>
-<strong>Brand</strong>
-<span>{selectedProduct.brand}</span>
-</p>
 
+        } catch (error) {
 
-<p>
-<strong>Category</strong>
-<span>{selectedProduct.category}</span>
-</p>
+            console.error(
+                "Failed to restore products:",
+                error
+            );
 
 
-<p>
-<strong>Variant</strong>
-<span>{selectedProduct.variant}</span>
-</p>
+            alert(
+                "Failed to restore selected products."
+            );
 
+        }
 
-<p>
-<strong>Status</strong>
-<span className="status-badge">
-{selectedProduct.status}
-</span>
-</p>
+    };
 
-</div>
 
-</div>
+    // =====================================================
+    // OPEN PRODUCT POPUP
+    // =====================================================
 
+    const handleOpenProductPopup = async (product) => {
 
+        try {
 
+            setSelectedProduct(product);
 
-{/* IMAGE SECTION */}
 
-<div className="images-section">
+            const imageRes =
+                await getProductImages(product.id);
 
-<div className="image-title">
+            setProductImages(imageRes.data);
 
-<h3>
-Product Images
-</h3>
 
+            const variantRes = await getProductVariant(product.id);
+            
+            console.log("Product id:",product.id); 
+           
+            console.log("Variant api response:",variantRes);
+            
+                console.log("Variants from api:",variantRes.data);
 
-<label className="select-all">
+            setProductVariants(variantRes.data);
 
-<input
-type="checkbox"
-/>
 
-Select All
+            setSelectedImages([]);
 
-</label>
+            setSelectedFiles([]);
 
-</div>
-<div className="images-wrapper">
-<div className="image-grid">
+            setPreviewImage(null);
 
-    {/* Existing Images */}
-    {selectedProduct.images?.map((img, index) => (
+            setShowPopup(true);
 
-        <div
-            className="image-card"
-            key={`existing-${index}`}
-        >
 
-            <input
-                type="checkbox"
-                className="image-checkbox"
-                checked={selectedImages.includes(img)}
-                onChange={() => handleImageCheck(img)}
-            />
+        } catch (error) {
 
-            <img
-                src={img}
-                alt="product"
-                onClick={() => setPreviewImage(img)}
-            />
+            console.error(
+                "Failed to fetch product information:",
+                error
+            );
 
-            <div className="image-name">
-                Image {index + 1}
-            </div>
 
-        </div>
+            setProductImages([]);
 
-    ))}
+            setProductVariants([]);
 
-    {/* Newly Selected Images */}
-    {selectedFiles.map((file, index) => (
+            setShowPopup(true);
 
-        <div
-            className="image-card"
-            key={`new-${index}`}
-        >
+        }
 
-            <img
-                src={URL.createObjectURL(file)}
-                alt="preview"
-            />
+    };
 
-            <div className="image-name">
-                {file.name}
-            </div>
 
-            <button
-                type="button"
-                className="remove-image-btn"
-                onClick={() =>
-                    setSelectedFiles(prev =>
-                        prev.filter((_, i) => i !== index)
-                    )
+    // =====================================================
+    // REFRESH SELECTED PRODUCT
+    // =====================================================
+
+    const handleRefreshProduct = async () => {
+
+        try {
+
+            const res =
+                await getAllProducts();
+
+            setProducts(res.data);
+
+
+            if (selectedProduct) {
+
+                const updated =
+                    res.data.find(
+                        p =>
+                            p.id ===
+                            selectedProduct.id
+                    );
+
+
+                if (updated) {
+
+                    setSelectedProduct(updated);
+
                 }
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Failed to refresh products:",
+                error
+            );
+
+        }
+
+    };
+
+
+    // =====================================================
+    // IMAGE SELECT
+    // =====================================================
+
+    const handleImageSelect = (e) => {
+
+        const files =
+            Array.from(e.target.files);
+
+
+        if (files.length === 0) return;
+
+
+        let newFiles = [];
+
+
+        files.forEach(file => {
+
+            const existingDuplicate =
+                productImages.some(img =>
+                    img.thumbnailUrl
+                        ?.split("/")
+                        .pop()
+                        .toLowerCase() ===
+                    file.name.toLowerCase()
+                );
+
+
+            const selectedDuplicate =
+                selectedFiles.some(existing =>
+                    existing.name === file.name &&
+                    existing.size === file.size &&
+                    existing.lastModified ===
+                        file.lastModified
+                );
+
+
+            if (
+                existingDuplicate ||
+                selectedDuplicate
+            ) {
+
+                alert(
+                    `${file.name} already exists`
+                );
+
+                return;
+
+            }
+
+
+            newFiles.push(file);
+
+        });
+
+
+        const totalImages =
+
+            productImages.length +
+
+            selectedFiles.length +
+
+            newFiles.length;
+
+
+        if (totalImages > 5) {
+
+            alert(
+                "Maximum 5 images allowed."
+            );
+
+            return;
+
+        }
+
+
+        setSelectedFiles(prev => [
+
+            ...prev,
+
+            ...newFiles
+
+        ]);
+
+
+        e.target.value = "";
+
+    };
+
+
+    // =====================================================
+    // UPLOAD IMAGES
+    // =====================================================
+
+    const handleUploadImages = async () => {
+
+        if (
+            !selectedProduct ||
+            selectedFiles.length === 0
+        ) {
+
+            return;
+
+        }
+
+
+        try {
+
+            const formData =
+                new FormData();
+
+
+            selectedFiles.forEach(file => {
+
+                formData.append(
+                    "images",
+                    file
+                );
+
+            });
+
+
+            formData.append(
+                "productId",
+                selectedProduct.id
+            );
+
+
+            await uploadImages(formData);
+
+
+            alert(
+                "Images uploaded successfully."
+            );
+
+
+            const res =
+                await getProductImages(
+                    selectedProduct.id
+                );
+
+
+            setProductImages(res.data);
+
+            setSelectedFiles([]);
+
+            setSelectedImages([]);
+
+
+            await handleRefreshProduct();
+
+
+        } catch (error) {
+
+            console.error(
+                "Failed to upload images:",
+                error
+            );
+
+
+            alert(
+                "Failed to upload images."
+            );
+
+        }
+
+    };
+
+
+    // =====================================================
+    // SELECT IMAGE
+    // =====================================================
+
+    const handleImageCheck = (imageId) => {
+
+        setSelectedImages(prev =>
+
+            prev.includes(imageId)
+
+                ? prev.filter(
+                    id => id !== imageId
+                )
+
+                : [...prev, imageId]
+
+        );
+
+    };
+
+
+    // =====================================================
+    // SELECT ALL IMAGES
+    // =====================================================
+
+    const handleSelectAllImages = (e) => {
+
+        if (e.target.checked) {
+
+            setSelectedImages(
+
+                productImages.map(
+                    image => image.id
+                )
+
+            );
+
+        } else {
+
+            setSelectedImages([]);
+
+        }
+
+    };
+
+
+    // =====================================================
+    // DELETE IMAGES
+    // =====================================================
+
+    const handleDeleteSelectedImages = async () => {
+
+        if (selectedImages.length === 0) {
+
+            alert(
+                "Please select images to delete."
+            );
+
+            return;
+
+        }
+
+
+        const confirmed = window.confirm(
+
+            `Are you sure you want to delete ${selectedImages.length} image(s)?`
+
+        );
+
+
+        if (!confirmed) return;
+
+
+        try {
+
+            for (
+                const imageId of selectedImages
+            ) {
+
+                await deleteProductImage(
+                    imageId
+                );
+
+            }
+
+
+            alert(
+                "Selected images deleted successfully."
+            );
+
+
+            const res =
+                await getProductImages(
+                    selectedProduct.id
+                );
+
+
+            setProductImages(res.data);
+
+            setSelectedImages([]);
+
+
+            await handleRefreshProduct();
+
+
+        } catch (error) {
+
+            console.error(
+                "Failed to delete images:",
+                error
+            );
+
+
+            alert(
+                "Failed to delete selected images."
+            );
+
+        }
+
+    };
+
+
+    // =====================================================
+    // CHANGE IMAGE
+    // =====================================================
+
+    const handleChangeImageSelect = async (e) => {
+
+        const file =
+            e.target.files[0];
+
+
+        if (
+            !file ||
+            !changeImageId
+        ) {
+
+            return;
+
+        }
+
+
+        try {
+
+            await changeProductImage(
+
+                changeImageId,
+
+                file
+
+            );
+
+
+            alert(
+                "Image changed successfully."
+            );
+
+
+            const res =
+                await getProductImages(
+                    selectedProduct.id
+                );
+
+
+            setProductImages(res.data);
+
+            setChangeImageId(null);
+
+            setSelectedImages([]);
+
+
+        } catch (error) {
+
+            console.error(
+                "Failed to change image:",
+                error
+            );
+
+
+            alert(
+                "Failed to change image."
+            );
+
+        }
+
+
+        e.target.value = "";
+
+    };
+
+
+    // =====================================================
+    // CLOSE POPUP
+    // =====================================================
+
+    const handleClosePopup = () => {
+
+        setShowPopup(false);
+
+        setSelectedProduct(null);
+
+        setProductImages([]);
+
+        setProductVariants([]);
+
+        setSelectedFiles([]);
+
+        setSelectedImages([]);
+
+        setPreviewImage(null);
+
+        setChangeImageId(null);
+
+    };
+
+
+    // =====================================================
+    // UI
+    // =====================================================
+
+    return (
+
+        <div className="adminhome-container">
+
+
+            {/* =================================================
+                HEADER
+            ================================================= */}
+
+            <header className="header">
+
+                <div className="left-section">
+
+                    <SideWindow />
+
+                </div>
+
+
+                <div className="logo-container">
+
+                    <div className="logo">
+
+                        <span className="Gold">
+                            DEAL
+                        </span>
+
+                        <span className="Black">
+                            HUNTS
+                        </span>
+
+                        <span className="Admin">
+                            Admin
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <nav className="admin-nav-links">
+
+                    <NavLink
+                        to="/admin/manage-promotions"
+                    >
+                        Manage Promotions
+                    </NavLink>
+
+
+                    <NavLink
+                        to="/adminAddProduct"
+                    >
+                        Add Product
+                    </NavLink>
+
+
+                    <div className="search-box">
+
+                        <input
+                            type="text"
+                            placeholder="Search"
+                        />
+
+                        <span className="icon">
+                            🔍
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        className="back-btn"
+                        onClick={() =>
+                            navigate(-1)
+                        }
+                    >
+                        &#8592;
+                    </div>
+
+                </nav>
+
+            </header>
+
+
+            {/* =================================================
+                MAIN
+            ================================================= */}
+
+            <main className="main">
+
+                <h1 className="mainheading">
+                    Manage Products
+                </h1>
+
+
+                {/* =================================================
+                    AVAILABLE / UNAVAILABLE TABS
+                ================================================= */}
+
+                <div className="product-status-tabs">
+
+                    <button
+                        className={
+                            productView ===
+                            "available"
+                                ? "product-tab active-tab"
+                                : "product-tab"
+                        }
+                        onClick={() => {
+
+                            setProductView(
+                                "available"
+                            );
+
+                            setSelectedProducts([]);
+
+                            setSelectionMode(false);
+
+                        }}
+                    >
+                        Available
+                    </button>
+
+
+                    <button
+                        className={
+                            productView ===
+                            "unavailable"
+                                ? "product-tab unavailable-tab"
+                                : "product-tab"
+                        }
+                        onClick={() => {
+
+                            setProductView(
+                                "unavailable"
+                            );
+
+                            setSelectedProducts([]);
+
+                            setSelectionMode(false);
+
+                        }}
+                    >
+                        Unavailable
+                    </button>
+
+                </div>
+
+
+                {/* =================================================
+                    ACTION BAR
+                ================================================= */}
+
+<div className="manage-product-actions">
+
+    {!selectionMode ? (
+
+        <button
+            className="select-products"
+            onClick={handleSelectionMode}
+            disabled={selectionMode}    
+        >
+           ✓ Select
+        </button>
+
+    ) : (
+
+        <>
+            <label className="select-all-products">
+
+                <input
+                    type="checkbox"
+                    checked={
+                        displayedProducts.length > 0 &&
+                        selectedProducts.length === displayedProducts.length
+                    }
+                    onChange={(e) => {
+
+                        if (e.target.checked) {
+
+                            setSelectedProducts(
+                                displayedProducts.map(
+                                    product => product.id
+                                )
+                            );
+
+                        } else {
+
+                            setSelectedProducts([]);
+
+                        }
+
+                    }}
+                />
+
+                Select All
+
+            </label>
+
+            <span
+                className="clear-selection"
+                onClick={handleClearSelection}
             >
-                ✕
-            </button>
-
-        </div>
-
-    ))}
-
-    {/* Add Image Card */}
-    {((selectedProduct.images?.length ?? 0) + selectedFiles.length) < 5 && (
-
-        <label className="add-image-card">
-
-            <span className="plus-icon">+</span>
-
-            <input
-                type="file"
-                hidden
-                multiple
-                accept="image/*"
-                onChange={handleImageSelect}
-            />
-
-        </label>
+                × Clear
+            </span>
+        </>
 
     )}
 
 </div>
-</div>
-</div>
 
-{/* ACTIONS */}
-<div className="image-actions">
-  <button className="upload-btn"
-  disabled={selectedFiles.length==0}
-  onClick={handleUploadImages}>
-    Upload Images
-  </button>
+                {/* =================================================
+                    PRODUCT TABLE
+                ================================================= */}
 
-<button className="change-btn">
-Change Images
-</button>
-<button className="delete-btn">
-Delete Selected
-</button>
-</div>
-</div>
-)
+                <table className="manage-product-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Name
+                            </th>
+
+                            <th>
+                                Brand
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                Variant
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+
+                            {selectionMode && (
+
+                                <th>
+                                    Select
+                                </th>
+
+                            )}
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {displayedProducts.length === 0 ? (
+
+                            <tr>
+
+                                <td
+                                    colSpan={
+                                        selectionMode
+                                            ? 6
+                                            : 5
+                                    }
+                                >
+                                    No products available
+                                </td>
+
+                            </tr>
+
+                        ) : (
+
+                            displayedProducts.map(
+                                product => (
+
+                                   <tr
+    key={product.id}
+    className={`product-row ${
+        selectionMode ? "selection-active" : ""
+    }`}
+    onClick={() => {
+        if (!selectionMode) {
+            handleOpenProductPopup(product);
+        }
+    }}
+>
+                                        <td>
+                                            {product.id}
+                                        </td>
+
+
+                                        <td>
+                                            {product.name}
+                                        </td>
+
+
+                                        <td>
+                                            {product.brand}
+                                        </td>
+
+
+                                        <td>
+                                            {product.category}
+                                        </td>
+                                        <td>
+    {(productVariantMap[product.id] || [])
+        .map(variant => variant.name)
+        .join(", ")}
+</td>                                
+
+                                        <td>
+
+                                            <span
+                                                className={
+                                                    product.active
+                                                        ? "status active"
+                                                        : "status inactive"
+                                                }
+                                            >
+                                                {product.active
+                                                    ? "Available"
+                                                    : "Unavailable"
+                                                }
+                                            </span>
+
+                                        </td>
+
+
+                                        {selectionMode && (
+
+                                            <td>
+
+                                                <input
+                                                    type="checkbox"
+                                                    checked={
+                                                        selectedProducts.includes(
+                                                            product.id
+                                                        )
+                                                    }
+                                                    onClick={e =>
+                                                        e.stopPropagation()
+                                                    }
+                                                    onChange={() =>
+                                                        handleProductCheck(
+                                                            product.id
+                                                        )
+                                                    }
+                                                />
+
+                                            </td>
+
+                                        )}
+
+                                    </tr>
+
+                                )
+                            )
+
+                        )}
+
+                    </tbody>
+
+                </table>
+
+
+                {/* =================================================
+                    DELETE / RESTORE BUTTON
+                ================================================= */}
+
+                <div className="product-action-buttons">
+
+                    {selectedProducts.length > 0 &&
+
+                    productView === "available" && (
+
+                        <button
+                            className="delete-selected-btn"
+                            onClick={
+                                handleDeleteSelected
+                            }
+                        >
+                            Delete Selected
+                        </button>
+
+                    )}
+
+
+                    {selectedProducts.length > 0 &&
+
+                    productView === "unavailable" && (
+
+                        <button
+                            className="restore-selected-btn"
+                            onClick={
+                                handleRestoreSelected
+                            }
+                        >
+                            Restore Selected
+                        </button>
+
+                    )}
+
+                </div>
+
+            </main>
+
+
+            {/* =================================================
+                PRODUCT POPUP
+                =================================================*/}
+            <ProductManagementPopup
+    open={showPopup}
+    product={selectedProduct}
+    onClose={handleClosePopup}
+    navigate={navigate}
+
+    productImages={productImages}
+    selectedImages={selectedImages}
+    selectedFiles={selectedFiles}
+    productVariants={productVariants}
+
+    setPreviewImage={setPreviewImage}
+    handleSelectAllImages={handleSelectAllImages}
+    handleImageCheck={handleImageCheck}
+    handleImageSelect={handleImageSelect}
+    handleUploadImages={handleUploadImages}
+    handleChangeImageSelect={handleChangeImageSelect}
+    handleDeleteSelectedImages={handleDeleteSelectedImages}
+
+    setSelectedFiles={setSelectedFiles}
+    setChangeImageId={setChangeImageId}
+/>
+           
+
+
+            {/* =================================================
+                IMAGE PREVIEW
+            ================================================= */}
+
+            {previewImage && (
+
+                <div
+                    className="image-preview"
+                    onClick={() =>
+                        setPreviewImage(null)
+                    }
+                >
+
+                    <img
+                        src={previewImage}
+                        alt="preview"
+                    />
+
+                </div>
+
+            )}
+
+
+            {/* =================================================
+                FOOTER
+            ================================================= */}
+
+            <footer className="footer">
+
+                <p>
+                    © 2026 Website. All rights reserved.
+                </p>
+
+            </footer>
+
+        </div>
+
+    );
+
 }
-</Popup>
 
-
-      {/* FOOTER */}
-      <footer className="footer">
-        <p>© 2026 Website. All rights reserved.</p>
-      </footer>
-    </div>
-  );
-}
 
 export default AdminProducts;

@@ -1,0 +1,622 @@
+/* ==========================================================
+   VENDOR DASHBOARD — Gold & Black theme
+   Extends VendorHome.css. Only the dashboard-specific rules
+   live here so the existing header/footer/carousel styles
+   stay untouched.
+   ========================================================== */
+
+:root {
+  --vd-black: #12100c;
+  --vd-black-soft: #1d1a15;
+  --vd-gold: #c9a227;
+  --vd-gold-bright: #e8c34a;
+  --vd-gold-tint: #fbf3dd;
+  --vd-white: #ffffff;
+  --vd-gray-50: #f7f6f3;
+  --vd-gray-100: #efece5;
+  --vd-gray-300: #cfc9bb;
+  --vd-gray-500: #8a8578;
+  --vd-text: #211d15;
+  --vd-green: #2f7d4f;
+  --vd-orange: #b3760c;
+  --vd-red: #b3261e;
+  --vd-radius: 14px;
+  --vd-shadow: 0 4px 18px rgba(18, 16, 12, 0.08);
+}
+
+.vendor-dashboard {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 28px 40px 70px;
+  display: grid;
+  grid-template-columns: 65% 35%;
+  gap: 28px;
+  align-items: start;
+  color: var(--vd-text);
+  font-family: "Inter", "Manrope", Arial, sans-serif;
+}
+
+.vendor-dashboard-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.vendor-dashboard-side {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---------- shared card shell ---------- */
+.vd-card {
+  background: var(--vd-white);
+  border: 1px solid var(--vd-gray-100);
+  border-radius: var(--vd-radius);
+  box-shadow: var(--vd-shadow);
+  padding: 22px 24px;
+}
+
+.vd-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.vd-section-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--vd-black);
+  letter-spacing: -0.01em;
+}
+
+.vd-section-sub {
+  font-size: 13px;
+  color: var(--vd-gray-500);
+  margin-top: 2px;
+}
+
+.vd-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--vd-gold);
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  padding: 4px 2px;
+  transition: color 0.2s ease;
+}
+.vd-link-btn:hover {
+  color: var(--vd-black);
+}
+
+/* ---------- greeting banner ---------- */
+.vd-greeting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, var(--vd-gold-tint), #fff);
+  border: 1px solid #f0e2b8;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 14.5px;
+  color: var(--vd-black);
+  animation: vd-fade-in 0.25s ease;
+}
+.vd-greeting strong {
+  font-weight: 700;
+}
+.vd-greeting-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--vd-gray-500);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.vd-greeting-close:hover {
+  color: var(--vd-black);
+  background: rgba(0, 0, 0, 0.05);
+}
+@keyframes vd-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- sales overview / chart ---------- */
+.vd-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.vd-filter-btn {
+  border: 1px solid var(--vd-gray-100);
+  background: var(--vd-gray-50);
+  color: var(--vd-text);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.vd-filter-btn:hover {
+  border-color: var(--vd-gold);
+}
+.vd-filter-btn.active {
+  background: var(--vd-black);
+  border-color: var(--vd-black);
+  color: var(--vd-gold-bright);
+}
+
+.vd-chart-wrap {
+  height: 300px;
+  margin-top: 16px;
+}
+
+.vd-tooltip {
+  background: var(--vd-black);
+  color: var(--vd-white);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  min-width: 130px;
+}
+.vd-tooltip-title {
+  color: var(--vd-gold-bright);
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+.vd-tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  color: var(--vd-gray-300);
+  padding: 1px 0;
+}
+.vd-tooltip-row b {
+  color: var(--vd-white);
+}
+
+/* ---------- sales summary cards ---------- */
+.vd-summary-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.vd-summary-card {
+  background: var(--vd-gray-50);
+  border: 1px solid var(--vd-gray-100);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.vd-summary-label {
+  font-size: 12px;
+  color: var(--vd-gray-500);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.vd-summary-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--vd-black);
+  margin-top: 4px;
+}
+.vd-summary-delta {
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.vd-summary-delta.up { color: var(--vd-green); }
+.vd-summary-delta.down { color: var(--vd-red); }
+
+/* ---------- product performance table ---------- */
+.vd-table-scroll {
+  overflow-x: auto;
+  margin-top: 14px;
+}
+.vd-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+  font-size: 13.5px;
+}
+.vd-table th {
+  text-align: left;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--vd-gray-500);
+  font-weight: 700;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--vd-gray-100);
+}
+.vd-table td {
+  padding: 11px 10px;
+  border-bottom: 1px solid var(--vd-gray-100);
+  color: var(--vd-text);
+}
+.vd-table tr:last-child td {
+  border-bottom: none;
+}
+.vd-product-name {
+  font-weight: 600;
+  color: var(--vd-black);
+}
+.vd-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.vd-badge.excellent { background: #e7f5eb; color: var(--vd-green); }
+.vd-badge.good { background: #fbf3dd; color: var(--vd-gold); }
+.vd-badge.low-stock { background: #fbeceb; color: var(--vd-red); }
+
+/* ---------- top selling products ---------- */
+.vd-top-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+.vd-top-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.vd-top-rank {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--vd-black);
+  color: var(--vd-gold-bright);
+  font-weight: 700;
+  font-size: 12.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.vd-top-item:first-child .vd-top-rank {
+  background: var(--vd-gold);
+  color: var(--vd-black);
+}
+.vd-top-info {
+  flex: 1;
+  min-width: 0;
+}
+.vd-top-name {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--vd-black);
+}
+.vd-top-orders {
+  font-size: 12px;
+  color: var(--vd-gray-500);
+}
+.vd-top-revenue {
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--vd-gold);
+  white-space: nowrap;
+}
+
+/* ---------- sidebar: carousel wrapper + tagline ---------- */
+.vd-carousel-card {
+  background: var(--vd-white);
+  border-radius: var(--vd-radius);
+  padding: 14px;
+  box-shadow: var(--vd-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.vd-carousel-tagline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--vd-gold-bright);
+  font-family: cursive;
+  font-size: 25px;
+  letter-spacing: 0.02em;
+  text-align: center;
+  padding: 2px 4px 6px;
+}
+.vd-carousel-tagline .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--vd-gold);
+  flex-shrink: 0;
+}
+
+/* ---------- sidebar: inventory ---------- */
+.vd-inv-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+.vd-inv-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--vd-gray-50);
+  border: 1px solid var(--vd-gray-100);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.vd-inv-card.warning {
+  background: #fdf6e9;
+  border-color: #f0dba3;
+}
+.vd-inv-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--vd-text);
+}
+.vd-inv-sub {
+  font-size: 11px;
+  color: var(--vd-gray-500);
+  margin-top: 1px;
+}
+.vd-inv-sub.warn {
+  color: var(--vd-orange);
+  font-weight: 600;
+}
+.vd-inv-value {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--vd-black);
+}
+
+/* ---------- sidebar: business overview ---------- */
+.vd-biz-group {
+  margin-top: 14px;
+}
+.vd-biz-group + .vd-biz-group {
+  margin-top: 16px;
+}
+.vd-biz-group-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--vd-gray-500);
+  margin-bottom: 8px;
+}
+.vd-biz-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 0;
+  font-size: 13.5px;
+  border-bottom: 1px dashed var(--vd-gray-100);
+}
+.vd-biz-row:last-child {
+  border-bottom: none;
+}
+.vd-biz-row-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--vd-text);
+}
+.vd-biz-row-value {
+  font-weight: 700;
+  color: var(--vd-black);
+}
+
+/* ---------- sidebar: quick actions ---------- */
+.vd-quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+.vd-quick-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: var(--vd-white);
+  border: 1px solid var(--vd-gray-100);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--vd-black);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-decoration: none;
+}
+.vd-quick-btn:hover {
+  border-color: var(--vd-gold);
+  background: var(--vd-gold-tint);
+}
+.vd-quick-btn-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.vd-quick-btn-arrow {
+  color: var(--vd-gold);
+  font-weight: 700;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1180px) {
+  .vendor-dashboard {
+    grid-template-columns: 60% 40%;
+    padding: 24px 24px 60px;
+  }
+}
+
+@media (max-width: 860px) {
+  .vendor-dashboard {
+    grid-template-columns: 1fr;
+    padding: 18px 16px 50px;
+  }
+  .vd-summary-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .vd-summary-row .vd-summary-card:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .vd-summary-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==========================================
+   VENDOR DASHBOARD — SMALL TOP-RIGHT CAROUSEL
+   ========================================== */
+
+.trending-section-vendor {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Small carousel inside the 35% right sidebar */
+.carousel-vendor {
+    position: relative;
+    width: 100%;
+    height: 190px;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+/* Carousel wrapper */
+.carousel-vendor .carousel-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Carousel image */
+.carousel-vendor .carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Dots */
+.carousel-vendor .dots-container {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+/* Navigation buttons */
+.carousel-vendor .nav-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 17px;
+}
+.manage-main{
+    flex: 1;
+    padding: 30px 40px 60px;
+    display: flex;
+    justify-content: center;
+}
+
+/*Vendor */
+.vd-mini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.vd-mini-card {
+  background: var(--vd-white);
+  border: 1px solid var(--vd-gray-100);
+  border-radius: 12px;
+  box-shadow: var(--vd-shadow);
+  padding: 16px;
+  min-width: 0;
+}
+
+.vd-mini-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--vd-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.vd-mini-product {
+  margin-top: 12px;
+}
+
+.vd-mini-product-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--vd-black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vd-mini-product-orders {
+  font-size: 11.5px;
+  color: var(--vd-gray-500);
+  margin-top: 3px;
+}
+
+.vd-mini-value {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--vd-gold);
+}
+
+.vd-mini-sub {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--vd-gray-500);
+}
+
+.vd-growth-value {
+  margin-top: 14px;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.vd-growth-value.positive {
+  color: var(--vd-green);
+}
+
+.vd-growth-value.negative {
+  color: var(--vd-red);
+}

@@ -6,10 +6,14 @@ const BASE_URL = "http://localhost:8080";
 
 // ADD PRODUCT
 export const addProduct = (product) => {
-    return axios.post(
-        `${BASE_URL}/admin/products/add`,
-        product
-    );
+    return axios({
+        method: "POST",
+        url: `${BASE_URL}/admin/products/add`,
+        data: JSON.stringify(product),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
 };
 
 // GET ALL PRODUCTS
@@ -168,4 +172,58 @@ export const deleteColor = (id) => {
 
 export const deleteVariant = (id) => {
     return axios.delete(`${BASE_URL}/admin/products/variant/${id}`);
+};
+
+//Images Retreiving
+export const getProductImages = (productId) => {
+    return axios.get(
+        `http://localhost:8080/admin/products/${productId}/images`
+    );
+};
+
+//variants
+export const getProductVariant = (productId) => {
+    return axios.get(
+        `${BASE_URL}/admin/products/${productId}/variants`
+    )
+}
+
+//delete products
+export const deleteProductImage = (imageId) => {
+    return axios.delete(
+        `${BASE_URL}/admin/products/images/${imageId}`
+    );
+};
+
+//change images
+export const changeProductImage = (imageId, file) => {
+
+    const formData = new FormData();
+
+    formData.append("image", file);
+
+    return axios.put(
+        `${BASE_URL}/admin/products/images/${imageId}`,
+        formData
+    );
+};
+
+//product restore
+export const restoreProduct = (id) =>{
+    return axios.put(
+        `${BASE_URL}/admin/products/restore/${id}`
+    );
+};
+
+//edit product
+export const updateProduct = (id, product) => {
+    return axios.put(
+        `${BASE_URL}/admin/products/${id}`,
+        product
+    );
+};
+
+//active products
+export const getActiveProducts = () => {
+    return axios.get("http://localhost:8080/admin/products/active");
 };

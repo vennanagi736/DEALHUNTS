@@ -1,13 +1,14 @@
 package org.example.repository;
 
+import java.util.List;
+
 import org.example.entity.Variant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VariantRepository 
-extends JpaRepository<Variant, Integer> {
-
+public interface VariantRepository
+        extends JpaRepository<Variant, Integer> {
 
     boolean existsByProductIdAndRamAndStorage(
             Long productId,
@@ -15,5 +16,5 @@ extends JpaRepository<Variant, Integer> {
             String storage
     );
 
-
+    List<Variant> findByProductId(Long productId);
 }

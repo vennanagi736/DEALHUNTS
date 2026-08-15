@@ -21,8 +21,8 @@ public class Color {
     private String hexCode;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
     @JsonIgnore
+    @JoinColumn(name = "product_id")
     private Product product;
 
     public Integer getId() {

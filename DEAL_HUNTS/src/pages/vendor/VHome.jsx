@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/VendorHome.css";
+import "../../styles/VendorDashboard.css";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import SideWindow from "../../components/SideBar";
 import "../../styles/SideBar.css";
+
 import TrendingCarousel from "../../components/TrendingCarousel";
-import "../../styles/VendorHome.css";
+import VendorBusinessOverview from "./VBusinessOverview";
+import VendorGreetingBanner from "./VGreetingBanner";
+import VendorInventoryOverview from "./VInventoryOverview";
+import VendorProductPerformance from "./VProductPerformance";
+import VendorQuickActions from "./VQuickActions";
+import VendorSalesOverview from "./VSalesOverview";
+import VendorSalesSummary from "./VSalesSummary";
+import VendorBestSeller from "./VBestSeller";
+import VendorSalesGrowth from "./VSalesGrowth";
 
 function VendorHome() {
   const navigate = useNavigate();
@@ -51,7 +61,7 @@ function VendorHome() {
 
   const handleLogout = () => {
     localStorage.removeItem("vendorJwtToken");
-    localStorage.removeItem("id");
+    localStorage.removeItem("vendorId");
     setIsLoggedIn(false);
     navigate("/VendorLogin");
   };
@@ -63,10 +73,14 @@ function VendorHome() {
     setProducts(filtered);
   };
 
+  const vendorInfo = {
+    name: "Nagi",
+    shopName: "Nagi Electronics"
+};
+
   return (
     <div className="home-container">
       <header className="header">
-
         <div className="left-section">
           <SideWindow />
         </div>
@@ -78,10 +92,9 @@ function VendorHome() {
         </div>
 
         <div className="navigation">
-
           <div className="nav-links">
             <Link to="/vendorProductPage">Add Product</Link>
-            <Link to="/VendorManage">Manage</Link>
+            <Link to="/vendor/manage-products">Manage Products</Link>
           </div>
 
           <div className="nav-right">
@@ -108,19 +121,58 @@ function VendorHome() {
         </div>
       </header>
 
-       <main className="manage-main">
-            <section className="trending-section-vendor">
+      <main className="vendor-dashboard">
+
+    {/* ================= LEFT 65% ================= */}
+    <div className="vendor-dashboard-main">
+
+        <VendorGreetingBanner
+            vendorName={vendorInfo.name}
+        />
+
+        <VendorSalesOverview />
+
+        <VendorSalesSummary />
+
+        <VendorProductPerformance />
+
+    </div>
+
+
+    {/* ================= RIGHT 35% ================= */}
+    <aside className="vendor-dashboard-side">
+
+        {/* EXISTING TRENDING CAROUSEL */}
+        <section className="vd-carousel-card">
+
+            <div className="vd-carousel-tagline">
+                <span className="dot"></span>
+                Trending Now
+                <span className="dot"></span>
+            </div>
+            <div className="trending-section-vendor">
               <div className="carousel-vendor">
                 <TrendingCarousel/>
               </div>
-            </section>
-            <section className="sales-report">
-              <div>
-              </div>
-            </section>
-        </main>
+            </div>
 
-      <footer className="footer">
+        </section>
+
+        {/* Inventory + Business Overview will go here later */}
+        <VendorInventoryOverview />
+        <VendorBusinessOverview/>
+
+        <div className="vd-mini-grid">
+          <VendorBestSeller/>
+          <VendorSalesGrowth/>
+        </div>
+
+    </aside>
+
+</main>
+
+      <footer className="footer
+      ppppp">
         <p>© 2026 Website. All rights reserved.</p>
       </footer>
     </div>

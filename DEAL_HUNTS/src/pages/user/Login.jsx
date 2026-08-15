@@ -25,117 +25,72 @@ function Login() {
 
 
   const handleLogin = async (e) => {
-
     console.log("user clicked login");
-
     e.preventDefault();
 
-
     const errorMessage = validateLogin(email, password);
-
-
     if(errorMessage){
-
       setError(errorMessage);
       return;
-
     }
-
 
     setError("");
     setMessage("");
     setLoading(true);
 
-
-
     try {
-
-
       const response = await loginUser(
         email,
         password
       );
 
-
-
       if(response.data.success){
-
         setError("");
         localStorage.setItem(
           "userJwtToken",
           response.data.token
         );
 
-
         localStorage.setItem(
           "userEmail",
           response.data.email
         );
-
-
         updateRole("ROLE_USER");
 
-
         setSuccess(true);
-
         setMessage(
           "Login Successful"
         );
 
-
         navigate("/home");
-
 
       }
       else{
-
-
         setSuccess(false);
-
         setMessage(
           response.data.message
         );
-
-
       }
-
-
     }
     catch(error){
 
-
       console.error(error);
-
       setSuccess(false);
-
       setMessage(
         "Server Error"
       );
 
-
     }
     finally{
-
-
       setLoading(false);
-
-
     }
-
 
   };
 
-
-
   return (
-
     <Layout>
-
       <div className="login-page">
-
         <form onSubmit={handleLogin}>
-
-
           <div className="login-box">
 
 

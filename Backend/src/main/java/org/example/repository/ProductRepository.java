@@ -23,5 +23,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         String brand,
         String category
     );
+    List<Product> findByActiveTrue();
 
 }

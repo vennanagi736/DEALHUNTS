@@ -23,8 +23,8 @@ public class Variant {
     private String storage;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
     @JsonIgnore
+    @JoinColumn(name = "product_id")
     private Product product;
 
     // getters and setters

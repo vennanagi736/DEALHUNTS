@@ -1,729 +1,1483 @@
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect} from "react";
-import SideWindow from "../../components/SideBar";
-import {
-  addProduct,
-  getAllCategories,
-  getAllBrands
-} from "../../api/ProductApi";
-import "../../styles/ProductPreview.css";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 
+import SideWindow from "../../components/SideBar";
+
+import {
+    addProduct,
+    getAllCategories,
+    getAllBrands,
+    getProductById,
+    updateProduct
+} from "../../api/ProductApi";
+
+import "../../styles/ProductPreview.css";
 
 
 function AdminAddProduct() {
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [productData, setProductData] = useState({
+    const [searchParams] = useSearchParams();
 
-  category: "",
-  brand: "",
-  product: "",
-  description: "",
+    const editProductId = searchParams.get("edit");
 
-  variants:[
-    {
-      ram:"",
-      storage:""
-    }
-  ],
+    const isEditMode = Boolean(editProductId);
 
-  processor:"",
-  displaySize:"",
-  battery:"",
 
-  colors:[
-    {
-      name:"",
-      hexCode:""
-    }
-  ]
+    // =====================================================
+    // PRODUCT DATA
+    // =====================================================
 
-});
-  const [categories, setCategories] = useState([]);
-  const [brands, setBrands] = useState([]);
+    const [productData, setProductData] = useState({
 
-  const loadCategories = async () => {
+        category: "",
+        brand: "",
+        product: "",
+        description: "",
 
-    try {
+        variants: [
+            {
+                ram: "",
+                storage: ""
+            }
+        ],
 
-      const {data} = await getAllCategories();
+        processor: "",
+        displaySize: "",
+        battery: "",
 
-      setCategories(data);
+        colors: [
+            {
+                name: "",
+                hexCode: ""
+            }
+        ]
 
-    } catch(error){
+    });
 
-      console.error(error);
 
-    }
+    // =====================================================
+    // MASTER DATA
+    // =====================================================
 
-  };
+    const [categories, setCategories] = useState([]);
 
+    const [brands, setBrands] = useState([]);
 
 
-  const loadBrands = async () => {
+    // =====================================================
+    // LOAD CATEGORIES
+    // =====================================================
 
-    try {
+    const loadCategories = async () => {
 
-      const {data} = await getAllBrands();
+        try {
 
-      setBrands(data);
+            const { data } = await getAllCategories();
 
-    } catch(error){
+            setCategories(data);
 
-      console.error(error);
+        } catch (error) {
 
-    }
+            console.error(
+                "Failed to load categories:",
+                error
+            );
 
-  };
+        }
 
-  useEffect(()=>{
+    };
 
- const loadData = async()=>{
-   await loadCategories();
-   await loadBrands();
 
- };
+    // =====================================================
+    // LOAD BRANDS
+    // =====================================================
 
- loadData();
+    const loadBrands = async () => {
 
-},[]);
-  // ADD CATEGORY
-const handleChange=(e)=>{
-const {name,value}=e.target;
-    setProductData(prev=>({
-      ...prev,
-      [name]:value
-    }));
-  };
+        try {
 
-  const handleVariantChange = (index, field, value)=>{
+            const { data } = await getAllBrands();
 
-  const updatedVariants = [...productData.variants];
+            setBrands(data);
 
-  updatedVariants[index][field] = value;
+        } catch (error) {
 
-  setProductData(prev=>({
-    ...prev,
-    variants: updatedVariants
-  }));
+            console.error(
+                "Failed to load brands:",
+                error
+            );
 
-};
+        }
 
+    };
 
-const addVariant = ()=>{
 
-  setProductData(prev=>({
+    // =====================================================
+    // LOAD MASTER DATA
+    // =====================================================
 
-    ...prev,
+    useEffect(() => {
 
-    variants:[
-      ...prev.variants,
-      {
-        ram:"",
-        storage:""
-      }
-    ]
-  }));
-};
+        const loadData = async () => {
 
-const removeVariant = (index)=>{
+            await loadCategories();
 
-  if(productData.variants.length === 1){
-    alert("At least one variant is required");
-    return;
-  }
-
-  const updatedVariants = productData.variants.filter(
-    (_,i)=> i !== index
-  );
-
-  setProductData(prev=>({
-    ...prev,
-    variants: updatedVariants
-  }));
-
-};
-
-const handleColorChange = (index, field, value)=>{
-
-  const updatedColors = [...productData.colors];
-
-  updatedColors[index][field] = value;
-
-  setProductData(prev=>({
-
-    ...prev,
-
-    colors: updatedColors
-
-  }));
-
-};
-
-
-
-const addColor = ()=>{
-
-  setProductData(prev=>({
-
-    ...prev,
-
-    colors:[
-      ...prev.colors,
-      {
-        name:"",
-        hexCode:""
-      }
-    ]
-  }));
-};
-
-const removeColor = (index)=>{
-
-  if(productData.colors.length === 1){
-    alert("At least one color is required");
-    return;
-  }
-
-  const updatedColors = productData.colors.filter(
-    (_,i)=> i !== index
-  );
-
-  setProductData(prev=>({
-    ...prev,
-    colors: updatedColors
-  }));
-
-};
-const handleSubmit = async (e) => {
-
-    e.preventDefault();
-
-    // Required fields
-    if (
-        !productData.category ||
-        !productData.brand ||
-        !productData.product.trim()
-    ) {
-        alert("Please fill all required fields");
-        return;
-    }
-
-    // Specifications
-    if (
-        !productData.processor ||
-        !productData.displaySize ||
-        !productData.battery
-    ) {
-        alert("Please complete all specifications.");
-        return;
-    }
-
-    // Variants
-    if (
-        productData.variants.some(
-            variant => !variant.ram || !variant.storage
-        )
-    ) {
-        alert("Please complete all variants.");
-        return;
-    }
-
-    // Colors
-    if (
-        productData.colors.some(
-            color => !color.name || !color.hexCode
-        )
-    ) {
-        alert("Please complete all colors.");
-        return;
-    }
-
-    try {
-
-        const product = {
-
-            name: productData.product,
-            brand: productData.brand,
-            category: productData.category,
-            description: productData.description,
-
-            processor: productData.processor,
-            displaySize: productData.displaySize,
-            battery: productData.battery,
-
-            variants: productData.variants,
-            colors: productData.colors
+            await loadBrands();
 
         };
 
-        console.log(product);
-        await addProduct(product);
-        alert("Product Added Successfully");
-        navigate("/admin/product-images");
-    }
-    catch (error) {
-        console.error(error);
-        alert("Failed to Add Product");
-    }
+        loadData();
+
+    }, []);
+
+
+    // =====================================================
+    // LOAD PRODUCT FOR EDIT
+    // =====================================================
+
+    useEffect(() => {
+
+        if (!editProductId) {
+            return;
+        }
+
+
+        const loadProductForEdit = async () => {
+
+            try {
+
+                console.log(
+                    "Loading product for edit:",
+                    editProductId
+                );
+
+
+                const res =
+                    await getProductById(editProductId);
+
+
+                const product = res.data;
+
+
+                console.log(
+                    "PRODUCT FROM API:",
+                    product
+                );
+
+
+                setProductData({
+
+                    category:
+                        product.category || "",
+
+                    brand:
+                        product.brand || "",
+
+                    product:
+                        product.name || "",
+
+                    description:
+                        product.description || "",
+
+
+                    variants:
+                        product.variants?.length > 0
+
+                            ? product.variants.map(
+                                variant => ({
+                                    ram:
+                                        variant.ram || "",
+
+                                    storage:
+                                        variant.storage || ""
+                                })
+                            )
+
+                            : [
+                                {
+                                    ram: "",
+                                    storage: ""
+                                }
+                            ],
+
+
+                    processor:
+                        product.processor || "",
+
+                    displaySize:
+                        product.displaySize || "",
+
+                    battery:
+                        product.battery || "",
+
+colors:
+    product.colors?.length > 0
+        ? product.colors.map(color => ({
+            id: color.id,
+            name: color.name || "",
+            hexCode: color.hexCode || ""
+        }))
+        : [
+            {
+                id: null,
+                name: "",
+                hexCode: ""
+            }
+        ]
+
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load product:",
+                    error
+                );
+
+                console.error(
+                    "ERROR DATA:",
+                    error.response?.data
+                );
+
+                alert(
+                    "Failed to load product."
+                );
+
+            }
+
+        };
+
+
+        loadProductForEdit();
+
+    }, [editProductId]);
+
+
+    // =====================================================
+    // NORMAL INPUT CHANGE
+    // =====================================================
+
+    const handleChange = (e) => {
+
+        const {
+            name,
+            value
+        } = e.target;
+
+
+        setProductData(prev => ({
+
+            ...prev,
+
+            [name]: value
+
+        }));
+
+    };
+
+
+    // =====================================================
+    // VARIANT CHANGE
+    // =====================================================
+
+    const handleVariantChange = (
+        index,
+        field,
+        value
+    ) => {
+
+        setProductData(prev => {
+
+            const updatedVariants =
+                [...prev.variants];
+
+
+            updatedVariants[index] = {
+
+                ...updatedVariants[index],
+
+                [field]: value
+
+            };
+
+
+            return {
+
+                ...prev,
+
+                variants: updatedVariants
+
+            };
+
+        });
+
+    };
+
+
+    // =====================================================
+    // ADD VARIANT
+    // =====================================================
+
+    const addVariant = () => {
+
+        setProductData(prev => ({
+
+            ...prev,
+
+            variants: [
+
+                ...prev.variants,
+
+                {
+                    ram: "",
+                    storage: ""
+                }
+
+            ]
+
+        }));
+
+    };
+
+
+    // =====================================================
+    // REMOVE VARIANT
+    // =====================================================
+
+    const removeVariant = (index) => {
+
+        if (
+            productData.variants.length === 1
+        ) {
+
+            alert(
+                "At least one variant is required"
+            );
+
+            return;
+
+        }
+
+
+        setProductData(prev => ({
+
+            ...prev,
+
+            variants:
+                prev.variants.filter(
+                    (_, i) => i !== index
+                )
+
+        }));
+
+    };
+
+
+    // =====================================================
+    // COLOR CHANGE
+    // =====================================================
+
+    const handleColorChange = (
+        index,
+        field,
+        value
+    ) => {
+
+        setProductData(prev => {
+
+            const updatedColors =
+                [...prev.colors];
+
+
+            updatedColors[index] = {
+
+                ...updatedColors[index],
+
+                [field]: value
+
+            };
+
+
+            return {
+
+                ...prev,
+
+                colors: updatedColors
+
+            };
+
+        });
+
+    };
+
+
+    // =====================================================
+    // ADD COLOR
+    // =====================================================
+
+    const addColor = () => {
+
+    setProductData(prev => ({
+
+        ...prev,
+
+        colors: [
+
+            ...prev.colors,
+
+            {
+                id: null,
+                name: "",
+                hexCode: ""
+            }
+
+        ]
+
+    }));
 
 };
+    // =====================================================
+    // REMOVE COLOR
+    // =====================================================
+
+    const removeColor = (index) => {
+
+        if (
+            productData.colors.length === 1
+        ) {
+
+            alert(
+                "At least one color is required"
+            );
+
+            return;
+
+        }
+
+
+        setProductData(prev => ({
+
+            ...prev,
+
+            colors:
+                prev.colors.filter(
+                    (_, i) => i !== index
+                )
+
+        }));
+
+    };
+
+
+    // =====================================================
+    // SUBMIT
+    // =====================================================
+
+    const handleSubmit = async (e) => {
+
+        e.preventDefault();
+
+
+        console.log(
+            "========== SUBMIT STARTED =========="
+        );
+
+        console.log(
+            "EDIT MODE:",
+            isEditMode
+        );
+
+        console.log(
+            "EDIT PRODUCT ID:",
+            editProductId
+        );
+
+        console.log(
+            "CURRENT PRODUCT DATA:",
+            productData
+        );
+
+
+        // =================================================
+        // REQUIRED FIELDS
+        // =================================================
+
+        if (
+            !productData.category.trim() ||
+            !productData.brand.trim() ||
+            !productData.product.trim()
+        ) {
+
+            alert(
+                "Please fill all required fields."
+            );
+
+            return;
+
+        }
+
+
+        // =================================================
+        // SPECIFICATIONS
+        // =================================================
+
+        if (
+            !productData.processor.trim() ||
+            !productData.displaySize.trim() ||
+            !productData.battery.trim()
+        ) {
+
+            alert(
+                "Please complete all specifications."
+            );
+
+            return;
+
+        }
+
+
+        // =================================================
+        // VARIANT VALIDATION
+        // =================================================
+
+        for (
+            let i = 0;
+            i < productData.variants.length;
+            i++
+        ) {
+
+            const variant =
+                productData.variants[i];
+
+
+            if (
+                !variant.ram.trim() ||
+                !variant.storage.trim()
+            ) {
+
+                alert(
+                    `Please complete Variant ${i + 1}.`
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        // =================================================
+        // COLOR VALIDATION
+        // =================================================
+
+        const hexColorRegex =
+            /^#[0-9A-Fa-f]{6}$/;
+
+
+        for (
+            let i = 0;
+            i < productData.colors.length;
+            i++
+        ) {
+
+            const color =
+                productData.colors[i];
+
+
+            const colorName =
+                color.name.trim();
+
+
+            const hexCode =
+                color.hexCode.trim();
+
+
+            console.log(
+                "HEX VALIDATION:",
+                {
+                    colorNumber: i + 1,
+                    name: colorName,
+                    hex: hexCode,
+                    length: hexCode.length,
+                    valid: hexColorRegex.test(hexCode)
+                }
+            );
+
+
+            // Color name
+
+            if (!colorName) {
+
+                alert(
+                    `Please enter a name for Color ${i + 1}.`
+                );
+
+                return;
+
+            }
+
+
+            // HEX code
+
+            if (!hexColorRegex.test(hexCode)) {
+
+                alert(
+                    `Invalid HEX code for Color ${i + 1}.\n\n` +
+                    `Current value: ${hexCode}\n\n` +
+                    `Use exactly 6 hexadecimal digits.\n` +
+                    `Example: #2563EB`
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        // =================================================
+        // CREATE REQUEST OBJECT
+        // =================================================
+
+        const product = {
+
+            name:
+                productData.product.trim(),
+
+            brand:
+                productData.brand.trim(),
+
+            category:
+                productData.category.trim(),
+
+            description:
+                productData.description.trim(),
+
+            processor:
+                productData.processor.trim(),
+
+            displaySize:
+                productData.displaySize.trim(),
+
+            battery:
+                productData.battery.trim(),
+
+
+            variants:
+                productData.variants.map(
+                    variant => ({
+
+                        ram:
+                            variant.ram.trim(),
+
+                        storage:
+                            variant.storage.trim()
+
+                    })
+                ),
+
+
+           colors:
+    productData.colors.map(
+        color => ({
+            id: color.id || null,
+
+            name:
+                color.name.trim(),
+
+            hexCode:
+                color.hexCode.trim().toUpperCase()
+        })
+    )
+
+        };
+
+
+        // =================================================
+        // FINAL DEBUG
+        // =================================================
+
+        console.log(
+            "========== FINAL REQUEST =========="
+        );
+
+        console.log(
+            JSON.stringify(
+                product,
+                null,
+                2
+            )
+        );
+
+        console.log(
+            "===================================="
+        );
+
+
+        // =================================================
+        // ADD / UPDATE
+        // =================================================
+
+        try {
+
+            if (isEditMode) {
+
+                console.log(
+                    "========== UPDATE PRODUCT =========="
+                );
+
+                console.log(
+                    "PRODUCT ID:",
+                    editProductId
+                );
+
+                console.log(
+                    "UPDATE DATA:",
+                    JSON.stringify(
+                        product,
+                        null,
+                        2
+                    )
+                );
+
+
+                await updateProduct(
+                    editProductId,
+                    product
+                );
+
+
+                console.log(
+                    "PRODUCT UPDATE SUCCESS"
+                );
+
+
+                alert(
+                    "Product updated successfully."
+                );
+
+
+               navigate("/admin/manage-products");
+
+
+            } else {
+
+                console.log(
+                    "========== ADD PRODUCT =========="
+                );
+
+
+                await addProduct(
+                    product
+                );
+
+
+                console.log(
+                    "PRODUCT ADD SUCCESS"
+                );
+
+
+                alert(
+                    "Product Added Successfully"
+                );
+
+
+                navigate(
+                    "/admin/products"
+                );
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "========== PRODUCT API ERROR =========="
+            );
+
+            console.error(
+                "FULL ERROR:",
+                error
+            );
+
+            console.error(
+                "STATUS:",
+                error.response?.status
+            );
+
+            console.error(
+                "DATA:",
+                error.response?.data
+            );
+
+            console.error(
+                "URL:",
+                error.config?.url
+            );
+
+            console.error(
+                "METHOD:",
+                error.config?.method
+            );
+
+            console.error(
+                "REQUEST DATA:",
+                error.config?.data
+            );
+
+            console.error(
+                "========================================"
+            );
+
+
+            alert(
+
+                isEditMode
+
+                    ? "Failed to update product."
+
+                    : "Failed to add product."
+
+            );
+
+        }
+
+    };
+
+
+    // =====================================================
+    // UI
+    // =====================================================
+
     return (
-<>
-<header className="header">
 
-<div className="left-section">
+        <>
 
-<SideWindow />
+            {/* =================================================
+                HEADER
+            ================================================= */}
 
-</div>
+            <header className="header">
 
-<div className="logo">
+                <div className="left-section">
 
-<span className="Gold">
-DEAL
-</span>
+                    <SideWindow />
 
-<span className="Black">
-HUNTS
-</span>
+                </div>
 
-<span className="Admin">
-Admin
-</span>
-</div>
-<div>
-  <button
-className="options-btn"
-onClick={() => navigate("/admin/master-data")}
->
-Master Data
-</button>
-</div>
-<div
-className="back-btn"
-onClick={()=>navigate(-1)}
->
-&#8592;
-</div>
-</header>
-<h1 className="page-title">
-New Product
-</h1>
-<div className="master-layout">
 
-<form 
-className="master-form-section"
-onSubmit={handleSubmit}>
+                <div className="logo">
 
-<h2>
-Product Details
-</h2>
+                    <span className="Gold">
+                        DEAL
+                    </span>
 
-<label>
-Category
-</label>
+                    <span className="Black">
+                        HUNTS
+                    </span>
 
-<select
+                    <span className="Admin">
+                        Admin
+                    </span>
 
-name="category"
+                </div>
 
-value={productData.category}
 
-onChange={handleChange}
+                <div>
 
->
-<option value="">
+                    <button
+                        className="options-btn"
+                        onClick={() =>
+                            navigate(
+                                "/admin/master-data"
+                            )
+                        }
+                    >
+                        Master Data
+                    </button>
 
-Select Category
+                </div>
 
-</option>
 
+                <div
+                    className="back-btn"
+                    onClick={() =>
+                        navigate(-1)
+                    }
+                >
+                    &#8592;
+                </div>
 
+            </header>
 
-{
-categories.map(category=>(
 
+            {/* =================================================
+                PAGE TITLE
+            ================================================= */}
 
-<option
+            <h1 className="page-title">
 
-key={category.id}
+                {
+                    isEditMode
+                        ? "Edit Product"
+                        : "New Product"
+                }
 
-value={category.name}
+            </h1>
 
->
 
-{category.name}
+            <div className="master-layout">
 
-</option>
 
+                {/* =================================================
+                    FORM
+                ================================================= */}
 
-))
-}
+                <form
+                    className="master-form-section"
+                    onSubmit={handleSubmit}
+                >
 
 
-</select>
+                    {/* PRODUCT DETAILS */}
 
+                    <h2>
+                        Product Details
+                    </h2>
 
 
+                    <label>
+                        Category
+                    </label>
 
 
+                    <select
+                        name="category"
+                        value={productData.category}
+                        onChange={handleChange}
+                    >
 
+                        <option value="">
+                            Select Category
+                        </option>
 
-<label>
-Brand
-</label>
 
+                        {
+                            categories.map(
+                                category => (
 
+                                    <option
+                                        key={category.id}
+                                        value={category.name}
+                                    >
+                                        {category.name}
+                                    </option>
 
-<select
+                                )
+                            )
+                        }
 
-name="brand"
+                    </select>
 
-value={productData.brand}
 
-onChange={handleChange}
+                    <label>
+                        Brand
+                    </label>
 
->
 
+                    <select
+                        name="brand"
+                        value={productData.brand}
+                        onChange={handleChange}
+                    >
 
-<option value="">
+                        <option value="">
+                            Select Brand
+                        </option>
 
-Select Brand
 
-</option>
+                        {
+                            brands.map(
+                                brand => (
 
+                                    <option
+                                        key={brand.id}
+                                        value={brand.name}
+                                    >
+                                        {brand.name}
+                                    </option>
 
+                                )
+                            )
+                        }
 
+                    </select>
 
-{
-brands.map(brand=>(
 
+                    <label>
+                        Product Name
+                    </label>
 
-<option
 
-key={brand.id}
+                    <input
+                        type="text"
+                        name="product"
+                        placeholder="Enter Product Name"
+                        value={productData.product}
+                        onChange={handleChange}
+                    />
 
-value={brand.name}
 
->
+                    <label>
+                        Description
+                    </label>
 
-{brand.name}
 
-</option>
+                    <textarea
+                        name="description"
+                        placeholder="Enter Product Description"
+                        maxLength={1000}
+                        value={productData.description}
+                        onChange={handleChange}
+                    />
 
 
-))
-}
+                    {/* =================================================
+                        VARIANTS
+                    ================================================= */}
 
+                    <h2>
+                        Variant Details
+                    </h2>
 
 
-</select>
+                    {
+                        productData.variants.map(
+                            (variant, index) => (
 
+                                <div key={index}>
 
+                                    <label>
+                                        RAM
+                                    </label>
 
 
+                                    <input
+                                        type="text"
+                                        name="ram"
+                                        value={variant.ram}
+                                        onChange={
+                                            e =>
+                                                handleVariantChange(
+                                                    index,
+                                                    "ram",
+                                                    e.target.value
+                                                )
+                                        }
+                                    />
 
 
-<label>
-Product Name
-</label>
+                                    <label>
+                                        Storage
+                                    </label>
 
 
-<input
+                                    <input
+                                        type="text"
+                                        name="storage"
+                                        value={variant.storage}
+                                        onChange={
+                                            e =>
+                                                handleVariantChange(
+                                                    index,
+                                                    "storage",
+                                                    e.target.value
+                                                )
+                                        }
+                                    />
 
-type="text"
 
-name="product"
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            removeVariant(index)
+                                        }
+                                    >
+                                        Remove
+                                    </button>
 
-placeholder="Enter Product Name"
+                                </div>
 
-value={productData.product}
+                            )
+                        )
+                    }
 
-onChange={handleChange}
 
-/>
+                    <button
+                        type="button"
+                        onClick={addVariant}
+                    >
+                        + Add Variant
+                    </button>
 
 
+                    {/* =================================================
+                        SPECIFICATIONS
+                    ================================================= */}
 
+                    <label>
+                        Processor
+                    </label>
 
 
+                    <input
+                        type="text"
+                        name="processor"
+                        placeholder="Example: Snapdragon"
+                        value={productData.processor}
+                        onChange={handleChange}
+                    />
 
 
-<label>
-Description
-</label>
+                    <label>
+                        Display Size
+                    </label>
 
 
-<textarea
+                    <input
+                        type="text"
+                        name="displaySize"
+                        placeholder="Example: 6.9 inch"
+                        value={productData.displaySize}
+                        onChange={handleChange}
+                    />
 
-name="description"
 
-placeholder="Enter Product Description"
-maxLength={1000}
-value={productData.description}
+                    <label>
+                        Battery
+                    </label>
 
-onChange={handleChange}
 
-/>
+                    <input
+                        type="text"
+                        name="battery"
+                        placeholder="Example: 5000 mAh"
+                        value={productData.battery}
+                        onChange={handleChange}
+                    />
 
-<h2>
-Variant Details
-</h2>
 
-{
-productData.variants.map((variant,index)=>(
+                    {/* =================================================
+                        COLORS
+                    ================================================= */}
 
-<div key={index}>
+                    <h2>
+                        Color Details
+                    </h2>
 
 
-<label>
-RAM
-</label>
+                    {
+                        productData.colors.map(
+                            (color, index) => (
 
-<input
+                                <div key={index}>
 
-type="text"
-name = "ram"
-value={variant.ram}
-onChange={(e)=>
-handleVariantChange(
-index,
-"ram",
-e.target.value
-)
-}
-/>
+                                    <label>
+                                        Color Name
+                                    </label>
 
-<label>
-Storage
-</label>
 
-<input
+                                    <input
+                                        type="text"
+                                        name="color"
+                                        value={color.name}
+                                        onChange={
+                                            e =>
+                                                handleColorChange(
+                                                    index,
+                                                    "name",
+                                                    e.target.value
+                                                )
+                                        }
+                                    />
 
-type="text"
-name="storage"
-value={variant.storage}
-onChange={(e)=>
-handleVariantChange(
-index,
-"storage",
-e.target.value
-)
-}
-/>
 
-<button
-type="button"
-onClick={()=>removeVariant(index)}
->
-Remove
-</button>
-</div>
-))
-}
+                                    <label>
+                                        Hex Code
+                                    </label>
 
-<button
-type="button"
-onClick={addVariant}
->
-+ Add Variant
-</button>
 
-<label>
-Processor
-</label>
+                                    <input
+                                        type="text"
+                                        name="hexCode"
+                                        value={color.hexCode}
+                                        placeholder="#000000"
+                                        maxLength={7}
+                                        onChange={
+                                            e =>
+                                                handleColorChange(
+                                                    index,
+                                                    "hexCode",
+                                                    e.target.value
+                                                )
+                                        }
+                                    />
 
-<input
-type="text"
-name="processor"
-placeholder="Example: Snapdragon"
-value={productData.processor}
-onChange={handleChange}
-/>
 
-<label>
-Display Size
-</label>
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            removeColor(index)
+                                        }
+                                    >
+                                        Remove
+                                    </button>
 
-<input
-type="text"
-name="displaySize"
-placeholder="Example: 6.9 inch"
-value={productData.displaySize}
-onChange={handleChange}
-/>
+                                </div>
 
-<label>
-Battery
-</label>
+                            )
+                        )
+                    }
 
-<input
-type="text"
-name="battery"
-placeholder="Example: 5000 mAh"
-value={productData.battery}
-onChange={handleChange}
-/>
-<h2>
-Color Details
-</h2>
 
-{
-productData.colors.map((color,index)=>(
+                    <button
+                        type="button"
+                        onClick={addColor}
+                    >
+                        + Add Color
+                    </button>
 
-<div key={index}>
 
+                    {/* =================================================
+                        SUBMIT
+                    ================================================= */}
 
-<label>
-Color Name
-</label>
+                    <button
+                        className="add-product-btn"
+                        type="submit"
+                    >
 
-<input
+                        {
+                            isEditMode
+                                ? "Save Changes"
+                                : "Save Product"
+                        }
 
-type="text"
-name="color"
-value={color.name}
-onChange={(e)=>
-handleColorChange(
-index,
-"name",
-e.target.value
-)
-}
-/>
+                    </button>
 
-<label>
-Hex Code
-</label>
 
-<input
-type="text"
-name="hexCode"
-value={color.hexCode}
-placeholder="#000000"
-onChange={(e)=>
-handleColorChange(
-index,
-"hexCode",
-e.target.value
-)
-}
-/>
+                </form>
 
-<button
-type="button"
-onClick={()=>removeColor(index)}
->
-Remove
-</button>
-</div>
-))
-}
 
-<button
-type="button"
-onClick={addColor}
->
-+ Add Color
-</button>
-<button
-className="add-product-btn"
-type="submit"
->
-Save Product
-</button>
-</form>
+                {/* =================================================
+                    LIVE PREVIEW
+                ================================================= */}
 
-<div className="master-preview-section">
+                <div className="master-preview-section">
 
-    <h2>Live Preview Details</h2>
+                    <h2>
+                        Live Preview Details
+                    </h2>
 
-    <div className="master-preview-card">
 
-        <div className="preview-item">
-            <label>Category</label>
-            <input readOnly value={productData.category} />
-        </div>
+                    <div className="master-preview-card">
 
-        <div className="preview-item">
-            <label>Brand</label>
-            <input readOnly value={productData.brand} />
-        </div>
 
-        <div className="preview-item">
-            <label>Product</label>
-            <input readOnly value={productData.product} />
-        </div>
+                        <div className="preview-item">
 
-        <div className="preview-item">
-            <label>Description</label>
-            <textarea readOnly value={productData.description} />
-        </div>
+                            <label>
+                                Category
+                            </label>
 
-        <div className="preview-item">
-            <label>Processor</label>
-            <input readOnly value={productData.processor} />
-        </div>
+                            <input
+                                readOnly
+                                value={
+                                    productData.category
+                                }
+                            />
 
-        <div className="preview-item">
-            <label>Display</label>
-            <input readOnly value={productData.displaySize} />
-        </div>
+                        </div>
 
-        <div className="preview-item">
-            <label>Battery</label>
-            <input readOnly value={productData.battery} />
-        </div>
 
-        <h3>Variants</h3>
+                        <div className="preview-item">
 
-        {productData.variants.map((variant,index)=>(
+                            <label>
+                                Brand
+                            </label>
 
-            <div
-                className="preview-item"
-                key={index}
-            >
+                            <input
+                                readOnly
+                                value={
+                                    productData.brand
+                                }
+                            />
 
-                <label>
-                    Variant {index+1}
-                </label>
+                        </div>
 
-                <input
-                    readOnly
-                    value={`${variant.ram} | ${variant.storage}`}
-                />
+
+                        <div className="preview-item">
+
+                            <label>
+                                Product
+                            </label>
+
+                            <input
+                                readOnly
+                                value={
+                                    productData.product
+                                }
+                            />
+
+                        </div>
+
+
+                        <div className="preview-item">
+
+                            <label>
+                                Description
+                            </label>
+
+                            <textarea
+                                readOnly
+                                value={
+                                    productData.description
+                                }
+                            />
+
+                        </div>
+
+
+                        <div className="preview-item">
+
+                            <label>
+                                Processor
+                            </label>
+
+                            <input
+                                readOnly
+                                value={
+                                    productData.processor
+                                }
+                            />
+
+                        </div>
+
+
+                        <div className="preview-item">
+
+                            <label>
+                                Display
+                            </label>
+
+                            <input
+                                readOnly
+                                value={
+                                    productData.displaySize
+                                }
+                            />
+
+                        </div>
+
+
+                        <div className="preview-item">
+
+                            <label>
+                                Battery
+                            </label>
+
+                            <input
+                                readOnly
+                                value={
+                                    productData.battery
+                                }
+                            />
+
+                        </div>
+
+
+                        {/* VARIANTS PREVIEW */}
+
+                        <h3>
+                            Variants
+                        </h3>
+
+
+                        {
+                            productData.variants.map(
+                                (variant, index) => (
+
+                                    <div
+                                        className="preview-item"
+                                        key={index}
+                                    >
+
+                                        <label>
+                                            Variant {index + 1}
+                                        </label>
+
+
+                                        <input
+                                            readOnly
+                                            value={
+                                                `${variant.ram} | ${variant.storage}`
+                                            }
+                                        />
+
+                                    </div>
+
+                                )
+                            )
+                        }
+
+
+                        {/* COLORS PREVIEW */}
+
+                        <h3>
+                            Colors
+                        </h3>
+
+
+                        {
+                            productData.colors.map(
+                                (color, index) => (
+
+                                    <div
+                                        className="preview-item"
+                                        key={index}
+                                    >
+
+                                        <label>
+                                            Color {index + 1}
+                                        </label>
+
+
+                                        <input
+                                            readOnly
+                                            value={
+                                                `${color.name} (${color.hexCode})`
+                                            }
+                                        />
+
+                                    </div>
+
+                                )
+                            )
+                        }
+
+                    </div>
+
+                </div>
 
             </div>
 
-        ))}
+        </>
 
-        <h3>Colors</h3>
-
-        {productData.colors.map((color,index)=>(
-
-            <div
-                className="preview-item"
-                key={index}
-            >
-
-                <label>
-                    Color {index+1}
-                </label>
-
-                <input
-                    readOnly
-                    value={`${color.name} (${color.hexCode})`}
-                />
-            </div>
-        ))}
-    </div>
-</div>
-</div>
-</>
-  );
+    );
 
 }
+
 
 export default AdminAddProduct;

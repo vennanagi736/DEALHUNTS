@@ -15,7 +15,7 @@ import VendorLogin from "./pages/vendor/VLogin";
 import VendorRegister from "./pages/vendor/VRegister";
 import VendorHome from "./pages/vendor/VHome";
 import VendorProductPage from "./pages/vendor/VProduct";
-import VendorManage from "./pages/vendor/VManage";
+import VendorProductManage from "./pages/vendor/VProductManage";
 import RequestStatus from "./pages/vendor/VRequest";
 
 
@@ -33,6 +33,7 @@ import AdminAddProduct from "./pages/admin/AAddProduct";
 import AdminMasterData from "./pages/admin/AMasterData";
 import AdminImportProducts from "./pages/admin/AImportProducts";
 import AdminManageTrending from "./pages/admin/ATrending";
+import AdminManageProduct from "./pages/admin/AManageProduct";
 
 function App() {
 return (
@@ -66,10 +67,10 @@ element={
 }
 />
 <Route
-path="/vendor"
+path="/vendor/manage-products"
 element={
 <ProtectedRoute allowedRoles={["ROLE_VENDOR"]}>
-<VendorManage />
+    <VendorProductManage />
 </ProtectedRoute>
 }
 />
@@ -196,6 +197,13 @@ element={
         <AdminManageTrending/>
     </ProtectedRoute>
 }
+/>
+<Route
+    path="/admin/manage-products"
+    element={
+    <ProtectedRoute allowedRoles={["ROLE_ADMIN"]}>
+        <AdminManageProduct/>
+        </ProtectedRoute>}
 />
 
 {/* ================= PRODUCT ================= */}

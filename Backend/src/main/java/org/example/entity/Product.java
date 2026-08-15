@@ -3,9 +3,10 @@ package org.example.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,8 +27,10 @@ public class Product {
     private String category;
     private String description;
 
+    @Column(nullable=false)
+    private boolean active =true;
     
-    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(
         mappedBy="product",
         cascade=CascadeType.ALL,
@@ -35,8 +38,6 @@ public class Product {
     )
     private List<Image> images = new ArrayList<>();
 
-
-    @JsonManagedReference
     @OneToMany(
         mappedBy="product",
         cascade=CascadeType.ALL,
@@ -49,15 +50,14 @@ public class Product {
     private String displaySize;
     private String battery;
 
-
-    @JsonManagedReference
     @OneToMany(
         mappedBy="product",
-        cascade=CascadeType.ALL
+        cascade=CascadeType.ALL,
+        orphanRemoval=true
     )
     private List<Color> colors = new ArrayList<>();
 
-    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(
         mappedBy="product",
         cascade=CascadeType.ALL,
@@ -162,6 +162,13 @@ public class Product {
 
     public void setColors(List<Color> colors) {
         this.colors = colors;
+    }
+    public boolean isActive() {
+    return active;
+    }
+
+    public void setActive(boolean active) {
+    this.active = active;
     }
 
 

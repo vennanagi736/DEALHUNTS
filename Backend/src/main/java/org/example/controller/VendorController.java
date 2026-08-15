@@ -1,6 +1,11 @@
 package org.example.controller;
 
+import java.util.List;
 import java.util.Map;
+
+import org.example.entity.Product;
+import org.example.repository.ProductRepository;
+
 
 import org.example.dto.LoginRequest;
 import org.example.dto.LoginResponse;
@@ -23,6 +28,9 @@ public class VendorController {
 
     @Autowired
     private VendorRepository vendorRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private JWTUtil jwtUtil;
@@ -142,5 +150,13 @@ public String getStatus(@RequestParam String email) {
     }
 
     return vendor.getStatus();
-}
+    }
+    @GetMapping("/count")
+    public ResponseEntity<Long> getVendorCount() {
+    return ResponseEntity.ok(vendorRepository.count());
+    }
+    @GetMapping("/products/active")
+    public List<Product> getActiveProducts() {
+    return productRepository.findByActiveTrue();
+    }
 }

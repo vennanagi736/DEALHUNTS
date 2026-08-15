@@ -15,8 +15,6 @@ public class CloudinaryService {
 
     @Autowired
     private Cloudinary cloudinary;
-
-
     public Map<String, Object> uploadImage(MultipartFile file) throws IOException {
 
 

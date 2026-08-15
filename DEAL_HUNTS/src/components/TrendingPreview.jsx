@@ -1,33 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { getTrendingItems } from "../api/TrendingApi";
+// import { getTrendingItems } from "../api/TrendingApi";
 import "../styles/TrendingPreview.css";
 
-
-function TrendingPreview(){
-
-    const [items,setItems] = useState([]);
-
+function TrendingPreview({items}){
     const [currentIndex,setCurrentIndex] = useState(0);
 
-
-
     // Load promotions
-    useEffect(()=>{
+    // useEffect(()=>{
+    //     const loadTrending = async()=>{
+    //         const data = await getTrendingItems();
+    //         console.log("Preview Data:",data);
+    //         setItems(data);
+    //     };
 
-        const loadTrending = async()=>{
+    //     loadTrending();
 
-            const data = await getTrendingItems();
-
-            console.log("Preview Data:",data);
-
-            setItems(data);
-
-        };
-
-
-        loadTrending();
-
-    },[]);
+    // },[]);
 
 
 

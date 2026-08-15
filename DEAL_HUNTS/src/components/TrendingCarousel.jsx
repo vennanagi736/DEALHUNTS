@@ -1,68 +1,62 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getTrendingItems } from "../api/TrendingApi";
+import axios from "axios";
 import "../styles/TrendingCarousel.css";
-
 
 const TrendingCarousel = () => {
 
     const [items, setItems] = useState([]);
-
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const navigate = useNavigate();
 
-
-
     // Load banners
-    useEffect(()=>{
+    useEffect(() => {
 
-        const loadTrending = async()=>{
+        const loadTrending = async () => {
 
-            const data = await getTrendingItems();
+            try {
 
-            console.log(
-                "Carousel Data:",
-                data
-            );
+                const response = await axios.get(
+                    "http://localhost:8080/admin/promotions/all"
+                );
 
-            setItems(data);
+                console.log("Carousel Data:", response.data);
+
+                setItems(response.data);
+
+            } catch (error) {
+
+                console.error("Carousel Error:", error);
+
+            }
 
         };
 
-
         loadTrending();
 
-
-    },[]);
-
-
-
-
+    }, []);
 
     // Auto slide
-    useEffect(()=>{
+    useEffect(() => {
 
-        if(items.length <= 1)
+        if (items.length <= 1) {
             return;
+        }
 
-
-        const interval = setInterval(()=>{
+        const interval = setInterval(() => {
 
             setCurrentIndex(prev =>
                 (prev + 1) % items.length
             );
 
+        }, 5000);
 
-        },5000);
+        return () => clearInterval(interval);
 
+    }, [items]);
 
-        return ()=>clearInterval(interval);
-
-
-    },[items]);
-
-    if(items.length === 0){
+    if (items.length === 0) {
 
         return (
             <p>
@@ -71,54 +65,50 @@ const TrendingCarousel = () => {
         );
 
     }
-return (
 
-    <div className="carousel-container">
-        <div className="carousel-item">
+    return (
+        <div className="carousel-container">
 
-            <img
-                src={items[currentIndex].imageUrl}
-                className="carousel-image"
-                alt={items[currentIndex].title}
+            <div className="carousel-item">
 
-                onClick={() =>
-                    items[currentIndex].url &&
-                    navigate(items[currentIndex].url)
-                }
+                <img
+                    src={items[currentIndex].imageUrl}
+                    className="carousel-image"
+                    alt={items[currentIndex].title}
 
-            />
+                    onClick={() =>
+                        items[currentIndex].url &&
+                        navigate(items[currentIndex].url)
+                    }
+                />
+
             </div>
-
 
             <div className="dots-container">
 
-                {
-                    items.map((_,index)=>(
+                {items.map((_, index) => (
 
-                        <span
+                    <span
+                        key={index}
 
-                            key={index}
+                        className={
+                            currentIndex === index
+                                ? "dot active"
+                                : "dot"
+                        }
 
-                            className={
-                                currentIndex === index
-                                ?
-                                "dot active"
-                                :
-                                "dot"
-                            }
+                        onClick={() =>
+                            setCurrentIndex(index)
+                        }
+                    >
+                    </span>
 
-                            onClick={() =>
-                                setCurrentIndex(index)
-                            }
-                        >
-                        </span>
-                    ))
-                }
+                ))}
+
             </div>
+
         </div>
-);
-
+    );
 };
-
 
 export default TrendingCarousel;

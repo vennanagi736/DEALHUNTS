@@ -13,6 +13,10 @@ public class VendorService {
     @Autowired
     private VendorRepository vendorRepository;
 
+    public Long getVendorCount(){
+        return vendorRepository.count();
+    }
+
     public List<Vendor> getAllVendors() {
         return vendorRepository.findAll();
     }

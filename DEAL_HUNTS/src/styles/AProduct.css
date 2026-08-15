@@ -258,9 +258,201 @@ tr:nth-child(even) {
 
 }
 
-
-
 .status.inactive{
     background:#f8d7da;
     color:#721c24;
+}
+
+.image-card {
+    position: relative !important;
+    width: 150px;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.image-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.image-card .image-checkbox {
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    left: unset !important;
+    bottom: unset !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 999 !important;
+    cursor: pointer;
+}
+
+.delete-btn{
+  background-color: rgb(237, 91, 91);
+}
+.delete-btn:hover{
+  transition: scale(0.3s);
+  background-color: red;
+}
+
+.change-btn{
+background:#d4af37;
+color:black;
+}
+
+.change-btn{
+padding:12px 25px;
+border:none;
+border-radius:25px;
+cursor:pointer;
+font-weight:bold;
+}
+.image-actions button:hover{
+transform:translateY(-2px);
+}
+
+/*Mange product*/
+.manage-product-actions {
+    width: 80%;
+    margin: 25px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.select-all-products,.select-products,.delete-selected-btn{
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 8px;
+    padding-right: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.mainheading{
+  font-size: 30px;
+  margin-top: 20px;
+}
+.product-action-buttons{
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top:20px;
+}
+.select-all-products input,.delete-selected-btn,.restore-selected-btn {
+    margin: 0;
+    cursor: pointer;
+}
+
+.clear-selection {
+    margin-left: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #555;
+    transition: 0.2s ease;
+}
+
+.clear-selection:hover {
+    color: #dc3545;
+}
+
+.restore-selected-btn:enabled{
+  background-color: goldenrod;
+  color: black;
+}
+.delete-selected-btn:enabled{
+   background: #dc3545;
+    color: black;
+}
+ .delete-selected-btn,.restore-selected-btn {
+    padding: 10px 20px;
+    border: none;
+    font-family: cursive;
+    border-radius: 18px;
+    font-weight: 600;
+    display: flex;
+    cursor: pointer;
+    transition: 0.25s ease;
+} 
+
+.delete-selected-btn:hover:not(:disabled) {
+    background: #b02a37;
+    transform: translateY(-2px);
+}
+
+.delete-selected-btn:disabled,.restore-selected-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.manage-product-table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+.manage-product-table input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+}
+
+.product-status-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.product-tab {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 20px;
+    font-family: cursive;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    background: #e0e0e0;
+    color: #333;
+    transition: all 0.25s ease;
+}
+
+.product-tab:hover {
+    transform: translateY(-2px);
+}
+
+/* Available */
+.active-tab {
+    background: #28a745;
+    color: white;
+}
+
+/* Unavailable */
+.unavailable-tab {
+    background: #dc3545;
+    color: white;
+}
+
+.edit-product-btn {
+    margin-top: 15px;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 18px;
+    background: goldenrod;
+    color: black;
+    font-family: cursive;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.edit-product-btn:hover {
+    background: #d4a017;
+    transform: translateY(-2px);
 }

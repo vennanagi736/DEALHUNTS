@@ -4,7 +4,7 @@ import "../../styles/Admin.css";
 import axios from "axios";
 import { useEffect } from "react";
 import { getTrendingItems } from "../../api/TrendingApi";
-
+import { getUserCount, getVendorCount, getProductCount } from "../../api/AdminApi";
 import SideWindow from "../../components/SideBar";
 import TrendingPreview from "../../components/TrendingPreview";
 
@@ -17,8 +17,10 @@ function AdminDashboard() {
 
   const [query, setQuery] = useState("");
   const [trendingItems, setTrendingItems] = useState([]);
-
-
+  const [userCount, setUserCount] = useState(0);
+  const [vendorCount, setVendorCount] = useState(0);
+  const [orderCount, setOrderCount] = useState(0);
+  const [productCount, setProductCount] = useState(0);
 
   const handleLogout = () => {
 
@@ -64,27 +66,50 @@ function AdminDashboard() {
       }
 
     }
+   };
+useEffect(() => {
+    const loadTrending = async () => {
+        try {
+            console.log("Dashboard: calling promotions API");
 
-  };
-  useEffect(()=>{
+            const response = await axios.get(
+                "http://localhost:8080/admin/promotions/all"
+            );
 
-    console.log("useefefkmskdmvsdim");
+            console.log("Dashboard status:", response.status);
+            console.log("Dashboard data:", response.data);
 
-    const loadTrending = async()=>{
+            setTrendingItems(response.data);
 
-      try{
-      console.log("Callinga aap");
-        const data = await getTrendingItems();
-        console.log("Admin Trending:",data);
-        setTrendingItems(data);
-      }
-      catch(err){
-        console.log("Ttencneomocme",err);
-      }
+        } catch (error) {
+            console.log("Dashboard trending ERROR:", error);
+            console.log("URL:", error.config?.url);
+            console.log("STATUS:", error.response?.status);
+            console.log("DATA:", error.response?.data);
+        }
     };
 
     loadTrending();
-},[]);
+}, []);
+//   useEffect(()=>{
+
+//     console.log("useefefkmskdmvsdim");
+
+//     const loadTrending = async()=>{
+
+//       try{
+//       console.log("Callinga aap");
+//         const data = await getTrendingItems();
+//         console.log("Admin Trending:",data);
+//         setTrendingItems(data);
+//       }
+//       catch(err){
+//         console.log("Ttencneomocme",err);
+//       }
+//     };
+
+//     loadTrending();
+// },[]);
 
 
   const handleSearch = () => {
@@ -94,6 +119,40 @@ function AdminDashboard() {
     navigate("/product");
 
   };
+
+  useEffect(() => {
+
+    const loadDashboardStats = async () => {
+        try {
+
+            const userResponse = await getUserCount();
+            console.log("userCount:",userResponse.data);
+            setUserCount(userResponse.data);
+
+            const vendorResponse = await getVendorCount();
+            console.log("VendorCount:",vendorResponse.data);
+            setVendorCount(vendorResponse.data);
+
+            const productResponse = await getProductCount();
+            console.log("ProductCount:",productResponse.data);
+            setProductCount(productResponse.data);
+            
+            // const orderResponse = await getOrderCount();
+            // console.log("OrderCount:",orderResponse.data);
+            // setOrderCount(orderResponse.data);
+
+        } catch (error) {
+            console.error(
+                "Failed to load dashboard stats:",
+                error
+            );
+        }
+    };
+
+
+    loadDashboardStats();
+
+}, []);
 
 
 
@@ -176,36 +235,54 @@ function AdminDashboard() {
           >
             Logout
           </button>
-
-
         </nav>
-
-
       </header>
 
-
-
-
-
-      <main className="admin-main">
-
+     <main className="admin-main">
     <div className="admin-dashboard-content">
-
-
+      <div className="top-dashboard">
         <div className="admin-dashboard-left">
-
-            <h1>
+           <h1>
                 Welcome Admin
             </h1>
-
             <p>
                 Manage your DealHunts platform
             </p>
         </div>
-
         <div className="right-strip">
             <TrendingPreview items={trendingItems} />
         </div>
+        </div>
+
+        <div className="dashboard-stats">
+            <div className="dashboard-card">
+        <h3>
+            Total Users
+        </h3>
+        <p>
+            {userCount}
+        </p>
+            </div>
+
+        <div className="dashboard-card">
+        <h3>
+            Total Vendors
+        </h3>
+        <p>
+            {vendorCount}
+        </p>
+        </div>
+        <div className="dashboard-card">
+            <h3>Total Products</h3>
+            <p>{productCount}</p>
+        </div>
+
+
+        {/* <div className="dashboard-card">
+            <h3>Total Orders</h3>
+            <p>{orderCount}</p>
+        </div>  */}
+</div>
 
     </div>
 </main>
