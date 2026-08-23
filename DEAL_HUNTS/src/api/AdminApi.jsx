@@ -47,3 +47,9 @@ export const getProductCount = () => {
 //         },
 //     });
 // };
+
+export const getLowStockAlertsCount = () => {
+    return axios.get(
+        `${BASE_URL}/admin/inventory/low-stock/count`
+    );
+};

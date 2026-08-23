@@ -8,7 +8,7 @@ import BannerCropPopup from "../../components/BannerCropPopup";
 import getCroppedImg from "../../utils/cropImage";
 
 
-function AdminManageTrending() {
+function AdminManageCarousel() {
 
   const navigate = useNavigate();
 
@@ -602,4 +602,4 @@ showPromotionsPanel && (
       
 }
 
-export default AdminManageTrending;
+export default AdminManageCarousel;

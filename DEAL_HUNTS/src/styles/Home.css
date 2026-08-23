@@ -1,233 +1,1130 @@
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial, sans-serif;
-  font-size:17px;
+/* ============================================================
+   ROOT / GLOBAL
+============================================================ */
+
+:root {
+  --bg-page: #ffffff;
+  --border-soft: #e5e5e7;
+  --text-primary: #111111;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+
+  --accent: #d4af37;
+  --accent-2: #b89628;
+
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  --radius-md: 14px;
+  --radius-sm: 10px;
 }
 
-.header{
-  background:white;
-  padding:20px 40px;
-  display:flex;
-  align-items:center;
-  border-bottom: 2px solid #e0e0e0;
-} 
-
-/* LOGO */
-.logo{
-  margin-right:auto;
+* {
+  box-sizing: border-box;
 }
 
-.Gold{
-  color:gold;
-  font-size:24px;
-  font-weight:bold;
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  background: var(--bg-page);
+  color: var(--text-primary);
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
 }
 
-.Black{
-  color:black;
-  font-size:24px;
-  font-weight:bold;
+
+/* ============================================================
+   PAGE
+============================================================ */
+
+.pc-page {
+  min-height: 100vh;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+
+  background: #ffffff;
 }
 
-/* NAVIGATION */
-.navigation{
-  display:flex;
-  align-items:center;
-  gap:40px;
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.pc-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding: 14px 24px;
+
+  background: rgba(255, 255, 255, 0.95);
+
+  backdrop-filter: blur(8px);
+
+  border-bottom: 1px solid var(--border-soft);
 }
 
-/* LEFT NAV LINKS */
-.nav-links{
-  display:flex;
-  gap:25px;
+.pc-header-left,
+.pc-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-.navigation a{
-  text-decoration:none;
-  color:black;
-  font-size: 20px;
-  transition:0.3s;
+
+/* ============================================================
+   SIDEBAR
+============================================================ */
+
+.pc-header-sidebar {
+  display: flex;
+  align-items: center;
 }
 
-.navigation a:hover{
-  color:gold;
+
+/* ============================================================
+   BRAND
+============================================================ */
+
+.pc-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  cursor: pointer;
 }
 
-/* RIGHT SIDE (SEARCH + LOGIN) */
-.nav-right{
-  display:flex;
-  align-items:center;
-  gap:15px;
+.pc-logo {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  font-weight: 900;
+  font-size: 22px;
+
+  letter-spacing: 0.5px;
+
+  user-select: none;
+
+  text-transform: uppercase;
 }
 
-/* SEARCH */
-.search-box{
-  display:flex;
-  align-items:center;
-  border:2px solid black;
-  border-radius:6px;
-  padding:4px 10px;
-  height: 43px;
-  width: 300px;
+.pc-logo-deal {
+  color: var(--accent);
 }
 
-.search-box input{
-  border:none;
-  outline:none;
-  width:250px;
-  font-size:16px;
-  height: 35px;
+.pc-logo-hunts {
+  color: #000000;
 }
 
-.icon{
-  cursor:pointer;
-  margin-left:6px;
+.pc-header-tagline {
+  font-size: 12px;
+
+  color: var(--text-secondary);
+
+  margin-top: 2px;
 }
 
-/* LOGIN BUTTON */
-.home-Login{
-  padding:7px 20px;
-  background:gold;
-  border:2px solid black;
-  border-radius:8px;
-  cursor:pointer;
-  font-size: 20px;
-  transition:0.3s;
+
+/* ============================================================
+   HEADER NAVIGATION
+============================================================ */
+
+.pc-header-nav {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.pc-header-nav button {
+  background: transparent;
+
+  border: none;
+
+  color: var(--text-secondary);
+
+  font-size: 14px;
+
+  padding: 8px 12px;
+
+  border-radius: var(--radius-sm);
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.pc-header-nav button:hover {
+  color: var(--text-primary);
+
+  background: #f3f3f5;
+}
+
+.pc-nav-active {
+  color: var(--text-primary) !important;
+
+  background: #ececf0 !important;
+}
+
+
+/* ============================================================
+   HEADER ACTIONS
+============================================================ */
+
+.pc-header-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.pc-header-icon {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  border: 1px solid var(--border-soft);
+
+  background: #fafafa;
+
+  color: var(--text-primary);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.pc-header-icon:hover {
+  background: #f3f3f5;
+
+  transform: translateY(-1px);
+
+  border-color: #d8d8dc;
+}
+
+
+/* ============================================================
+   TRENDING CAROUSEL SECTION
+============================================================ */
+
+.pc-trending-section {
+  width: calc(100% - 80px);
+
+  margin: 12px 40px 0;
+
+  position: relative;
+
+  background: transparent;
+
+  border-radius: 16px;
+
+  padding-bottom: 8px;
+}
+
+
+/* ============================================================
+   SECTION HEADING
+============================================================ */
+
+.pc-section-heading {
   font-family: cursive;
+
+  padding-top: 10px;
+
+  padding-bottom: 20px;
 }
 
-.home-Login:hover{
-  background:black;
-  color:white;
-  border-radius: 8px;
-  border:2px solid white;
+.pc-section-heading h2 {
+  margin: 0;
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+  color: #111111;
 }
 
-/* MAIN */
- .main{
-  background:#fff;
-  min-height:70vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding:40px;
-  text-align:center;
+
+/* ============================================================
+   MAIN TRENDING CAROUSEL
+============================================================ */
+
+.pc-trending-carousel {
+  position: relative;
+
+  width: 100%;
+
+  height: 270px;
+
+  background: #ffffff;
+
+  border: 1px solid #e4e8ee;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 6px 20px rgba(15, 35, 65, 0.07);
+
+  overflow: hidden;
 }
 
-.product-layout{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:250px;
-  height:250px;
-  border:2px solid black;
+
+/* ============================================================
+   CAROUSEL VIEWPORT
+============================================================ */
+
+.pc-trend-viewport {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  background: transparent;
+
+  border: none;
+
+  border-radius: 0;
+
+  box-shadow: none;
 }
 
-/* FOOTER */
-.footer{
-  background:white;
-  text-align:center;
-  padding:20px;
-  border-top:1px solid #ddd;
+
+/* ============================================================
+   CAROUSEL TRACK
+============================================================ */
+
+.pc-trend-track {
+  display: flex;
+
+  width: 100%;
+  height: 100%;
+
+  transition:
+    transform 0.45s
+    cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.home-container{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
+
+/* ============================================================
+   CAROUSEL SLIDE
+============================================================ */
+
+.pc-trend-slide {
+  flex: 0 0 100%;
+
+  width: 100%;
+  height: 100%;
+
+  position: relative;
 }
 
-.main{
-  flex:1;
+
+/* ============================================================
+   TREND CARD
+============================================================ */
+
+.pc-trend-card {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  padding: 10px;
+
+  margin: 0;
+
+  background: transparent;
+
+  border: none;
+
+  box-shadow: none;
 }
 
-.carousel-user-image {
+
+/* ============================================================
+   TREND IMAGE AREA
+============================================================ */
+
+.pc-trend-image-box {
+  position: absolute;
+
+  top: 10px;
+  right: 10px;
+  bottom: 10px;
+  left: 10px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background: transparent;
+
+  border: none;
+
+  border-radius: 12px;
+
+  box-shadow: none;
+
+  z-index: 1;
+}
+
+
+/* ============================================================
+   TREND IMAGE
+============================================================ */
+
+.pc-trend-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  object-position: center;
+
+  padding: 0;
+
+  margin: 0;
+
+  border: none;
+
+  border-radius: 0;
+
+  background: transparent;
+
+  box-shadow: none;
+}
+
+
+/* ============================================================
+   HIDE TREND TEXT
+============================================================ */
+
+.pc-trend-details,
+.pc-trend-name,
+.pc-trend-price {
+  display: none !important;
+}
+
+
+/* ============================================================
+   CAROUSEL ARROWS
+============================================================ */
+
+.pc-trending-arrow {
+  position: absolute;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  z-index: 5;
+
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #d8dee7;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  color: #123b7a;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 14px rgba(15, 35, 65, 0.12);
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* LEFT */
+
+.pc-trending-prev {
+  left: 14px;
+}
+
+
+/* RIGHT */
+
+.pc-trending-next {
+  right: 14px;
+}
+
+
+/* HOVER */
+
+.pc-trending-arrow:hover {
+  background: #123b7a;
+
+  color: #ffffff;
+
+  border-color: #123b7a;
+
+  transform:
+    translateY(-50%)
+    scale(1.06);
+
+  box-shadow:
+    0 7px 18px rgba(18, 59, 122, 0.22);
+}
+
+
+/* ACTIVE */
+
+.pc-trending-arrow:active {
+  transform:
+    translateY(-50%)
+    scale(0.97);
+}
+
+
+/* ============================================================
+   CAROUSEL DOTS
+============================================================ */
+
+.pc-trend-dots {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  bottom: 10px;
+
+  z-index: 6;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  pointer-events: auto;
+}
+
+.pc-trend-dot {
+  width: 7px;
+  height: 7px;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #c5ccd6;
+
+  opacity: 0.9;
+
+  cursor: pointer;
+
+  transition:
+    width 0.25s ease,
+    background 0.25s ease,
+    transform 0.2s ease;
+}
+
+.pc-trend-dot:hover {
+  background: #7f8da1;
+
+  transform: scale(1.15);
+}
+
+.pc-trend-dot-active {
+  width: 22px;
+
+  border-radius: 10px;
+
+  background: #123b7a;
+
+  opacity: 1;
+}
+
+
+/* ============================================================
+   EMPTY CAROUSEL
+============================================================ */
+
+.pc-trending-empty {
+  display: none;
+}
+
+
+/* ============================================================
+   ============================================================
+   TRENDING DEALS PLACEHOLDER
+   ============================================================
+============================================================ */
+
+.pc-trending-deals-section {
+  width: calc(100% - 80px);
+
+  margin: 24px 40px 0;
+}
+
+
+/* ============================================================
+   TRENDING DEALS HEADING
+============================================================ */
+
+.pc-trending-deals-heading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 14px;
+}
+
+.pc-trending-deals-heading h2 {
+  margin: 0;
+
+  font-family: cursive;
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+  color: #111111;
+}
+
+
+/* ============================================================
+   TRENDING DEALS BOX
+============================================================ */
+
+.pc-trending-deals-placeholder {
+  width: 100%;
+
+  height: 270px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e4e8ee;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 6px 20px rgba(15, 35, 65, 0.07);
+}
+
+
+/*
+   Temporary text only.
+   You can remove this later when
+   actual trending deals are connected.
+*/
+
+.pc-trending-deals-placeholder-text {
+  color: #a0a0a0;
+
+  font-size: 15px;
+
+  font-weight: 500;
+
+  letter-spacing: 0.2px;
+}
+
+
+/* ============================================================
+   VIEW ALL PRODUCTS BUTTON
+============================================================ */
+
+.pc-view-all-wrapper {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  margin-top: 22px;
+
+  margin-bottom: 30px;
+}
+
+
+.pc-view-all-products {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  min-width: 190px;
+
+  padding: 11px 22px;
+
+  border: 1px solid #123b7a;
+
+  border-radius: 10px;
+
+  background: #123b7a;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.pc-view-all-products:hover {
+  background: #0d2d60;
+
+  border-color: #0d2d60;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 18px rgba(18, 59, 122, 0.2);
+}
+
+
+.pc-view-all-products:active {
+  transform: translateY(0);
+}
+
+
+/* ============================================================
+   MAIN
+============================================================ */
+
+.pc-main {
+  width: 100%;
+
+  padding: 0;
+}
+
+
+/*
+   Main is intentionally empty now.
+
+   Search bar
+   Filters
+   Categories
+   Sort
+   Product grid
+   Pagination
+
+   have all been removed.
+*/
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.pc-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 16px 24px;
+
+  border-top: 1px solid var(--border-soft);
+
+  background: #fafafa;
+
+  font-size: 13px;
+
+  color: var(--text-secondary);
+}
+
+.pc-footer strong {
+  color: var(--text-primary);
+}
+
+
+/* ============================================================
+   LARGE DESKTOP
+   1400px+
+============================================================ */
+
+@media (min-width: 1400px) {
+
+  .pc-trending-section {
+    width: calc(100% - 80px);
+
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+
+  .pc-trending-carousel {
+    height: 290px;
+  }
+
+  .pc-trending-deals-section {
+    width: calc(100% - 80px);
+
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+
+  .pc-trending-deals-placeholder {
+    height: 290px;
+  }
+
+  .pc-trend-card {
+    padding: 10px;
+  }
+
+  .pc-trend-image-box {
+    top: 10px;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+  }
+
+  .pc-trending-arrow {
+    width: 46px;
+    height: 46px;
+  }
+}
+
+
+/* ============================================================
+   LAPTOP
+============================================================ */
+
+@media (max-width: 1200px) {
+
+  .pc-trending-section {
+    width: calc(100% - 70px);
+
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+
+  .pc-trending-carousel {
+    height: 250px;
+  }
+
+  .pc-trending-deals-section {
+    width: calc(100% - 70px);
+
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+
+  .pc-trending-deals-placeholder {
+    height: 250px;
+  }
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 900px) {
+
+  .pc-trending-section {
+    width: calc(100% - 50px);
+
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+
+  .pc-trending-carousel {
+    height: 220px;
+
+    border-radius: 12px;
+  }
+
+  .pc-trending-deals-section {
+    width: calc(100% - 50px);
+
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+
+  .pc-trending-deals-placeholder {
+    height: 220px;
+
+    border-radius: 12px;
+  }
+
+  .pc-trending-arrow {
+    width: 38px;
+    height: 38px;
+
+    font-size: 17px;
+  }
+
+  .pc-trending-prev {
+    left: 10px;
+  }
+
+  .pc-trending-next {
+    right: 10px;
+  }
+
+  .pc-trend-dots {
+    bottom: 8px;
+  }
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 700px) {
+
+  .pc-header {
+    padding: 12px 16px;
+  }
+
+  .pc-header-nav {
+    display: none;
+  }
+
+  .pc-header-left,
+  .pc-header-right {
+    gap: 10px;
+  }
+
+  .pc-logo {
+    font-size: 19px;
+  }
+
+  .pc-header-tagline {
+    font-size: 10px;
+  }
+
+  .pc-trending-section {
+    width: calc(100% - 28px);
+
+    margin-left: 14px;
+    margin-right: 14px;
+
+    margin-top: 10px;
+  }
+
+  .pc-section-heading {
+    padding-top: 8px;
+
+    padding-bottom: 12px;
+  }
+
+  .pc-section-heading h2 {
+    font-size: 20px;
+  }
+
+  .pc-trending-carousel {
+    height: 170px;
+
+    border-radius: 11px;
+  }
+
+
+  /* TRENDING DEALS */
+
+  .pc-trending-deals-section {
+    width: calc(100% - 28px);
+
+    margin-left: 14px;
+    margin-right: 14px;
+
+    margin-top: 20px;
+  }
+
+  .pc-trending-deals-heading {
+    margin-bottom: 12px;
+  }
+
+  .pc-trending-deals-heading h2 {
+    font-size: 20px;
+  }
+
+  .pc-trending-deals-placeholder {
+    height: 170px;
+
+    border-radius: 11px;
+  }
+
+
+  /* ARROWS */
+
+  .pc-trending-arrow {
+    width: 32px;
+    height: 32px;
+
+    font-size: 15px;
+  }
+
+  .pc-trending-prev {
+    left: 7px;
+  }
+
+  .pc-trending-next {
+    right: 7px;
+  }
+
+
+  /* DOTS */
+
+  .pc-trend-dots {
+    bottom: 6px;
+
+    gap: 5px;
+  }
+
+  .pc-trend-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .pc-trend-dot-active {
+    width: 17px;
+  }
+
+
+  /* BUTTON */
+
+  .pc-view-all-wrapper {
+    margin-top: 18px;
+
+    margin-bottom: 24px;
+  }
+
+  .pc-view-all-products {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 
-/* ===========================
-   USER HOME TRENDING CAROUSEL
-   =========================== */
+    max-width: 220px;
+  }
 
-.manage-main{
-    flex: 1;
-    padding: 30px 40px 60px;
-    display: flex;
+
+  /* FOOTER */
+
+  .pc-footer {
+    flex-direction: column;
+
     justify-content: center;
+
+    text-align: center;
+
+    padding: 14px 16px;
+  }
 }
 
-/* Outer section */
-.trending-section-user{
-    width: 100%;
-    max-width: 1450px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 15px;
-    border-radius: 18px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-}
 
-/* Carousel */
-.carousel-user{
-    position: relative;
-    width: 100%;
-    max-width: 1400px;
-    height: 350px;          /* Fixed height */
-    margin: 0 auto;
-    overflow: hidden;
-    border-radius: 16px;
-}
+/* ============================================================
+   VERY SMALL MOBILE
+============================================================ */
 
-/* Carousel wrapper */
-.carousel-user .carousel-container{
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
+@media (max-width: 400px) {
 
-/* Image */
-.carousel-user .carousel-image{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
+  .pc-trending-section {
+    width: calc(100% - 20px);
 
-/* Dots */
-.carousel-user .dots-container{
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-}
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 
-/* Navigation buttons */
-.carousel-user .nav-btn{
-    width: 42px;
-    height: 42px;
-    font-size: 22px;
-}
+  .pc-trending-carousel {
+    height: 155px;
+  }
 
-.settings-btn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 24px;
-    padding: 0;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
+  .pc-trending-deals-section {
+    width: calc(100% - 20px);
 
-.settings-btn:hover{
-    transform: scale(1.15);
-    color: gold;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .pc-trending-deals-placeholder {
+    height: 155px;
+  }
+
+  .pc-trending-arrow {
+    width: 29px;
+    height: 29px;
+
+    font-size: 14px;
+  }
+
+  .pc-view-all-products {
+    max-width: 200px;
+
+    padding: 10px 18px;
+  }
 }

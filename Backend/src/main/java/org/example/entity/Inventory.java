@@ -20,7 +20,7 @@ public class Inventory {
     private Long id;
 
     @ManyToOne
-@JoinColumn(name = "vendor_id")
+@JoinColumn(name = "vendor_id",nullable = false)
 private Vendor vendor;
 
 @ManyToOne

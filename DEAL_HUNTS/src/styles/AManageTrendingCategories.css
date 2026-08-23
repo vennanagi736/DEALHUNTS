@@ -1,0 +1,561 @@
+/* .manage-trending-categories-main {
+    padding: 35px 50px;
+    min-height: calc(100vh - 140px);
+}
+
+.manage-trending-categories-heading {
+    margin-bottom: 30px;
+}
+
+.manage-trending-categories-heading h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.manage-trending-categories-heading p {
+    margin-top: 8px;
+    color: #777;
+    font-size: 14px;
+}
+
+
+.trending-categories-section {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+
+.trending-categories-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.trending-categories-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+
+.add-trending-category-btn {
+    border: none;
+    padding: 10px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.trending-categories-container {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.empty-trending-categories {
+    text-align: center;
+    color: #777;
+}
+
+
+.empty-icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+
+.empty-trending-categories h3 {
+    margin: 5px 0;
+    color: #333;
+}
+
+
+.empty-trending-categories p {
+    margin-top: 8px;
+    font-size: 14px;
+} */
+ /* =========================================================
+   TRENDING CATEGORIES PAGE
+========================================================= */
+
+.manage-trending-categories-main {
+    width: 100%;
+    min-height: calc(100vh - 140px);
+    padding: 40px 60px;
+}
+
+
+/* =========================================================
+   PAGE HEADING
+========================================================= */
+
+.manage-trending-categories-heading {
+    margin-bottom: 30px;
+}
+
+.manage-trending-categories-heading h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #172033;
+}
+
+.manage-trending-categories-heading p {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #707784;
+}
+
+
+/* =========================================================
+   TRENDING CATEGORY SECTION
+========================================================= */
+
+.trending-categories-section {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.trending-categories-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.trending-categories-header h2 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 650;
+    color: #172033;
+}
+
+
+/* =========================================================
+   ADD CATEGORY BUTTON
+========================================================= */
+
+.add-trending-category-btn {
+    border: none;
+    outline: none;
+    background: #172b4d;
+    color: #ffffff;
+
+    padding: 11px 20px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.add-trending-category-btn:hover {
+    background: #0f1f38;
+    transform: translateY(-1px);
+}
+
+.add-trending-category-btn:disabled {
+    background: #b8bec8;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* =========================================================
+   SELECTED TRENDING CATEGORIES CONTAINER
+========================================================= */
+
+.trending-categories-container {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 20px;
+
+    min-height: 180px;
+}
+
+
+/* =========================================================
+   SELECTED CATEGORY CARD
+========================================================= */
+
+.trending-category-item {
+    min-height: 170px;
+
+    background: #f8f9fb;
+
+    border: 1px solid #e2e5ea;
+
+    border-radius: 12px;
+
+    padding: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.trending-category-item:hover {
+    transform: translateY(-3px);
+
+    border-color: #cbd2dc;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+   CATEGORY INFORMATION
+========================================================= */
+
+.trending-category-info {
+    width: 100%;
+    text-align: center;
+}
+
+.trending-category-info h3 {
+    margin: 0 0 8px;
+
+    font-size: 18px;
+    font-weight: 650;
+
+    color: #172033;
+
+    word-break: break-word;
+}
+
+.trending-category-info p {
+    margin: 0 0 18px;
+
+    font-size: 12px;
+
+    color: #858c98;
+}
+
+
+/* =========================================================
+   REMOVE BUTTON
+========================================================= */
+
+.trending-category-info button {
+    border: none;
+
+    background: #fff0f0;
+    color: #d93030;
+
+    padding: 8px 17px;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.trending-category-info button:hover {
+    background: #d93030;
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-trending-categories {
+    grid-column: 1 / -1;
+
+    min-height: 180px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    border: 1px dashed #d5dae1;
+
+    border-radius: 12px;
+
+    background: #fafbfc;
+}
+
+.empty-icon {
+    font-size: 35px;
+    margin-bottom: 8px;
+}
+
+.empty-trending-categories h3 {
+    margin: 0;
+
+    font-size: 17px;
+    color: #343b48;
+}
+
+.empty-trending-categories p {
+    margin-top: 7px;
+
+    max-width: 400px;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    color: #858c98;
+}
+
+
+/* =========================================================
+   POPUP WRAPPER
+========================================================= */
+
+.trending-category-popup-wrapper {
+    width: 100%;
+    padding: 5px 2px;
+}
+
+
+/* =========================================================
+   CATEGORY SELECT BOX
+========================================================= */
+
+.trending-category-select-box {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+
+    margin-bottom: 28px;
+}
+
+.trending-category-select-box label {
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #303846;
+}
+
+
+/* =========================================================
+   CATEGORY DROPDOWN
+========================================================= */
+
+.trending-category-select-box select {
+    width: 100%;
+
+    height: 46px;
+
+    padding: 0 14px;
+
+    border: 1px solid #d7dce3;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #303846;
+
+    font-size: 14px;
+
+    outline: none;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.trending-category-select-box select:hover {
+    border-color: #aeb6c2;
+}
+
+.trending-category-select-box select:focus {
+    border-color: #172b4d;
+
+    box-shadow:
+        0 0 0 3px rgba(23, 43, 77, 0.10);
+}
+
+
+/* =========================================================
+   POPUP FOOTER
+========================================================= */
+
+.trending-category-popup-content {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #eceef1;
+}
+
+
+/* =========================================================
+   POPUP BUTTONS
+========================================================= */
+
+.trending-category-popup-content button {
+    min-width: 110px;
+
+    height: 40px;
+
+    padding: 0 17px;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* =========================================================
+   CANCEL
+========================================================= */
+
+.trending-category-popup-content button:first-child {
+    background: #ffffff;
+
+    color: #4c5563;
+
+    border: 1px solid #d5dae1;
+}
+
+.trending-category-popup-content button:first-child:hover {
+    background: #f5f6f8;
+}
+
+
+/* =========================================================
+   ADD
+========================================================= */
+
+.trending-category-popup-content button:last-child {
+    background: #172b4d;
+
+    color: #ffffff;
+
+    border: 1px solid #172b4d;
+}
+
+.trending-category-popup-content button:last-child:hover {
+    background: #0f1f38;
+
+    transform: translateY(-1px);
+}
+
+.trending-category-popup-content button:last-child:disabled {
+    background: #b8bec8;
+
+    border-color: #b8bec8;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .manage-trending-categories-main {
+        padding: 35px 30px;
+    }
+
+    .trending-categories-container {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .manage-trending-categories-main {
+        padding: 25px 15px;
+    }
+
+    .trending-categories-section {
+        padding: 18px;
+    }
+
+    .trending-categories-header {
+        align-items: flex-start;
+
+        gap: 15px;
+
+        flex-direction: column;
+    }
+
+    .trending-categories-container {
+        grid-template-columns: 1fr;
+    }
+
+    .trending-category-popup-content {
+        flex-direction: column-reverse;
+    }
+
+    .trending-category-popup-content button {
+        width: 100%;
+    }
+
+}
+

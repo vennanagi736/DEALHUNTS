@@ -1,275 +1,572 @@
 import React, { useState, useEffect } from "react";
 import SideWindow from "../../components/SideBar";
 import { useNavigate } from "react-router-dom";
-import { getAllProducts,getProductById } from "../../api/ProductApi";
+import { getActiveProducts } from "../../api/VendorApi";
+import { getProductById } from "../../api/ProductApi";
 import { addInventory } from "../../api/InventoryApi";
 import "../../styles/ProductPreview.css";
+import { Link } from "react-router-dom";
 
 function VendorProductPage() {
 
   const navigate = useNavigate();
-  const [inventory,setInventory] = useState({
 
-    product:"",
-    variantId:"",
-    colorId:"",
+  const initialInventory = {
+    product: "",
+    variantId: "",
+    colorId: "",
 
-    sellingPrice:"",
-    stock:"",
-    discount:"",
+    sellingPrice: "",
+    stock: "",
+    discount: "",
+    minPurchase: "",
+    maxPurchase: "",
 
-    warranty:"",
-    condition:"",
-    deliveryTime:"",
+    warranty: "",
+    condition: "",
+    deliveryTime: "",
 
-    homeDelivery:false,
-    storePickup:false,
+    homeDelivery: false,
+    storePickup: false,
 
-    cod:false,
-    emi:false,
-    exchange:false,
+    cod: false,
+    emi: false,
+    exchange: false,
 
-    offerTitle:"",
-    offerDescription:"",
+    offerTitle: "",
+    offerDescription: "",
 
-    returnPolicy:"",
-});
-  const [productInfo,setProductInfo] = useState(null);
+    returnPolicy: "",
+  };
 
-  const [products,setProducts] = useState([]);
-  const [variants,setVariants] = useState([]);
-  const [colors,setColors] = useState([]);
+  const [inventory, setInventory] = useState(initialInventory);
 
-  
-const selectedVariant =
+  const [productInfo, setProductInfo] = useState(null);
+
+  const [products, setProducts] = useState([]);
+  const [variants, setVariants] = useState([]);
+  const [colors, setColors] = useState([]);
+
+  const [submitting, setSubmitting] = useState(false);
+
+
+  // --------------------------------------------------
+  // SELECTED VARIANT
+  // --------------------------------------------------
+
+  const selectedVariant =
     variants.find(
-        v => v.id === Number(inventory.variantId)
+      v => v.id === Number(inventory.variantId)
     ) || null;
 
-const selectedColor =
+
+  // --------------------------------------------------
+  // SELECTED COLOR
+  // --------------------------------------------------
+
+  const selectedColor =
     colors.find(
-        c => c.id === Number(inventory.colorId)
+      c => c.id === Number(inventory.colorId)
     ) || null;
 
 
-  // LOAD PRODUCTS FROM ADMIN PRODUCT TABLE
-useEffect(() => {
+  // --------------------------------------------------
+  // LOAD PRODUCTS
+  // --------------------------------------------------
 
-    async function fetchProducts(){
+  useEffect(() => {
 
-        try{
+    async function fetchProducts() {
 
-            const response = await getAllProducts();
+      try {
 
-            setProducts(response.data);
+        const response = await getActiveProducts();
 
-        }
-        catch(error){
+        setProducts(response.data);
 
-            console.error("Error loading products:", error);
+      } catch (error) {
 
-        }
+        console.error("Error loading products:", error);
+
+      }
 
     }
 
     fetchProducts();
 
-}, []);
-  // CHANGE HANDLER
+  }, []);
+
+
+  // --------------------------------------------------
+  // HANDLE INPUT CHANGES
+  // --------------------------------------------------
 
   const handleChange = async (e) => {
 
-    const { name, value, type, checked } = e.target;
-    const val = type === "checkbox" ? checked : value;
+    const {
+      name,
+      value,
+      type,
+      checked
+    } = e.target;
+
+    const val =
+      type === "checkbox"
+        ? checked
+        : value;
+
+
+    // --------------------------------------------------
+    // NORMAL INPUT / CHECKBOX
+    // --------------------------------------------------
 
     if (name !== "product") {
-        setInventory(prev => ({
-            ...prev,
-            [name]: val
-        }));
-        return;
+
+      setInventory(prev => ({
+        ...prev,
+        [name]: val
+      }));
+
+      return;
     }
 
-    setInventory(prev => ({
-        ...prev,
-        product: value
-    }));
-    
-    if(name==="product"){
-      if (!value) {
-    setProductInfo(null);
-    setVariants([]);
-    setColors([]);
+
+    // --------------------------------------------------
+    // PRODUCT CHANGE
+    // --------------------------------------------------
 
     setInventory(prev => ({
+      ...prev,
+      product: value
+    }));
+
+
+    // --------------------------------------------------
+    // PRODUCT CLEARED
+    // --------------------------------------------------
+
+    if (!value) {
+
+      setProductInfo(null);
+      setVariants([]);
+      setColors([]);
+
+      setInventory(prev => ({
         ...prev,
         product: "",
         variantId: "",
         colorId: ""
-    }));
+      }));
 
-    return;
+      return;
+    }
+
+
+    // --------------------------------------------------
+    // LOAD SELECTED PRODUCT
+    // --------------------------------------------------
+
+    try {
+
+      const response = await getProductById(value);
+
+      if (!response.data) {
+        return;
+      }
+
+      const product = response.data;
+
+      setProductInfo(product);
+
+      // Reset product-specific fields
+      setInventory(prev => ({
+        ...prev,
+
+        variantId: "",
+        colorId: "",
+
+        sellingPrice: "",
+        stock: "",
+        discount: "",
+
+        warranty: "",
+        condition: "",
+        deliveryTime: "",
+
+        homeDelivery: false,
+        storePickup: false,
+
+        cod: false,
+        emi: false,
+        exchange: false,
+
+        offerTitle: "",
+        offerDescription: "",
+
+        returnPolicy: ""
+      }));
+
+      setVariants(product.variants || []);
+      setColors(product.colors || []);
+
+    } catch (error) {
+
+      setProductInfo(null);
+      setVariants([]);
+      setColors([]);
+
+      setInventory(prev => ({
+        ...prev,
+        variantId: "",
+        colorId: ""
+      }));
+
+      console.error("Error loading product:", error);
+
+    }
+
+  };
+
+
+  // --------------------------------------------------
+  // VALIDATE FORM
+  // --------------------------------------------------
+
+  const validateForm = () => {
+
+    // Product
+    if (!inventory.product) {
+      alert("Please select a product.");
+      return false;
+    }
+
+
+    // Variant
+    if (!inventory.variantId) {
+      alert("Please select a variant.");
+      return false;
+    }
+
+
+    // Color
+    if (!inventory.colorId) {
+      alert("Please select a color.");
+      return false;
+    }
+
+
+    // Selling price
+    if (
+      inventory.sellingPrice === "" ||
+      Number(inventory.sellingPrice) <= 0
+    ) {
+      alert("Please enter a valid selling price.");
+      return false;
+    }
+
+
+    // Stock
+    if (
+      inventory.stock === "" ||
+      Number(inventory.stock) <= 0
+    ) {
+      alert("Please enter a valid stock quantity.");
+      return false;
+    }
+
+
+    // Discount
+    if (
+      inventory.discount !== "" &&
+      (
+        Number(inventory.discount) < 0 ||
+        Number(inventory.discount) > 100
+      )
+    ) {
+      alert("Discount must be between 0 and 100.");
+      return false;
+    }
+
+    // Minimum purchase
+if (
+  inventory.minPurchase === "" ||
+  Number(inventory.minPurchase) < 1
+) {
+  alert("Please enter a valid minimum purchase quantity.");
+  return false;
+}
+
+// Maximum purchase
+if (
+  inventory.maxPurchase === "" ||
+  Number(inventory.maxPurchase) < 1
+) {
+  alert("Please enter a valid maximum purchase quantity.");
+  return false;
+}
+
+// Minimum cannot exceed maximum
+if (
+  Number(inventory.minPurchase) > Number(inventory.maxPurchase)
+) {
+  alert("Minimum purchase cannot be greater than maximum purchase.");
+  return false;
+}
+
+// Maximum cannot exceed stock
+if (
+  Number(inventory.maxPurchase) > Number(inventory.stock)
+) {
+  alert("Maximum purchase cannot be greater than available stock.");
+  return false;
 }
 
 
-try{
-
-const response = await getProductById(value);
-if (!response.data){
-  return;
-}
-
-const product = response.data;
-
-setProductInfo(product);
-setInventory(prev => ({
-    ...prev,
-    variantId:"",
-    colorId:"",
-    sellingPrice:"",
-    stock:"",
-    discount:"",
-    warranty:"",
-    condition:"",
-    deliveryTime:"",
-    homeDelivery:false,
-    storePickup:false,
-    cod:false,
-    emi:false,
-    exchange:false,
-    offerTitle:"",
-    offerDescription:"",
-    returnPolicy:""
-}));
-setVariants(product.variants || []);
-setColors(product.colors || []);
-}catch(error){
-
-setProductInfo(null);
-setVariants([]);
-setColors([]);
-
-setInventory(prev=>({
-
-    ...prev,
-
-    variantId:"",
-    colorId:""
-
-}));
-
-console.error(error);
-
-}
-
-}
-
-};
+    // Warranty
+    if (!inventory.warranty.trim()) {
+      alert("Please enter the warranty.");
+      return false;
+    }
 
 
-  const handleSubmit = async (e)=>{
+    // Condition
+    if (!inventory.condition) {
+      alert("Please select the product condition.");
+      return false;
+    }
+
+
+    // Delivery time
+    if (!inventory.deliveryTime.trim()) {
+      alert("Please enter the delivery time.");
+      return false;
+    }
+
+
+    // Offer title
+    if (!inventory.offerTitle.trim()) {
+      alert("Please enter the offer title.");
+      return false;
+    }
+
+
+    // Offer description
+    if (!inventory.offerDescription.trim()) {
+      alert("Please enter the offer description.");
+      return false;
+    }
+
+
+    // Return policy
+    if (!inventory.returnPolicy.trim()) {
+      alert("Please enter the return policy.");
+      return false;
+    }
+
+
+    return true;
+  };
+
+
+  // --------------------------------------------------
+  // SUBMIT
+  // --------------------------------------------------
+
+  const handleSubmit = async (e) => {
+
     e.preventDefault();
 
-    try{
+
+    // IMPORTANT:
+    // Do not depend only on the disabled button.
+    // Always validate again when submitting.
+
+    if (!validateForm()) {
+      return;
+    }
+
+
+    if (submitting) {
+      return;
+    }
+
+
+    setSubmitting(true);
+
+
+    try {
 
       const inventoryData = {
 
-    productId: Number(inventory.product),
+        productId: Number(inventory.product),
 
-    variantId: Number(inventory.variantId),
+        variantId: Number(inventory.variantId),
 
-    colorId: Number(inventory.colorId),
+        colorId: Number(inventory.colorId),
 
-    sellingPrice: Number(inventory.sellingPrice),
+        sellingPrice: Number(inventory.sellingPrice),
 
-    stock: Number(inventory.stock),
+        stock: Number(inventory.stock),
 
-    discount: Number(inventory.discount),
+        discount:
+          inventory.discount === ""
+            ? null
+            : Number(inventory.discount),
 
-    condition: inventory.condition,
+        minPurchase: Number(inventory.minPurchase),
 
-    warranty: inventory.warranty,
+        maxPurchase: Number(inventory.maxPurchase),
 
-    deliveryTime: inventory.deliveryTime,
+        condition: inventory.condition,
 
-    homeDelivery: inventory.homeDelivery,
+        warranty: inventory.warranty.trim(),
 
-    storePickup: inventory.storePickup,
+        deliveryTime: inventory.deliveryTime.trim(),
 
-    cod: inventory.cod,
+        homeDelivery: inventory.homeDelivery,
 
-    emi: inventory.emi,
+        storePickup: inventory.storePickup,
 
-    exchange: inventory.exchange,
+        cod: inventory.cod,
 
-    offerTitle: inventory.offerTitle,
+        emi: inventory.emi,
 
-    offerDescription: inventory.offerDescription,
+        exchange: inventory.exchange,
 
-    returnPolicy: inventory.returnPolicy
-};
+        offerTitle: inventory.offerTitle.trim(),
 
-const response = await addInventory(inventoryData);
-      console.log(response.data);
+        offerDescription:
+          inventory.offerDescription.trim(),
+
+        returnPolicy:
+          inventory.returnPolicy.trim()
+      };
+
+
+      console.log(
+        "Inventory data being sent:",
+        inventoryData
+      );
+
+
+      const response =
+        await addInventory(inventoryData);
+
+
+      console.log(
+        "Inventory saved:",
+        response.data
+      );
+
 
       alert("Inventory Added Successfully");
 
-setInventory({
-    product:"",
-    variantId:"",
-    colorId:"",
-    sellingPrice:"",
-    stock:"",
-    discount:"",
-    warranty:"",
-    condition:"",
-    deliveryTime:"",
-    homeDelivery:false,
-    storePickup:false,
-    cod:false,
-    emi:false,
-    exchange:false,
-    offerTitle:"",
-    offerDescription:"",
-    returnPolicy:""
-});
 
-setProductInfo(null);
-setVariants([]);
-setColors([]);
+      // --------------------------------------------------
+      // RESET FORM
+      // --------------------------------------------------
+
+      setInventory(initialInventory);
+
+      setProductInfo(null);
+
+      setVariants([]);
+
+      setColors([]);
+
+
+    } catch (error) {
+
+      console.error(
+        "Failed to add inventory:",
+        error
+      );
+
+
+      if (error.response) {
+
+        console.error(
+          "Backend response:",
+          error.response.data
+        );
+
+      }
+
+
+      alert(
+        error.response?.data?.message ||
+        "Failed to add inventory"
+      );
+
+    } finally {
+
+      setSubmitting(false);
 
     }
-    catch(error){
 
-      console.error(error);
+  };
 
-      alert("Failed to add inventory");
 
-    }
-};
+  // --------------------------------------------------
+  // BUTTON ENABLE/DISABLE
+  // --------------------------------------------------
 
-const isProductReady = () => {
+  const isProductReady = () => {
 
-  return Boolean(
-    inventory.product &&
-    inventory.variantId &&
-    inventory.colorId &&
-    inventory.sellingPrice &&
-    inventory.stock &&
-    inventory.condition
-  );
+    return Boolean(
 
-};
-return(
-   <>
+      inventory.product &&
 
+      inventory.variantId &&
+
+      inventory.colorId &&
+
+      inventory.sellingPrice &&
+      Number(inventory.sellingPrice) > 0 &&
+
+      inventory.stock &&
+      Number(inventory.stock) > 0 &&
+
+      inventory.minPurchase &&
+      Number(inventory.minPurchase) > 0 &&
+
+      inventory.maxPurchase &&
+      Number(inventory.maxPurchase) > 0 &&
+
+      inventory.warranty.trim() &&
+
+      inventory.condition &&
+
+      inventory.deliveryTime.trim() &&
+
+      inventory.offerTitle.trim() &&
+
+      inventory.offerDescription.trim() &&
+
+      inventory.returnPolicy.trim()
+
+    );
+
+  };
+
+
+  // --------------------------------------------------
+  // UI
+  // --------------------------------------------------
+
+  return (
+    <>
+
+      {/* ================= HEADER ================= */}
 
       <header className="header">
+
         <div className="left-section">
 
           <SideWindow />
 
         </div>
+
 
         <div className="logo">
 
@@ -284,618 +581,812 @@ return(
           <span className="Vendor">
             Vendor
           </span>
+
         </div>
-        <div 
+        <div className="navigation">
+          <Link to="/vendor/manage-products">
+              Manage Products
+            </Link>
+        </div>
+
+
+        <div
           className="back-btn"
-          onClick={()=>navigate(-1)}
+          onClick={() => navigate(-1)}
         >
-
           ←
-
         </div>
+
       </header>
+
+
+      {/* ================= PAGE TITLE ================= */}
+
       <h1 className="page-title">
-        New Product 
+        New Product
       </h1>
+
 
       <div className="master-layout">
 
 
-        <form 
-          className="master-form-section" 
+        {/* ==================================================
+            LEFT SIDE - FORM
+        ================================================== */}
+
+        <form
+          className="master-form-section"
           onSubmit={handleSubmit}
         >
+
           <h2>
             Product Details
           </h2>
-          {/* PRODUCT */}
+
+
+          {/* ================= PRODUCT ================= */}
+
           <h3>
             Product Name
           </h3>
+
           <select
             name="product"
             value={inventory.product}
             onChange={handleChange}
             required
           >
+
             <option value="">
               Select Product
             </option>
 
-            {
-              products.map((p)=>(
-                <option 
-                  key={p.id}
-                  value={p.id}
-                >
+            {products.map((p) => (
 
-                  {p.name}
+              <option
+                key={p.id}
+                value={p.id}
+              >
+                {p.name}
+              </option>
 
-                </option>
+            ))}
 
-              ))
-
-            }
           </select>
-        <h3>
-Product Information
-</h3>
 
 
-<label>
-Brand
-</label>
+          {/* ================= PRODUCT INFORMATION ================= */}
 
-<input
-
-type="text"
-
-value={productInfo?.brand || ""}
-
-readOnly
-
-/>
+          <h3>
+            Product Information
+          </h3>
 
 
+          <label>
+            Brand
+          </label>
 
-<label>
-Processor
-</label>
-
-<input
-
-type="text"
-
-value={productInfo?.processor || ""}
-
-readOnly
-
-/>
+          <input
+            type="text"
+            value={productInfo?.brand || ""}
+            readOnly
+          />
 
 
+          <label>
+            Processor
+          </label>
 
-<label>
-Display
-</label>
-
-<input
-
-type="text"
-
-value={productInfo?.displaySize || ""}
-
-readOnly
-
-/>
+          <input
+            type="text"
+            value={productInfo?.processor || ""}
+            readOnly
+          />
 
 
+          <label>
+            Display
+          </label>
 
-<label>
-Battery
-</label>
+          <input
+            type="text"
+            value={productInfo?.displaySize || ""}
+            readOnly
+          />
 
-<input
 
-type="text"
+          <label>
+            Battery
+          </label>
 
-value={productInfo?.battery || ""}
+          <input
+            type="text"
+            value={productInfo?.battery || ""}
+            readOnly
+          />
 
-readOnly
 
-/>
-          {/* VARIANT */}
+          {/* ================= VARIANT ================= */}
+
           <h3>
             Variant
           </h3>
 
           <select
-
             name="variantId"
-
             value={inventory.variantId}
-
             onChange={handleChange}
-
             required
-
+            disabled={!inventory.product}
           >
 
             <option value="">
               Select Variant
             </option>
 
+            {variants.map((v) => (
 
+              <option
+                key={v.id}
+                value={v.id}
+              >
+                {v.name}
+              </option>
 
-            {
-variants.map((v)=>(
-<option
-key={v.id}
-value={v.id}
->
-{v.name}
-</option>
-))
-}
-
+            ))}
 
           </select>
-          {/* COLOR */}
+
+
+          {/* ================= COLOR ================= */}
+
           <h3>
             Color
           </h3>
 
           <select
-
             name="colorId"
-
             value={inventory.colorId}
-
             onChange={handleChange}
-
             required
-
+            disabled={!inventory.product}
           >
 
             <option value="">
               Select Color
             </option>
 
-           {
-colors.map((c)=>(
-<option
-key={c.id}
-value={c.id}
->
-{c.name}
-</option>
-))
-}
+            {colors.map((c) => (
+
+              <option
+                key={c.id}
+                value={c.id}
+              >
+                {c.name}
+              </option>
+
+            ))}
 
           </select>
+
+
+          {/* ================= SELLING DETAILS ================= */}
+
           <h3>
-Selling Details
-</h3>
+            Selling Details
+          </h3>
+
+
+          <label>
+            Selling Price
+          </label>
+
+          <input
+            type="number"
+            name="sellingPrice"
+            value={inventory.sellingPrice}
+            onChange={handleChange}
+            min="1"
+            required
+          />
+
+
+          <label>
+            Stock Quantity
+          </label>
+
+          <input
+            type="number"
+            name="stock"
+            value={inventory.stock}
+            onChange={handleChange}
+            min="1"
+            required
+          />
+
+
+          <label>
+            Discount
+          </label>
+
+          <input
+            type="number"
+            name="discount"
+            value={inventory.discount}
+            onChange={handleChange}
+            min="0"
+            max="100"
+          />
 
+          <label>Minimum Purchase Quantity</label>
+          <input
+          type="number"
+          name="minPurchase"
+          value={inventory.minPurchase}
+          onChange={handleChange}
+          min="1"
+          required/>
 
-<label>
-Selling Price
-</label>
+          <label>Maximum Purchase Quantity</label>
 
-<input
-type="number"
-name="sellingPrice"
-value={inventory.sellingPrice}
-onChange={handleChange}
-required
-/>
+          <input
+            type="number"
+            name="maxPurchase"
+            value={inventory.maxPurchase}
+            onChange={handleChange}
+            min="1"
+            required
+          />
 
 
-<label>
-Stock Quantity
-</label>
+          {/* ================= CONDITION ================= */}
 
-<input
+          <h3>
+            Product Condition
+          </h3>
 
-type="number"
-name="stock"
-value={inventory.stock}
-onChange={handleChange}
-required
-/>
 
+          <label>
+            Warranty
+          </label>
 
-<label>
-Discount
-</label>
+          <input
+            type="text"
+            name="warranty"
+            placeholder="Example: 1 Year"
+            value={inventory.warranty}
+            onChange={handleChange}
+            required
+          />
 
-<input
-type="number"
-name="discount"
-value={inventory.discount}
-onChange={handleChange}
-/>
-<h3>
-Product Condition
-</h3>
 
+          <label>
+            Condition
+          </label>
 
-<label>
-Warranty
-</label>
+          <select
+            name="condition"
+            value={inventory.condition}
+            onChange={handleChange}
+            required
+          >
 
-<input
+            <option value="">
+              Select Condition
+            </option>
 
-type="text"
+            <option value="NEW">
+              New
+            </option>
 
-name="warranty"
+            <option value="REFURBISHED">
+              Refurbished
+            </option>
 
-placeholder="Example: 1 Year"
+          </select>
 
-value={inventory.warranty}
 
-onChange={handleChange}
+          {/* ================= DELIVERY ================= */}
 
-/>
+          <h3>
+            Delivery Details
+          </h3>
 
 
-<label>
-Condition
-</label>
+          <label>
+            Delivery Time
+          </label>
 
-<select
-name="condition"
-value={inventory.condition}
-onChange={handleChange}
-required
->
+          <input
+            type="text"
+            name="deliveryTime"
+            placeholder="Example: 3-5 days"
+            value={inventory.deliveryTime}
+            onChange={handleChange}
+            required
+          />
 
-<option value="">
-Select Condition
-</option>
 
-<option value="NEW">
-New
-</option>
+          {/* ================= SERVICES ================= */}
 
-<option value="REFURBISHED">
-Refurbished
-</option>
+          <h3>
+            Services
+          </h3>
 
-</select>
-<h3>
-Delivery Details
-</h3>
 
+          <label>
 
-<label>
-Delivery Time
-</label>
-
-<input
-
-type="text"
-
-name="deliveryTime"
-
-placeholder="Example: 3-5 days"
-
-value={inventory.deliveryTime}
-
-onChange={handleChange}
-
-/>
-<h3>
-Services
-</h3>
-
-
-<label>
-
-<input
-
-type="checkbox"
-
-name="homeDelivery"
-
-checked={inventory.homeDelivery}
-
-onChange={handleChange}
-
-/>
-
-Home Delivery
-
-</label>
-
-
-
-<label>
-
-<input
-
-type="checkbox"
-
-name="storePickup"
-
-checked={inventory.storePickup}
-
-onChange={handleChange}
-
-/>
-
-Store Pickup
-
-</label>
-<h3>
-Payment Options
-</h3>
-
-
-<label>
-
-<input
-
-type="checkbox"
-
-name="cod"
-
-checked={inventory.cod}
-
-onChange={handleChange}
-
-/>
-
-Cash On Delivery
-
-</label>
-
-
-
-<label>
-
-<input
-
-type="checkbox"
-
-name="emi"
-
-checked={inventory.emi}
-
-onChange={handleChange}
-
-/>
-
-EMI
-
-</label>
-
-
-<label>
-
-<input
-
-type="checkbox"
-
-name="exchange"
-
-checked={inventory.exchange}
-
-onChange={handleChange}
-
-/>
-
-Exchange
-
-</label>
-<h3>
-Offers
-</h3>
-
-
-<label>
-Offer Title
-</label>
-
-<input
-
-type="text"
-
-name="offerTitle"
-
-value={inventory.offerTitle}
-
-onChange={handleChange}
-
-/>
-
-
-
-<label>
-Offer Description
-</label>
-
-<textarea
-
-name="offerDescription"
-
-value={inventory.offerDescription}
-
-onChange={handleChange}
-
-/>
-<h3>
-Return Policy
-</h3>
-
-
-<textarea
-
-name="returnPolicy"
-
-value={inventory.returnPolicy}
-
-onChange={handleChange}
-
-/>
-<button 
-type="submit"
-className="add-product-btn"
-disabled={!isProductReady()}
->
-  Add Product
-  </button>
-
-</form>
-<div className="master-preview-section">
-
-    <h2>
-        Live Product Preview
-    </h2>
-
-    <div className="master-preview-card">
-        <div className="preview-item">
-    <label>Product</label>
-    <input
-        readOnly
-        value={productInfo?.name || ""}
-    />
-</div>
-
-        <div className="preview-item">
-            <label>Brand</label>
             <input
+              type="checkbox"
+              name="homeDelivery"
+              checked={inventory.homeDelivery}
+              onChange={handleChange}
+            />
+
+            Home Delivery
+
+          </label>
+
+
+          <label>
+
+            <input
+              type="checkbox"
+              name="storePickup"
+              checked={inventory.storePickup}
+              onChange={handleChange}
+            />
+
+            Store Pickup
+
+          </label>
+
+
+          {/* ================= PAYMENT ================= */}
+
+          <h3>
+            Payment Options
+          </h3>
+
+
+          <label>
+
+            <input
+              type="checkbox"
+              name="cod"
+              checked={inventory.cod}
+              onChange={handleChange}
+            />
+
+            Cash On Delivery
+
+          </label>
+
+
+          <label>
+
+            <input
+              type="checkbox"
+              name="emi"
+              checked={inventory.emi}
+              onChange={handleChange}
+            />
+
+            EMI
+
+          </label>
+
+
+          <label>
+
+            <input
+              type="checkbox"
+              name="exchange"
+              checked={inventory.exchange}
+              onChange={handleChange}
+            />
+
+            Exchange
+
+          </label>
+
+
+          {/* ================= OFFERS ================= */}
+
+          <h3>
+            Offers
+          </h3>
+
+
+          <label>
+            Offer Title
+          </label>
+
+          <input
+            type="text"
+            name="offerTitle"
+            value={inventory.offerTitle}
+            onChange={handleChange}
+            required
+          />
+
+
+          <label>
+            Offer Description
+          </label>
+
+          <textarea
+            name="offerDescription"
+            value={inventory.offerDescription}
+            onChange={handleChange}
+            required
+          />
+
+
+          {/* ================= RETURN POLICY ================= */}
+
+          <h3>
+            Return Policy
+          </h3>
+
+
+          <textarea
+            name="returnPolicy"
+            value={inventory.returnPolicy}
+            onChange={handleChange}
+            required
+          />
+
+
+          {/* ================= SUBMIT ================= */}
+
+          <button
+            type="submit"
+            className="add-product-btn"
+            disabled={
+              !isProductReady() ||
+              submitting
+            }
+          >
+
+            {submitting
+              ? "Adding Product..."
+              : "Add Product"
+            }
+
+          </button>
+
+        </form>
+
+
+        {/* ==================================================
+            RIGHT SIDE - LIVE PREVIEW
+        ================================================== */}
+
+        <div className="master-preview-section">
+
+          <h2>
+            Live Product Preview
+          </h2>
+
+
+          <div className="master-preview-card">
+
+
+            {/* PRODUCT */}
+
+            <div className="preview-item">
+
+              <label>
+                Product
+              </label>
+
+              <input
+                readOnly
+                value={productInfo?.name || ""}
+              />
+
+            </div>
+
+
+            {/* BRAND */}
+
+            <div className="preview-item">
+
+              <label>
+                Brand
+              </label>
+
+              <input
                 readOnly
                 value={productInfo?.brand || ""}
-            />
-        </div>
+              />
 
-        <div className="preview-item">
-            <label>Processor</label>
-            <input
+            </div>
+
+
+            {/* PROCESSOR */}
+
+            <div className="preview-item">
+
+              <label>
+                Processor
+              </label>
+
+              <input
                 readOnly
                 value={productInfo?.processor || ""}
-            />
-        </div>
+              />
 
-        <div className="preview-item">
-            <label>Display</label>
-            <input
+            </div>
+
+
+            {/* DISPLAY */}
+
+            <div className="preview-item">
+
+              <label>
+                Display
+              </label>
+
+              <input
                 readOnly
                 value={productInfo?.displaySize || ""}
-            />
-        </div>
+              />
 
-        <div className="preview-item">
-            <label>Battery</label>
-            <input
+            </div>
+
+
+            {/* BATTERY */}
+
+            <div className="preview-item">
+
+              <label>
+                Battery
+              </label>
+
+              <input
                 readOnly
                 value={productInfo?.battery || ""}
-            />
-        </div>
-        <div className="preview-item">
-    <label>RAM</label>
-    <input
-        readOnly
-        value={selectedVariant?.ram || ""}
-    />
-</div>
+              />
 
-<div className="preview-item">
-    <label>Storage</label>
-    <input
-        readOnly
-        value={selectedVariant ? selectedVariant.storage :""}
-    />
-</div>
-      
-        <div className="preview-item">
-    <label>Color</label>
-    <input
-        readOnly
-        value={selectedColor ? selectedColor.name : ""}
-    />
-</div>
+            </div>
 
-<div className="preview-item">
-    <label>Hex Code</label>
-    <input
-        readOnly
-        value={selectedColor?.hexCode || ""}
-    />
-</div>
-        <div className="preview-item">
-            <label>Selling Price</label>
-            <input
+
+            {/* RAM */}
+
+            <div className="preview-item">
+
+              <label>
+                RAM
+              </label>
+
+              <input
                 readOnly
-                value={inventory.sellingPrice}
-            />
-        </div>
+                value={selectedVariant?.ram || ""}
+              />
 
-        <div className="preview-item">
-            <label>Stock</label>
-            <input
-                readOnly
-                value={inventory.stock}
-            />
-        </div>
+            </div>
 
-        <div className="preview-item">
-            <label>Discount</label>
-            <input
+
+            {/* STORAGE */}
+
+            <div className="preview-item">
+
+              <label>
+                Storage
+              </label>
+
+              <input
                 readOnly
                 value={
-                    inventory.discount
-                        ? `${inventory.discount}%`
-                        : ""
+                  selectedVariant
+                    ? selectedVariant.storage
+                    : ""
                 }
-            />
-        </div>
+              />
 
-        <div className="preview-item">
-            <label>Warranty</label>
-            <input
+            </div>
+
+
+            {/* COLOR */}
+
+            <div className="preview-item">
+
+              <label>
+                Color
+              </label>
+
+              <input
+                readOnly
+                value={
+                  selectedColor
+                    ? selectedColor.name
+                    : ""
+                }
+              />
+
+            </div>
+
+
+            {/* HEX CODE */}
+
+            <div className="preview-item">
+
+              <label>
+                Hex Code
+              </label>
+
+              <input
+                readOnly
+                value={
+                  selectedColor?.hexCode || ""
+                }
+              />
+
+            </div>
+
+
+            {/* PRICE */}
+
+            <div className="preview-item">
+
+              <label>
+                Selling Price
+              </label>
+
+              <input
+                readOnly
+                value={inventory.sellingPrice}
+              />
+
+            </div>
+
+
+            {/* STOCK */}
+
+            <div className="preview-item">
+
+              <label>
+                Stock
+              </label>
+
+              <input
+                readOnly
+                value={inventory.stock}
+              />
+
+            </div>
+
+
+            {/* DISCOUNT */}
+
+            <div className="preview-item">
+
+              <label>
+                Discount
+              </label>
+
+              <input
+                readOnly
+                value={
+                  inventory.discount
+                    ? `${inventory.discount}%`
+                    : ""
+                }
+              />
+
+            </div>
+            <div className="preview-item">
+              <label>MinPurchase</label>
+              <input 
+              readOnly
+              value={inventory.minPurchase
+                ? `${inventory.minPurchase}`
+                : ""
+              }
+            />
+            </div>
+
+            <div className="preview-item">
+              <label>MaxPurchase</label>
+              <input 
+              readOnly
+              value={inventory.maxPurchase
+                ? `${inventory.maxPurchase}`
+                : ""
+              }
+            />
+            </div>
+
+
+            {/* WARRANTY */}
+
+            <div className="preview-item">
+
+              <label>
+                Warranty
+              </label>
+
+              <input
                 readOnly
                 value={inventory.warranty}
-            />
-        </div>
+              />
 
-        <div className="preview-item">
-            <label>Condition</label>
-            <input
+            </div>
+
+
+            {/* CONDITION */}
+
+            <div className="preview-item">
+
+              <label>
+                Condition
+              </label>
+
+              <input
                 readOnly
                 value={inventory.condition}
-            />
-        </div>
+              />
 
-        <div className="preview-item">
-            <label>Delivery</label>
-            <input
+            </div>
+
+
+            {/* DELIVERY */}
+
+            <div className="preview-item">
+
+              <label>
+                Delivery
+              </label>
+
+              <input
                 readOnly
                 value={inventory.deliveryTime}
-            />
-        </div>
+              />
 
-        <div className="preview-item">
-            <label>Offer</label>
-            <input
+            </div>
+
+
+            {/* OFFER */}
+
+            <div className="preview-item">
+
+              <label>
+                Offer
+              </label>
+
+              <input
                 readOnly
                 value={inventory.offerTitle}
-            />
-        </div>
+              />
 
-        <div className="preview-item">
-            <label>Return Policy</label>
-            <input
+            </div>
+
+
+            {/* RETURN POLICY */}
+
+            <div className="preview-item">
+
+              <label>
+                Return Policy
+              </label>
+
+              <input
                 readOnly
                 value={inventory.returnPolicy}
-            />
-        </div>
+              />
 
-    </div>
-</div>
-</div>
-</>
-);
+            </div>
+
+
+          </div>
+
+        </div>
+      </div>
+
+    </>
+  );
 }
 
 

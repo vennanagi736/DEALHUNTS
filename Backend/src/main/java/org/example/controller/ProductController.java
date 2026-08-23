@@ -145,7 +145,7 @@ public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
     // Update Brand
     @PutMapping("/brand/{id}")
     public ResponseEntity<String> updateBrand(
-            @PathVariable Integer id,
+            @PathVariable Long id,
             @RequestBody Brand brand) {
 
 
@@ -228,7 +228,7 @@ public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
     // Delete Brand
     @DeleteMapping("/brand/{id}")
     public ResponseEntity<String> deleteBrand(
-            @PathVariable Integer id) {
+            @PathVariable Long id) {
         brandRepository.deleteById(id);
 
         return ResponseEntity.ok(

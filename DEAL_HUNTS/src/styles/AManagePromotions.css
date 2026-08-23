@@ -1,0 +1,208 @@
+/* ============================================================
+   PAGE
+============================================================ */
+
+.manage-promotions-main {
+
+    flex: 1;
+
+    padding: 45px 70px;
+
+    background: #F5F6F8;
+
+}
+
+
+/* ============================================================
+   PAGE HEADING
+============================================================ */
+
+.manage-promotions-heading {
+
+    margin-bottom: 35px;
+
+}
+
+
+.manage-promotions-heading h1 {
+
+    margin: 0;
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    color: #172033;
+
+}
+
+
+.manage-promotions-heading p {
+
+    margin-top: 8px;
+
+    font-size: 15px;
+
+    color: #6B7280;
+
+}
+
+
+/* ============================================================
+   OPTIONS
+============================================================ */
+
+.promotion-options {
+
+    width: 100%;
+
+    max-width: 850px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+}
+
+
+/* ============================================================
+   OPTION BUTTON
+============================================================ */
+
+.promotion-option {
+
+    width: 100%;
+
+    min-height: 125px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 22px;
+
+    padding: 25px 28px;
+
+    border: 1px solid #E2E5EA;
+
+    border-radius: 12px;
+
+    background: white;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+
+}
+
+
+.promotion-option:hover {
+
+    transform: translateY(-2px);
+
+    border-color: #D4A017;
+
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.08);
+
+}
+
+
+/* ============================================================
+   ICON
+============================================================ */
+
+.promotion-option-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    min-width: 58px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #F5F6F8;
+
+    font-size: 26px;
+
+}
+
+
+/* ============================================================
+   CONTENT
+============================================================ */
+
+.promotion-option-content {
+
+    flex: 1;
+
+}
+
+
+.promotion-option-content h2 {
+
+    margin: 0 0 7px;
+
+    font-size: 19px;
+
+    font-weight: 650;
+
+    color: #172033;
+
+}
+
+
+.promotion-option-content p {
+
+    margin: 0;
+
+    max-width: 620px;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    color: #6B7280;
+
+}
+
+
+/* ============================================================
+   ARROW
+============================================================ */
+
+.promotion-option-arrow {
+
+    font-size: 25px;
+
+    color: #777;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+.promotion-option:hover
+.promotion-option-arrow {
+
+    transform: translateX(5px);
+
+    color: #D4A017;
+
+}

@@ -1,0 +1,754 @@
+/* ============================================================
+   TRENDING DEALS
+============================================================ */
+
+.trending-deals {
+  width: 100%;
+  max-width: 1400px;
+  margin: 28px auto 0;
+  padding: 0 28px;
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   SECTION HEADING
+============================================================ */
+
+.trending-deals-heading {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.trending-deals-heading > div {
+  min-width: 0;
+}
+
+.trending-deals-label {
+  display: block;
+  margin-bottom: 4px;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+
+  color: #b88a20;
+}
+
+.trending-deals-heading h2 {
+  margin: 0;
+
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 800;
+
+  color: #111827;
+}
+
+.trending-deals-heading p {
+  margin: 6px 0 0;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  color: #6b7280;
+}
+
+/* ============================================================
+   VIEW ALL
+============================================================ */
+
+.trending-view-all {
+  flex-shrink: 0;
+
+  border: 0;
+  background: transparent;
+
+  padding: 8px 2px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  color: #111827;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.trending-view-all:hover {
+  color: #b88a20;
+  transform: translateX(3px);
+}
+
+/* ============================================================
+   MAIN CAROUSEL OUTER BOX
+============================================================ */
+
+.trending-carousel {
+  position: relative;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  /*
+   * Small padding intentionally.
+   * This keeps the carousel compact instead of
+   * creating a huge outer container.
+   */
+  padding: 8px 44px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #eceef2;
+  border-radius: 18px;
+
+  box-shadow:
+    0 8px 28px rgba(17, 24, 39, 0.06);
+}
+
+/* ============================================================
+   VIEWPORT
+============================================================ */
+
+.trending-viewport {
+  width: 100%;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+}
+
+/* ============================================================
+   TRACK
+============================================================ */
+
+.trending-track {
+  display: flex;
+
+  width: 100%;
+
+  /*
+   * Small gap between cards.
+   */
+  gap: 12px;
+
+  transition:
+    transform 0.45s cubic-bezier(
+      0.22,
+      0.61,
+      0.36,
+      1
+    );
+
+  will-change: transform;
+}
+
+/* ============================================================
+   SLIDE
+============================================================ */
+
+.trending-slide {
+  /*
+   * Four cards visible.
+   *
+   * Because the track has 12px gaps, subtract
+   * the total gap from the available width.
+   */
+  flex: 0 0 calc(
+    (100% - 36px) / 4
+  );
+
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   PRODUCT CARD
+============================================================ */
+
+.trending-product-card {
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e9ebef;
+  border-radius: 14px;
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.trending-product-card:hover {
+  transform: translateY(-3px);
+
+  border-color: #dedfe3;
+
+  box-shadow:
+    0 10px 25px rgba(17, 24, 39, 0.10);
+}
+
+/* ============================================================
+   PRODUCT IMAGE
+============================================================ */
+
+.trending-product-image {
+  position: relative;
+
+  width: 100%;
+  height: 185px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f8f9fb;
+
+  overflow: hidden;
+}
+
+.trending-product-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  padding: 16px;
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.3s ease;
+}
+
+.trending-product-card:hover
+.trending-product-image img {
+  transform: scale(1.04);
+}
+
+/* ============================================================
+   IMAGE PLACEHOLDER
+============================================================ */
+
+.trending-image-placeholder {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #9ca3af;
+
+  font-size: 13px;
+}
+
+/* ============================================================
+   DISCOUNT
+============================================================ */
+
+.trending-discount {
+  position: absolute;
+
+  top: 10px;
+  left: 10px;
+
+  padding: 5px 8px;
+
+  border-radius: 6px;
+
+  background: #111827;
+  color: #ffffff;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.4px;
+}
+
+/* ============================================================
+   WISHLIST
+============================================================ */
+
+.trending-wishlist {
+  position: absolute;
+
+  top: 9px;
+  right: 9px;
+
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  color: #4b5563;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.trending-wishlist:hover {
+  background: #111827;
+  color: #ffffff;
+
+  transform: scale(1.05);
+}
+
+/* ============================================================
+   PRODUCT DETAILS
+============================================================ */
+
+.trending-product-details {
+  padding: 13px 14px 14px;
+}
+
+/* ============================================================
+   CATEGORY
+============================================================ */
+
+.trending-product-category {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+
+  color: #9a7a2c;
+}
+
+/* ============================================================
+   PRODUCT NAME
+============================================================ */
+
+.trending-product-name {
+  margin: 0;
+
+  height: 38px;
+
+  overflow: hidden;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  font-size: 14px;
+  line-height: 19px;
+  font-weight: 700;
+
+  color: #111827;
+}
+
+/* ============================================================
+   RATING
+============================================================ */
+
+.trending-rating {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  margin-top: 7px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  color: #4b5563;
+}
+
+.trending-stars {
+  color: #d4af37;
+
+  font-size: 13px;
+}
+
+.trending-review-count {
+  color: #9ca3af;
+
+  font-weight: 400;
+}
+
+/* ============================================================
+   PRICE
+============================================================ */
+
+.trending-price-row {
+  display: flex;
+  align-items: baseline;
+
+  gap: 8px;
+
+  margin-top: 8px;
+}
+
+.trending-current-price {
+  font-size: 17px;
+  font-weight: 800;
+
+  color: #111827;
+}
+
+.trending-original-price {
+  font-size: 11px;
+  font-weight: 500;
+
+  color: #9ca3af;
+
+  text-decoration: line-through;
+}
+
+/* ============================================================
+   ADD TO CART
+============================================================ */
+
+.trending-cart-button {
+  width: 100%;
+
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  margin-top: 11px;
+
+  border: 0;
+  border-radius: 8px;
+
+  background: #111827;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.trending-cart-button svg {
+  font-size: 14px;
+}
+
+.trending-cart-button:hover {
+  background: #b88a20;
+
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   CAROUSEL ARROWS
+============================================================ */
+
+.trending-arrow {
+  position: absolute;
+  top: 50%;
+
+  z-index: 5;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(-50%);
+
+  border: 1px solid #e3e5e8;
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  font-size: 17px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 12px rgba(17, 24, 39, 0.10);
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.trending-arrow:hover:not(:disabled) {
+  background: #111827;
+  color: #ffffff;
+
+  transform:
+    translateY(-50%)
+    scale(1.05);
+}
+
+.trending-arrow:disabled {
+  opacity: 0.35;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+}
+
+.trending-arrow-left {
+  left: 7px;
+}
+
+.trending-arrow-right {
+  right: 7px;
+}
+
+/* ============================================================
+   DOTS
+============================================================ */
+
+.trending-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  margin-top: 12px;
+}
+
+.trending-dot {
+  width: 6px;
+  height: 6px;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: #d1d5db;
+
+  cursor: pointer;
+
+  transition:
+    width 0.2s ease,
+    background 0.2s ease;
+}
+
+.trending-dot-active {
+  width: 20px;
+
+  border-radius: 10px;
+
+  background: #111827;
+}
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.trending-deals-empty {
+  width: 100%;
+
+  padding: 45px 20px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px dashed #d9dce1;
+  border-radius: 14px;
+
+  background: #fafafa;
+
+  color: #9ca3af;
+
+  font-size: 14px;
+}
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 1100px) {
+
+  .trending-deals {
+    padding: 0 20px;
+  }
+
+  .trending-carousel {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .trending-slide {
+    flex-basis: calc(
+      (100% - 24px) / 3
+    );
+  }
+
+  .trending-product-image {
+    height: 175px;
+  }
+}
+
+/* ============================================================
+   SMALL TABLET
+============================================================ */
+
+@media (max-width: 800px) {
+
+  .trending-deals {
+    padding: 0 16px;
+  }
+
+  .trending-deals-heading h2 {
+    font-size: 24px;
+  }
+
+  .trending-carousel {
+    padding-left: 38px;
+    padding-right: 38px;
+
+    border-radius: 15px;
+  }
+
+  .trending-slide {
+    flex-basis: calc(
+      (100% - 12px) / 2
+    );
+  }
+
+  .trending-product-image {
+    height: 170px;
+  }
+}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 560px) {
+
+  .trending-deals {
+    margin-top: 22px;
+    padding: 0 12px;
+  }
+
+  .trending-deals-heading {
+    align-items: flex-start;
+  }
+
+  .trending-deals-heading h2 {
+    font-size: 22px;
+  }
+
+  .trending-deals-heading p {
+    max-width: 230px;
+
+    font-size: 12px;
+  }
+
+  .trending-view-all {
+    font-size: 12px;
+  }
+
+  .trending-carousel {
+    padding: 7px 36px;
+
+    border-radius: 14px;
+  }
+
+  .trending-slide {
+    flex-basis: 100%;
+  }
+
+  .trending-product-image {
+    height: 190px;
+  }
+
+  .trending-product-details {
+    padding: 12px;
+  }
+
+  .trending-arrow {
+    width: 30px;
+    height: 30px;
+
+    font-size: 15px;
+  }
+
+  .trending-arrow-left {
+    left: 5px;
+  }
+
+  .trending-arrow-right {
+    right: 5px;
+  }
+}
+
+/* ============================================================
+   VERY SMALL MOBILE
+============================================================ */
+
+@media (max-width: 380px) {
+
+  .trending-deals {
+    padding: 0 10px;
+  }
+
+  .trending-deals-heading h2 {
+    font-size: 20px;
+  }
+
+  .trending-deals-heading p {
+    display: none;
+  }
+
+  .trending-carousel {
+    padding-left: 34px;
+    padding-right: 34px;
+  }
+
+  .trending-product-image {
+    height: 175px;
+  }
+}

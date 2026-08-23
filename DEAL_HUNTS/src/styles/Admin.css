@@ -2,7 +2,7 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:Arial, sans-serif;
+  font-family:"Inter", Arial, sans-serif;
 }
 
 
@@ -12,7 +12,7 @@
   display:flex;
   overflow: hidden;
   flex-direction:column;
-  background: linear-gradient(135deg, #f8f9fa, #eef2f7);
+  background: #F5F6F8;
 }
 
 /* HEADER */
@@ -649,70 +649,430 @@ main{
     height: 18px;
 }
 
-/*Trending carousel*/
+/* =========================================================================
+   ADMIN DASHBOARD — 15% / 60% / 25% ANALYTICS GRID
+   Palette:
+     background   #F5F6F8
+     surface      #FFFFFF
+     border       #E7E9EE
+     text (head)  #14161A
+     text (sub)   #6B7280
+     navy         #1F3A5F   (primary accent — numbers, active states, chart)
+     navy-bright  #2F5C8F   (hover / secondary accent)
+     alert        #D64545 / bg #FDECEC
+     success      #1E8E5A / bg #E8F6EE
+   ========================================================================= */
+
 .admin-main{
-    position:relative;
-    min-height:100vh;
-}
-.right-strip{
-    width:400px;
-    height:200px;
-    border-radius:8px;
-    background:whitesmoke;
-    border:2px solid whitesmoke;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    overflow:hidden;
+  position: relative;
+  width: 100%;
+  padding: 24px 28px 40px;
+  box-sizing: border-box;
 }
 
-.dashboard-card{
-    width:150px;
-    padding:5px;
-    background:white;
-    border-radius:16px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-    text-align:center;
-    transition:0.3s ease;
+.db-header-icon,
+.db-header-avatar{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
 }
 
-.dashboard-card:hover{
-    transform:translateY(-5px);
+.db-header-icon{
+  font-size:18px;
+  color:#6B7280;
 }
 
-.dashboard-card h3{
-    font-size:18px;
-    margin-bottom:15px;
+.db-header-avatar{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#1F3A5F;
+  color:#fff;
+  font-weight:700;
+  font-size:14px;
 }
 
-.dashboard-card p{
-    font-size:36px;
-    font-weight:bold;
-    color:#D4AF37;
+/* ---- STRICT 15 / 60 / 25 GRID ---- */
+.db-grid{
+  display:grid;
+  grid-template-columns: 15% 60% 25%;
+  column-gap: 20px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  align-items: start;
 }
 
-.admin-dashboard-content{
-    display:flex;
-    flex-direction:column;
-    gap:30px;
-    padding:30px;
+/* ================= LEFT 15% — ADMIN OPERATIONS ================= */
+.db-left{
+  min-width: 0;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
-.top-dashboard{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:30px;
+.db-left-title{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:#6B7280;
+  margin-bottom:2px;
 }
 
-.dashboard-stats{
-    display:grid;
-    grid-template-columns: repeat(2,150px);
-    flex-direction:column;   /* one box below another */
-    width:250px;
-    gap: 20px;
-    margin-left: auto;
-    margin-right: 100px;
+.db-op-card{
+  min-width:0;
+  background:#FFFFFF;
+  border:1px solid #E7E9EE;
+  border-radius:12px;
+  padding:12px 10px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:2px;
+  box-shadow: 0 1px 3px rgba(16,24,40,0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.db-op-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16,24,40,0.08);
+}
+
+.db-op-icon{
+  font-size:16px;
+  margin-bottom:4px;
+}
+
+.db-op-value{
+  font-size:20px;
+  font-weight:700;
+  color:#14161A;
+  line-height:1.1;
+}
+
+.db-op-label{
+  font-size:11px;
+  color:#6B7280;
+  font-weight:500;
+}
+
+/* ================= CENTER 60% — BUSINESS ANALYTICS ================= */
+.db-center{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.db-analytics-card{
+  min-width:0;
+  background:#FFFFFF;
+  border:1px solid #E7E9EE;
+  border-radius:16px;
+  padding:22px 24px 12px;
+  box-shadow: 0 2px 10px rgba(16,24,40,0.05);
+  box-sizing:border-box;
+}
+
+.db-analytics-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:8px;
+}
+
+.db-card-title{
+  font-size:18px;
+  font-weight:700;
+  color:#14161A;
+  margin:0;
+}
+
+.db-card-subtitle{
+  font-size:13px;
+  color:#6B7280;
+  margin-top:2px;
+}
+
+.db-period-pill{
+  font-size:12px;
+  font-weight:600;
+  color:#1F3A5F;
+  background:#EAF0F7;
+  border-radius:20px;
+  padding:6px 12px;
+  white-space:nowrap;
+}
+
+/* ~55% of the analytics card is the chart itself */
+.db-chart-area{
+  width:100%;
+  height: 55%;
+  min-height: 230px;
+}
+
+.db-chart-svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+.db-chart-gridline{
+  stroke:#EEF1F5;
+  stroke-width:1;
+}
+
+.db-chart-line{
+  stroke:#1F3A5F;
+  stroke-width:2.5;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.db-chart-dot{
+  fill:#FFFFFF;
+  stroke:#1F3A5F;
+  stroke-width:2;
+}
+
+.db-chart-dot-active{
+  fill:#1F3A5F;
+}
+
+.db-chart-axis-label{
+  font-size:10px;
+  fill:#9AA2AF;
+  font-family:"Inter", sans-serif;
+}
+
+/* Tab switcher — thin ~5% strip at the bottom of the analytics card */
+.db-analytics-tabs{
+  display:flex;
+  gap:6px;
+  border-top:1px solid #EEF1F5;
+  padding-top:10px;
+  margin-top:10px;
+}
+
+.db-tab-btn{
+  flex:1;
+  border:none;
+  background:transparent;
+  color:#6B7280;
+  font-size:13px;
+  font-weight:600;
+  padding:8px 4px;
+  border-radius:8px;
+  cursor:pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.db-tab-btn:hover{
+  background:#F2F5F9;
+}
+
+.db-tab-active{
+  background:#1F3A5F;
+  color:#FFFFFF;
+}
+
+/* Product Performance table */
+.db-performance-card{
+  padding-bottom:20px;
+}
+
+.db-table-wrap{
+  width:100%;
+  overflow-x:auto;
+}
+
+.db-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:480px;
+}
+
+.db-table th{
+  text-align:left;
+  font-size:12px;
+  font-weight:700;
+  color:#14161A;
+  text-transform:uppercase;
+  letter-spacing:0.03em;
+  background:#F7F8FA;
+  padding:10px 12px;
+}
+
+.db-table td{
+  padding:12px;
+  font-size:13px;
+  color:#374151;
+  border-bottom:1px solid #F0F1F4;
+}
+
+.db-table-product{
+  font-weight:600;
+  color:#14161A;
+}
+
+.db-table-secondary{
+  color:#6B7280;
+}
+
+.db-table-navy{
+  color:#1F3A5F;
+  font-weight:600;
+}
+
+.db-stock-pill{
+  font-size:11px;
+  font-weight:700;
+  padding:4px 10px;
+  border-radius:20px;
+  white-space:nowrap;
+}
+
+.db-stock-ok{
+  background:#E8F6EE;
+  color:#1E8E5A;
+}
+
+.db-stock-low{
+  background:#FDECEC;
+  color:#D64545;
+}
+
+/* ================= RIGHT 25% — TRENDING + ALERTS ================= */
+.db-right{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.db-right-card{
+  min-width:0;
+  background:#FFFFFF;
+  border:1px solid #E7E9EE;
+  border-radius:16px;
+  padding:18px;
+  box-shadow: 0 2px 10px rgba(16,24,40,0.05);
+  box-sizing:border-box;
+}
+
+.db-trending-card{
+  padding-bottom: 10px;
+}
+
+.db-trending-title{
+  margin-bottom:10px;
+}
+
+.db-mini-title{
+  font-size:14px;
+  font-weight:700;
+  color:#14161A;
+  margin-bottom:12px;
+}
+
+.db-mini-list, .db-feedback-list{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.db-mini-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:13px;
+  color:#374151;
+}
+
+.db-lowstock-badge{
+  font-size:11px;
+  font-weight:700;
+  color:#D64545;
+  background:#FDECEC;
+  padding:3px 9px;
+  border-radius:12px;
+}
+
+.db-count-badge{
+  font-size:12px;
+  font-weight:700;
+  color:#1F3A5F;
+  background:#EAF0F7;
+  padding:3px 10px;
+  border-radius:12px;
+}
+
+.db-count-alert{
+  color:#D64545;
+  background:#FDECEC;
+}
+
+.db-count-ok{
+  color:#1E8E5A;
+  background:#E8F6EE;
+}
+
+.db-feedback-row{
+  padding-bottom:8px;
+  border-bottom:1px solid #F0F1F4;
+}
+
+.db-feedback-row:last-child{
+  border-bottom:none;
+  padding-bottom:0;
+}
+
+.db-feedback-stars{
+  color:#1F3A5F;
+  font-size:13px;
+  letter-spacing:2px;
+}
+
+.db-feedback-stars-empty{
+  color:#DDE2E8;
+}
+
+.db-feedback-message{
+  font-size:13px;
+  color:#374151;
+  margin-top:4px;
+  line-height:1.4;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1200px){
+  .db-grid{
+    grid-template-columns: 20% 55% 25%;
+  }
+}
+
+@media (max-width: 992px){
+  .db-grid{
+    grid-template-columns: 1fr;
+    row-gap:20px;
+  }
+  .db-left{
+    flex-direction:row;
+    flex-wrap:wrap;
+  }
+  .db-op-card{
+    flex: 1 1 110px;
+  }
+}
+
+@media (max-width: 600px){
+  .admin-main{
+    padding: 16px;
+  }
+  .db-analytics-card, .db-right-card{
+    padding: 16px;
+  }
 }

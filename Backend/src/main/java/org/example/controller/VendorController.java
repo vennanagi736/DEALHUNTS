@@ -3,13 +3,13 @@ package org.example.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.example.entity.Product;
-import org.example.repository.ProductRepository;
-
-
 import org.example.dto.LoginRequest;
 import org.example.dto.LoginResponse;
+import org.example.dto.VendorProductDTO;
+import org.example.entity.Product;
 import org.example.entity.Vendor;
+import org.example.repository.InventoryRepository;
+import org.example.repository.ProductRepository;
 import org.example.repository.VendorRepository;
 import org.example.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +31,9 @@ public class VendorController {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+private InventoryRepository inventoryRepository;
 
     @Autowired
     private JWTUtil jwtUtil;
@@ -159,4 +162,28 @@ public String getStatus(@RequestParam String email) {
     public List<Product> getActiveProducts() {
     return productRepository.findByActiveTrue();
     }
+
+   @GetMapping("/myProducts")
+public List<VendorProductDTO> getMyProducts(
+        @RequestParam int vendorId) {
+
+    List<VendorProductDTO> products =
+            inventoryRepository.findActiveProductsByVendorId(vendorId);
+
+    System.out.println("========== MY PRODUCTS ==========");
+    System.out.println("Vendor ID: " + vendorId);
+
+    products.forEach(p ->
+        System.out.println(
+            "Product: " + p.getName() +
+            " | ID: " + p.getId() +
+            " | Price: " + p.getSellingPrice() +
+            " | Stock: " + p.getStock()
+        )
+    );
+
+    System.out.println("================================");
+
+    return products;
+}
 }
