@@ -147,4 +147,9 @@ public class CategoryService {
         categoryRepository.delete(category);
 
     }
+    public long getCategoryCount() {
+
+    return categoryRepository.count();
+
+}
 }

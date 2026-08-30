@@ -103,5 +103,8 @@ public class PromotionService {
 
         promotionRepository.delete(promotion);
     }
+    public long getActivePromotionCount() {
+    return promotionRepository.countActivePromotions();
+}
 
 }

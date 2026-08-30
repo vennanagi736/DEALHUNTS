@@ -6,15 +6,20 @@ import React, {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import { getTrendingDeals } from "../../api/TrendingDealApi";
+import { getProductImages } from "../../api/ProductApi";
+import { getTrendingCategories } from "../../api/TrendingCategoryApi";
+
 import {
   FiShoppingCart,
   FiChevronLeft,
   FiChevronRight,
   FiUser,
+  FiSettings,
+  FiSearch,
 } from "react-icons/fi";
 
 import Sidebar from "../../components/Sidebar";
-
 import "../../styles/Home.css";
 
 const API_BASE = "http://localhost:8080";
@@ -38,8 +43,6 @@ function formatINR(amount) {
 /* ============================================================
    TRENDING PRODUCTS CAROUSEL
 
-   THIS IS THE EXISTING CORRECT CAROUSEL.
-
    Backend:
    GET /admin/promotions/all
 
@@ -49,11 +52,9 @@ function formatINR(amount) {
 function TrendingProducts({
   items = [],
 }) {
-  const [index, setIndex] =
-    useState(0);
+  const [index, setIndex] = useState(0);
 
-  const count =
-    items.length;
+  const count = items.length;
 
   /* ----------------------------------------------------------
      Keep index valid when items change
@@ -66,18 +67,13 @@ function TrendingProducts({
     ) {
       setIndex(0);
     }
-  }, [
-    count,
-    index,
-  ]);
+  }, [count, index]);
 
   /* ----------------------------------------------------------
      Empty state
   ---------------------------------------------------------- */
 
-  if (
-    count === 0
-  ) {
+  if (count === 0) {
     return (
       <section className="pc-trending-section">
 
@@ -99,31 +95,19 @@ function TrendingProducts({
      Navigation
   ---------------------------------------------------------- */
 
-  const goTo = (
-    newIndex
-  ) => {
+  const goTo = (newIndex) => {
 
-    if (
-      newIndex < 0
-    ) {
-      setIndex(
-        count - 1
-      );
-
+    if (newIndex < 0) {
+      setIndex(count - 1);
       return;
     }
 
-    if (
-      newIndex >= count
-    ) {
+    if (newIndex >= count) {
       setIndex(0);
-
       return;
     }
 
-    setIndex(
-      newIndex
-    );
+    setIndex(newIndex);
   };
 
   /* ----------------------------------------------------------
@@ -138,11 +122,7 @@ function TrendingProducts({
       ====================================================== */}
 
       <div className="pc-section-heading">
-
-        <h2>
-          Trending Deals
-        </h2>
-
+        {/* Existing carousel heading intentionally hidden */}
       </div>
 
       {/* ======================================================
@@ -158,9 +138,7 @@ function TrendingProducts({
             type="button"
             className="pc-trending-arrow pc-trending-prev"
             onClick={() =>
-              goTo(
-                index - 1
-              )
+              goTo(index - 1)
             }
             aria-label="Previous trending product"
           >
@@ -178,17 +156,12 @@ function TrendingProducts({
             className="pc-trend-track"
             style={{
               transform:
-                `translateX(-${
-                  index * 100
-                }%)`,
+                `translateX(-${index * 100}%)`,
             }}
           >
 
             {items.map(
-              (
-                item,
-                i
-              ) => {
+              (item, i) => {
 
                 const image =
                   item.image ||
@@ -219,10 +192,8 @@ function TrendingProducts({
                       i
                     }
                     style={{
-                      flex:
-                        "0 0 100%",
-                      width:
-                        "100%",
+                      flex: "0 0 100%",
+                      width: "100%",
                     }}
                   >
 
@@ -233,15 +204,19 @@ function TrendingProducts({
                       <div className="pc-trend-image-box">
 
                         {image ? (
+
                           <img
                             src={image}
                             alt={name}
                             className="pc-trend-image"
                           />
+
                         ) : (
+
                           <div className="pc-trend-image-fallback">
                             No Image
                           </div>
+
                         )}
 
                       </div>
@@ -257,17 +232,15 @@ function TrendingProducts({
                           {name}
                         </p>
 
-                        {price !==
-                          undefined &&
-                          price !==
-                            null && (
-                            <p className="pc-trend-price">
-                              Best Price{" "}
-                              {formatINR(
-                                price
-                              )}
-                            </p>
-                          )}
+                        {price !== undefined &&
+                          price !== null && (
+
+                          <p className="pc-trend-price">
+                            Best Price{" "}
+                            {formatINR(price)}
+                          </p>
+
+                        )}
 
                       </div>
 
@@ -291,9 +264,7 @@ function TrendingProducts({
             type="button"
             className="pc-trending-arrow pc-trending-next"
             onClick={() =>
-              goTo(
-                index + 1
-              )
+              goTo(index + 1)
             }
             aria-label="Next trending product"
           >
@@ -311,10 +282,8 @@ function TrendingProducts({
         <div className="pc-trend-dots">
 
           {items.map(
-            (
-              _,
-              i
-            ) => (
+            (_, i) => (
+
               <button
                 type="button"
                 key={i}
@@ -330,6 +299,7 @@ function TrendingProducts({
                   i + 1
                 }`}
               />
+
             )
           )}
 
@@ -341,77 +311,241 @@ function TrendingProducts({
 }
 
 /* ============================================================
-   TRENDING DEALS PLACEHOLDER
-
-   IMPORTANT:
-
-   This is NOT connected to backend yet.
-
-   Later you can replace the placeholder content with:
-   - 4 products per row
-   - product cards
-   - discounts
-   - newly added products
-   - etc.
-
-   For now we only create the structure/space.
+   TRENDING DEALS
 ============================================================ */
 
-function TrendingDealsPlaceholder({
+function TrendingDeals({
+  deals = [],
+  images = {},
   onViewAll,
 }) {
+
   return (
+
     <section className="pc-trending-deals-section">
 
       {/* ======================================================
-          HEADING
+          HEADING + VIEW ALL
       ====================================================== */}
 
-      <div className="pc-section-heading">
+      <div className="pc-trending-deals-heading">
 
         <h2>
           Trending Deals
         </h2>
 
-      </div>
-
-      {/* ======================================================
-          EMPTY BACKGROUND BOX
-
-          PLACEHOLDER FOR FUTURE PRODUCT GRID
-      ====================================================== */}
-
-      <div className="pc-trending-deals-placeholder">
-
-        <div className="pc-trending-deals-placeholder-content">
-
-          <span>
-            Trending Deals
-          </span>
-
-          <p>
-            Products will appear here.
-          </p>
-
-        </div>
-
-      </div>
-
-      {/* ======================================================
-          VIEW ALL PRODUCTS
-      ====================================================== */}
-
-      <div className="pc-view-all-products-wrapper">
-
         <button
           type="button"
-          className="pc-view-all-products-btn"
+          className="pc-view-all-products"
           onClick={onViewAll}
         >
           View All Products
         </button>
 
       </div>
+
+      {/* ======================================================
+          PRODUCT GRID
+      ====================================================== */}
+
+      {deals.length === 0 ? (
+
+        <div className="pc-trending-deals-placeholder">
+
+          <div className="pc-trending-deals-placeholder-content">
+
+            <span>
+              No Trending Deals
+            </span>
+
+            <p>
+              Trending products will appear here.
+            </p>
+
+          </div>
+
+        </div>
+
+      ) : (
+
+        <div className="pc-trending-deals-grid">
+
+          {deals.map((deal) => {
+
+            const product =
+              deal.product;
+
+            const image =
+              product?.id
+                ? images[product.id]
+                : "";
+
+            return (
+
+              <div
+                className="pc-trending-deal-card"
+                key={deal.id}
+              >
+
+                {/* IMAGE */}
+
+                <div className="pc-trending-deal-image-box">
+
+                  {image ? (
+
+                    <img
+                      src={image}
+                      alt={
+                        product?.name ||
+                        "Trending Product"
+                      }
+                      className="pc-trending-deal-image"
+                    />
+
+                  ) : (
+
+                    <div className="pc-trending-deal-no-image">
+                      No Image
+                    </div>
+
+                  )}
+
+                </div>
+
+                {/* DETAILS */}
+
+                <div className="pc-trending-deal-details">
+
+                  <h3>
+                    {product?.name ||
+                      "Product"}
+                  </h3>
+
+                  <p>
+                    {product?.brand ||
+                      ""}
+                  </p>
+
+                  <span>
+                    Position {deal.position}
+                  </span>
+
+                </div>
+
+              </div>
+
+            );
+
+          })}
+
+        </div>
+
+      )}
+
+    </section>
+  );
+}
+
+/* ============================================================
+   TRENDING CATEGORIES
+============================================================ */
+
+function TrendingCategories({
+  categories = [],
+  onViewAll,
+}) {
+
+  return (
+
+    <section className="pc-trending-categories-section">
+
+      {/* ======================================================
+          HEADING + VIEW ALL
+      ====================================================== */}
+
+      <div className="pc-trending-categories-heading">
+
+        <h2>
+          Trending Categories
+        </h2>
+
+        <button
+          type="button"
+          className="pc-view-all-categories"
+          onClick={onViewAll}
+        >
+          View All Categories
+        </button>
+
+      </div>
+
+      {/* ======================================================
+          CATEGORY SCROLL BOX
+      ====================================================== */}
+
+      {categories.length === 0 ? (
+
+        <div className="pc-trending-categories-empty">
+
+          <span>
+            No Trending Categories
+          </span>
+
+        </div>
+
+      ) : (
+
+        <div className="pc-trending-categories-scroll">
+
+          {categories.map(
+            (item, index) => {
+
+              const category =
+                item.category || item;
+
+              const categoryId =
+                category?.id ||
+                item.categoryId ||
+                index;
+
+              const categoryName =
+                category?.name ||
+                item.categoryName ||
+                item.name ||
+                "Category";
+
+              return (
+
+                <div
+                  className="pc-trending-category-card"
+                  key={
+                    item.id ||
+                    categoryId
+                  }
+                >
+
+                  <div className="pc-trending-category-content">
+
+                    <h3>
+                      {categoryName}
+                    </h3>
+
+                    <span>
+                      Trending
+                    </span>
+
+                  </div>
+
+                </div>
+
+              );
+
+            }
+          )}
+
+        </div>
+
+      )}
 
     </section>
   );
@@ -426,16 +560,41 @@ function Home() {
   const navigate =
     useNavigate();
 
+  const [isLoggedIn] = useState(
+    !!localStorage.getItem("userJwtToken")
+  );
+
   /* ==========================================================
      TRENDING CAROUSEL DATA
-
-     EXISTING BACKEND ONLY
   ========================================================== */
 
   const [
     trendingItems,
     setTrendingItems,
   ] = useState([]);
+
+  /* ==========================================================
+     TRENDING CATEGORIES
+  ========================================================== */
+
+  const [
+    trendingCategories,
+    setTrendingCategories,
+  ] = useState([]);
+
+  /* ==========================================================
+     TRENDING DEALS
+  ========================================================== */
+
+  const [
+    trendingDeals,
+    setTrendingDeals,
+  ] = useState([]);
+
+  const [
+    trendingDealImages,
+    setTrendingDealImages,
+  ] = useState({});
 
   /* ==========================================================
      LOAD EXISTING TRENDING CAROUSEL
@@ -456,21 +615,14 @@ function Home() {
             );
 
           const data =
-            Array.isArray(
-              response.data
-            )
+            Array.isArray(response.data)
               ? response.data
-              : response.data
-                  ?.products ||
-                response.data
-                  ?.content ||
-                response.data
-                  ?.promotions ||
+              : response.data?.products ||
+                response.data?.content ||
+                response.data?.promotions ||
                 [];
 
-          setTrendingItems(
-            data
-          );
+          setTrendingItems(data);
 
         } catch (err) {
 
@@ -479,13 +631,59 @@ function Home() {
             err
           );
 
-          setTrendingItems(
-            []
-          );
+          setTrendingItems([]);
+
         }
+
       };
 
     loadTrending();
+
+  }, []);
+
+
+  /* ==========================================================
+     LOAD TRENDING CATEGORIES
+  ========================================================== */
+
+  useEffect(() => {
+
+    const loadTrendingCategories =
+      async () => {
+
+        try {
+
+          const response =
+            await getTrendingCategories();
+
+          console.log(
+            "User Home Trending Categories:",
+            response.data
+          );
+
+          const categories =
+            Array.isArray(response.data)
+              ? response.data
+              : [];
+
+          setTrendingCategories(
+            categories
+          );
+
+        } catch (error) {
+
+          console.error(
+            "Trending categories error:",
+            error
+          );
+
+          setTrendingCategories([]);
+
+        }
+
+      };
+
+    loadTrendingCategories();
 
   }, []);
 
@@ -496,17 +694,135 @@ function Home() {
   const handleViewAllProducts =
     () => {
 
-      navigate(
-        "/products"
-      );
+      navigate("/products");
 
     };
+
+  /* ==========================================================
+     VIEW ALL CATEGORIES
+  ========================================================== */
+
+  const handleViewAllCategories =
+    () => {
+
+      navigate("/categories");
+
+    };
+
+  /* ==========================================================
+     LOAD TRENDING DEALS
+  ========================================================== */
+
+  useEffect(() => {
+
+    const loadTrendingDeals =
+      async () => {
+
+        try {
+
+          const response =
+            await getTrendingDeals();
+
+          console.log(
+            "User Home Trending Deals:",
+            response.data
+          );
+
+          const deals =
+            Array.isArray(response.data)
+              ? response.data
+              : [];
+
+          setTrendingDeals(deals);
+
+          const imageMap = {};
+
+          for (const deal of deals) {
+
+            const product =
+              deal.product;
+
+            if (!product?.id) {
+              continue;
+            }
+
+            try {
+
+              const imageResponse =
+                await getProductImages(
+                  product.id
+                );
+
+              console.log(
+                "Trending deal images:",
+                product.id,
+                imageResponse.data
+              );
+
+              if (
+                Array.isArray(
+                  imageResponse.data
+                ) &&
+                imageResponse.data.length > 0
+              ) {
+
+                const firstImage =
+                  imageResponse.data[0];
+
+                imageMap[product.id] =
+                  firstImage.thumbnailUrl ||
+                  firstImage.thumbnailURL ||
+                  firstImage.imageUrl ||
+                  firstImage.imageURL ||
+                  "";
+
+              }
+
+            } catch (imageError) {
+
+              console.error(
+                `Failed to fetch image for product ${product.id}:`,
+                imageError
+              );
+
+            }
+
+          }
+
+          console.log(
+            "Trending Deal Image Map:",
+            imageMap
+          );
+
+          setTrendingDealImages(
+            imageMap
+          );
+
+        } catch (error) {
+
+          console.error(
+            "Trending deals error:",
+            error
+          );
+
+          setTrendingDeals([]);
+
+          setTrendingDealImages({});
+
+        }
+
+      };
+
+    loadTrendingDeals();
+
+  }, []);
 
   /* ==========================================================
      UI
   ========================================================== */
 
   return (
+
     <div className="pc-page">
 
       {/* ======================================================
@@ -568,7 +884,7 @@ function Home() {
 
           <nav className="pc-header-nav">
 
-            <button
+            {/* <button
               type="button"
               className="pc-nav-active"
               onClick={() =>
@@ -576,14 +892,12 @@ function Home() {
               }
             >
               Home
-            </button>
+            </button> */}
 
             <button
               type="button"
               onClick={() =>
-                navigate(
-                  "/products"
-                )
+                navigate("/products")
               }
             >
               Products
@@ -592,9 +906,7 @@ function Home() {
             <button
               type="button"
               onClick={() =>
-                navigate(
-                  "/wishlist"
-                )
+                navigate("/wishlist")
               }
             >
               Wishlist
@@ -605,41 +917,50 @@ function Home() {
           {/* HEADER ACTIONS */}
 
           <div className="pc-header-actions">
-
-            {/* PROFILE */}
-
-            <button
-              type="button"
-              className="pc-header-icon"
-              onClick={() =>
-                navigate(
-                  "/profile"
-                )
-              }
-              aria-label="Profile"
-            >
-              <FiUser />
-            </button>
-
-            {/* CART */}
+             {/* CART */}
 
             <button
               type="button"
               className="pc-header-icon"
               onClick={() =>
-                navigate(
-                  "/cart"
-                )
+                navigate("/cart")
               }
               aria-label="Cart"
             >
               <FiShoppingCart />
             </button>
 
+          {isLoggedIn ? (
+            <>
+              <button
+                type="button"
+                className="pc-header-icon"
+                onClick={() => navigate("/profile")}
+                aria-label="Profile"
+              >
+                <FiUser />
+              </button>
+
+              <button
+                type="button"
+                className="pc-header-icon"
+                onClick={() => navigate("/settings")}
+                aria-label="Settings"
+              >
+                <FiSettings />
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              className="pc-header-login"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </button>
+          )}
           </div>
-
-        </div>
-
+      </div>
       </header>
 
       {/* ======================================================
@@ -648,26 +969,35 @@ function Home() {
           Backend:
           /admin/promotions/all
 
-          DO NOT CHANGE THIS
+          DO NOT CHANGE
       ====================================================== */}
 
       <TrendingProducts
-        items={
-          trendingItems
-        }
+        items={trendingItems}
       />
 
       {/* ======================================================
           2. TRENDING DEALS
-
-          PLACEHOLDER ONLY
-
-          NO BACKEND YET
       ====================================================== */}
 
-      <TrendingDealsPlaceholder
+      <TrendingDeals
+        deals={trendingDeals}
+        images={trendingDealImages}
         onViewAll={
           handleViewAllProducts
+        }
+      />
+
+      {/* ======================================================
+          3. TRENDING CATEGORIES
+      ====================================================== */}
+
+      <TrendingCategories
+        categories={
+          trendingCategories
+        }
+        onViewAll={
+          handleViewAllCategories
         }
       />
 

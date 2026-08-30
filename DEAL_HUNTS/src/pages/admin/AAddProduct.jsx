@@ -11,6 +11,10 @@ import {
     updateProduct
 } from "../../api/ProductApi";
 
+import {
+    getAttributesByCategory
+} from "../../api/AttributeDefinitionApi";
+
 import "../../styles/ProductPreview.css";
 
 
@@ -31,28 +35,40 @@ function AdminAddProduct() {
 
     const [productData, setProductData] = useState({
 
-        category: "",
-        brand: "",
+        category: {
+            id: null,
+            name: ""
+        },
+
+        brand: {
+            id: null,
+            name: ""
+        },
+
         product: "",
+
         description: "",
 
         variants: [
             {
+                id: null,
+
                 ram: "",
-                storage: ""
+
+                storage: "",
+
+                colors: [
+                    {
+                        id: null,
+                        name: "",
+                        hexCode: "",
+                        price: ""
+                    }
+                ]
             }
         ],
 
-        processor: "",
-        displaySize: "",
-        battery: "",
-
-        colors: [
-            {
-                name: "",
-                hexCode: ""
-            }
-        ]
+        specifications: {}
 
     });
 
@@ -67,71 +83,202 @@ function AdminAddProduct() {
 
 
     // =====================================================
+    // CATEGORY ATTRIBUTES
+    // =====================================================
+
+    const [selectedSpecifications, setSelectedSpecifications] =
+        useState([]);
+
+
+    // =====================================================
+    // LOADING
+    // =====================================================
+
+    const [loading, setLoading] = useState(false);
+
+    const [attributesLoading, setAttributesLoading] =
+        useState(false);
+
+
+    // =====================================================
+    // CATEGORY
+    // =====================================================
+
+    const categoryName =
+        productData.category?.name || "";
+
+    const categoryId =
+        productData.category?.id || null;
+
+
+    // =====================================================
+    // MOBILE CATEGORY
+    // =====================================================
+
+    const isMobileCategory =
+        categoryName.trim().toLowerCase() === "mobile phones";
+
+
+    // =====================================================
+    // EMPTY COLOR
+    // =====================================================
+
+    const createEmptyColor = () => ({
+        id: null,
+        name: "",
+        hexCode: "",
+        price: ""
+    });
+
+
+    // =====================================================
+    // EMPTY VARIANT
+    // =====================================================
+
+    const createEmptyVariant = () => ({
+        id: null,
+        ram: "",
+        storage: "",
+        colors: [
+            createEmptyColor()
+        ]
+    });
+
+
+    // =====================================================
     // LOAD CATEGORIES
     // =====================================================
 
-    const loadCategories = async () => {
+    useEffect(() => {
 
-        try {
+        const loadCategories = async () => {
 
-            const { data } = await getAllCategories();
+            try {
 
-            setCategories(data);
+                const response =
+                    await getAllCategories();
 
-        } catch (error) {
+                const data =
+                    Array.isArray(response.data)
+                        ? response.data
+                        : [];
 
-            console.error(
-                "Failed to load categories:",
-                error
-            );
+                setCategories(data);
 
-        }
+            } catch (error) {
 
-    };
+                console.error(
+                    "Failed to load categories:",
+                    error
+                );
+
+                setCategories([]);
+
+            }
+
+        };
+
+        loadCategories();
+
+    }, []);
 
 
     // =====================================================
     // LOAD BRANDS
     // =====================================================
 
-    const loadBrands = async () => {
+    useEffect(() => {
+
+        const loadBrands = async () => {
+
+            try {
+
+                const response =
+                    await getAllBrands();
+
+                const data =
+                    Array.isArray(response.data)
+                        ? response.data
+                        : [];
+
+                setBrands(data);
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load brands:",
+                    error
+                );
+
+                setBrands([]);
+
+            }
+
+        };
+
+        loadBrands();
+
+    }, []);
+
+
+    // =====================================================
+    // LOAD CATEGORY SPECIFICATIONS
+    // =====================================================
+useEffect(() => {
+
+    console.log("CATEGORY ID:", categoryId);
+    console.log("CATEGORY NAME:", categoryName);
+
+    if (!categoryId) {
+        setSelectedSpecifications([]);
+        return;
+    }
+
+    const loadSpecifications = async () => {
 
         try {
 
-            const { data } = await getAllBrands();
+            console.log(
+                "REQUESTING:",
+                `http://localhost:8080/attributes/category/${categoryId}`
+            );
 
-            setBrands(data);
+            const response =
+                await getAttributesByCategory(categoryId);
+
+            console.log(
+                "ATTRIBUTE RESPONSE:",
+                response.data
+            );
+
+            const attributes =
+                Array.isArray(response.data)
+                    ? response.data
+                    : [];
+
+            setSelectedSpecifications(attributes);
 
         } catch (error) {
 
             console.error(
-                "Failed to load brands:",
+                "Failed to load category specifications:",
                 error
             );
+
+            console.error(
+                "ERROR RESPONSE:",
+                error.response?.data
+            );
+
+            setSelectedSpecifications([]);
 
         }
 
     };
 
+    loadSpecifications();
 
-    // =====================================================
-    // LOAD MASTER DATA
-    // =====================================================
-
-    useEffect(() => {
-
-        const loadData = async () => {
-
-            await loadCategories();
-
-            await loadBrands();
-
-        };
-
-        loadData();
-
-    }, []);
-
+}, [categoryId]);
 
     // =====================================================
     // LOAD PRODUCT FOR EDIT
@@ -140,7 +287,24 @@ function AdminAddProduct() {
     useEffect(() => {
 
         if (!editProductId) {
+
             return;
+
+        }
+
+
+        /*
+         * Do not try to load the product until
+         * categories and brands are available.
+         */
+
+        if (
+            categories.length === 0 ||
+            brands.length === 0
+        ) {
+
+            return;
+
         }
 
 
@@ -148,84 +312,315 @@ function AdminAddProduct() {
 
             try {
 
-                console.log(
-                    "Loading product for edit:",
-                    editProductId
-                );
+                const response =
+                    await getProductById(
+                        editProductId
+                    );
 
 
-                const res =
-                    await getProductById(editProductId);
+                const product =
+                    response.data;
 
 
-                const product = res.data;
+                // =================================================
+                // CATEGORY
+                // =================================================
+
+                let category = {
+                    id: null,
+                    name: ""
+                };
 
 
-                console.log(
-                    "PRODUCT FROM API:",
-                    product
-                );
+                if (product.category) {
 
+                    if (
+                        typeof product.category ===
+                        "object"
+                    ) {
+
+                        const categoryIdFromProduct =
+                            product.category.id ?? null;
+
+
+                        const matchedCategory =
+                            categories.find(
+                                item =>
+                                    Number(item.id) ===
+                                    Number(categoryIdFromProduct)
+                            );
+
+
+                        category = {
+
+                            id:
+                                matchedCategory?.id ??
+                                categoryIdFromProduct,
+
+                            name:
+                                matchedCategory?.name ??
+                                product.category.name ??
+                                ""
+
+                        };
+
+                    } else {
+
+                        const matchedCategory =
+                            categories.find(
+                                item =>
+                                    item.name
+                                        ?.trim()
+                                        .toLowerCase() ===
+                                    String(
+                                        product.category
+                                    )
+                                        .trim()
+                                        .toLowerCase()
+                            );
+
+
+                        category = {
+
+                            id:
+                                matchedCategory?.id ??
+                                null,
+
+                            name:
+                                matchedCategory?.name ??
+                                String(
+                                    product.category
+                                )
+
+                        };
+
+                    }
+
+                }
+
+
+                // =================================================
+                // BRAND
+                // =================================================
+
+                let brand = {
+                    id: null,
+                    name: ""
+                };
+
+
+                if (product.brand) {
+
+                    if (
+                        typeof product.brand ===
+                        "object"
+                    ) {
+
+                        const brandIdFromProduct =
+                            product.brand.id ?? null;
+
+
+                        const matchedBrand =
+                            brands.find(
+                                item =>
+                                    Number(item.id) ===
+                                    Number(brandIdFromProduct)
+                            );
+
+
+                        brand = {
+
+                            id:
+                                matchedBrand?.id ??
+                                brandIdFromProduct,
+
+                            name:
+                                matchedBrand?.name ??
+                                product.brand.name ??
+                                ""
+
+                        };
+
+                    } else {
+
+                        const matchedBrand =
+                            brands.find(
+                                item =>
+                                    item.name
+                                        ?.trim()
+                                        .toLowerCase() ===
+                                    String(
+                                        product.brand
+                                    )
+                                        .trim()
+                                        .toLowerCase()
+                            );
+
+
+                        brand = {
+
+                            id:
+                                matchedBrand?.id ??
+                                null,
+
+                            name:
+                                matchedBrand?.name ??
+                                String(
+                                    product.brand
+                                )
+
+                        };
+
+                    }
+
+                }
+
+
+                // =================================================
+                // SPECIFICATIONS
+                // =================================================
+
+                const specifications = {
+
+                    ...(product.specifications || {})
+
+                };
+
+
+                /*
+                 * Backward compatibility.
+                 */
+
+                if (
+                    product.processor !== undefined &&
+                    product.processor !== null &&
+                    specifications.processor === undefined
+                ) {
+
+                    specifications.processor =
+                        product.processor;
+
+                }
+
+
+                if (
+                    product.displaySize !== undefined &&
+                    product.displaySize !== null &&
+                    specifications.displaySize === undefined
+                ) {
+
+                    specifications.displaySize =
+                        product.displaySize;
+
+                }
+
+
+                if (
+                    product.battery !== undefined &&
+                    product.battery !== null &&
+                    specifications.battery === undefined
+                ) {
+
+                    specifications.battery =
+                        product.battery;
+
+                }
+
+
+                // =================================================
+                // VARIANTS
+                // =================================================
+
+                let variants = [];
+
+
+                if (
+                    Array.isArray(product.variants) &&
+                    product.variants.length > 0
+                ) {
+
+                    variants =
+                        product.variants.map(
+                            variant => ({
+
+                                id:
+                                    variant.id ??
+                                    null,
+
+                                ram:
+                                    variant.ram ??
+                                    "",
+
+                                storage:
+                                    variant.storage ??
+                                    "",
+
+                                colors:
+
+                                    Array.isArray(
+                                        variant.colors
+                                    ) &&
+                                    variant.colors.length > 0
+
+                                        ? variant.colors.map(
+                                            color => ({
+
+                                                id:
+                                                    color.id ??
+                                                    null,
+
+                                                name:
+                                                    color.name ??
+                                                    "",
+
+                                                hexCode:
+                                                    color.hexCode ??
+                                                    "",
+
+                                                price:
+                                                    color.price ??
+                                                    ""
+
+                                            })
+                                        )
+
+                                        : [
+                                            createEmptyColor()
+                                        ]
+
+                            })
+                        );
+
+                } else {
+
+                    variants = [
+                        createEmptyVariant()
+                    ];
+
+                }
+
+
+                // =================================================
+                // SET PRODUCT
+                // =================================================
 
                 setProductData({
 
-                    category:
-                        product.category || "",
+                    category,
 
-                    brand:
-                        product.brand || "",
+                    brand,
 
                     product:
-                        product.name || "",
+                        product.name ??
+                        "",
 
                     description:
-                        product.description || "",
+                        product.description ??
+                        "",
 
+                    variants,
 
-                    variants:
-                        product.variants?.length > 0
-
-                            ? product.variants.map(
-                                variant => ({
-                                    ram:
-                                        variant.ram || "",
-
-                                    storage:
-                                        variant.storage || ""
-                                })
-                            )
-
-                            : [
-                                {
-                                    ram: "",
-                                    storage: ""
-                                }
-                            ],
-
-
-                    processor:
-                        product.processor || "",
-
-                    displaySize:
-                        product.displaySize || "",
-
-                    battery:
-                        product.battery || "",
-
-colors:
-    product.colors?.length > 0
-        ? product.colors.map(color => ({
-            id: color.id,
-            name: color.name || "",
-            hexCode: color.hexCode || ""
-        }))
-        : [
-            {
-                id: null,
-                name: "",
-                hexCode: ""
-            }
-        ]
+                    specifications
 
                 });
 
@@ -235,11 +630,6 @@ colors:
                 console.error(
                     "Failed to load product:",
                     error
-                );
-
-                console.error(
-                    "ERROR DATA:",
-                    error.response?.data
                 );
 
                 alert(
@@ -253,7 +643,11 @@ colors:
 
         loadProductForEdit();
 
-    }, [editProductId]);
+    }, [
+        editProductId,
+        categories,
+        brands
+    ]);
 
 
     // =====================================================
@@ -280,11 +674,166 @@ colors:
 
 
     // =====================================================
+    // SPECIFICATION CHANGE
+    // =====================================================
+
+    const handleSpecificationChange = (
+        name,
+        value
+    ) => {
+
+        setProductData(prev => ({
+
+            ...prev,
+
+            specifications: {
+
+                ...prev.specifications,
+
+                [name]: value
+
+            }
+
+        }));
+
+    };
+
+
+    // =====================================================
+    // CATEGORY CHANGE
+    // =====================================================
+
+    const handleCategoryChange = (e) => {
+
+        const selectedCategoryId =
+            Number(e.target.value);
+
+
+        const selectedCategory =
+            categories.find(
+                category =>
+                    Number(category.id) ===
+                    selectedCategoryId
+            );
+
+
+        console.log(
+            "Selected category:",
+            selectedCategory
+        );
+
+
+        /*
+         * Immediately clear old specifications.
+         */
+
+        setSelectedSpecifications([]);
+
+
+        setProductData(prev => ({
+
+            ...prev,
+
+            category:
+
+                selectedCategory
+                    ? {
+
+                        id:
+                            selectedCategory.id,
+
+                        name:
+                            selectedCategory.name
+
+                    }
+                    : {
+
+                        id: null,
+
+                        name: ""
+
+                    },
+
+
+            /*
+             * VERY IMPORTANT:
+             *
+             * Specifications belong to the
+             * selected category.
+             *
+             * Therefore old category data
+             * must never remain here.
+             */
+
+            specifications: {},
+
+
+            /*
+             * Reset variants.
+             */
+
+            variants: [
+                createEmptyVariant()
+            ]
+
+        }));
+
+    };
+
+
+    // =====================================================
+    // BRAND CHANGE
+    // =====================================================
+
+    const handleBrandChange = (e) => {
+
+        const selectedBrandId =
+            Number(e.target.value);
+
+
+        const selectedBrand =
+            brands.find(
+                brand =>
+                    Number(brand.id) ===
+                    selectedBrandId
+            );
+
+
+        setProductData(prev => ({
+
+            ...prev,
+
+            brand:
+
+                selectedBrand
+                    ? {
+
+                        id:
+                            selectedBrand.id,
+
+                        name:
+                            selectedBrand.name
+
+                    }
+                    : {
+
+                        id: null,
+
+                        name: ""
+
+                    }
+
+        }));
+
+    };
+
+
+    // =====================================================
     // VARIANT CHANGE
     // =====================================================
 
     const handleVariantChange = (
-        index,
+        variantIndex,
         field,
         value
     ) => {
@@ -295,9 +844,13 @@ colors:
                 [...prev.variants];
 
 
-            updatedVariants[index] = {
+            updatedVariants[
+                variantIndex
+            ] = {
 
-                ...updatedVariants[index],
+                ...updatedVariants[
+                    variantIndex
+                ],
 
                 [field]: value
 
@@ -308,7 +861,8 @@ colors:
 
                 ...prev,
 
-                variants: updatedVariants
+                variants:
+                    updatedVariants
 
             };
 
@@ -331,10 +885,7 @@ colors:
 
                 ...prev.variants,
 
-                {
-                    ram: "",
-                    storage: ""
-                }
+                createEmptyVariant()
 
             ]
 
@@ -354,7 +905,7 @@ colors:
         ) {
 
             alert(
-                "At least one variant is required"
+                "At least one variant is required."
             );
 
             return;
@@ -368,7 +919,8 @@ colors:
 
             variants:
                 prev.variants.filter(
-                    (_, i) => i !== index
+                    (_, i) =>
+                        i !== index
                 )
 
         }));
@@ -381,22 +933,48 @@ colors:
     // =====================================================
 
     const handleColorChange = (
-        index,
+        variantIndex,
+        colorIndex,
         field,
         value
     ) => {
 
         setProductData(prev => {
 
-            const updatedColors =
-                [...prev.colors];
+            const updatedVariants =
+                [...prev.variants];
 
 
-            updatedColors[index] = {
+            const updatedColors = [
+                ...updatedVariants[
+                    variantIndex
+                ].colors
+            ];
 
-                ...updatedColors[index],
+
+            updatedColors[
+                colorIndex
+            ] = {
+
+                ...updatedColors[
+                    colorIndex
+                ],
 
                 [field]: value
+
+            };
+
+
+            updatedVariants[
+                variantIndex
+            ] = {
+
+                ...updatedVariants[
+                    variantIndex
+                ],
+
+                colors:
+                    updatedColors
 
             };
 
@@ -405,7 +983,8 @@ colors:
 
                 ...prev,
 
-                colors: updatedColors
+                variants:
+                    updatedVariants
 
             };
 
@@ -418,39 +997,72 @@ colors:
     // ADD COLOR
     // =====================================================
 
-    const addColor = () => {
+    const addColor = (variantIndex) => {
 
-    setProductData(prev => ({
+        setProductData(prev => {
 
-        ...prev,
+            const updatedVariants =
+                [...prev.variants];
 
-        colors: [
 
-            ...prev.colors,
+            updatedVariants[
+                variantIndex
+            ] = {
 
-            {
-                id: null,
-                name: "",
-                hexCode: ""
-            }
+                ...updatedVariants[
+                    variantIndex
+                ],
 
-        ]
+                colors: [
 
-    }));
+                    ...updatedVariants[
+                        variantIndex
+                    ].colors,
 
-};
+                    createEmptyColor()
+
+                ]
+
+            };
+
+
+            return {
+
+                ...prev,
+
+                variants:
+                    updatedVariants
+
+            };
+
+        });
+
+    };
+
+
     // =====================================================
     // REMOVE COLOR
     // =====================================================
 
-    const removeColor = (index) => {
+    const removeColor = (
+        variantIndex,
+        colorIndex
+    ) => {
+
+        const currentColors =
+            productData
+                .variants[
+                    variantIndex
+                ]
+                .colors;
+
 
         if (
-            productData.colors.length === 1
+            currentColors.length === 1
         ) {
 
             alert(
-                "At least one color is required"
+                "At least one color is required for this variant."
             );
 
             return;
@@ -458,16 +1070,43 @@ colors:
         }
 
 
-        setProductData(prev => ({
+        setProductData(prev => {
 
-            ...prev,
+            const updatedVariants =
+                [...prev.variants];
 
-            colors:
-                prev.colors.filter(
-                    (_, i) => i !== index
-                )
 
-        }));
+            updatedVariants[
+                variantIndex
+            ] = {
+
+                ...updatedVariants[
+                    variantIndex
+                ],
+
+                colors:
+                    updatedVariants[
+                        variantIndex
+                    ]
+                        .colors
+                        .filter(
+                            (_, i) =>
+                                i !== colorIndex
+                        )
+
+            };
+
+
+            return {
+
+                ...prev,
+
+                variants:
+                    updatedVariants
+
+            };
+
+        });
 
     };
 
@@ -481,38 +1120,46 @@ colors:
         e.preventDefault();
 
 
-        console.log(
-            "========== SUBMIT STARTED =========="
-        );
-
-        console.log(
-            "EDIT MODE:",
-            isEditMode
-        );
-
-        console.log(
-            "EDIT PRODUCT ID:",
-            editProductId
-        );
-
-        console.log(
-            "CURRENT PRODUCT DATA:",
-            productData
-        );
-
-
         // =================================================
-        // REQUIRED FIELDS
+        // BASIC VALIDATION
         // =================================================
+
+        const selectedCategoryId =
+            productData.category?.id;
+
+
+        const selectedBrandId =
+            productData.brand?.id;
+
+
+        if (!selectedCategoryId) {
+
+            alert(
+                "Please select a category."
+            );
+
+            return;
+
+        }
+
+
+        if (!selectedBrandId) {
+
+            alert(
+                "Please select a brand."
+            );
+
+            return;
+
+        }
+
 
         if (
-            !productData.category.trim() ||
-            !productData.brand.trim() ||
-            !productData.product.trim()
+            !productData.product?.trim()
         ) {
 
             alert(
-                "Please fill all required fields."
+                "Please enter product name."
             );
 
             return;
@@ -521,20 +1168,37 @@ colors:
 
 
         // =================================================
-        // SPECIFICATIONS
+        // SPECIFICATION VALIDATION
         // =================================================
 
-        if (
-            !productData.processor.trim() ||
-            !productData.displaySize.trim() ||
-            !productData.battery.trim()
+        for (
+            const specification
+            of selectedSpecifications
         ) {
 
-            alert(
-                "Please complete all specifications."
-            );
+            const value =
+                productData
+                    .specifications?.[
+                        specification.name
+                    ];
 
-            return;
+
+            if (
+                specification.required === true &&
+                (
+                    value === undefined ||
+                    value === null ||
+                    String(value).trim() === ""
+                )
+            ) {
+
+                alert(
+                    `Please enter ${specification.label}.`
+                );
+
+                return;
+
+            }
 
         }
 
@@ -542,6 +1206,30 @@ colors:
         // =================================================
         // VARIANT VALIDATION
         // =================================================
+
+        if (
+            !Array.isArray(
+                productData.variants
+            ) ||
+            productData.variants.length === 0
+        ) {
+
+            alert(
+                "At least one variant is required."
+            );
+
+            return;
+
+        }
+
+
+        const hexColorRegex =
+            /^#[0-9A-Fa-f]{6}$/;
+
+
+        const mobileVariantKeys =
+            new Set();
+
 
         for (
             let i = 0;
@@ -553,16 +1241,141 @@ colors:
                 productData.variants[i];
 
 
+            // =================================================
+            // MOBILE RAM + STORAGE
+            // =================================================
+
+            if (isMobileCategory) {
+
+                const ram =
+                    variant.ram?.trim() || "";
+
+
+                const storage =
+                    variant.storage?.trim() || "";
+
+
+                if (!ram || !storage) {
+
+                    alert(
+                        `Please complete RAM and Storage for Variant ${i + 1}.`
+                    );
+
+                    return;
+
+                }
+
+
+                const variantKey =
+                    `${ram.toLowerCase()}-${storage.toLowerCase()}`;
+
+
+                if (
+                    mobileVariantKeys.has(
+                        variantKey
+                    )
+                ) {
+
+                    alert(
+                        `Duplicate RAM + Storage combination found in Variant ${i + 1}.`
+                    );
+
+                    return;
+
+                }
+
+
+                mobileVariantKeys.add(
+                    variantKey
+                );
+
+            }
+
+
+            // =================================================
+            // COLORS
+            // =================================================
+
             if (
-                !variant.ram.trim() ||
-                !variant.storage.trim()
+                !Array.isArray(
+                    variant.colors
+                ) ||
+                variant.colors.length === 0
             ) {
 
                 alert(
-                    `Please complete Variant ${i + 1}.`
+                    `Please add at least one color for Variant ${i + 1}.`
                 );
 
                 return;
+
+            }
+
+
+            // =================================================
+            // COLOR VALIDATION
+            // =================================================
+
+            for (
+                let j = 0;
+                j < variant.colors.length;
+                j++
+            ) {
+
+                const color =
+                    variant.colors[j];
+
+
+                const colorName =
+                    color.name?.trim() || "";
+
+
+                const hexCode =
+                    color.hexCode?.trim() || "";
+
+
+                const price =
+                    Number(color.price);
+
+
+                if (!colorName) {
+
+                    alert(
+                        `Please enter Color Name ${j + 1} in Variant ${i + 1}.`
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    !hexColorRegex.test(
+                        hexCode
+                    )
+                ) {
+
+                    alert(
+                        `Invalid HEX code for Color ${j + 1} in Variant ${i + 1}. Example: #FF0000`
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    !Number.isFinite(price) ||
+                    price <= 0
+                ) {
+
+                    alert(
+                        `Please enter a valid price for ${colorName}.`
+                    );
+
+                    return;
+
+                }
 
             }
 
@@ -570,76 +1383,151 @@ colors:
 
 
         // =================================================
-        // COLOR VALIDATION
+        // SPECIFICATIONS
         // =================================================
 
-        const hexColorRegex =
-            /^#[0-9A-Fa-f]{6}$/;
+        const specifications =
+            Object.fromEntries(
+
+                selectedSpecifications.map(
+                    specification => {
+
+                        const value =
+                            productData
+                                .specifications?.[
+                                    specification.name
+                                ];
 
 
-        for (
-            let i = 0;
-            i < productData.colors.length;
-            i++
-        ) {
+                        return [
 
-            const color =
-                productData.colors[i];
+                            specification.name,
 
+                            value === undefined ||
+                            value === null
 
-            const colorName =
-                color.name.trim();
+                                ? ""
 
+                                : String(
+                                    value
+                                ).trim()
 
-            const hexCode =
-                color.hexCode.trim();
+                        ];
 
+                    }
+                )
 
-            console.log(
-                "HEX VALIDATION:",
-                {
-                    colorNumber: i + 1,
-                    name: colorName,
-                    hex: hexCode,
-                    length: hexCode.length,
-                    valid: hexColorRegex.test(hexCode)
-                }
             );
 
 
-            // Color name
+        // =================================================
+        // VARIANTS
+        // =================================================
 
-            if (!colorName) {
+        const variants =
+            productData.variants.map(
+                variant => ({
 
-                alert(
-                    `Please enter a name for Color ${i + 1}.`
-                );
-
-                return;
-
-            }
+                    id:
+                        variant.id || null,
 
 
-            // HEX code
+                    ...(isMobileCategory
+                        ? {
 
-            if (!hexColorRegex.test(hexCode)) {
+                            ram:
+                                variant.ram
+                                    ?.trim() || "",
 
-                alert(
-                    `Invalid HEX code for Color ${i + 1}.\n\n` +
-                    `Current value: ${hexCode}\n\n` +
-                    `Use exactly 6 hexadecimal digits.\n` +
-                    `Example: #2563EB`
-                );
+                            storage:
+                                variant.storage
+                                    ?.trim() || ""
 
-                return;
+                        }
+                        : {}),
 
-            }
+
+                    colors:
+                        variant.colors.map(
+                            color => ({
+
+                                id:
+                                    color.id ||
+                                    null,
+
+                                name:
+                                    color.name
+                                        ?.trim() || "",
+
+                                hexCode:
+                                    color.hexCode
+                                        ?.trim()
+                                        .toUpperCase() || "",
+
+                                price:
+                                    Number(
+                                        color.price
+                                    )
+
+                            })
+                        )
+
+                })
+            );
+
+
+        // =================================================
+        // BASE PRICE
+        // =================================================
+
+        /*
+         * FIXED:
+         *
+         * filter() must be applied to the
+         * array returned by map().
+         */
+
+        const allPrices =
+            variants.flatMap(
+                variant =>
+                    variant.colors
+                        .map(
+                            color =>
+                                Number(
+                                    color.price
+                                )
+                        )
+                        .filter(
+                            price =>
+                                Number.isFinite(
+                                    price
+                                ) &&
+                                price > 0
+                        )
+            );
+
+
+        if (
+            allPrices.length === 0
+        ) {
+
+            alert(
+                "At least one valid product price is required."
+            );
+
+            return;
 
         }
 
 
+        const basePrice =
+            Math.min(
+                ...allPrices
+            );
+
+
         // =================================================
-        // CREATE REQUEST OBJECT
+        // FINAL PRODUCT
         // =================================================
 
         const product = {
@@ -647,61 +1535,54 @@ colors:
             name:
                 productData.product.trim(),
 
-            brand:
-                productData.brand.trim(),
 
-            category:
-                productData.category.trim(),
+            brand: {
+
+                id:
+                    selectedBrandId
+
+            },
+
+
+            category: {
+
+                id:
+                    selectedCategoryId
+
+            },
+
 
             description:
-                productData.description.trim(),
+                productData.description
+                    ?.trim() || "",
 
-            processor:
-                productData.processor.trim(),
 
-            displaySize:
-                productData.displaySize.trim(),
+            basePrice:
 
-            battery:
-                productData.battery.trim(),
+
+                basePrice,
+
+
+            specifications:
+
+
+                specifications,
 
 
             variants:
-                productData.variants.map(
-                    variant => ({
-
-                        ram:
-                            variant.ram.trim(),
-
-                        storage:
-                            variant.storage.trim()
-
-                    })
-                ),
 
 
-           colors:
-    productData.colors.map(
-        color => ({
-            id: color.id || null,
-
-            name:
-                color.name.trim(),
-
-            hexCode:
-                color.hexCode.trim().toUpperCase()
-        })
-    )
+                variants
 
         };
 
 
         // =================================================
-        // FINAL DEBUG
+        // DEBUG
         // =================================================
 
         console.log(
-            "========== FINAL REQUEST =========="
+            "========== FINAL PRODUCT REQUEST =========="
         );
 
         console.log(
@@ -713,36 +1594,20 @@ colors:
         );
 
         console.log(
-            "===================================="
+            "============================================"
         );
 
 
         // =================================================
-        // ADD / UPDATE
+        // API REQUEST
         // =================================================
 
         try {
 
+            setLoading(true);
+
+
             if (isEditMode) {
-
-                console.log(
-                    "========== UPDATE PRODUCT =========="
-                );
-
-                console.log(
-                    "PRODUCT ID:",
-                    editProductId
-                );
-
-                console.log(
-                    "UPDATE DATA:",
-                    JSON.stringify(
-                        product,
-                        null,
-                        2
-                    )
-                );
-
 
                 await updateProduct(
                     editProductId,
@@ -750,98 +1615,64 @@ colors:
                 );
 
 
-                console.log(
-                    "PRODUCT UPDATE SUCCESS"
-                );
-
-
                 alert(
                     "Product updated successfully."
                 );
 
-
-               navigate("/admin/manage-products");
-
-
             } else {
-
-                console.log(
-                    "========== ADD PRODUCT =========="
-                );
-
 
                 await addProduct(
                     product
                 );
 
 
-                console.log(
-                    "PRODUCT ADD SUCCESS"
-                );
-
-
                 alert(
-                    "Product Added Successfully"
-                );
-
-
-                navigate(
-                    "/admin/products"
+                    "Product added successfully."
                 );
 
             }
 
 
+            navigate(-1);
+
+
         } catch (error) {
 
             console.error(
-                "========== PRODUCT API ERROR =========="
-            );
-
-            console.error(
-                "FULL ERROR:",
+                "PRODUCT API ERROR:",
                 error
             );
+
 
             console.error(
                 "STATUS:",
                 error.response?.status
             );
 
+
             console.error(
-                "DATA:",
+                "SERVER RESPONSE:",
                 error.response?.data
-            );
-
-            console.error(
-                "URL:",
-                error.config?.url
-            );
-
-            console.error(
-                "METHOD:",
-                error.config?.method
-            );
-
-            console.error(
-                "REQUEST DATA:",
-                error.config?.data
-            );
-
-            console.error(
-                "========================================"
             );
 
 
             alert(
 
-                isEditMode
+                error.response?.data?.message ||
 
-                    ? "Failed to update product."
+                error.response?.data?.error ||
 
-                    : "Failed to add product."
+                (
+                    isEditMode
+                        ? "Failed to update product."
+                        : "Failed to add product."
+                )
 
             );
+
+        } finally {
+
+            setLoading(false);
 
         }
 
@@ -890,6 +1721,7 @@ colors:
 
                     <button
                         className="options-btn"
+                        type="button"
                         onClick={() =>
                             navigate(
                                 "/admin/master-data"
@@ -915,7 +1747,7 @@ colors:
 
 
             {/* =================================================
-                PAGE TITLE
+                TITLE
             ================================================= */}
 
             <h1 className="page-title">
@@ -941,13 +1773,14 @@ colors:
                     onSubmit={handleSubmit}
                 >
 
-
-                    {/* PRODUCT DETAILS */}
-
                     <h2>
                         Product Details
                     </h2>
 
+
+                    {/* =================================================
+                        CATEGORY
+                    ================================================= */}
 
                     <label>
                         Category
@@ -956,8 +1789,13 @@ colors:
 
                     <select
                         name="category"
-                        value={productData.category}
-                        onChange={handleChange}
+                        value={
+                            productData.category?.id ?? ""
+                        }
+                        onChange={
+                            handleCategoryChange
+                        }
+                        required
                     >
 
                         <option value="">
@@ -970,10 +1808,16 @@ colors:
                                 category => (
 
                                     <option
-                                        key={category.id}
-                                        value={category.name}
+                                        key={
+                                            category.id
+                                        }
+                                        value={
+                                            category.id
+                                        }
                                     >
-                                        {category.name}
+                                        {
+                                            category.name
+                                        }
                                     </option>
 
                                 )
@@ -983,6 +1827,10 @@ colors:
                     </select>
 
 
+                    {/* =================================================
+                        BRAND
+                    ================================================= */}
+
                     <label>
                         Brand
                     </label>
@@ -990,8 +1838,13 @@ colors:
 
                     <select
                         name="brand"
-                        value={productData.brand}
-                        onChange={handleChange}
+                        value={
+                            productData.brand?.id ?? ""
+                        }
+                        onChange={
+                            handleBrandChange
+                        }
+                        required
                     >
 
                         <option value="">
@@ -1004,10 +1857,16 @@ colors:
                                 brand => (
 
                                     <option
-                                        key={brand.id}
-                                        value={brand.name}
+                                        key={
+                                            brand.id
+                                        }
+                                        value={
+                                            brand.id
+                                        }
                                     >
-                                        {brand.name}
+                                        {
+                                            brand.name
+                                        }
                                     </option>
 
                                 )
@@ -1016,6 +1875,10 @@ colors:
 
                     </select>
 
+
+                    {/* =================================================
+                        PRODUCT NAME
+                    ================================================= */}
 
                     <label>
                         Product Name
@@ -1026,10 +1889,19 @@ colors:
                         type="text"
                         name="product"
                         placeholder="Enter Product Name"
-                        value={productData.product}
-                        onChange={handleChange}
+                        value={
+                            productData.product
+                        }
+                        onChange={
+                            handleChange
+                        }
+                        required
                     />
 
+
+                    {/* =================================================
+                        DESCRIPTION
+                    ================================================= */}
 
                     <label>
                         Description
@@ -1040,9 +1912,142 @@ colors:
                         name="description"
                         placeholder="Enter Product Description"
                         maxLength={1000}
-                        value={productData.description}
-                        onChange={handleChange}
+                        value={
+                            productData.description
+                        }
+                        onChange={
+                            handleChange
+                        }
                     />
+
+
+                    {/* =================================================
+                        SPECIFICATIONS
+                    ================================================= */}
+
+                    <h2>
+                        Specifications
+                    </h2>
+
+
+                    {
+                        !categoryId
+
+                            ? (
+
+                                <p>
+                                    Select a category to see
+                                    its specifications.
+                                </p>
+
+                            )
+
+                            : attributesLoading
+
+                                ? (
+
+                                    <p>
+                                        Loading specifications...
+                                    </p>
+
+                                )
+
+                                : selectedSpecifications.length === 0
+
+                                    ? (
+
+                                        <p>
+                                            No specifications are configured
+                                            for this category.
+                                        </p>
+
+                                    )
+
+                                    : (
+
+                                        selectedSpecifications.map(
+                                            specification => {
+
+                                                const inputType =
+                                                    specification.dataType
+                                                        ?.toUpperCase() ===
+                                                    "INTEGER"
+
+                                                        ? "number"
+
+                                                        : "text";
+
+
+                                                return (
+
+                                                    <div
+                                                        key={
+                                                            specification.id
+                                                        }
+                                                        className="specification-field"
+                                                    >
+
+                                                        <label>
+
+                                                            {
+                                                                specification.label
+                                                            }
+
+                                                            {
+                                                                specification.unit
+                                                                    ? ` (${specification.unit})`
+                                                                    : ""
+                                                            }
+
+                                                            {
+                                                                specification.required
+                                                                    ? " *"
+                                                                    : ""
+                                                            }
+
+                                                        </label>
+
+
+                                                        <input
+                                                            type={
+                                                                inputType
+                                                            }
+
+                                                            placeholder={
+                                                                specification.placeholder ||
+                                                                `Enter ${specification.label}`
+                                                            }
+
+                                                            value={
+                                                                productData
+                                                                    .specifications?.[
+                                                                        specification.name
+                                                                    ] ?? ""
+                                                            }
+
+                                                            onChange={
+                                                                e =>
+                                                                    handleSpecificationChange(
+                                                                        specification.name,
+                                                                        e.target.value
+                                                                    )
+                                                            }
+
+                                                            required={
+                                                                specification.required === true
+                                                            }
+
+                                                        />
+
+                                                    </div>
+
+                                                );
+
+                                            }
+                                        )
+
+                                    )
+                    }
 
 
                     {/* =================================================
@@ -1056,57 +2061,217 @@ colors:
 
                     {
                         productData.variants.map(
-                            (variant, index) => (
+                            (
+                                variant,
+                                index
+                            ) => (
 
-                                <div key={index}>
+                                <div
+                                    key={
+                                        variant.id ||
+                                        `variant-${index}`
+                                    }
+                                >
 
-                                    <label>
-                                        RAM
-                                    </label>
-
-
-                                    <input
-                                        type="text"
-                                        name="ram"
-                                        value={variant.ram}
-                                        onChange={
-                                            e =>
-                                                handleVariantChange(
-                                                    index,
-                                                    "ram",
-                                                    e.target.value
-                                                )
-                                        }
-                                    />
+                                    <h3>
+                                        Variant {index + 1}
+                                    </h3>
 
 
-                                    <label>
-                                        Storage
-                                    </label>
+                                    {/* =================================================
+                                        MOBILE RAM
+                                    ================================================= */}
+
+                                    {
+                                        isMobileCategory && (
+
+                                            <>
+
+                                                <label>
+                                                    RAM
+                                                </label>
 
 
-                                    <input
-                                        type="text"
-                                        name="storage"
-                                        value={variant.storage}
-                                        onChange={
-                                            e =>
-                                                handleVariantChange(
-                                                    index,
-                                                    "storage",
-                                                    e.target.value
-                                                )
-                                        }
-                                    />
+                                                <input
+                                                    type="text"
+                                                    placeholder="Example: 8GB"
+                                                    value={
+                                                        variant.ram
+                                                    }
+                                                    onChange={
+                                                        e =>
+                                                            handleVariantChange(
+                                                                index,
+                                                                "ram",
+                                                                e.target.value
+                                                            )
+                                                    }
+                                                />
+
+
+                                                <label>
+                                                    Storage
+                                                </label>
+
+
+                                                <input
+                                                    type="text"
+                                                    placeholder="Example: 256GB"
+                                                    value={
+                                                        variant.storage
+                                                    }
+                                                    onChange={
+                                                        e =>
+                                                            handleVariantChange(
+                                                                index,
+                                                                "storage",
+                                                                e.target.value
+                                                            )
+                                                    }
+                                                />
+
+                                            </>
+
+                                        )
+                                    }
+
+
+                                    {/* =================================================
+                                        COLORS
+                                    ================================================= */}
+
+                                    <h4>
+                                        Colors & Prices
+                                    </h4>
+
+
+                                    {
+                                        variant.colors.map(
+                                            (
+                                                color,
+                                                colorIndex
+                                            ) => (
+
+                                                <div
+                                                    key={
+                                                        color.id ||
+                                                        `variant-${index}-color-${colorIndex}`
+                                                    }
+                                                >
+
+                                                    <label>
+                                                        Color Name
+                                                    </label>
+
+
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Example: Orange"
+                                                        value={
+                                                            color.name
+                                                        }
+                                                        onChange={
+                                                            e =>
+                                                                handleColorChange(
+                                                                    index,
+                                                                    colorIndex,
+                                                                    "name",
+                                                                    e.target.value
+                                                                )
+                                                        }
+                                                    />
+
+
+                                                    <label>
+                                                        HEX Code
+                                                    </label>
+
+
+                                                    <input
+                                                        type="text"
+                                                        placeholder="#000000"
+                                                        maxLength={7}
+                                                        value={
+                                                            color.hexCode
+                                                        }
+                                                        onChange={
+                                                            e =>
+                                                                handleColorChange(
+                                                                    index,
+                                                                    colorIndex,
+                                                                    "hexCode",
+                                                                    e.target.value
+                                                                )
+                                                        }
+                                                    />
+
+
+                                                    <label>
+                                                        Price
+                                                    </label>
+
+
+                                                    <input
+                                                        type="number"
+                                                        placeholder="Enter Price"
+                                                        min="0"
+                                                        step="0.01"
+                                                        value={
+                                                            color.price
+                                                        }
+                                                        onChange={
+                                                            e =>
+                                                                handleColorChange(
+                                                                    index,
+                                                                    colorIndex,
+                                                                    "price",
+                                                                    e.target.value
+                                                                )
+                                                        }
+                                                    />
+
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={() =>
+                                                            removeColor(
+                                                                index,
+                                                                colorIndex
+                                                            )
+                                                        }
+                                                    >
+                                                        Remove Color
+                                                    </button>
+
+                                                </div>
+
+                                            )
+                                        )
+                                    }
 
 
                                     <button
                                         type="button"
                                         onClick={() =>
-                                            removeVariant(index)
+                                            addColor(index)
                                         }
                                     >
-                                        Remove
+                                        + Add Color
+                                    </button>
+
+
+                                    <br />
+
+
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            removeVariant(
+                                                index
+                                            )
+                                        }
+                                    >
+                                        Remove Variant
                                     </button>
 
                                 </div>
@@ -1125,155 +2290,30 @@ colors:
 
 
                     {/* =================================================
-                        SPECIFICATIONS
-                    ================================================= */}
-
-                    <label>
-                        Processor
-                    </label>
-
-
-                    <input
-                        type="text"
-                        name="processor"
-                        placeholder="Example: Snapdragon"
-                        value={productData.processor}
-                        onChange={handleChange}
-                    />
-
-
-                    <label>
-                        Display Size
-                    </label>
-
-
-                    <input
-                        type="text"
-                        name="displaySize"
-                        placeholder="Example: 6.9 inch"
-                        value={productData.displaySize}
-                        onChange={handleChange}
-                    />
-
-
-                    <label>
-                        Battery
-                    </label>
-
-
-                    <input
-                        type="text"
-                        name="battery"
-                        placeholder="Example: 5000 mAh"
-                        value={productData.battery}
-                        onChange={handleChange}
-                    />
-
-
-                    {/* =================================================
-                        COLORS
-                    ================================================= */}
-
-                    <h2>
-                        Color Details
-                    </h2>
-
-
-                    {
-                        productData.colors.map(
-                            (color, index) => (
-
-                                <div key={index}>
-
-                                    <label>
-                                        Color Name
-                                    </label>
-
-
-                                    <input
-                                        type="text"
-                                        name="color"
-                                        value={color.name}
-                                        onChange={
-                                            e =>
-                                                handleColorChange(
-                                                    index,
-                                                    "name",
-                                                    e.target.value
-                                                )
-                                        }
-                                    />
-
-
-                                    <label>
-                                        Hex Code
-                                    </label>
-
-
-                                    <input
-                                        type="text"
-                                        name="hexCode"
-                                        value={color.hexCode}
-                                        placeholder="#000000"
-                                        maxLength={7}
-                                        onChange={
-                                            e =>
-                                                handleColorChange(
-                                                    index,
-                                                    "hexCode",
-                                                    e.target.value
-                                                )
-                                        }
-                                    />
-
-
-                                    <button
-                                        type="button"
-                                        onClick={() =>
-                                            removeColor(index)
-                                        }
-                                    >
-                                        Remove
-                                    </button>
-
-                                </div>
-
-                            )
-                        )
-                    }
-
-
-                    <button
-                        type="button"
-                        onClick={addColor}
-                    >
-                        + Add Color
-                    </button>
-
-
-                    {/* =================================================
-                        SUBMIT
+                        SAVE
                     ================================================= */}
 
                     <button
                         className="add-product-btn"
                         type="submit"
+                        disabled={loading}
                     >
 
                         {
-                            isEditMode
-                                ? "Save Changes"
-                                : "Save Product"
+                            loading
+                                ? "Saving..."
+                                : isEditMode
+                                    ? "Save Changes"
+                                    : "Save Product"
                         }
 
                     </button>
-
 
                 </form>
 
 
                 {/* =================================================
-                    LIVE PREVIEW
+                    PREVIEW
                 ================================================= */}
 
                 <div className="master-preview-section">
@@ -1286,6 +2326,10 @@ colors:
                     <div className="master-preview-card">
 
 
+                        {/* =================================================
+                            BASIC DETAILS
+                        ================================================= */}
+
                         <div className="preview-item">
 
                             <label>
@@ -1295,7 +2339,7 @@ colors:
                             <input
                                 readOnly
                                 value={
-                                    productData.category
+                                    categoryName
                                 }
                             />
 
@@ -1311,7 +2355,9 @@ colors:
                             <input
                                 readOnly
                                 value={
-                                    productData.brand
+                                    productData
+                                        .brand
+                                        ?.name || ""
                                 }
                             />
 
@@ -1350,55 +2396,71 @@ colors:
                         </div>
 
 
-                        <div className="preview-item">
+                        {/* =================================================
+                            SPECIFICATIONS PREVIEW
+                        ================================================= */}
 
-                            <label>
-                                Processor
-                            </label>
-
-                            <input
-                                readOnly
-                                value={
-                                    productData.processor
-                                }
-                            />
-
-                        </div>
+                        <h3>
+                            Specifications
+                        </h3>
 
 
-                        <div className="preview-item">
+                        {
+                            selectedSpecifications.length === 0
 
-                            <label>
-                                Display
-                            </label>
+                                ? (
 
-                            <input
-                                readOnly
-                                value={
-                                    productData.displaySize
-                                }
-                            />
+                                    <p>
+                                        No specifications.
+                                    </p>
 
-                        </div>
+                                )
+
+                                : selectedSpecifications.map(
+                                    specification => (
+
+                                        <div
+                                            className="preview-item"
+                                            key={
+                                                `preview-${specification.id}`
+                                            }
+                                        >
+
+                                            <label>
+
+                                                {
+                                                    specification.label
+                                                }
+
+                                                {
+                                                    specification.unit
+                                                        ? ` (${specification.unit})`
+                                                        : ""
+                                                }
+
+                                            </label>
 
 
-                        <div className="preview-item">
+                                            <input
+                                                readOnly
+                                                value={
+                                                    productData
+                                                        .specifications?.[
+                                                            specification.name
+                                                        ] ?? ""
+                                                }
+                                            />
 
-                            <label>
-                                Battery
-                            </label>
+                                        </div>
 
-                            <input
-                                readOnly
-                                value={
-                                    productData.battery
-                                }
-                            />
-
-                        </div>
+                                    )
+                                )
+                        }
 
 
-                        {/* VARIANTS PREVIEW */}
+                        {/* =================================================
+                            VARIANTS PREVIEW
+                        ================================================= */}
 
                         <h3>
                             Variants
@@ -1407,59 +2469,96 @@ colors:
 
                         {
                             productData.variants.map(
-                                (variant, index) => (
+                                (
+                                    variant,
+                                    index
+                                ) => (
 
                                     <div
                                         className="preview-item"
-                                        key={index}
+                                        key={
+                                            variant.id ||
+                                            `preview-variant-${index}`
+                                        }
                                     >
 
-                                        <label>
-                                            Variant {index + 1}
-                                        </label>
+                                        {/* MOBILE RAM/STORAGE */}
+
+                                        {
+                                            isMobileCategory && (
+
+                                                <>
+
+                                                    <label>
+                                                        Variant {index + 1}
+                                                    </label>
 
 
-                                        <input
-                                            readOnly
-                                            value={
-                                                `${variant.ram} | ${variant.storage}`
-                                            }
-                                        />
+                                                    <input
+                                                        readOnly
+                                                        value={
+                                                            `${variant.ram || ""} | ${variant.storage || ""}`
+                                                        }
+                                                    />
 
-                                    </div>
+                                                </>
 
-                                )
-                            )
-                        }
-
-
-                        {/* COLORS PREVIEW */}
-
-                        <h3>
-                            Colors
-                        </h3>
+                                            )
+                                        }
 
 
-                        {
-                            productData.colors.map(
-                                (color, index) => (
+                                        {/* COLORS */}
 
-                                    <div
-                                        className="preview-item"
-                                        key={index}
-                                    >
+                                        {
+                                            variant.colors.map(
+                                                (
+                                                    color,
+                                                    colorIndex
+                                                ) => (
 
-                                        <label>
-                                            Color {index + 1}
-                                        </label>
+                                                    <div
+                                                        key={
+                                                            color.id ||
+                                                            `preview-color-${index}-${colorIndex}`
+                                                        }
+                                                    >
+
+                                                        <label>
+                                                            Color {
+                                                                colorIndex + 1
+                                                            }
+                                                        </label>
 
 
-                                        <input
-                                            readOnly
-                                            value={
-                                                `${color.name} (${color.hexCode})`
-                                            }
-                                        />
+                                                        <input
+                                                            readOnly
+                                                            value={
+                                                                color.name
+                                                                    ? `${color.name} (${color.hexCode})`
+                                                                    : ""
+                                                            }
+                                                        />
+
+
+                                                        <label>
+                                                            Price
+                                                        </label>
+
+
+                                                        <input
+                                                            readOnly
+                                                            value={
+                                                                color.price !== ""
+                                                                    ? `₹${Number(color.price).toFixed(2)}`
+                                                                    : ""
+                                                            }
+                                                        />
+
+                                                    </div>
+
+                                                )
+                                            )
+                                        }
 
                                     </div>
 

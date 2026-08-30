@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
+
 import ProductManagementPopup from "../../components/ProductPopupManagement";
-// import Popup from "../../components/Popup";
 import SideWindow from "../../components/SideBar";
 
 import "../../styles/AProduct.css";
@@ -25,6 +25,7 @@ function AdminProducts() {
     // =====================================================
     // PRODUCTS
     // =====================================================
+
     const [products, setProducts] = useState([]);
     const [productView, setProductView] = useState("available");
     const [productVariantMap, setProductVariantMap] = useState({});
@@ -37,7 +38,6 @@ function AdminProducts() {
     // =====================================================
 
     const [selectedProduct, setSelectedProduct] = useState(null);
-
     const [showPopup, setShowPopup] = useState(false);
 
 
@@ -46,15 +46,10 @@ function AdminProducts() {
     // =====================================================
 
     const [productImages, setProductImages] = useState([]);
-
     const [productVariants, setProductVariants] = useState([]);
-
     const [selectedFiles, setSelectedFiles] = useState([]);
-
     const [selectedImages, setSelectedImages] = useState([]);
-
     const [previewImage, setPreviewImage] = useState(null);
-
     const [changeImageId, setChangeImageId] = useState(null);
 
 
@@ -70,7 +65,6 @@ function AdminProducts() {
         product => !product.active
     );
 
-
     const displayedProducts =
         productView === "available"
             ? availableProducts
@@ -82,60 +76,108 @@ function AdminProducts() {
     // =====================================================
 
     const fetchProducts = async () => {
-    try {
-        const res = await getAllProducts();
 
-        setProducts(res.data);
+        try {
 
-        const variantMap = {};
+            const res = await getAllProducts();
 
-        for (const product of res.data) {
-            const variantRes = await getProductVariant(product.id);
+            const productList = res.data || [];
 
-            variantMap[product.id] = variantRes.data;
+            setProducts(productList);
+
+            const variantMap = {};
+
+            await Promise.all(
+                productList.map(async (product) => {
+
+                    try {
+
+                        const variantRes =
+                            await getProductVariant(product.id);
+
+                        variantMap[product.id] =
+                            variantRes.data || [];
+
+                    } catch (error) {
+
+                        console.error(
+                            `Failed to fetch variants for product ${product.id}:`,
+                            error
+                        );
+
+                        variantMap[product.id] = [];
+
+                    }
+
+                })
+            );
+
+            setProductVariantMap(variantMap);
+
+            console.log(
+                "PRODUCTS:",
+                productList
+            );
+
+            console.log(
+                "VARIANT MAP:",
+                variantMap
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Failed to fetch products:",
+                error
+            );
+
         }
 
-        setProductVariantMap(variantMap);
+    };
 
-        console.log("PRODUCTS:", res.data);
-        console.log("VARIANT MAP:", variantMap);
 
-    } catch (error) {
-        console.error(
-            "Failed to fetch products:",
-            error
-        );
-    }
-};
+    useEffect(() => {
 
-useEffect(() => {
-    fetchProducts();
-}, []);
+        fetchProducts();
+
+    }, []);
+
+
     // =====================================================
     // SELECT PRODUCT
     // =====================================================
 
     const handleProductCheck = (productId) => {
 
-        setShowPopup(false);
         setSelectedProducts(prev =>
+
             prev.includes(productId)
-                ? prev.filter(id => id !== productId)
+
+                ? prev.filter(
+                    id => id !== productId
+                )
+
                 : [...prev, productId]
+
         );
+
     };
 
+
     // =====================================================
-    // SELECT ALL
+    // ENABLE SELECTION MODE
     // =====================================================
 
     const handleSelectionMode = () => {
 
-    setSelectionMode(true);
-    setShowPopup(false);
-    setSelectedProducts([]);
+        setSelectionMode(true);
 
-};
+        setShowPopup(false);
+
+        setSelectedProducts([]);
+
+    };
+
 
     // =====================================================
     // CLEAR SELECTION
@@ -147,7 +189,6 @@ useEffect(() => {
 
         setSelectionMode(false);
 
-        // Refresh products
         await fetchProducts();
 
     };
@@ -168,6 +209,7 @@ useEffect(() => {
             return;
 
         }
+
 
         const confirmed = window.confirm(
 
@@ -197,9 +239,7 @@ useEffect(() => {
 
             setSelectionMode(false);
 
-
             await fetchProducts();
-
 
         } catch (error) {
 
@@ -207,7 +247,6 @@ useEffect(() => {
                 "Failed to update products:",
                 error
             );
-
 
             alert(
                 "Failed to update selected products."
@@ -263,9 +302,7 @@ useEffect(() => {
 
             setSelectionMode(false);
 
-
             await fetchProducts();
-
 
         } catch (error) {
 
@@ -273,7 +310,6 @@ useEffect(() => {
                 "Failed to restore products:",
                 error
             );
-
 
             alert(
                 "Failed to restore selected products."
@@ -295,22 +331,50 @@ useEffect(() => {
             setSelectedProduct(product);
 
 
+            // -------------------------------
+            // PRODUCT IMAGES
+            // -------------------------------
+
             const imageRes =
                 await getProductImages(product.id);
 
-            setProductImages(imageRes.data);
+            setProductImages(
+                imageRes.data || []
+            );
 
 
-            const variantRes = await getProductVariant(product.id);
-            
-            console.log("Product id:",product.id); 
-           
-            console.log("Variant api response:",variantRes);
-            
-                console.log("Variants from api:",variantRes.data);
+            // -------------------------------
+            // PRODUCT VARIANTS
+            // -------------------------------
 
-            setProductVariants(variantRes.data);
+            const variantRes =
+                await getProductVariant(product.id);
 
+
+            console.log(
+                "Product ID:",
+                product.id
+            );
+
+            console.log(
+                "Variant API response:",
+                variantRes
+            );
+
+            console.log(
+                "Variants from API:",
+                variantRes.data
+            );
+
+
+            setProductVariants(
+                variantRes.data || []
+            );
+
+
+            // -------------------------------
+            // RESET IMAGE STATES
+            // -------------------------------
 
             setSelectedImages([]);
 
@@ -318,8 +382,9 @@ useEffect(() => {
 
             setPreviewImage(null);
 
-            setShowPopup(true);
+            setChangeImageId(null);
 
+            setShowPopup(true);
 
         } catch (error) {
 
@@ -332,6 +397,14 @@ useEffect(() => {
             setProductImages([]);
 
             setProductVariants([]);
+
+            setSelectedImages([]);
+
+            setSelectedFiles([]);
+
+            setPreviewImage(null);
+
+            setChangeImageId(null);
 
             setShowPopup(true);
 
@@ -351,15 +424,18 @@ useEffect(() => {
             const res =
                 await getAllProducts();
 
-            setProducts(res.data);
+            const productList =
+                res.data || [];
+
+            setProducts(productList);
 
 
             if (selectedProduct) {
 
                 const updated =
-                    res.data.find(
-                        p =>
-                            p.id ===
+                    productList.find(
+                        product =>
+                            product.id ===
                             selectedProduct.id
                     );
 
@@ -391,33 +467,40 @@ useEffect(() => {
     const handleImageSelect = (e) => {
 
         const files =
-            Array.from(e.target.files);
+            Array.from(e.target.files || []);
 
 
         if (files.length === 0) return;
 
 
-        let newFiles = [];
+        const newFiles = [];
 
 
         files.forEach(file => {
 
             const existingDuplicate =
-                productImages.some(img =>
-                    img.thumbnailUrl
-                        ?.split("/")
-                        .pop()
-                        .toLowerCase() ===
-                    file.name.toLowerCase()
-                );
+                productImages.some(img => {
+
+                    const imageName =
+                        img.thumbnailUrl
+                            ?.split("/")
+                            .pop()
+                            ?.toLowerCase();
+
+                    return imageName ===
+                        file.name.toLowerCase();
+
+                });
 
 
             const selectedDuplicate =
                 selectedFiles.some(existing =>
+
                     existing.name === file.name &&
                     existing.size === file.size &&
                     existing.lastModified ===
                         file.lastModified
+
                 );
 
 
@@ -441,11 +524,8 @@ useEffect(() => {
 
 
         const totalImages =
-
             productImages.length +
-
             selectedFiles.length +
-
             newFiles.length;
 
 
@@ -455,6 +535,8 @@ useEffect(() => {
                 "Maximum 5 images allowed."
             );
 
+            e.target.value = "";
+
             return;
 
         }
@@ -463,7 +545,6 @@ useEffect(() => {
         setSelectedFiles(prev => [
 
             ...prev,
-
             ...newFiles
 
         ]);
@@ -526,7 +607,9 @@ useEffect(() => {
                 );
 
 
-            setProductImages(res.data);
+            setProductImages(
+                res.data || []
+            );
 
             setSelectedFiles([]);
 
@@ -535,14 +618,12 @@ useEffect(() => {
 
             await handleRefreshProduct();
 
-
         } catch (error) {
 
             console.error(
                 "Failed to upload images:",
                 error
             );
-
 
             alert(
                 "Failed to upload images."
@@ -583,11 +664,9 @@ useEffect(() => {
         if (e.target.checked) {
 
             setSelectedImages(
-
                 productImages.map(
                     image => image.id
                 )
-
             );
 
         } else {
@@ -628,9 +707,7 @@ useEffect(() => {
 
         try {
 
-            for (
-                const imageId of selectedImages
-            ) {
+            for (const imageId of selectedImages) {
 
                 await deleteProductImage(
                     imageId
@@ -650,13 +727,14 @@ useEffect(() => {
                 );
 
 
-            setProductImages(res.data);
+            setProductImages(
+                res.data || []
+            );
 
             setSelectedImages([]);
 
 
             await handleRefreshProduct();
-
 
         } catch (error) {
 
@@ -664,7 +742,6 @@ useEffect(() => {
                 "Failed to delete images:",
                 error
             );
-
 
             alert(
                 "Failed to delete selected images."
@@ -682,7 +759,7 @@ useEffect(() => {
     const handleChangeImageSelect = async (e) => {
 
         const file =
-            e.target.files[0];
+            e.target.files?.[0];
 
 
         if (
@@ -698,11 +775,8 @@ useEffect(() => {
         try {
 
             await changeProductImage(
-
                 changeImageId,
-
                 file
-
             );
 
 
@@ -717,12 +791,13 @@ useEffect(() => {
                 );
 
 
-            setProductImages(res.data);
+            setProductImages(
+                res.data || []
+            );
 
             setChangeImageId(null);
 
             setSelectedImages([]);
-
 
         } catch (error) {
 
@@ -730,7 +805,6 @@ useEffect(() => {
                 "Failed to change image:",
                 error
             );
-
 
             alert(
                 "Failed to change image."
@@ -826,6 +900,11 @@ useEffect(() => {
                     >
                         Add Product
                     </NavLink>
+                    <NavLink
+                        to="/admin/import-products"
+                    >
+                        Import CSV
+                    </NavLink>
 
 
                     <div className="search-box">
@@ -875,8 +954,7 @@ useEffect(() => {
 
                     <button
                         className={
-                            productView ===
-                            "available"
+                            productView === "available"
                                 ? "product-tab active-tab"
                                 : "product-tab"
                         }
@@ -898,8 +976,7 @@ useEffect(() => {
 
                     <button
                         className={
-                            productView ===
-                            "unavailable"
+                            productView === "unavailable"
                                 ? "product-tab unavailable-tab"
                                 : "product-tab"
                         }
@@ -925,63 +1002,70 @@ useEffect(() => {
                     ACTION BAR
                 ================================================= */}
 
-<div className="manage-product-actions">
+                <div className="manage-product-actions">
 
-    {!selectionMode ? (
+                    {!selectionMode ? (
 
-        <button
-            className="select-products"
-            onClick={handleSelectionMode}
-            disabled={selectionMode}    
-        >
-           ✓ Select
-        </button>
+                        <button
+                            className="select-products"
+                            onClick={handleSelectionMode}
+                        >
+                            ✓ Select
+                        </button>
 
-    ) : (
+                    ) : (
 
-        <>
-            <label className="select-all-products">
+                        <>
 
-                <input
-                    type="checkbox"
-                    checked={
-                        displayedProducts.length > 0 &&
-                        selectedProducts.length === displayedProducts.length
-                    }
-                    onChange={(e) => {
+                            <label className="select-all-products">
 
-                        if (e.target.checked) {
+                                <input
+                                    type="checkbox"
+                                    checked={
+                                        displayedProducts.length > 0 &&
+                                        selectedProducts.length ===
+                                            displayedProducts.length
+                                    }
+                                    onChange={(e) => {
 
-                            setSelectedProducts(
-                                displayedProducts.map(
-                                    product => product.id
-                                )
-                            );
+                                        if (e.target.checked) {
 
-                        } else {
+                                            setSelectedProducts(
+                                                displayedProducts.map(
+                                                    product =>
+                                                        product.id
+                                                )
+                                            );
 
-                            setSelectedProducts([]);
+                                        } else {
 
-                        }
+                                            setSelectedProducts([]);
 
-                    }}
-                />
+                                        }
 
-                Select All
+                                    }}
+                                />
 
-            </label>
+                                Select All
 
-            <span
-                className="clear-selection"
-                onClick={handleClearSelection}
-            >
-                × Clear
-            </span>
-        </>
+                            </label>
 
-    )}
 
-</div>
+                            <span
+                                className="clear-selection"
+                                onClick={
+                                    handleClearSelection
+                                }
+                            >
+                                × Clear
+                            </span>
+
+                        </>
+
+                    )}
+
+                </div>
+
 
                 {/* =================================================
                     PRODUCT TABLE
@@ -993,36 +1077,20 @@ useEffect(() => {
 
                         <tr>
 
-                            <th>
-                                ID
-                            </th>
+                            <th>ID</th>
 
-                            <th>
-                                Name
-                            </th>
+                            <th>Name</th>
 
-                            <th>
-                                Brand
-                            </th>
+                            <th>Brand</th>
 
-                            <th>
-                                Category
-                            </th>
-                            <th>
-                                Variant
-                            </th>
+                            <th>Category</th>
 
-                            <th>
-                                Status
-                            </th>
+                            <th>Variant</th>
 
+                            <th>Status</th>
 
                             {selectionMode && (
-
-                                <th>
-                                    Select
-                                </th>
-
+                                <th>Select</th>
                             )}
 
                         </tr>
@@ -1039,8 +1107,8 @@ useEffect(() => {
                                 <td
                                     colSpan={
                                         selectionMode
-                                            ? 6
-                                            : 5
+                                            ? 7
+                                            : 6
                                     }
                                 >
                                     No products available
@@ -1053,40 +1121,74 @@ useEffect(() => {
                             displayedProducts.map(
                                 product => (
 
-                                   <tr
-    key={product.id}
-    className={`product-row ${
-        selectionMode ? "selection-active" : ""
-    }`}
-    onClick={() => {
-        if (!selectionMode) {
-            handleOpenProductPopup(product);
-        }
-    }}
->
+                                    <tr
+                                        key={product.id}
+                                        className={`product-row ${
+                                            selectionMode
+                                                ? "selection-active"
+                                                : ""
+                                        }`}
+                                        onClick={() => {
+
+                                            if (!selectionMode) {
+
+                                                handleOpenProductPopup(
+                                                    product
+                                                );
+
+                                            }
+
+                                        }}
+                                    >
+
+                                        {/* ID */}
+
                                         <td>
                                             {product.id}
                                         </td>
 
 
+                                        {/* NAME */}
+
                                         <td>
-                                            {product.name}
+                                            {product.name || "-"}
                                         </td>
 
 
+                                        {/* BRAND */}
+
                                         <td>
-                                            {product.brand}
+                                            {product.brand?.name || "-"}
                                         </td>
 
 
+                                        {/* CATEGORY */}
+
                                         <td>
-                                            {product.category}
+                                            {product.category?.name || "-"}
                                         </td>
+
+
+                                        {/* VARIANTS */}
+
                                         <td>
-    {(productVariantMap[product.id] || [])
-        .map(variant => variant.name)
-        .join(", ")}
-</td>                                
+
+                                            {(
+                                                productVariantMap[
+                                                    product.id
+                                                ] || []
+                                            )
+                                                .map(
+                                                    variant =>
+                                                        variant.name
+                                                )
+                                                .filter(Boolean)
+                                                .join(", ") || "-"}
+
+                                        </td>
+
+
+                                        {/* STATUS */}
 
                                         <td>
 
@@ -1099,12 +1201,13 @@ useEffect(() => {
                                             >
                                                 {product.active
                                                     ? "Available"
-                                                    : "Unavailable"
-                                                }
+                                                    : "Unavailable"}
                                             </span>
 
                                         </td>
 
+
+                                        {/* SELECT */}
 
                                         {selectionMode && (
 
@@ -1117,7 +1220,7 @@ useEffect(() => {
                                                             product.id
                                                         )
                                                     }
-                                                    onClick={e =>
+                                                    onClick={(e) =>
                                                         e.stopPropagation()
                                                     }
                                                     onChange={() =>
@@ -1150,35 +1253,33 @@ useEffect(() => {
                 <div className="product-action-buttons">
 
                     {selectedProducts.length > 0 &&
+                        productView === "available" && (
 
-                    productView === "available" && (
+                            <button
+                                className="delete-selected-btn"
+                                onClick={
+                                    handleDeleteSelected
+                                }
+                            >
+                                Delete Selected
+                            </button>
 
-                        <button
-                            className="delete-selected-btn"
-                            onClick={
-                                handleDeleteSelected
-                            }
-                        >
-                            Delete Selected
-                        </button>
-
-                    )}
+                        )}
 
 
                     {selectedProducts.length > 0 &&
+                        productView === "unavailable" && (
 
-                    productView === "unavailable" && (
+                            <button
+                                className="restore-selected-btn"
+                                onClick={
+                                    handleRestoreSelected
+                                }
+                            >
+                                Restore Selected
+                            </button>
 
-                        <button
-                            className="restore-selected-btn"
-                            onClick={
-                                handleRestoreSelected
-                            }
-                        >
-                            Restore Selected
-                        </button>
-
-                    )}
+                        )}
 
                 </div>
 
@@ -1187,30 +1288,55 @@ useEffect(() => {
 
             {/* =================================================
                 PRODUCT POPUP
-                =================================================*/}
+            ================================================= */}
+
             <ProductManagementPopup
-    open={showPopup}
-    product={selectedProduct}
-    onClose={handleClosePopup}
-    navigate={navigate}
+                open={showPopup}
+                product={selectedProduct}
+                onClose={handleClosePopup}
+                navigate={navigate}
 
-    productImages={productImages}
-    selectedImages={selectedImages}
-    selectedFiles={selectedFiles}
-    productVariants={productVariants}
+                productImages={productImages}
+                selectedImages={selectedImages}
+                selectedFiles={selectedFiles}
+                productVariants={productVariants}
 
-    setPreviewImage={setPreviewImage}
-    handleSelectAllImages={handleSelectAllImages}
-    handleImageCheck={handleImageCheck}
-    handleImageSelect={handleImageSelect}
-    handleUploadImages={handleUploadImages}
-    handleChangeImageSelect={handleChangeImageSelect}
-    handleDeleteSelectedImages={handleDeleteSelectedImages}
+                setPreviewImage={
+                    setPreviewImage
+                }
 
-    setSelectedFiles={setSelectedFiles}
-    setChangeImageId={setChangeImageId}
-/>
-           
+                handleSelectAllImages={
+                    handleSelectAllImages
+                }
+
+                handleImageCheck={
+                    handleImageCheck
+                }
+
+                handleImageSelect={
+                    handleImageSelect
+                }
+
+                handleUploadImages={
+                    handleUploadImages
+                }
+
+                handleChangeImageSelect={
+                    handleChangeImageSelect
+                }
+
+                handleDeleteSelectedImages={
+                    handleDeleteSelectedImages
+                }
+
+                setSelectedFiles={
+                    setSelectedFiles
+                }
+
+                setChangeImageId={
+                    setChangeImageId
+                }
+            />
 
 
             {/* =================================================

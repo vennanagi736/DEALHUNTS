@@ -20,21 +20,27 @@ public class MasterDataController {
     private final MasterDataService masterDataService;
 
     @Autowired
-    public MasterDataController(MasterDataService masterDataService) {
-        this.masterDataService = masterDataService;
-    }
+    public MasterDataController(
+            MasterDataService masterDataService
+    ) {
 
+        this.masterDataService =
+                masterDataService;
+    }
 
     // =====================================================
     // BRAND
     // =====================================================
 
     @PostMapping("/brands/add")
-    public Brand addBrand(@RequestBody Brand brand) {
+    public Brand addBrand(
+            @RequestBody Brand brand
+    ) {
 
-        return masterDataService.addBrand(brand);
+        return masterDataService.addBrand(
+                brand
+        );
     }
-
 
     @GetMapping("/brands/all")
     public List<Brand> getAllBrands() {
@@ -42,20 +48,29 @@ public class MasterDataController {
         return masterDataService.getAllBrand();
     }
 
-
     // =====================================================
     // COLOR
     // =====================================================
 
     @PostMapping("/colors/add")
-    public Color addColor(@RequestBody Color color) {
+    public Color addColor(
+            @RequestBody Color color
+    ) {
 
-        System.out.println("Name: " + color.getName());
-        System.out.println("Hex code: " + color.getHexCode());
+        System.out.println(
+                "Name: " +
+                color.getName()
+        );
 
-        return masterDataService.addColor(color);
+        System.out.println(
+                "Hex code: " +
+                color.getHexCode()
+        );
+
+        return masterDataService.addColor(
+                color
+        );
     }
-
 
     @GetMapping("/colors/all")
     public List<Color> getAllColors() {
@@ -63,21 +78,29 @@ public class MasterDataController {
         return masterDataService.getAllColor();
     }
 
-
     // =====================================================
     // VARIANT
     // =====================================================
 
     @PostMapping("/variants/add")
-    public Variant addVariant(@RequestBody Variant variant) {
+    public Variant addVariant(
+            @RequestBody Variant variant
+    ) {
 
-        System.out.println("Name    : " + variant.getName());
-        System.out.println("RAM     : " + variant.getRam());
-        System.out.println("Storage : " + variant.getStorage());
+        System.out.println(
+                "Variant Name: " +
+                variant.getName()
+        );
 
-        return masterDataService.addVariant(variant);
+        System.out.println(
+                "Attribute Values: " +
+                variant.getAttributeValues()
+        );
+
+        return masterDataService.addVariant(
+                variant
+        );
     }
-
 
     @GetMapping("/variants/all")
     public List<Variant> getAllVariants() {

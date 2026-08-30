@@ -374,3 +374,172 @@ export const getProductVariant = (productId) => {
     );
 
 };
+
+// =====================================================
+// CART
+// =====================================================
+
+// ADD TO CART
+export const addToCart = (inventoryId, quantity = 1) => {
+
+    const token = localStorage.getItem("userJwtToken");
+
+    return axios.post(
+        `${BASE_URL}/cart/add`,
+        {
+            inventoryId,
+            quantity
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        }
+    );
+
+};
+
+
+// GET CURRENT USER CART
+export const getCart = () => {
+
+    const token = localStorage.getItem("userJwtToken");
+
+    return axios.get(
+        `${BASE_URL}/cart`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+};
+
+export const updateCartQuantity = (
+    cartItemId,
+    quantity
+) => {
+
+    const token = localStorage.getItem("userJwtToken");
+
+    return axios.put(
+        `${BASE_URL}/cart/item/${cartItemId}`,
+        null,
+        {
+            params: {
+                quantity: quantity
+            },
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+};
+
+// REMOVE CART ITEM
+export const removeCartItem = (cartItemId) => {
+
+    const token = localStorage.getItem("userJwtToken");
+
+    return axios.delete(
+        `${BASE_URL}/cart/item/${cartItemId}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+};
+
+
+// CLEAR CART
+export const clearCart = () => {
+
+    const token = localStorage.getItem("userJwtToken");
+
+    return axios.delete(
+        `${BASE_URL}/cart/clear`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+};
+
+
+// =====================================================
+// INVENTORY / VENDORS
+// =====================================================
+
+// GET AVAILABLE VENDORS FOR PRODUCT
+export const getProductVendors = (productId) => {
+
+    return axios.get(
+        `${BASE_URL}/inventory/product/${productId}/vendors`
+    );
+
+};
+
+// =====================================================
+// SPECIFICATION
+// =====================================================
+
+// ADD SPECIFICATION
+export const addSpecification = (specification) => {
+
+    return axios.post(
+        `${BASE_URL}/admin/specifications/add`,
+        specification
+    );
+
+};
+
+
+// GET ALL SPECIFICATIONS
+export const getAllSpecifications = () => {
+
+    return axios.get(
+        `${BASE_URL}/admin/specifications/all`
+    );
+
+};
+
+
+// GET SPECIFICATIONS BY CATEGORY
+export const getSpecificationsByCategory = (category) => {
+
+    return axios.get(
+        `${BASE_URL}/admin/specifications/category/${category}`
+    );
+
+};
+
+
+// UPDATE SPECIFICATION
+export const updateSpecification = (
+    id,
+    specification
+) => {
+
+    return axios.put(
+        `${BASE_URL}/admin/specifications/${id}`,
+        specification
+    );
+
+};
+
+
+// DELETE SPECIFICATION
+export const deleteSpecification = (id) => {
+
+    return axios.delete(
+        `${BASE_URL}/admin/specifications/${id}`
+    );
+
+};

@@ -9,7 +9,13 @@ import Login from "./pages/user/Login";
 import Register from "./pages/user/Register";
 import ProductDetails from "./pages/user/ProductOverview";
 import Products from "./pages/user/Products";
-
+import ProductComparison from "./pages/user/ProductComparison";
+import ShopDetails from "./pages/user/ShopDetails";
+import Settings from "./pages/user/Settings";
+import Wishlist from "./pages/user/Wishlist";
+import Cart from "./pages/user/Cart";
+import PlaceOrder from "./pages/user/PlaceOrder";
+import OrderSuccess from "./pages/user/OrderSuccess";
 
 // ---------------- VENDOR ----------------
 import VendorLogin from "./pages/vendor/VLogin";
@@ -42,7 +48,6 @@ import AdminManagePromotions from "./pages/admin/AManagePromotions";
 import AdminManageCarousel from "./pages/admin/AManageCarousel";
 import AdminManageTrendingDeals from "./pages/admin/AManageTrendingDeals";
 import AdminManageTrendingCategories from "./pages/admin/AManageTrendingCategories";
-
 
 function App() {
 
@@ -79,6 +84,15 @@ function App() {
                     path="/products"
                     element={<Products />}
                 />
+                <Route
+                    path="/shop/:vendorId"
+                    element={<ShopDetails />}
+                />
+                <Route path="/cart" element={<Cart />} />
+      <Route path="/place-order" element={<PlaceOrder />} />
+      <Route path="/order-success" element={<OrderSuccess />} />
+      <Route path="/wishlist" element={<Wishlist />} />
+      <Route path="/settings" element={<Settings />} />
 
 
                 {/* ================= VENDOR ================= */}
@@ -179,6 +193,10 @@ function App() {
                             <UsersDetails />
                         </ProtectedRoute>
                     }
+                />
+                <Route
+                path="/products/:productId"
+                element={<ProductComparison/>}
                 />
 
 

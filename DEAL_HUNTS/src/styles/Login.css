@@ -117,3 +117,23 @@
   background-color: gold;
   border: 2px solid black;
 }
+
+/* ============================================================
+   REGISTER / SKIP LOGIN LINKS
+   ============================================================ */
+
+.userregister-link {
+  color: #1d4ed8;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.userregister-link:hover {
+  text-decoration: underline;
+}
+
+/* Skip login specifically */
+.guest-login-link {
+  cursor: pointer;
+}

@@ -7,22 +7,26 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository
+        extends JpaRepository<Product, Long> {
 
     List<Product> findAllByOrderByNameAsc();
 
-    List<Product> findByNameContainingIgnoreCase(String name);
+    List<Product> findByNameContainingIgnoreCase(
+            String name
+    );
 
-    boolean existsByNameAndBrandAndCategory(
+    boolean existsByNameAndBrandIdAndCategoryId(
             String name,
-            String brand,
-            String category
+            Long brandId,
+            Long categoryId
     );
-    Product findByNameAndBrandAndCategory(
-        String name,
-        String brand,
-        String category
-    );
-    List<Product> findByActiveTrue();
 
+    Product findByNameAndBrandIdAndCategoryId(
+            String name,
+            Long brandId,
+            Long categoryId
+    );
+
+    List<Product> findByActiveTrue();
 }

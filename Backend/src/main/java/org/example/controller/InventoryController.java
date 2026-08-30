@@ -3,8 +3,11 @@ package org.example.controller;
 import java.util.List;
 
 import org.example.dto.InventoryTable;
+import org.example.dto.InventoryVendorDTO;
 import org.example.entity.Inventory;
 import org.example.service.InventoryService;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,48 +32,106 @@ public class InventoryController {
         this.inventoryService = inventoryService;
     }
 
+    // ============================================================
+    // ADD INVENTORY
+    // ============================================================
+
     @PostMapping("/add")
-    public Inventory addInventory(
+    public ResponseEntity<Inventory> addInventory(
             @RequestBody InventoryTable inventoryTable
     ) {
 
         Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication();
 
         if (authentication == null ||
-            authentication.getName() == null ||
-            authentication.getName().equals("anonymousUser")) {
+                authentication.getName() == null ||
+                authentication.getName()
+                        .equals("anonymousUser")) {
 
-            throw new RuntimeException("Vendor is not authenticated");
+            throw new RuntimeException(
+                    "Vendor is not authenticated"
+            );
         }
 
-        String email = authentication.getName();
+        String email =
+                authentication.getName();
 
-        return inventoryService.saveInventory(
-                inventoryTable,
-                email
+        Inventory inventory =
+                inventoryService.saveInventory(
+                        inventoryTable,
+                        email
+                );
+
+        return ResponseEntity.ok(
+                inventory
         );
     }
 
+    // ============================================================
+    // GET VENDOR INVENTORY
+    // ============================================================
+
     @GetMapping("/vendor/{vendorId}")
-    public List<Inventory> vendorInventory(
+    public ResponseEntity<List<Inventory>>
+    vendorInventory(
             @PathVariable Long vendorId
     ) {
 
-        return inventoryService.getVendorInventory(vendorId);
+        return ResponseEntity.ok(
+                inventoryService.getVendorInventory(
+                        vendorId
+                )
+        );
     }
+
+    // ============================================================
+    // GET ALL INVENTORY
+    // ============================================================
 
     @GetMapping("/all")
-    public List<Inventory> allInventory() {
+    public ResponseEntity<List<Inventory>>
+    allInventory() {
 
-        return inventoryService.getAllInventory();
+        return ResponseEntity.ok(
+                inventoryService.getAllInventory()
+        );
     }
 
+    // ============================================================
+    // GET PRODUCT VENDORS
+    // ============================================================
+
+    @GetMapping("/product/{productId}/vendors")
+    public ResponseEntity<List<InventoryVendorDTO>>
+    getProductVendors(
+            @PathVariable Long productId
+    ) {
+
+        return ResponseEntity.ok(
+                inventoryService
+                        .getAvailableVendorsByProductId(
+                                productId
+                        )
+        );
+    }
+
+    // ============================================================
+    // DELETE INVENTORY
+    // ============================================================
+
     @DeleteMapping("/{id}")
-    public void deleteInventory(
+    public ResponseEntity<String>
+    deleteInventory(
             @PathVariable Long id
     ) {
 
         inventoryService.deleteInventory(id);
+
+        return ResponseEntity.ok(
+                "Inventory deleted successfully"
+        );
     }
 }

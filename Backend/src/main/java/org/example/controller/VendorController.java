@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.example.dto.LoginRequest;
 import org.example.dto.LoginResponse;
+import org.example.dto.VendorDetailsDTO;
 import org.example.dto.VendorProductDTO;
 import org.example.entity.Product;
 import org.example.entity.Vendor;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -177,7 +179,9 @@ public List<VendorProductDTO> getMyProducts(
         System.out.println(
             "Product: " + p.getName() +
             " | ID: " + p.getId() +
-            " | Price: " + p.getSellingPrice() +
+            " | Base Price: " + p.getBasePrice() +
+            " | Discount: " + p.getDiscount() +
+            " | Final Price: " + p.getFinalPrice() +
             " | Stock: " + p.getStock()
         )
     );
@@ -185,5 +189,36 @@ public List<VendorProductDTO> getMyProducts(
     System.out.println("================================");
 
     return products;
+}
+
+@GetMapping("/{id}")
+public ResponseEntity<?> getVendorById(
+        @PathVariable Integer id) {
+
+    Vendor vendor = vendorRepository.findById(id)
+            .orElseThrow(() ->
+                    new RuntimeException(
+                            "Vendor not found with id: " + id
+                    )
+            );
+
+    VendorDetailsDTO dto = new VendorDetailsDTO(
+            vendor.getId(),
+            vendor.getFullName(),
+            vendor.getShopName(),
+            vendor.getPhoneNo(),
+            vendor.getState(),
+            vendor.getCity(),
+            vendor.getPincode(),
+            vendor.getLatitude(),
+            vendor.getLongitude(),
+            vendor.getAddress(),
+            vendor.getEmail(),
+            vendor.getRole(),
+            vendor.getStatus(),
+            vendor.getLocationLink()
+    );
+
+    return ResponseEntity.ok(dto);
 }
 }

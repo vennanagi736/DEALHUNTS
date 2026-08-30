@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from "react";
 import SideWindow from "../../components/SideBar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
 import { getActiveProducts } from "../../api/VendorApi";
 import { getProductById } from "../../api/ProductApi";
 import { addInventory } from "../../api/InventoryApi";
+
 import "../../styles/ProductPreview.css";
-import { Link } from "react-router-dom";
 
 function VendorProductPage() {
 
   const navigate = useNavigate();
+
+  // ============================================================
+  // INITIAL INVENTORY
+  // ============================================================
 
   const initialInventory = {
     product: "",
     variantId: "",
     colorId: "",
 
-    sellingPrice: "",
     stock: "",
     discount: "",
     minPurchase: "",
@@ -36,43 +40,52 @@ function VendorProductPage() {
     offerTitle: "",
     offerDescription: "",
 
-    returnPolicy: "",
+    returnPolicy: ""
   };
+
+  // ============================================================
+  // STATES
+  // ============================================================
 
   const [inventory, setInventory] = useState(initialInventory);
 
   const [productInfo, setProductInfo] = useState(null);
 
   const [products, setProducts] = useState([]);
+
   const [variants, setVariants] = useState([]);
+
   const [colors, setColors] = useState([]);
+
+  // Dynamic category attributes
+  const [attributes, setAttributes] = useState([]);
+
+  // Dynamic values entered by vendor
+  const [attributeValues, setAttributeValues] = useState({});
 
   const [submitting, setSubmitting] = useState(false);
 
-
-  // --------------------------------------------------
+  // ============================================================
   // SELECTED VARIANT
-  // --------------------------------------------------
+  // ============================================================
 
   const selectedVariant =
     variants.find(
       v => v.id === Number(inventory.variantId)
     ) || null;
 
-
-  // --------------------------------------------------
+  // ============================================================
   // SELECTED COLOR
-  // --------------------------------------------------
+  // ============================================================
 
   const selectedColor =
     colors.find(
       c => c.id === Number(inventory.colorId)
     ) || null;
 
-
-  // --------------------------------------------------
-  // LOAD PRODUCTS
-  // --------------------------------------------------
+  // ============================================================
+  // LOAD ACTIVE PRODUCTS
+  // ============================================================
 
   useEffect(() => {
 
@@ -82,11 +95,14 @@ function VendorProductPage() {
 
         const response = await getActiveProducts();
 
-        setProducts(response.data);
+        setProducts(response.data || []);
 
       } catch (error) {
 
-        console.error("Error loading products:", error);
+        console.error(
+          "Error loading products:",
+          error
+        );
 
       }
 
@@ -96,10 +112,85 @@ function VendorProductPage() {
 
   }, []);
 
+  // ============================================================
+  // LOAD CATEGORY ATTRIBUTES
+  // ============================================================
 
-  // --------------------------------------------------
-  // HANDLE INPUT CHANGES
-  // --------------------------------------------------
+  const loadCategoryAttributes = async (categoryId) => {
+
+    if (!categoryId) {
+
+      setAttributes([]);
+      setAttributeValues({});
+
+      return;
+
+    }
+
+    try {
+
+      const response = await fetch(
+        `http://localhost:8080/attributes/category/${categoryId}`
+      );
+
+      if (!response.ok) {
+
+        throw new Error(
+          `Failed to load attributes: ${response.status}`
+        );
+
+      }
+
+      const data = await response.json();
+
+      console.log(
+        "Category attributes:",
+        data
+      );
+
+      setAttributes(data || []);
+
+      // Create empty values for every attribute
+      const initialValues = {};
+
+      (data || []).forEach(attribute => {
+
+        initialValues[attribute.id] = "";
+
+      });
+
+      setAttributeValues(initialValues);
+
+    } catch (error) {
+
+      console.error(
+        "Error loading category attributes:",
+        error
+      );
+
+      setAttributes([]);
+      setAttributeValues({});
+
+    }
+
+  };
+
+  // ============================================================
+  // HANDLE DYNAMIC ATTRIBUTE CHANGE
+  // ============================================================
+
+  const handleAttributeChange = (attributeId, value) => {
+
+    setAttributeValues(prev => ({
+      ...prev,
+      [attributeId]: value
+    }));
+
+  };
+
+  // ============================================================
+  // HANDLE NORMAL INPUT CHANGES
+  // ============================================================
 
   const handleChange = async (e) => {
 
@@ -115,10 +206,9 @@ function VendorProductPage() {
         ? checked
         : value;
 
-
-    // --------------------------------------------------
+    // ============================================================
     // NORMAL INPUT / CHECKBOX
-    // --------------------------------------------------
+    // ============================================================
 
     if (name !== "product") {
 
@@ -128,28 +218,33 @@ function VendorProductPage() {
       }));
 
       return;
+
     }
 
-
-    // --------------------------------------------------
+    // ============================================================
     // PRODUCT CHANGE
-    // --------------------------------------------------
+    // ============================================================
 
     setInventory(prev => ({
       ...prev,
       product: value
     }));
 
-
-    // --------------------------------------------------
+    // ============================================================
     // PRODUCT CLEARED
-    // --------------------------------------------------
+    // ============================================================
 
     if (!value) {
 
       setProductInfo(null);
+
       setVariants([]);
+
       setColors([]);
+
+      setAttributes([]);
+
+      setAttributeValues({});
 
       setInventory(prev => ({
         ...prev,
@@ -159,35 +254,68 @@ function VendorProductPage() {
       }));
 
       return;
+
     }
 
-
-    // --------------------------------------------------
+    // ============================================================
     // LOAD SELECTED PRODUCT
-    // --------------------------------------------------
+    // ============================================================
 
     try {
 
-      const response = await getProductById(value);
+      const response =
+        await getProductById(value);
 
       if (!response.data) {
         return;
       }
 
-      const product = response.data;
+      const product =
+        response.data;
+
+      console.log(
+        "Selected product:",
+        product
+      );
 
       setProductInfo(product);
 
-      // Reset product-specific fields
+      // ============================================================
+      // GET CATEGORY ID
+      // ============================================================
+
+      const categoryId =
+        product.category?.id ||
+        product.categoryId;
+
+      console.log(
+        "Category ID:",
+        categoryId
+      );
+
+      // ============================================================
+      // LOAD DYNAMIC CATEGORY ATTRIBUTES
+      // ============================================================
+
+      await loadCategoryAttributes(
+        categoryId
+      );
+
+      // ============================================================
+      // RESET PRODUCT-SPECIFIC FIELDS
+      // ============================================================
+
       setInventory(prev => ({
         ...prev,
 
         variantId: "",
         colorId: "",
 
-        sellingPrice: "",
         stock: "",
         discount: "",
+
+        minPurchase: "",
+        maxPurchase: "",
 
         warranty: "",
         condition: "",
@@ -206,74 +334,134 @@ function VendorProductPage() {
         returnPolicy: ""
       }));
 
-      setVariants(product.variants || []);
-      setColors(product.colors || []);
+      setVariants(
+        product.variants || []
+      );
+
+      setColors(
+        product.colors || []
+      );
 
     } catch (error) {
 
+      console.error(
+        "Error loading product:",
+        error
+      );
+
       setProductInfo(null);
+
       setVariants([]);
+
       setColors([]);
 
-      setInventory(prev => ({
-        ...prev,
-        variantId: "",
-        colorId: ""
-      }));
+      setAttributes([]);
 
-      console.error("Error loading product:", error);
+      setAttributeValues({});
 
     }
 
   };
 
+  // ============================================================
+  // VALIDATE DYNAMIC ATTRIBUTES
+  // ============================================================
 
-  // --------------------------------------------------
+  const validateAttributes = () => {
+
+    for (const attribute of attributes) {
+
+      if (
+        attribute.required &&
+        (
+          attributeValues[attribute.id] === undefined ||
+          attributeValues[attribute.id] === null ||
+          String(attributeValues[attribute.id]).trim() === ""
+        )
+      ) {
+
+        alert(
+          `Please enter ${attribute.label || attribute.name}.`
+        );
+
+        return false;
+
+      }
+
+    }
+
+    return true;
+
+  };
+
+  // ============================================================
   // VALIDATE FORM
-  // --------------------------------------------------
+  // ============================================================
 
   const validateForm = () => {
 
     // Product
     if (!inventory.product) {
-      alert("Please select a product.");
-      return false;
-    }
 
+      alert(
+        "Please select a product."
+      );
+
+      return false;
+
+    }
 
     // Variant
     if (!inventory.variantId) {
-      alert("Please select a variant.");
-      return false;
-    }
 
+      alert(
+        "Please select a variant."
+      );
+
+      return false;
+
+    }
 
     // Color
     if (!inventory.colorId) {
-      alert("Please select a color.");
+
+      alert(
+        "Please select a color."
+      );
+
       return false;
+
     }
 
-
-    // Selling price
+    // Product price
     if (
-      inventory.sellingPrice === "" ||
-      Number(inventory.sellingPrice) <= 0
+      !productInfo ||
+      productInfo.price === null ||
+      productInfo.price === undefined ||
+      Number(productInfo.price) <= 0
     ) {
-      alert("Please enter a valid selling price.");
-      return false;
-    }
 
+      alert(
+        "Selected product has an invalid price."
+      );
+
+      return false;
+
+    }
 
     // Stock
     if (
       inventory.stock === "" ||
       Number(inventory.stock) <= 0
     ) {
-      alert("Please enter a valid stock quantity.");
-      return false;
-    }
 
+      alert(
+        "Please enter a valid stock quantity."
+      );
+
+      return false;
+
+    }
 
     // Discount
     if (
@@ -283,190 +471,284 @@ function VendorProductPage() {
         Number(inventory.discount) > 100
       )
     ) {
-      alert("Discount must be between 0 and 100.");
+
+      alert(
+        "Discount must be between 0 and 100."
+      );
+
       return false;
+
     }
 
     // Minimum purchase
-if (
-  inventory.minPurchase === "" ||
-  Number(inventory.minPurchase) < 1
-) {
-  alert("Please enter a valid minimum purchase quantity.");
-  return false;
-}
+    if (
+      inventory.minPurchase === "" ||
+      Number(inventory.minPurchase) < 1
+    ) {
 
-// Maximum purchase
-if (
-  inventory.maxPurchase === "" ||
-  Number(inventory.maxPurchase) < 1
-) {
-  alert("Please enter a valid maximum purchase quantity.");
-  return false;
-}
+      alert(
+        "Please enter a valid minimum purchase quantity."
+      );
 
-// Minimum cannot exceed maximum
-if (
-  Number(inventory.minPurchase) > Number(inventory.maxPurchase)
-) {
-  alert("Minimum purchase cannot be greater than maximum purchase.");
-  return false;
-}
-
-// Maximum cannot exceed stock
-if (
-  Number(inventory.maxPurchase) > Number(inventory.stock)
-) {
-  alert("Maximum purchase cannot be greater than available stock.");
-  return false;
-}
-
-
-    // Warranty
-    if (!inventory.warranty.trim()) {
-      alert("Please enter the warranty.");
       return false;
+
     }
 
+    // Maximum purchase
+    if (
+      inventory.maxPurchase === "" ||
+      Number(inventory.maxPurchase) < 1
+    ) {
+
+      alert(
+        "Please enter a valid maximum purchase quantity."
+      );
+
+      return false;
+
+    }
+
+    // Minimum > Maximum
+    if (
+      Number(inventory.minPurchase) >
+      Number(inventory.maxPurchase)
+    ) {
+
+      alert(
+        "Minimum purchase cannot be greater than maximum purchase."
+      );
+
+      return false;
+
+    }
+
+    // Maximum > Stock
+    if (
+      Number(inventory.maxPurchase) >
+      Number(inventory.stock)
+    ) {
+
+      alert(
+        "Maximum purchase cannot be greater than available stock."
+      );
+
+      return false;
+
+    }
+
+    // Warranty
+    if (
+      !inventory.warranty.trim()
+    ) {
+
+      alert(
+        "Please enter the warranty."
+      );
+
+      return false;
+
+    }
 
     // Condition
     if (!inventory.condition) {
-      alert("Please select the product condition.");
+
+      alert(
+        "Please select the product condition."
+      );
+
       return false;
+
     }
 
+    // Delivery
+    if (
+      !inventory.deliveryTime.trim()
+    ) {
 
-    // Delivery time
-    if (!inventory.deliveryTime.trim()) {
-      alert("Please enter the delivery time.");
+      alert(
+        "Please enter the delivery time."
+      );
+
       return false;
-    }
 
+    }
 
     // Offer title
-    if (!inventory.offerTitle.trim()) {
-      alert("Please enter the offer title.");
-      return false;
-    }
+    if (
+      !inventory.offerTitle.trim()
+    ) {
 
+      alert(
+        "Please enter the offer title."
+      );
+
+      return false;
+
+    }
 
     // Offer description
-    if (!inventory.offerDescription.trim()) {
-      alert("Please enter the offer description.");
-      return false;
-    }
+    if (
+      !inventory.offerDescription.trim()
+    ) {
 
+      alert(
+        "Please enter the offer description."
+      );
+
+      return false;
+
+    }
 
     // Return policy
-    if (!inventory.returnPolicy.trim()) {
-      alert("Please enter the return policy.");
+    if (
+      !inventory.returnPolicy.trim()
+    ) {
+
+      alert(
+        "Please enter the return policy."
+      );
+
+      return false;
+
+    }
+
+    // Dynamic attributes
+    if (!validateAttributes()) {
       return false;
     }
 
-
     return true;
+
   };
 
-
-  // --------------------------------------------------
+  // ============================================================
   // SUBMIT
-  // --------------------------------------------------
+  // ============================================================
 
   const handleSubmit = async (e) => {
 
     e.preventDefault();
 
-
-    // IMPORTANT:
-    // Do not depend only on the disabled button.
-    // Always validate again when submitting.
-
     if (!validateForm()) {
       return;
     }
-
 
     if (submitting) {
       return;
     }
 
-
     setSubmitting(true);
-
 
     try {
 
+      // ============================================================
+      // CONVERT DYNAMIC ATTRIBUTES INTO PAYLOAD
+      // ============================================================
+
+      const productAttributes =
+        attributes.map(attribute => ({
+          attributeId: attribute.id,
+          value:
+            attributeValues[attribute.id] ?? ""
+        }));
+
+      // ============================================================
+      // INVENTORY DATA
+      // ============================================================
+
       const inventoryData = {
 
-        productId: Number(inventory.product),
+        productId:
+          Number(inventory.product),
 
-        variantId: Number(inventory.variantId),
+        variantId:
+          Number(inventory.variantId),
 
-        colorId: Number(inventory.colorId),
+        colorId:
+          Number(inventory.colorId),
 
-        sellingPrice: Number(inventory.sellingPrice),
-
-        stock: Number(inventory.stock),
+        stock:
+          Number(inventory.stock),
 
         discount:
           inventory.discount === ""
             ? null
             : Number(inventory.discount),
 
-        minPurchase: Number(inventory.minPurchase),
+        minPurchase:
+          Number(inventory.minPurchase),
 
-        maxPurchase: Number(inventory.maxPurchase),
+        maxPurchase:
+          Number(inventory.maxPurchase),
 
-        condition: inventory.condition,
+        condition:
+          inventory.condition,
 
-        warranty: inventory.warranty.trim(),
+        warranty:
+          inventory.warranty.trim(),
 
-        deliveryTime: inventory.deliveryTime.trim(),
+        deliveryTime:
+          inventory.deliveryTime.trim(),
 
-        homeDelivery: inventory.homeDelivery,
+        homeDelivery:
+          inventory.homeDelivery,
 
-        storePickup: inventory.storePickup,
+        storePickup:
+          inventory.storePickup,
 
-        cod: inventory.cod,
+        cod:
+          inventory.cod,
 
-        emi: inventory.emi,
+        emi:
+          inventory.emi,
 
-        exchange: inventory.exchange,
+        exchange:
+          inventory.exchange,
 
-        offerTitle: inventory.offerTitle.trim(),
+        offerTitle:
+          inventory.offerTitle.trim(),
 
         offerDescription:
           inventory.offerDescription.trim(),
 
         returnPolicy:
-          inventory.returnPolicy.trim()
-      };
+          inventory.returnPolicy.trim(),
 
+        // Dynamic attributes
+        attributes:
+          productAttributes
+      };
 
       console.log(
         "Inventory data being sent:",
         inventoryData
       );
 
+      // ============================================================
+      // SEND TO BACKEND
+      // ============================================================
 
       const response =
-        await addInventory(inventoryData);
-
+        await addInventory(
+          inventoryData
+        );
 
       console.log(
         "Inventory saved:",
         response.data
       );
 
+      alert(
+        "Inventory Added Successfully"
+      );
 
-      alert("Inventory Added Successfully");
+      // ============================================================
+      // RESET
+      // ============================================================
 
-
-      // --------------------------------------------------
-      // RESET FORM
-      // --------------------------------------------------
-
-      setInventory(initialInventory);
+      setInventory(
+        initialInventory
+      );
 
       setProductInfo(null);
 
@@ -474,6 +756,9 @@ if (
 
       setColors([]);
 
+      setAttributes([]);
+
+      setAttributeValues({});
 
     } catch (error) {
 
@@ -481,7 +766,6 @@ if (
         "Failed to add inventory:",
         error
       );
-
 
       if (error.response) {
 
@@ -491,7 +775,6 @@ if (
         );
 
       }
-
 
       alert(
         error.response?.data?.message ||
@@ -506,12 +789,22 @@ if (
 
   };
 
-
-  // --------------------------------------------------
-  // BUTTON ENABLE/DISABLE
-  // --------------------------------------------------
+  // ============================================================
+  // BUTTON ENABLE / DISABLE
+  // ============================================================
 
   const isProductReady = () => {
+
+    const requiredAttributesReady =
+      attributes
+        .filter(attribute => attribute.required)
+        .every(attribute =>
+          attributeValues[attribute.id] !== undefined &&
+          attributeValues[attribute.id] !== null &&
+          String(
+            attributeValues[attribute.id]
+          ).trim() !== ""
+        );
 
     return Boolean(
 
@@ -520,9 +813,6 @@ if (
       inventory.variantId &&
 
       inventory.colorId &&
-
-      inventory.sellingPrice &&
-      Number(inventory.sellingPrice) > 0 &&
 
       inventory.stock &&
       Number(inventory.stock) > 0 &&
@@ -543,16 +833,130 @@ if (
 
       inventory.offerDescription.trim() &&
 
-      inventory.returnPolicy.trim()
+      inventory.returnPolicy.trim() &&
+
+      requiredAttributesReady
 
     );
 
   };
 
+  // ============================================================
+  // PRICE CALCULATION
+  // ============================================================
 
-  // --------------------------------------------------
+  const productPrice =
+    productInfo?.price
+      ? Number(productInfo.price)
+      : 0;
+
+  const discountPercent =
+    inventory.discount === ""
+      ? 0
+      : Number(inventory.discount);
+
+  const discountAmount =
+    productPrice *
+    (discountPercent / 100);
+
+  const finalPrice =
+    productPrice -
+    discountAmount;
+
+  // ============================================================
+  // RENDER DYNAMIC ATTRIBUTE INPUT
+  // ============================================================
+
+  const renderAttributeInput = (
+    attribute
+  ) => {
+
+    const value =
+      attributeValues[attribute.id] || "";
+
+    const commonProps = {
+      value: value,
+
+      onChange: (e) =>
+        handleAttributeChange(
+          attribute.id,
+          e.target.value
+        ),
+
+      required:
+        attribute.required
+    };
+
+    // ============================================================
+    // NUMBER
+    // ============================================================
+
+    if (
+      attribute.dataType === "NUMBER"
+    ) {
+
+      return (
+        <input
+          type="number"
+          {...commonProps}
+        />
+      );
+
+    }
+
+    // ============================================================
+    // BOOLEAN
+    // ============================================================
+
+    if (
+      attribute.dataType === "BOOLEAN"
+    ) {
+
+      return (
+        <select
+          value={value}
+          onChange={(e) =>
+            handleAttributeChange(
+              attribute.id,
+              e.target.value
+            )
+          }
+          required={attribute.required}
+        >
+
+          <option value="">
+            Select
+          </option>
+
+          <option value="true">
+            Yes
+          </option>
+
+          <option value="false">
+            No
+          </option>
+
+        </select>
+      );
+
+    }
+
+    // ============================================================
+    // DEFAULT TEXT
+    // ============================================================
+
+    return (
+      <input
+        type="text"
+        {...commonProps}
+      />
+    );
+
+  };
+
+  // ============================================================
   // UI
-  // --------------------------------------------------
+  // ============================================================
 
   return (
     <>
@@ -566,7 +970,6 @@ if (
           <SideWindow />
 
         </div>
-
 
         <div className="logo">
 
@@ -583,12 +986,14 @@ if (
           </span>
 
         </div>
-        <div className="navigation">
-          <Link to="/vendor/manage-products">
-              Manage Products
-            </Link>
-        </div>
 
+        <div className="navigation">
+
+          <Link to="/vendor/manage-products">
+            Manage Products
+          </Link>
+
+        </div>
 
         <div
           className="back-btn"
@@ -599,16 +1004,13 @@ if (
 
       </header>
 
-
       {/* ================= PAGE TITLE ================= */}
 
       <h1 className="page-title">
         New Product
       </h1>
 
-
       <div className="master-layout">
-
 
         {/* ==================================================
             LEFT SIDE - FORM
@@ -622,7 +1024,6 @@ if (
           <h2>
             Product Details
           </h2>
-
 
           {/* ================= PRODUCT ================= */}
 
@@ -641,7 +1042,7 @@ if (
               Select Product
             </option>
 
-            {products.map((p) => (
+            {products.map(p => (
 
               <option
                 key={p.id}
@@ -654,57 +1055,51 @@ if (
 
           </select>
 
+          {/* ==================================================
+              DYNAMIC PRODUCT ATTRIBUTES
+          ================================================== */}
 
-          {/* ================= PRODUCT INFORMATION ================= */}
+          {attributes.length > 0 && (
 
-          <h3>
-            Product Information
-          </h3>
+            <>
 
+              <h3>
+                Product Specifications
+              </h3>
 
-          <label>
-            Brand
-          </label>
+              {attributes.map(attribute => (
 
-          <input
-            type="text"
-            value={productInfo?.brand || ""}
-            readOnly
-          />
+                <div
+                  className="dynamic-attribute"
+                  key={attribute.id}
+                >
 
+                  <label>
 
-          <label>
-            Processor
-          </label>
+                    {attribute.label ||
+                      attribute.name}
 
-          <input
-            type="text"
-            value={productInfo?.processor || ""}
-            readOnly
-          />
+                    {attribute.unit
+                      ? ` (${attribute.unit})`
+                      : ""}
 
+                    {attribute.required
+                      ? " *"
+                      : ""}
 
-          <label>
-            Display
-          </label>
+                  </label>
 
-          <input
-            type="text"
-            value={productInfo?.displaySize || ""}
-            readOnly
-          />
+                  {renderAttributeInput(
+                    attribute
+                  )}
 
+                </div>
 
-          <label>
-            Battery
-          </label>
+              ))}
 
-          <input
-            type="text"
-            value={productInfo?.battery || ""}
-            readOnly
-          />
+            </>
 
+          )}
 
           {/* ================= VARIANT ================= */}
 
@@ -724,7 +1119,7 @@ if (
               Select Variant
             </option>
 
-            {variants.map((v) => (
+            {variants.map(v => (
 
               <option
                 key={v.id}
@@ -736,7 +1131,6 @@ if (
             ))}
 
           </select>
-
 
           {/* ================= COLOR ================= */}
 
@@ -756,7 +1150,7 @@ if (
               Select Color
             </option>
 
-            {colors.map((c) => (
+            {colors.map(c => (
 
               <option
                 key={c.id}
@@ -769,27 +1163,11 @@ if (
 
           </select>
 
-
           {/* ================= SELLING DETAILS ================= */}
 
           <h3>
             Selling Details
           </h3>
-
-
-          <label>
-            Selling Price
-          </label>
-
-          <input
-            type="number"
-            name="sellingPrice"
-            value={inventory.sellingPrice}
-            onChange={handleChange}
-            min="1"
-            required
-          />
-
 
           <label>
             Stock Quantity
@@ -804,7 +1182,6 @@ if (
             required
           />
 
-
           <label>
             Discount
           </label>
@@ -818,16 +1195,22 @@ if (
             max="100"
           />
 
-          <label>Minimum Purchase Quantity</label>
-          <input
-          type="number"
-          name="minPurchase"
-          value={inventory.minPurchase}
-          onChange={handleChange}
-          min="1"
-          required/>
+          <label>
+            Minimum Purchase Quantity
+          </label>
 
-          <label>Maximum Purchase Quantity</label>
+          <input
+            type="number"
+            name="minPurchase"
+            value={inventory.minPurchase}
+            onChange={handleChange}
+            min="1"
+            required
+          />
+
+          <label>
+            Maximum Purchase Quantity
+          </label>
 
           <input
             type="number"
@@ -838,13 +1221,11 @@ if (
             required
           />
 
-
           {/* ================= CONDITION ================= */}
 
           <h3>
             Product Condition
           </h3>
-
 
           <label>
             Warranty
@@ -858,7 +1239,6 @@ if (
             onChange={handleChange}
             required
           />
-
 
           <label>
             Condition
@@ -885,13 +1265,11 @@ if (
 
           </select>
 
-
           {/* ================= DELIVERY ================= */}
 
           <h3>
             Delivery Details
           </h3>
-
 
           <label>
             Delivery Time
@@ -906,13 +1284,11 @@ if (
             required
           />
 
-
           {/* ================= SERVICES ================= */}
 
           <h3>
             Services
           </h3>
-
 
           <label>
 
@@ -927,7 +1303,6 @@ if (
 
           </label>
 
-
           <label>
 
             <input
@@ -941,13 +1316,11 @@ if (
 
           </label>
 
-
           {/* ================= PAYMENT ================= */}
 
           <h3>
             Payment Options
           </h3>
-
 
           <label>
 
@@ -962,7 +1335,6 @@ if (
 
           </label>
 
-
           <label>
 
             <input
@@ -975,7 +1347,6 @@ if (
             EMI
 
           </label>
-
 
           <label>
 
@@ -990,13 +1361,11 @@ if (
 
           </label>
 
-
           {/* ================= OFFERS ================= */}
 
           <h3>
             Offers
           </h3>
-
 
           <label>
             Offer Title
@@ -1010,7 +1379,6 @@ if (
             required
           />
 
-
           <label>
             Offer Description
           </label>
@@ -1022,13 +1390,11 @@ if (
             required
           />
 
-
           {/* ================= RETURN POLICY ================= */}
 
           <h3>
             Return Policy
           </h3>
-
 
           <textarea
             name="returnPolicy"
@@ -1036,7 +1402,6 @@ if (
             onChange={handleChange}
             required
           />
-
 
           {/* ================= SUBMIT ================= */}
 
@@ -1058,7 +1423,6 @@ if (
 
         </form>
 
-
         {/* ==================================================
             RIGHT SIDE - LIVE PREVIEW
         ================================================== */}
@@ -1069,125 +1433,89 @@ if (
             Live Product Preview
           </h2>
 
-
           <div className="master-preview-card">
 
-
-            {/* PRODUCT */}
-
-            <div className="preview-item">
-
-              <label>
-                Product
-              </label>
-
-              <input
-                readOnly
-                value={productInfo?.name || ""}
-              />
-
-            </div>
-
-
-            {/* BRAND */}
+            {/* PRODUCT PRICE */}
 
             <div className="preview-item">
 
               <label>
-                Brand
-              </label>
-
-              <input
-                readOnly
-                value={productInfo?.brand || ""}
-              />
-
-            </div>
-
-
-            {/* PROCESSOR */}
-
-            <div className="preview-item">
-
-              <label>
-                Processor
-              </label>
-
-              <input
-                readOnly
-                value={productInfo?.processor || ""}
-              />
-
-            </div>
-
-
-            {/* DISPLAY */}
-
-            <div className="preview-item">
-
-              <label>
-                Display
-              </label>
-
-              <input
-                readOnly
-                value={productInfo?.displaySize || ""}
-              />
-
-            </div>
-
-
-            {/* BATTERY */}
-
-            <div className="preview-item">
-
-              <label>
-                Battery
-              </label>
-
-              <input
-                readOnly
-                value={productInfo?.battery || ""}
-              />
-
-            </div>
-
-
-            {/* RAM */}
-
-            <div className="preview-item">
-
-              <label>
-                RAM
-              </label>
-
-              <input
-                readOnly
-                value={selectedVariant?.ram || ""}
-              />
-
-            </div>
-
-
-            {/* STORAGE */}
-
-            <div className="preview-item">
-
-              <label>
-                Storage
+                Product Price
               </label>
 
               <input
                 readOnly
                 value={
-                  selectedVariant
-                    ? selectedVariant.storage
+                  productPrice > 0
+                    ? `₹${productPrice.toFixed(2)}`
                     : ""
                 }
               />
 
             </div>
 
+            {/* FINAL PRICE */}
+
+            <div className="preview-item">
+
+              <label>
+                Final Price
+              </label>
+
+              <input
+                readOnly
+                value={
+                  productPrice > 0
+                    ? `₹${finalPrice.toFixed(2)}`
+                    : ""
+                }
+              />
+
+            </div>
+
+            {/* DYNAMIC ATTRIBUTES PREVIEW */}
+
+            {attributes.map(attribute => (
+
+              <div
+                className="preview-item"
+                key={attribute.id}
+              >
+
+                <label>
+                  {attribute.label ||
+                    attribute.name}
+                </label>
+
+                <input
+                  readOnly
+                  value={
+                    attributeValues[
+                      attribute.id
+                    ] || ""
+                  }
+                />
+
+              </div>
+
+            ))}
+
+            {/* VARIANT */}
+
+            <div className="preview-item">
+
+              <label>
+                Variant
+              </label>
+
+              <input
+                readOnly
+                value={
+                  selectedVariant?.name || ""
+                }
+              />
+
+            </div>
 
             {/* COLOR */}
 
@@ -1200,14 +1528,11 @@ if (
               <input
                 readOnly
                 value={
-                  selectedColor
-                    ? selectedColor.name
-                    : ""
+                  selectedColor?.name || ""
                 }
               />
 
             </div>
-
 
             {/* HEX CODE */}
 
@@ -1226,23 +1551,6 @@ if (
 
             </div>
 
-
-            {/* PRICE */}
-
-            <div className="preview-item">
-
-              <label>
-                Selling Price
-              </label>
-
-              <input
-                readOnly
-                value={inventory.sellingPrice}
-              />
-
-            </div>
-
-
             {/* STOCK */}
 
             <div className="preview-item">
@@ -1253,11 +1561,12 @@ if (
 
               <input
                 readOnly
-                value={inventory.stock}
+                value={
+                  inventory.stock
+                }
               />
 
             </div>
-
 
             {/* DISCOUNT */}
 
@@ -1270,35 +1579,51 @@ if (
               <input
                 readOnly
                 value={
-                  inventory.discount
+                  inventory.discount !== ""
                     ? `${inventory.discount}%`
                     : ""
                 }
               />
 
             </div>
-            <div className="preview-item">
-              <label>MinPurchase</label>
-              <input 
-              readOnly
-              value={inventory.minPurchase
-                ? `${inventory.minPurchase}`
-                : ""
-              }
-            />
-            </div>
+
+            {/* MIN PURCHASE */}
 
             <div className="preview-item">
-              <label>MaxPurchase</label>
-              <input 
-              readOnly
-              value={inventory.maxPurchase
-                ? `${inventory.maxPurchase}`
-                : ""
-              }
-            />
+
+              <label>
+                Min Purchase
+              </label>
+
+              <input
+                readOnly
+                value={
+                  inventory.minPurchase
+                    ? inventory.minPurchase
+                    : ""
+                }
+              />
+
             </div>
 
+            {/* MAX PURCHASE */}
+
+            <div className="preview-item">
+
+              <label>
+                Max Purchase
+              </label>
+
+              <input
+                readOnly
+                value={
+                  inventory.maxPurchase
+                    ? inventory.maxPurchase
+                    : ""
+                }
+              />
+
+            </div>
 
             {/* WARRANTY */}
 
@@ -1310,11 +1635,12 @@ if (
 
               <input
                 readOnly
-                value={inventory.warranty}
+                value={
+                  inventory.warranty
+                }
               />
 
             </div>
-
 
             {/* CONDITION */}
 
@@ -1326,11 +1652,12 @@ if (
 
               <input
                 readOnly
-                value={inventory.condition}
+                value={
+                  inventory.condition
+                }
               />
 
             </div>
-
 
             {/* DELIVERY */}
 
@@ -1342,11 +1669,12 @@ if (
 
               <input
                 readOnly
-                value={inventory.deliveryTime}
+                value={
+                  inventory.deliveryTime
+                }
               />
 
             </div>
-
 
             {/* OFFER */}
 
@@ -1358,11 +1686,12 @@ if (
 
               <input
                 readOnly
-                value={inventory.offerTitle}
+                value={
+                  inventory.offerTitle
+                }
               />
 
             </div>
-
 
             {/* RETURN POLICY */}
 
@@ -1374,20 +1703,21 @@ if (
 
               <input
                 readOnly
-                value={inventory.returnPolicy}
+                value={
+                  inventory.returnPolicy
+                }
               />
 
             </div>
 
-
           </div>
 
         </div>
+
       </div>
 
     </>
   );
 }
-
 
 export default VendorProductPage;

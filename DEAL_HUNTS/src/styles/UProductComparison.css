@@ -1,0 +1,1732 @@
+.pc-page {
+  min-height: 100vh;
+  background: #f7f7f5;
+  color: #111111;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.pc-page *,
+.pc-page *::before,
+.pc-page *::after {
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.pc-header {
+  width: 100%;
+  min-height: 72px;
+  padding: 10px 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #ffffff;
+  border-bottom: 1px solid #e6e6e2;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.pc-header-left {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.pc-header-sidebar {
+  display: flex;
+  align-items: center;
+}
+
+.pc-brand {
+  cursor: pointer;
+}
+
+.pc-logo {
+  display: flex;
+  align-items: center;
+
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.pc-logo-deal {
+  color: #111111;
+}
+
+.pc-logo-hunts {
+  color: #c89211;
+}
+
+.pc-header-tagline {
+  display: block;
+  margin-top: 2px;
+
+  color: #777777;
+  font-size: 10px;
+}
+
+.pc-header-right {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.pc-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.pc-nav button {
+  border: none;
+  background: transparent;
+
+  color: #555555;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+}
+
+.pc-nav button:hover,
+.pc-nav button.active {
+  color: #b5820d;
+}
+
+.pc-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pc-header-actions button {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #ddddda;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #111111;
+
+  cursor: pointer;
+  font-size: 18px;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pc-header-actions button:hover {
+  color: #111111;
+  border-color: #d3ad45;
+  background: #fffaf0;
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   MAIN
+============================================================ */
+
+.pc-main {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+.pc-back-button {
+  margin-top: 28px;
+  margin-bottom: 18px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  border: none;
+  background: transparent;
+
+  color: #555555;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+}
+
+.pc-back-button:hover {
+  color: #b5820d;
+}
+
+/* BACK BUTTON*/
+.products-back {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 9px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+
+  background: #ffffff;
+  color: var(--navy);
+
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.products-back:hover {
+  background: var(--bg-section);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.products-back:active {
+  transform: translateY(1px);
+}
+
+/* ============================================================
+   PRODUCT OVERVIEW
+============================================================ */
+
+.pc-overview {
+  padding-bottom: 10px;
+}
+
+.pc-overview-grid {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 36px;
+
+  padding: 28px;
+
+  background: #ffffff;
+  border: 1px solid #e4e4df;
+  border-radius: 16px;
+
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px -12px rgba(0, 0, 0, 0.12);
+}
+
+/* ============================================================
+   GALLERY
+   BLUE IS INTENTIONALLY KEPT HERE
+============================================================ */
+
+.pc-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pc-gallery-main {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border: 1px solid #e4e9f2;
+  border-radius: 12px;
+
+  background:
+    radial-gradient(
+      120% 120% at 20% 15%,
+      #eff4ff 0%,
+      #dce7fb 45%,
+      #c4d6f7 100%
+    );
+}
+
+.pc-gallery-main img {
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+}
+
+.pc-gallery-placeholder {
+  color: #718096;
+  font-size: 14px;
+}
+
+.pc-gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.pc-gallery-thumb {
+  aspect-ratio: 1 / 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1.5px solid #e4e9f2;
+  border-radius: 9px;
+
+  /* Original blue image-section color */
+  background: #eff4ff;
+
+  color: #8b9ab1;
+  font-size: 12px;
+
+  overflow: hidden;
+}
+
+.pc-gallery-thumb.active {
+  border-color: #1e5fe8;
+}
+
+.pc-gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ============================================================
+   PRODUCT INFO
+============================================================ */
+
+.pc-product-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.pc-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 10px;
+}
+
+.pc-brand-pill {
+  padding: 5px 11px;
+
+  border-radius: 100px;
+
+  background: #fff7df;
+  border: 1px solid #ead18a;
+
+  color: #9a6c05;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pc-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #777777;
+  font-size: 12px;
+}
+
+.pc-rating strong {
+  color: #111111;
+}
+
+.pc-stars {
+  white-space: nowrap;
+}
+
+.pc-star {
+  color: #d7d7d2;
+  font-size: 14px;
+}
+
+.pc-star.active {
+  color: #d39a18;
+}
+
+.pc-product-title {
+  margin: 0 0 7px;
+
+  color: #111111;
+
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-size: 29px;
+  line-height: 1.2;
+
+  letter-spacing: -0.02em;
+}
+
+.pc-product-subtitle {
+  margin-bottom: 20px;
+
+  color: #666666;
+  font-size: 14px;
+}
+
+/* ============================================================
+   KEY SPECS
+============================================================ */
+
+.pc-spec-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 9px;
+
+  margin-bottom: 20px;
+}
+
+.pc-spec-chip {
+  padding: 11px;
+
+  border: 1px solid #e3e3de;
+  border-radius: 10px;
+
+  background: #fafaf8;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pc-spec-chip:hover {
+  border-color: #d5b55b;
+  background: #fffaf0;
+  transform: translateY(-1px);
+}
+
+.pc-spec-chip span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #777777;
+
+  font-size: 9.5px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pc-spec-chip strong {
+  display: block;
+
+  color: #111111;
+
+  font-size: 12px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ============================================================
+   BEST PRICE
+   MAIN PRICE = BLACK
+============================================================ */
+
+.pc-best-price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-top: 17px;
+
+  border-top: 1px dashed #deded9;
+}
+
+.pc-best-price-label {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #666666;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pc-best-price strong {
+  color: #111111;
+
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 27px;
+}
+
+.pc-best-price strong small {
+  color: #777777;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Savings remains semantic green */
+.pc-save-badge {
+  padding: 7px 12px;
+
+  border-radius: 100px;
+
+  background: #e7f9f1;
+  color: #0e8f64;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.pc-product-description {
+  margin-top: 14px;
+
+  color: #666666;
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+/* ============================================================
+   SECTION
+============================================================ */
+
+.pc-section {
+  padding-top: 40px;
+}
+
+.pc-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+}
+
+.pc-section-eyebrow {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #a87508;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.pc-section-heading h2 {
+  margin: 0;
+
+  color: #111111;
+
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 22px;
+}
+
+.pc-section-heading p {
+  margin-top: 4px;
+
+  color: #666666;
+  font-size: 13px;
+}
+
+/* ============================================================
+   TOP 5 COMPARISON
+   BLACK COMPARISON AREA
+============================================================ */
+
+.pc-top5-banner {
+  position: relative;
+
+  padding: 28px;
+
+  overflow: hidden;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #0b0b0b 0%,
+      #151515 55%,
+      #1d1d1b 100%
+    );
+
+  box-shadow:
+    0 20px 45px -18px rgba(0, 0, 0, 0.45);
+}
+
+.pc-top5-header {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  margin-bottom: 22px;
+
+  color: #ffffff;
+}
+
+.pc-top5-header h2 {
+  margin: 0;
+
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 22px;
+}
+
+.pc-top5-header p {
+  margin-top: 4px;
+
+  color: #cfc8b5;
+  font-size: 13px;
+}
+
+/* ============================================================
+   LIVE BADGE
+   GOLD + BLACK TEXT
+============================================================ */
+
+.pc-live-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 6px 12px;
+
+  border: 1px solid #d4ae4c;
+  border-radius: 100px;
+
+  background: #d4ae4c;
+  color: #111111;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.pc-live-badge span {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #111111;
+}
+
+/* ============================================================
+   TOP 5 GRID
+============================================================ */
+
+.pc-top5-grid {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.pc-rank-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  min-height: 250px;
+
+  padding: 19px 16px 16px;
+
+  border: 1px solid #e5e5e1;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 14px 30px -14px rgba(0, 0, 0, 0.35);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.pc-rank-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 18px 34px -14px rgba(0, 0, 0, 0.4);
+}
+
+/* BEST / LOWEST PRICE CARD */
+
+.pc-rank-card.best {
+  transform: translateY(-8px);
+
+  border: 1.5px solid #c89211;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fffaf0 100%
+    );
+
+  box-shadow:
+    0 18px 38px -16px rgba(200, 146, 17, 0.35);
+}
+
+.pc-rank-card.best:hover {
+  transform: translateY(-12px);
+}
+
+/* ============================================================
+   RANK NUMBER
+============================================================ */
+
+.pc-rank-number {
+  position: absolute;
+
+  top: -11px;
+  left: 14px;
+
+  width: 26px;
+  height: 26px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  /* Black */
+  background: #111111;
+  color: #ffffff;
+
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.pc-rank-card.best .pc-rank-number {
+  /* Gold background + black text */
+  background: #c89211;
+  color: #111111;
+}
+
+/* ============================================================
+   BEST BADGE
+============================================================ */
+
+.pc-best-badge {
+  position: absolute;
+
+  top: -11px;
+  right: 10px;
+
+  padding: 4px 8px;
+
+  border-radius: 100px;
+
+  /* Gold + black */
+  background: #d4ae4c;
+  color: #111111;
+
+  font-size: 9px;
+  font-weight: 900;
+}
+
+/* ============================================================
+   RANK CONTENT
+============================================================ */
+
+.pc-rank-shop {
+  margin-top: 9px;
+
+  color: #111111;
+
+  font-size: 13.5px;
+  font-weight: 800;
+}
+
+.pc-rank-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  color: #777777;
+  font-size: 11px;
+}
+
+.pc-rank-meta .pc-star {
+  font-size: 11px;
+}
+
+/* ============================================================
+   LOWEST PRICE = GOLD
+============================================================ */
+
+.pc-rank-price {
+  margin-top: 4px;
+
+  color: #a87508;
+
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.pc-rank-old-price {
+  color: #8a8a84;
+
+  font-size: 11px;
+
+  text-decoration: line-through;
+}
+
+.pc-rank-difference {
+  width: fit-content;
+
+  padding: 4px 8px;
+
+  border-radius: 6px;
+
+  font-size: 10.5px;
+  font-weight: 800;
+}
+
+.pc-rank-difference.best {
+  background: #e7f9f1;
+  color: #0e8f64;
+}
+
+.pc-rank-difference.more {
+  background: #fdecec;
+  color: #c93636;
+}
+
+/* ============================================================
+   STOCK
+============================================================ */
+
+.pc-rank-stock {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #0e8f64;
+
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.pc-rank-stock span {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #0e8f64;
+}
+
+/* ============================================================
+   RANK BUTTON
+   BLACK DEFAULT
+   GOLD FOR BEST
+============================================================ */
+
+.pc-rank-button {
+  width: 100%;
+
+  margin-top: auto;
+  padding: 9px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #111111;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pc-rank-card.best .pc-rank-button {
+  background: #c89211;
+  color: #111111;
+}
+
+.pc-rank-button:hover {
+  background: #292929;
+  transform: translateY(-1px);
+}
+
+.pc-rank-card.best .pc-rank-button:hover {
+  background: #b5820d;
+  color: #111111;
+}
+
+/* ============================================================
+   DETAILED COMPARISON
+   CLEAN BLACK / WHITE / GOLD
+============================================================ */
+
+.pc-deal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pc-deal-card {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    1.35fr
+    1fr
+    1.8fr
+    150px;
+
+  gap: 20px;
+  align-items: center;
+
+  padding: 22px 24px;
+
+  border: 1px solid #e1e1dc;
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px -12px rgba(0, 0, 0, 0.12);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pc-deal-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 28px -14px rgba(0, 0, 0, 0.18);
+}
+
+/* BEST COMPARISON */
+
+.pc-deal-card.best {
+  border: 1.5px solid #c89211;
+
+  box-shadow:
+    0 16px 40px -18px rgba(200, 146, 17, 0.3);
+}
+
+.pc-deal-card.best::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 5px;
+
+  border-radius: 16px 0 0 16px;
+
+  background: #c89211;
+}
+
+/* ============================================================
+   SHOP
+============================================================ */
+
+.pc-deal-shop {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+}
+
+.pc-shop-mark {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #f7f7f4;
+  color: #111111;
+
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+
+  border: 1px solid #deded9;
+}
+
+.pc-deal-card.best .pc-shop-mark {
+  background: #111111;
+  color: #d8b85a;
+  border-color: #111111;
+}
+
+.pc-shop-name-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.pc-shop-name {
+  color: #111111;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.pc-best-tag {
+  padding: 3px 7px;
+
+  border-radius: 100px;
+
+  background: #d4ae4c;
+  color: #111111;
+
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.pc-shop-rating {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+
+  margin-top: 4px;
+
+  color: #777777;
+
+  font-size: 11px;
+}
+
+.pc-shop-rating .pc-star {
+  font-size: 11px;
+}
+
+.pc-shop-rating strong {
+  color: #111111;
+}
+
+.pc-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+
+  color: #0e8f64;
+
+  font-weight: 700;
+}
+
+.pc-verified svg {
+  font-size: 11px;
+}
+
+/* ============================================================
+   DEAL PRICE
+   ALL MAIN PRICES = BLACK
+   LOWEST / BEST = GOLD
+============================================================ */
+
+.pc-deal-price strong {
+  color: #111111;
+
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 23px;
+}
+
+/* Best/lowest deal gets gold */
+
+.pc-deal-card.best .pc-deal-price strong {
+  color: #a87508;
+}
+
+.pc-deal-price > div:first-child span {
+  margin-left: 6px;
+
+  color: #777777;
+
+  font-size: 12px;
+
+  text-decoration: line-through;
+}
+
+.pc-discount {
+  display: inline-block;
+
+  margin-top: 4px;
+  padding: 3px 8px;
+
+  border-radius: 6px;
+
+  background: #e7f9f1;
+  color: #0e8f64;
+
+  font-size: 10.5px;
+  font-weight: 800;
+}
+
+.pc-price-difference {
+  margin-top: 6px;
+
+  color: #c93636;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.pc-price-difference.best {
+  color: #0e8f64;
+}
+
+/* ============================================================
+   DEAL META
+============================================================ */
+
+.pc-deal-meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px 15px;
+}
+
+.pc-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #777777;
+
+  font-size: 10.5px;
+}
+
+.pc-meta-item svg {
+  flex-shrink: 0;
+
+  /* Gold icon */
+  color: #a87508;
+
+  font-size: 14px;
+}
+
+.pc-meta-item strong {
+  color: #111111;
+  font-weight: 700;
+}
+
+.pc-meta-item strong.yes {
+  color: #0e8f64;
+}
+
+.pc-meta-item strong.no {
+  color: #a5a5a0;
+}
+
+/* ============================================================
+   DEAL ACTION
+   BLACK DEFAULT
+   GOLD FOR BEST DEAL
+============================================================ */
+
+.pc-deal-action {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  min-width: 140px;
+}
+
+.pc-view-deal {
+  padding: 11px 15px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #111111;
+  color: #ffffff;
+
+  font-size: 12.5px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pc-deal-card.best .pc-view-deal {
+  background: #c89211;
+  color: #111111;
+}
+
+.pc-view-deal:hover {
+  background: #292929;
+  transform: translateY(-1px);
+}
+
+.pc-deal-card.best .pc-view-deal:hover {
+  background: #b5820d;
+  color: #111111;
+}
+
+.pc-deal-action > span {
+  color: #0e8f64;
+
+  text-align: center;
+
+  font-size: 10.5px;
+  font-weight: 800;
+}
+
+.pc-deal-action > span.limited {
+  color: #a87508;
+}
+
+/* ============================================================
+   SPECIFICATIONS
+============================================================ */
+
+.pc-specifications-panel {
+  padding: 25px 28px;
+
+  border: 1px solid #e1e1dc;
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px -12px rgba(0, 0, 0, 0.12);
+}
+
+.pc-specifications-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 45px;
+}
+
+.pc-spec-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 13px 0;
+
+  border-bottom: 1px solid #e5e5e0;
+
+  font-size: 13px;
+}
+
+.pc-spec-row span {
+  color: #777777;
+  font-weight: 600;
+}
+
+.pc-spec-row strong {
+  color: #111111;
+
+  text-align: right;
+}
+
+/* ============================================================
+   DESCRIPTION
+============================================================ */
+
+.pc-description-panel {
+  padding: 26px 28px;
+
+  border: 1px solid #e1e1dc;
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 24px -12px rgba(0, 0, 0, 0.12);
+}
+
+.pc-description-panel p {
+  margin-bottom: 13px;
+
+  color: #666666;
+
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.pc-description-panel p:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================================
+   NOT FOUND
+============================================================ */
+
+.pc-not-found {
+  min-height: 60vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.pc-not-found h1 {
+  color: #111111;
+}
+
+.pc-not-found p {
+  margin: 8px 0 20px;
+
+  color: #777777;
+}
+
+.pc-not-found button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 11px 18px;
+
+  border: none;
+  border-radius: 9px;
+
+  /* Gold + black */
+  background: #c89211;
+  color: #111111;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pc-not-found button:hover {
+  background: #b5820d;
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.pc-footer {
+  margin-top: 20px;
+  padding: 28px 20px 40px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+
+  border-top: 1px solid #e1e1dc;
+
+  color: #777777;
+
+  font-size: 12px;
+}
+
+.pc-footer strong {
+  color: #111111;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 1100px) {
+
+  .pc-header {
+    padding: 10px 25px;
+  }
+
+  .pc-top5-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pc-rank-card:nth-child(4),
+  .pc-rank-card:nth-child(5) {
+    display: none;
+  }
+
+  .pc-deal-card {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pc-deal-meta {
+    grid-column: 1 / -1;
+  }
+
+  .pc-deal-action {
+    grid-column: 1 / -1;
+
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .pc-deal-action .pc-view-deal {
+    width: 180px;
+  }
+}
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 800px) {
+
+  .pc-header {
+    min-height: auto;
+    padding: 12px 18px;
+  }
+
+  .pc-header-right {
+    gap: 15px;
+  }
+
+  .pc-nav {
+    gap: 14px;
+  }
+
+  .pc-nav button {
+    font-size: 12px;
+  }
+
+  .pc-main {
+    width: min(100% - 28px, 700px);
+  }
+
+  .pc-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pc-spec-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pc-top5-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pc-rank-card:nth-child(4),
+  .pc-rank-card:nth-child(5) {
+    display: flex;
+  }
+
+  .pc-deal-card {
+    grid-template-columns: 1fr;
+  }
+
+  .pc-deal-meta {
+    grid-column: auto;
+  }
+
+  .pc-deal-action {
+    grid-column: auto;
+  }
+
+  .pc-specifications-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 600px) {
+
+  .pc-header {
+    padding: 10px 14px;
+  }
+
+  .pc-header-tagline {
+    display: none;
+  }
+
+  .pc-header-right {
+    gap: 10px;
+  }
+
+  .pc-nav {
+    display: none;
+  }
+
+  .pc-header-actions button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pc-main {
+    width: calc(100% - 24px);
+  }
+
+  .pc-overview-grid {
+    padding: 17px;
+  }
+
+  .pc-product-title {
+    font-size: 23px;
+  }
+
+  .pc-spec-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pc-best-price {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pc-top5-banner {
+    padding: 22px 16px;
+  }
+
+  .pc-top5-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pc-top5-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pc-rank-card.best,
+  .pc-rank-card.best:hover {
+    transform: none;
+  }
+
+  .pc-rank-card:nth-child(4),
+  .pc-rank-card:nth-child(5) {
+    display: flex;
+  }
+
+  .pc-deal-card {
+    padding: 18px;
+  }
+
+  .pc-deal-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .pc-deal-action {
+    flex-direction: column;
+  }
+
+  .pc-deal-action .pc-view-deal {
+    width: 100%;
+  }
+
+  .pc-specifications-panel,
+  .pc-description-panel {
+    padding: 18px;
+  }
+
+  .pc-spec-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pc-spec-row strong {
+    text-align: left;
+  }
+}
+
+/* ============================================================
+   PRODUCT ACTION BUTTONS
+   GOLD + BLACK THEME
+============================================================ */
+
+.pc-product-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.pc-action-button {
+  min-height: 46px;
+  padding: 0 22px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.pc-action-button:hover {
+  transform: translateY(-1px);
+}
+
+.pc-action-button:active {
+  transform: translateY(0);
+}
+
+.pc-action-button svg {
+  width: 17px;
+  height: 17px;
+}
+
+
+/* ============================================================
+   ADD TO CART
+============================================================ */
+
+.pc-action-button--cart {
+  background: #ffffff;
+  color: #111111;
+  border-color: #c9a227;
+}
+
+.pc-action-button--cart:hover {
+  background: #fffaf0;
+  border-color: #b58d1b;
+  box-shadow: 0 4px 12px rgba(201, 162, 39, 0.18);
+}
+
+
+/* ============================================================
+   BUY NOW
+============================================================ */
+
+.pc-action-button--buy {
+  background: #c9a227;
+  color: #111111;
+  border-color: #c9a227;
+}
+
+.pc-action-button--buy:hover {
+  background: #b58d1b;
+  border-color: #b58d1b;
+  box-shadow: 0 5px 14px rgba(201, 162, 39, 0.28);
+}
+
+
+/* ============================================================
+   BOOK VISIT
+============================================================ */
+
+.pc-action-button--visit {
+  background: #111111;
+  color: #c9a227;
+  border-color: #111111;
+}
+
+.pc-action-button--visit:hover {
+  background: #222222;
+  color: #e0b83a;
+  border-color: #222222;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.18);
+}
+
+
+/* ============================================================
+   FOCUS STATE
+============================================================ */
+
+.pc-action-button:focus-visible {
+  outline: 2px solid #c9a227;
+  outline-offset: 2px;
+}
+
+
+/* ============================================================
+   DISABLED
+============================================================ */
+
+.pc-action-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 700px) {
+
+  .pc-product-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .pc-action-button {
+    width: 100%;
+  }
+
+}

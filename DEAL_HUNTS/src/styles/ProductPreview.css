@@ -671,3 +671,20 @@ select:focus-visible, textarea:focus-visible{
   .master-preview-images{ grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
 }
 
+/* ==========================================================================
+   SPECIFICATION FIELDS
+   ========================================================================== */
+
+.specification-field {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.specification-field label {
+    margin-top: 10px;
+}
+
+.specification-field:first-child label {
+    margin-top: 0;
+}

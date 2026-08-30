@@ -16,75 +16,87 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="image")
+@Table(name = "image")
 public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable=false)
-    private LocalDateTime createdAt;
+    // ============================================================
+    // IMAGE INFORMATION
+    // ============================================================
 
+    @CreationTimestamp
+    @Column(
+        name = "created_at",
+        updatable = false
+    )
+    private LocalDateTime createdAt;
 
     private String thumbnailUrl;
 
-
     private String imageStatus;
+
+    // ============================================================
+    // PRODUCT
+    // ============================================================
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name="product_id")
+    @JoinColumn(
+        name = "product_id",
+        nullable = false
+    )
     private Product product;
 
+    // ============================================================
+    // GETTERS / SETTERS
+    // ============================================================
 
-
-
-    public Long getId(){
+    public Long getId() {
         return id;
     }
 
-
-    public void setId(Long id){
-        this.id=id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public LocalDateTime getCreatedAt(){
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt){
+    public void setCreatedAt(
+            LocalDateTime createdAt
+    ) {
         this.createdAt = createdAt;
     }
 
-
-    public String getThumbnailUrl(){
+    public String getThumbnailUrl() {
         return thumbnailUrl;
     }
 
-
-    public void setThumbnailUrl(String thumbnailUrl){
-        this.thumbnailUrl=thumbnailUrl;
+    public void setThumbnailUrl(
+            String thumbnailUrl
+    ) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 
-
-    public String getImageStatus(){
+    public String getImageStatus() {
         return imageStatus;
     }
 
-
-    public void setImageStatus(String imageStatus){
-        this.imageStatus=imageStatus;
+    public void setImageStatus(
+            String imageStatus
+    ) {
+        this.imageStatus = imageStatus;
     }
 
-
-    public Product getProduct(){
+    public Product getProduct() {
         return product;
     }
 
-
-    public void setProduct(Product product){
-        this.product=product;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

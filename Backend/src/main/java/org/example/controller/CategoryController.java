@@ -66,6 +66,19 @@ public class CategoryController {
 
 
     // =====================================================
+    // GET CATEGORY COUNT
+    // =====================================================
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getCategoryCount() {
+
+        return ResponseEntity.ok(
+                categoryService.getCategoryCount()
+        );
+    }
+
+
+    // =====================================================
     // GET CATEGORY BY ID
     // =====================================================
 

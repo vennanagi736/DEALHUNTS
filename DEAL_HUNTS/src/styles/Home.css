@@ -123,19 +123,21 @@ body,
   font-size: 22px;
 
   letter-spacing: 0.5px;
-
   user-select: none;
 
   text-transform: uppercase;
 }
 
 .pc-logo-deal {
-  color: var(--accent);
+  color: #d4af37 !important;
 }
-
 .pc-logo-hunts {
-  color: #000000;
+  color: black !important;
+
 }
+ /* .pc-logo-hunts {
+  color: #d4af37 !important;
+} */
 
 .pc-header-tagline {
   font-size: 12px;
@@ -159,19 +161,12 @@ body,
 
 .pc-header-nav button {
   background: transparent;
-
   border: none;
-
   color: var(--text-secondary);
-
   font-size: 14px;
-
   padding: 8px 12px;
-
   border-radius: var(--radius-sm);
-
   cursor: pointer;
-
   transition:
     color 0.2s ease,
     background 0.2s ease;
@@ -199,6 +194,46 @@ body,
   align-items: center;
 
   gap: 8px;
+}
+/* LOGIN BUTTON */
+.pc-header-login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: auto;
+  min-width: 70px;
+  height: 38px;
+
+  padding: 0 18px;
+
+  box-sizing: border-box;
+  white-space: nowrap;
+
+  border: none;
+  border-radius: 7px;
+
+  background-color: #0b1f3a;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+
+  cursor: pointer;
+
+  flex-shrink: 0;
+
+  transition: all 0.2s ease;
+}
+
+.pc-header-login:hover {
+  background-color: #163b6d;
+  transform: translateY(-1px);
+}
+
+.pc-header-login:active {
+  transform: translateY(0);
 }
 
 .pc-header-icon {
@@ -455,33 +490,20 @@ body,
 
 .pc-trending-arrow {
   position: absolute;
-
   top: 50%;
-
   transform: translateY(-50%);
-
   z-index: 5;
-
   width: 44px;
   height: 44px;
-
   display: flex;
-
   align-items: center;
   justify-content: center;
-
   border: 1px solid #d8dee7;
-
   border-radius: 50%;
-
   background: rgba(255, 255, 255, 0.96);
-
-  color: #123b7a;
-
+  color: black;
   font-size: 20px;
-
   cursor: pointer;
-
   box-shadow:
     0 4px 14px rgba(15, 35, 65, 0.12);
 
@@ -511,11 +533,11 @@ body,
 /* HOVER */
 
 .pc-trending-arrow:hover {
-  background: #123b7a;
+  background: #d4af37;
 
-  color: #ffffff;
+  color: black;
 
-  border-color: #123b7a;
+  border: 2px solid #d4af37;
 
   transform:
     translateY(-50%)
@@ -541,40 +563,27 @@ body,
 
 .pc-trend-dots {
   position: absolute;
-
   left: 0;
   right: 0;
-
   bottom: 10px;
-
   z-index: 6;
-
   display: flex;
-
   align-items: center;
   justify-content: center;
-
   gap: 7px;
-
   pointer-events: auto;
 }
 
 .pc-trend-dot {
   width: 7px;
   height: 7px;
-
   padding: 0;
-
-  border: none;
-
+  border:1px solid black ;
   border-radius: 50%;
-
-  background: #c5ccd6;
+  background: black;
 
   opacity: 0.9;
-
   cursor: pointer;
-
   transition:
     width 0.25s ease,
     background 0.25s ease,
@@ -592,7 +601,7 @@ body,
 
   border-radius: 10px;
 
-  background: #123b7a;
+  background: #d4af37;
 
   opacity: 1;
 }
@@ -624,7 +633,7 @@ body,
    TRENDING DEALS HEADING
 ============================================================ */
 
-.pc-trending-deals-heading {
+.pc-trending-deals-heading,.pc-trending-categories-heading {
   display: flex;
 
   align-items: center;
@@ -634,7 +643,7 @@ body,
   margin-bottom: 14px;
 }
 
-.pc-trending-deals-heading h2 {
+.pc-trending-deals-heading h2,.pc-trending-categories-heading h2 {
   margin: 0;
 
   font-family: cursive;
@@ -707,33 +716,20 @@ body,
 }
 
 
-.pc-view-all-products {
+.pc-view-all-products,.pc-view-all-categories {
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 8px;
-
   min-width: 190px;
-
   padding: 11px 22px;
-
-  border: 1px solid #123b7a;
-
+  border: 2px solid #d4af37;
   border-radius: 10px;
-
-  background: #123b7a;
-
-  color: #ffffff;
-
+  background: #d4af37;
+  color: black;
   font-size: 14px;
-
   font-weight: 700;
-
   cursor: pointer;
-
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
@@ -742,19 +738,16 @@ body,
 }
 
 
-.pc-view-all-products:hover {
-  background: #0d2d60;
-
-  border-color: #0d2d60;
-
+.pc-view-all-products:hover,.pc-view-all-categories:hover {
+  background: #d4af37;
+  border-color: #d4af37;
   transform: translateY(-2px);
-
   box-shadow:
     0 7px 18px rgba(18, 59, 122, 0.2);
 }
 
 
-.pc-view-all-products:active {
+.pc-view-all-products:active,.pc-view-all-categories {
   transform: translateY(0);
 }
 
@@ -1007,11 +1000,11 @@ body,
     margin-top: 20px;
   }
 
-  .pc-trending-deals-heading {
+  .pc-trending-deals-heading,.pc-trending-categories-heading {
     margin-bottom: 12px;
   }
 
-  .pc-trending-deals-heading h2 {
+  .pc-trending-deals-heading h2,.pc-trending-categories-heading h2{
     font-size: 20px;
   }
 
@@ -1044,7 +1037,6 @@ body,
 
   .pc-trend-dots {
     bottom: 6px;
-
     gap: 5px;
   }
 
@@ -1066,9 +1058,12 @@ body,
     margin-bottom: 24px;
   }
 
-  .pc-view-all-products {
+  .pc-view-all-products,.pc-view-all-categories {
     width: 100%;
-
+    padding-right: 5px;
+    margin-right:5px;
+    display: flex;
+    align-items: center;
     max-width: 220px;
   }
 
@@ -1122,9 +1117,660 @@ body,
     font-size: 14px;
   }
 
-  .pc-view-all-products {
+  .pc-view-all-products,.pc-view-all-categories {
     max-width: 200px;
 
     padding: 10px 18px;
   }
+}
+
+/* ============================================================
+   TRENDING DEALS OUTER BOX
+   ONLY THIS BOX IS HORIZONTALLY SCROLLABLE
+============================================================ */
+
+.pc-trending-deals-grid {
+  display: flex;
+
+  flex-direction: row;
+
+  flex-wrap: nowrap;
+
+  gap: 18px;
+
+  width: 100%;
+
+  /* Fixed visible area */
+  overflow-x: auto;
+
+  overflow-y: hidden;
+
+  /* IMPORTANT:
+     Prevent horizontal scrolling from affecting the page */
+  max-width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 4px 4px 14px;
+
+  scroll-behavior: smooth;
+
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: thin;
+}
+
+
+/* ============================================================
+   TRENDING DEAL CARD
+
+   4 CARDS FIT INSIDE THE HOME PAGE
+============================================================ */
+
+.pc-trending-deal-card {
+
+  /* Four cards will fit inside the container */
+  flex: 0 0 calc(
+    (100% - 54px) / 4
+  );
+
+  min-width: 0;
+
+  background: #ffffff;
+
+  border: 1px solid #e4e8ee;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 6px 20px rgba(15, 35, 65, 0.07);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.pc-trending-deal-card:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 10px 25px rgba(15, 35, 65, 0.12);
+}
+
+
+/* ============================================================
+   TRENDING DEAL IMAGE
+============================================================ */
+
+.pc-trending-deal-image-box {
+
+  width: 100%;
+
+  height: 180px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 16px;
+
+  background: #ffffff;
+}
+
+
+.pc-trending-deal-image {
+
+  display: block;
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: contain;
+
+  object-position: center;
+}
+
+
+.pc-trending-deal-no-image {
+
+  color: #999999;
+
+  font-size: 14px;
+
+  font-weight: 500;
+}
+
+
+/* ============================================================
+   TRENDING DEAL DETAILS
+============================================================ */
+
+.pc-trending-deal-details {
+
+  padding: 14px 16px 16px;
+
+  background: #ffffff;
+}
+
+
+.pc-trending-deal-details h3 {
+
+  margin: 0 0 6px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+  color: #111111;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+.pc-trending-deal-details p {
+
+  margin: 0 0 8px;
+
+  font-size: 13px;
+
+  color: #666666;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+.pc-trending-deal-details span {
+
+  font-size: 12px;
+
+  color: #123b7a;
+
+  font-weight: 600;
+}
+
+
+/* ============================================================
+   LAPTOP
+============================================================ */
+
+@media (max-width: 1200px) {
+
+  .pc-trending-deals-grid {
+
+    gap: 16px;
+
+  }
+
+  .pc-trending-deal-card {
+
+    flex: 0 0 calc(
+      (100% - 48px) / 4
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 900px) {
+
+  .pc-trending-deals-grid {
+
+    gap: 14px;
+
+  }
+
+  .pc-trending-deal-card {
+
+    flex: 0 0 calc(
+      (100% - 42px) / 3
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 600px) {
+
+  .pc-trending-deals-grid {
+
+    gap: 12px;
+
+    padding-bottom: 10px;
+
+  }
+
+  .pc-trending-deal-card {
+
+    flex: 0 0 calc(
+      (100% - 12px) / 2
+    );
+
+  }
+
+  .pc-trending-deal-image-box {
+
+    height: 145px;
+
+    padding: 12px;
+
+  }
+
+  .pc-trending-deal-details {
+
+    padding: 11px 12px 13px;
+
+  }
+
+  .pc-trending-deal-details h3 {
+
+    font-size: 14px;
+
+  }
+
+  .pc-trending-deal-details p {
+
+    font-size: 12px;
+
+  }
+
+  .pc-trending-deal-details span {
+
+    font-size: 11px;
+
+  }
+
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+============================================================ */
+
+@media (max-width: 400px) {
+
+  .pc-trending-deals-grid {
+
+    gap: 10px;
+
+  }
+
+  .pc-trending-deal-card {
+
+    flex: 0 0 calc(
+      (100% - 10px) / 2
+    );
+
+  }
+
+  .pc-trending-deal-image-box {
+
+    height: 125px;
+
+    padding: 10px;
+
+  }
+
+  .pc-trending-deal-details {
+
+    padding: 10px;
+
+  }
+
+  .pc-trending-deal-details h3 {
+
+    font-size: 13px;
+
+  }
+
+}
+
+/* ============================================================
+   TRENDING CATEGORIES SECTION
+============================================================ */
+
+.pc-trending-categories-section {
+
+  width: calc(100% - 80px);
+
+  margin: 24px 40px 30px;
+
+}
+
+
+/* ============================================================
+   HEADING
+============================================================ */
+
+.pc-trending-categories-heading {
+
+  margin-bottom: 14px;
+
+}
+
+.pc-trending-categories-heading h2 {
+
+  margin: 0;
+
+  font-family: cursive;
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+  color: #111111;
+
+}
+
+
+/* ============================================================
+   OUTER SCROLL BOX
+============================================================ */
+
+.pc-trending-categories-scroll {
+
+  display: flex;
+
+  flex-direction: row;
+
+  flex-wrap: nowrap;
+
+  gap: 18px;
+
+  width: 100%;
+
+  max-width: 100%;
+
+  overflow-x: auto;
+
+  overflow-y: hidden;
+
+  padding: 4px 4px 14px;
+
+  box-sizing: border-box;
+
+  scroll-behavior: smooth;
+
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: thin;
+
+}
+
+
+/* ============================================================
+   CATEGORY CARD
+
+   4 CARDS VISIBLE ON DESKTOP
+============================================================ */
+
+.pc-trending-category-card {
+
+  flex: 0 0 calc(
+    (100% - 54px) / 4
+  );
+
+  min-width: 0;
+
+  height: 130px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e4e8ee;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 6px 20px rgba(15, 35, 65, 0.07);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  cursor: pointer;
+
+}
+
+
+.pc-trending-category-card:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 10px 25px rgba(15, 35, 65, 0.12);
+
+}
+
+
+/* ============================================================
+   CATEGORY CONTENT
+============================================================ */
+
+.pc-trending-category-content {
+
+  text-align: center;
+
+  padding: 16px;
+
+}
+
+
+.pc-trending-category-content h3 {
+
+  margin: 0 0 8px;
+
+  font-size: 17px;
+
+  font-weight: 700;
+
+  color: #111111;
+
+}
+
+
+.pc-trending-category-content span {
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  color: #123b7a;
+
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.pc-trending-categories-empty {
+
+  width: 100%;
+
+  height: 130px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e4e8ee;
+
+  border-radius: 14px;
+
+  color: #999999;
+
+  font-size: 14px;
+
+}
+
+
+/* ============================================================
+   LAPTOP
+============================================================ */
+
+@media (max-width: 1200px) {
+
+  .pc-trending-categories-section {
+
+    width: calc(100% - 70px);
+
+    margin-left: 35px;
+
+    margin-right: 35px;
+
+  }
+
+  .pc-trending-category-card {
+
+    flex: 0 0 calc(
+      (100% - 48px) / 4
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 900px) {
+
+  .pc-trending-categories-section {
+
+    width: calc(100% - 50px);
+
+    margin-left: 25px;
+
+    margin-right: 25px;
+
+  }
+
+  .pc-trending-category-card {
+
+    flex: 0 0 calc(
+      (100% - 32px) / 3
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 600px) {
+
+  .pc-trending-categories-section {
+
+    width: calc(100% - 28px);
+
+    margin-left: 14px;
+
+    margin-right: 14px;
+
+    margin-top: 20px;
+
+  }
+
+  .pc-trending-categories-heading h2 {
+
+    font-size: 20px;
+
+  }
+
+  .pc-trending-categories-scroll {
+
+    gap: 12px;
+
+  }
+
+  .pc-trending-category-card {
+
+    flex: 0 0 calc(
+      (100% - 12px) / 2
+    );
+
+    height: 115px;
+
+  }
+
+  .pc-trending-category-content h3 {
+
+    font-size: 14px;
+
+  }
+
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+============================================================ */
+
+@media (max-width: 400px) {
+
+  .pc-trending-categories-section {
+
+    width: calc(100% - 20px);
+
+    margin-left: 10px;
+
+    margin-right: 10px;
+
+  }
+
+  .pc-trending-categories-scroll {
+
+    gap: 10px;
+
+  }
+
+  .pc-trending-category-card {
+
+    flex: 0 0 calc(
+      (100% - 10px) / 2
+    );
+
+    height: 105px;
+
+  }
+
 }

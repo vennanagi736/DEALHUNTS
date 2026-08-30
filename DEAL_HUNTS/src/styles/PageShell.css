@@ -1,0 +1,28 @@
+.dh-shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-section);
+  font-family: var(--font-ui);
+  color: var(--text-primary);
+}
+
+.dh-shell__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dh-shell__content {
+  flex: 1;
+  padding: 32px 40px 60px;
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .dh-shell__content {
+    padding: 20px 16px 48px;
+  }
+}

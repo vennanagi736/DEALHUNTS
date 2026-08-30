@@ -2,6 +2,8 @@ package org.example.controller;
 
 import java.util.List;
 
+import org.example.dto.ProductCardDTO;
+import org.example.dto.ProductDetailsDTO;
 import org.example.entity.Brand;
 import org.example.entity.Category;
 import org.example.entity.Color;
@@ -13,7 +15,6 @@ import org.example.repository.ColorRepository;
 import org.example.repository.ProductRepository;
 import org.example.repository.VariantRepository;
 import org.example.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,274 +27,418 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/admin/products")
 @CrossOrigin(origins = "http://localhost:5173")
 public class ProductController {
 
+    private final ProductService productService;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private final BrandRepository brandRepository;
+    private final ColorRepository colorRepository;
+    private final VariantRepository variantRepository;
 
-    @Autowired
-    private ProductService productService;
+    public ProductController(
+            ProductService productService,
+            ProductRepository productRepository,
+            CategoryRepository categoryRepository,
+            BrandRepository brandRepository,
+            ColorRepository colorRepository,
+            VariantRepository variantRepository
+    ) {
 
-    @Autowired
-    private ProductRepository productRepository;
-    
-    @Autowired
-    private CategoryRepository categoryRepository;
+        this.productService =
+                productService;
 
+        this.productRepository =
+                productRepository;
 
-    @Autowired
-    private BrandRepository brandRepository;
+        this.categoryRepository =
+                categoryRepository;
 
+        this.brandRepository =
+                brandRepository;
 
-    @Autowired
-    private ColorRepository colorRepository;
+        this.colorRepository =
+                colorRepository;
 
+        this.variantRepository =
+                variantRepository;
+    }
 
-    @Autowired
-    private VariantRepository variantRepository;
+    // ============================================================
+    // ADD PRODUCT
+    // ============================================================
 
-
-
-    // Add Product
     @PostMapping("/add")
-    public Product addProduct(@RequestBody Product product) {
-
-        return productService.saveProduct(product);
-
-    }
-
-
-
-    // Get All Products
-    @GetMapping("/all")
-    public List<Product> getAllProducts() {
-
-        return productService.getAllProducts();
-
-    }
-    
-    @GetMapping("/active")  
-    public List<Product> getActiveProducts() {
-    return productRepository.findByActiveTrue();
-}
-
-
-    // Search Product
-    @GetMapping("/search")
-    public List<Product> searchProduct(@RequestParam String name) {
-
-        return productService.searchProduct(name);
-
-    }
-
-
-
-    // Product Count
-    @GetMapping("/count")
-    public ResponseEntity<Long> getProductCount(){
+    public ResponseEntity<Product> addProduct(
+            @RequestBody Product product
+    ) {
 
         return ResponseEntity.ok(
-            productService.getProductCount()
+                productService.saveProduct(
+                        product
+                )
         );
-
     }
 
+    // ============================================================
+    // GET ALL PRODUCTS
+    // ============================================================
 
+    @GetMapping("/all")
+    public ResponseEntity<List<Product>> getAllProducts() {
 
-    // Get Product By ID
-   @DeleteMapping("/{id}")
-public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                productService.getAllProducts()
+        );
+    }
 
-    Product product = productRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Product not found"));
+    // ============================================================
+    // GET ACTIVE PRODUCTS
+    // ============================================================
 
-    product.setActive(false);
+    @GetMapping("/active")
+    public ResponseEntity<List<Product>> getActiveProducts() {
 
-    productRepository.save(product);
+        return ResponseEntity.ok(
+                productRepository.findByActiveTrue()
+        );
+    }
 
-    return ResponseEntity.ok("Product deactivated successfully");
-}
+    // ============================================================
+    // SEARCH
+    // ============================================================
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Product>> searchProduct(
+            @RequestParam String name
+    ) {
 
+        return ResponseEntity.ok(
+                productService.searchProduct(name)
+        );
+    }
 
-    // Update Category
+    // ============================================================
+    // COUNT
+    // ============================================================
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getProductCount() {
+
+        return ResponseEntity.ok(
+                productService.getProductCount()
+        );
+    }
+
+    // ============================================================
+    // USER PRODUCT CARDS
+    // ============================================================
+
+    @GetMapping("/cards")
+    public ResponseEntity<List<ProductCardDTO>>
+    getProductCards() {
+
+        return ResponseEntity.ok(
+                productService.getActiveProductCards()
+        );
+    }
+
+    // ============================================================
+    // DEACTIVATE PRODUCT
+    // ============================================================
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(
+            @PathVariable Long id
+    ) {
+
+        productService.deleteProduct(id);
+
+        return ResponseEntity.ok(
+                "Product deactivated successfully"
+        );
+    }
+
+    // ============================================================
+    // RESTORE PRODUCT
+    // ============================================================
+
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<String> restoreProduct(
+            @PathVariable Long id
+    ) {
+
+        productService.restoreProduct(id);
+
+        return ResponseEntity.ok(
+                "Product restored successfully"
+        );
+    }
+
+    // ============================================================
+    // CATEGORY
+    // ============================================================
+
     @PutMapping("/category/{id}")
     public ResponseEntity<String> updateCategory(
             @PathVariable Long id,
-            @RequestBody Category category) {
+            @RequestBody Category category
+    ) {
 
+        Category existing =
+                categoryRepository
+                        .findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Category not found"
+                                )
+                        );
 
-        Category existing = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-
-
-        existing.setName(category.getName());
+        existing.setName(
+                category.getName()
+        );
 
         categoryRepository.save(existing);
 
-
         return ResponseEntity.ok(
-            "Category updated successfully"
+                "Category updated successfully"
         );
-
     }
 
+    // ============================================================
+    // BRAND
+    // ============================================================
 
-
-    // Update Brand
     @PutMapping("/brand/{id}")
     public ResponseEntity<String> updateBrand(
             @PathVariable Long id,
-            @RequestBody Brand brand) {
+            @RequestBody Brand brand
+    ) {
 
+        Brand existing =
+                brandRepository
+                        .findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Brand not found"
+                                )
+                        );
 
-        Brand existing = brandRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Brand not found"));
-
-
-        existing.setName(brand.getName());
+        existing.setName(
+                brand.getName()
+        );
 
         brandRepository.save(existing);
 
-
         return ResponseEntity.ok(
-            "Brand updated successfully"
+                "Brand updated successfully"
         );
-
     }
 
-    // Update Color
+    // ============================================================
+    // COLOR
+    // ============================================================
+
     @PutMapping("/color/{id}")
     public ResponseEntity<String> updateColor(
-            @PathVariable Integer id,
-            @RequestBody Color color) {
+            @PathVariable Long id,
+            @RequestBody Color color
+    ) {
 
+        Color existing =
+                colorRepository
+                        .findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Color not found"
+                                )
+                        );
 
-        Color existing = colorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Color not found"));
+        existing.setName(
+                color.getName()
+        );
 
+        existing.setHexCode(
+                color.getHexCode()
+        );
 
-        existing.setName(color.getName());
-        existing.setHexCode(color.getHexCode());
-
+        existing.setPrice(
+                color.getPrice()
+        );
 
         colorRepository.save(existing);
 
-
         return ResponseEntity.ok(
-            "Color updated successfully"
+                "Color updated successfully"
         );
-
     }
 
+    // ============================================================
+    // VARIANT
+    // ============================================================
 
-
-    // Update Variant
     @PutMapping("/variant/{id}")
     public ResponseEntity<String> updateVariant(
-            @PathVariable Integer id,
-            @RequestBody Variant variant) {
+            @PathVariable Long id,
+            @RequestBody Variant variant
+    ) {
 
+        Variant existing =
+                variantRepository
+                        .findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Variant not found"
+                                )
+                        );
 
-        Variant existing = variantRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Variant not found"));
+        // --------------------------------------------------------
+        // Variant name
+        // --------------------------------------------------------
 
+        existing.setName(
+                variant.getName()
+        );
 
-        existing.setName(variant.getName());
-        existing.setRam(variant.getRam());
-        existing.setStorage(variant.getStorage());
+        // --------------------------------------------------------
+        // Dynamic attributes
+        // --------------------------------------------------------
 
+        existing.setAttributeValues(
+                variant.getAttributeValues()
+        );
 
-        variantRepository.save(existing);
-
+        variantRepository.save(
+                existing
+        );
 
         return ResponseEntity.ok(
-            "Variant updated successfully"
+                "Variant updated successfully"
         );
     }
 
-    // Delete Category
+    // ============================================================
+    // DELETE CATEGORY
+    // ============================================================
+
     @DeleteMapping("/category/{id}")
     public ResponseEntity<String> deleteCategory(
-            @PathVariable Long id) {
+            @PathVariable Long id
+    ) {
+
         categoryRepository.deleteById(id);
 
         return ResponseEntity.ok(
-            "Category deleted successfully"
+                "Category deleted successfully"
         );
     }
 
-    // Delete Brand
+    // ============================================================
+    // DELETE BRAND
+    // ============================================================
+
     @DeleteMapping("/brand/{id}")
     public ResponseEntity<String> deleteBrand(
-            @PathVariable Long id) {
+            @PathVariable Long id
+    ) {
+
         brandRepository.deleteById(id);
 
         return ResponseEntity.ok(
-            "Brand deleted successfully"
+                "Brand deleted successfully"
         );
     }
 
-    // Delete Color
+    // ============================================================
+    // DELETE COLOR
+    // ============================================================
+
     @DeleteMapping("/color/{id}")
     public ResponseEntity<String> deleteColor(
-            @PathVariable Integer id) {
+            @PathVariable Long id
+    ) {
+
         colorRepository.deleteById(id);
 
         return ResponseEntity.ok(
-            "Color deleted successfully"
+                "Color deleted successfully"
         );
-
     }
 
+    // ============================================================
+    // DELETE VARIANT
+    // ============================================================
 
-
-    // Delete Variant
     @DeleteMapping("/variant/{id}")
     public ResponseEntity<String> deleteVariant(
-            @PathVariable Integer id) {
-
+            @PathVariable Long id
+    ) {
 
         variantRepository.deleteById(id);
 
-
         return ResponseEntity.ok(
-            "Variant deleted successfully"
+                "Variant deleted successfully"
         );
     }
-    @PutMapping("/restore/{id}")
-public ResponseEntity<String> restoreProduct(
-        @PathVariable Long id) {
 
-    productService.restoreProduct(id);
+    // ============================================================
+    // GET PRODUCT BY ID
+    // ============================================================
 
-    return ResponseEntity.ok(
-        "Product restored successfully"
-    );
-}
     @GetMapping("/{id}")
-public ResponseEntity<Product> getProductById(
-        @PathVariable Long id) {
+    public ResponseEntity<Product> getProductById(
+            @PathVariable Long id
+    ) {
 
-    Product product = productService.getProductById(id);
+        Product product =
+                productService.getProductById(id);
 
-    if (product == null) {
-        return ResponseEntity.notFound().build();
+        if (product == null) {
+            return ResponseEntity.notFound()
+                    .build();
+        }
+
+        return ResponseEntity.ok(
+                product
+        );
     }
 
-    return ResponseEntity.ok(product);
-}
-@PutMapping("/{id}")
-public ResponseEntity<Product> updateProduct(
-        @PathVariable Long id,
-        @RequestBody Product product) {
+    // ============================================================
+    // UPDATE PRODUCT
+    // ============================================================
 
-    Product updatedProduct =
-            productService.updateProduct(id, product);
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(
+            @PathVariable Long id,
+            @RequestBody Product product
+    ) {
 
-    return ResponseEntity.ok(updatedProduct);
-}
-}
+        Product updatedProduct =
+                productService.updateProduct(
+                        id,
+                        product
+                );
 
+        return ResponseEntity.ok(
+                updatedProduct
+        );
+    }
+
+    // ============================================================
+    // USER PRODUCT DETAILS
+    // ============================================================
+
+    @GetMapping("/{id}/details")
+    public ResponseEntity<ProductDetailsDTO>
+    getProductDetails(
+            @PathVariable Long id
+    ) {
+
+        return ResponseEntity.ok(
+                productService.getProductDetails(id)
+        );
+    }
+}

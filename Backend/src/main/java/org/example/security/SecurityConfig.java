@@ -19,31 +19,47 @@ public class SecurityConfig {
     private final JWTUtil jwtUtil;
     private final CorsConfigurationSource corsConfigurationSource;
 
-    public SecurityConfig(JWTUtil jwtUtil,
-                          CorsConfigurationSource corsConfigurationSource) {
+    public SecurityConfig(
+            JWTUtil jwtUtil,
+            CorsConfigurationSource corsConfigurationSource
+    ) {
         this.jwtUtil = jwtUtil;
         this.corsConfigurationSource = corsConfigurationSource;
     }
+
     static {
-    System.out.println("=== SECURITY CONFIG CLASS LOADED ===");
-}
+        System.out.println("=== SECURITY CONFIG CLASS LOADED ===");
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         System.out.println("=== MY SECURITY CONFIG IS LOADED ===");
 
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource))
-            .csrf(csrf -> csrf.disable())
+            .cors(cors ->
+                cors.configurationSource(corsConfigurationSource)
+            )
+
+            .csrf(csrf ->
+                csrf.disable()
+            )
 
             .sessionManagement(session ->
-                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                session.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS
+                )
             )
 
             .authorizeHttpRequests(auth -> auth
 
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // CORS preflight
+                .requestMatchers(
+                    HttpMethod.OPTIONS,
+                    "/**"
+                ).permitAll()
 
+                // Public authentication endpoints
                 .requestMatchers(
                     "/vendor/login",
                     "/vendor/register",
@@ -52,13 +68,15 @@ public class SecurityConfig {
                     "/user/login",
                     "/user/register"
                 ).permitAll()
+
+                // Vendor endpoints
                 .requestMatchers("/vendor/**").permitAll()
-                // .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                // .requestMatchers("/user/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
 
-                // .anyRequest().authenticated()
+                // CART REQUIRES LOGIN
+                .requestMatchers("/cart/**").authenticated()
+
+                // Keep everything else public for now
                 .anyRequest().permitAll()
-
             )
 
             .addFilterBefore(
@@ -68,8 +86,9 @@ public class SecurityConfig {
 
         return http.build();
     }
+
     @Bean
-public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-}
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

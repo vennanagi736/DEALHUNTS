@@ -9,7 +9,8 @@ import {
   getUserCount,
   getVendorCount,
   getProductCount,
-  getLowStockAlertsCount,
+  getPromotionCount,
+  getCategoryCount,
 } from "../../api/AdminApi";
 
 import AdminHeader from "../../components/admin/AHeader";
@@ -187,28 +188,18 @@ function AdminDashboard() {
   /* =========================================================
      STATES
   ========================================================= */
-
   const [query, setQuery] = useState("");
-
   const [trendingItems, setTrendingItems] = useState([]);
-
   const [userCount, setUserCount] = useState(0);
-
   const [vendorCount, setVendorCount] = useState(0);
-
   const [productCount, setProductCount] = useState(0);
-
-  const [orderCount, setOrderCount] = useState(15);
-
+  const [orderCount] = useState(0);
   const [categoryCount, setCategoryCount] = useState(0);
-
-  const [complaintsCount, setComplaintsCount] = useState(4);
-
-  const [feedbackCount, setFeedbackCount] = useState(96);
-
-  const [lowStockAlertsCount, setLowStockAlertsCount] =
+  const [complaintsCount] = useState(4);
+  const [feedbackCount] = useState(0);
+  const [lowStockAlertsCount] =
     useState(0);
-
+  const [promotionCount, setPromotionCount] = useState(0);
 
   /* =========================================================
      LOGOUT
@@ -319,58 +310,76 @@ function AdminDashboard() {
      LOAD DASHBOARD COUNTS
   ========================================================= */
 
-  useEffect(() => {
+ useEffect(() => {
 
-    const loadDashboardStats = async () => {
+  const loadDashboardStats = async () => {
 
-      try {
+    try {
 
-        const userResponse =
-          await getUserCount();
+      const [
+        userResponse,
+        vendorResponse,
+        productResponse,
+        promotionResponse,
+        categoryResponse,
+        // lowStockResponse
+      ] = await Promise.all([
 
-        setUserCount(
-          userResponse.data
-        );
+        getUserCount(),
+
+        getVendorCount(),
+
+        getProductCount(),
+
+        getPromotionCount(),
+
+        getCategoryCount(),
+
+        // getLowStockAlertsCount(),
+
+      ]);
 
 
-        const vendorResponse =
-          await getVendorCount();
+      setUserCount(
+        Number(userResponse.data) || 0
+      );
 
-        setVendorCount(
-          vendorResponse.data
-        );
+      setVendorCount(
+        Number(vendorResponse.data) || 0
+      );
+
+      setProductCount(
+        Number(productResponse.data) || 0
+      );
+
+      setPromotionCount(
+        Number(promotionResponse.data) || 0
+      );
+
+      setCategoryCount(
+        Number(categoryResponse.data) || 0
+      );
+
+      // setLowStockAlertsCount(
+      //   Number(lowStockResponse.data) || 0
+      // );
 
 
-        const productResponse =
-          await getProductCount();
+    } catch (error) {
 
-        setProductCount(
-          productResponse.data
-        );
+      console.error(
+        "Failed to load dashboard stats:",
+        error
+      );
+
+    }
+
+  };
 
 
-        const lowStockResponse =
-          await getLowStockAlertsCount();
+  loadDashboardStats();
 
-        setLowStockAlertsCount(
-          lowStockResponse.data
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Failed to load dashboard stats:",
-          error
-        );
-
-      }
-
-    };
-
-    loadDashboardStats();
-
-  }, []);
-
+}, []);
 
   /* =========================================================
      SEARCH
@@ -431,25 +440,17 @@ function AdminDashboard() {
           ================================================= */}
 
           <AdminOperations
-
             userCount={userCount}
-
             vendorCount={vendorCount}
-
             productCount={productCount}
-
             orderCount={orderCount}
-
             categoryCount={categoryCount}
-
+            promotionCount={promotionCount}
             complaintsCount={complaintsCount}
-
             feedbackCount={feedbackCount}
-
             lowStockAlertsCount={
               lowStockAlertsCount
             }
-
           />
 
 

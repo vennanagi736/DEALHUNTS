@@ -139,14 +139,14 @@ function AdminHome() {
   const [trendingItems, setTrendingItems] = useState([]);
   const [userCount, setUserCount] = useState(0);
   const [vendorCount, setVendorCount] = useState(0);
-  const [orderCount, setOrderCount] = useState(0);
+  const [orderCount] = useState(0);
   const [productCount, setProductCount] = useState(0);
 
   // Additional Admin Operations metrics (wire to real endpoints when ready).
-  const [customerCount, setCustomerCount] = useState(0);
-  const [categoryCount, setCategoryCount] = useState(0);
-  const [complaintsCount, setComplaintsCount] = useState(0);
-  const [feedbackCount, setFeedbackCount] = useState(0);
+  const [customerCount] = useState(0);
+  const [categoryCount] = useState(0);
+  const [complaintsCount] = useState(0);
+  const [feedbackCount] = useState(0);
 
   // Which Business Analytics tab is active: Sales | Revenue | Orders | Products
   const [activeAnalyticsTab, setActiveAnalyticsTab] = useState("Sales");
@@ -521,7 +521,7 @@ useEffect(() => {
       <footer className="admin-footer">
 
         <p>
-          © 2026 Website. All rights reserved. niiaigiai
+          © 2026 Website. All rights reserved. 
         </p>
 
       </footer>

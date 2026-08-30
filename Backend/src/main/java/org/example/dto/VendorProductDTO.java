@@ -1,18 +1,29 @@
 package org.example.dto;
 
+import java.math.BigDecimal;
+
 public class VendorProductDTO {
 
     private Long id;
+
     private String name;
+
     private String description;
 
     private String brand;
+
     private String category;
 
-    private Integer variantId;
-    private Integer colorId;
+    private Long variantId;
 
-    private Double sellingPrice;
+    private Long colorId;
+
+    private BigDecimal basePrice;
+
+    private BigDecimal discount;
+
+    private BigDecimal finalPrice;
+
     private Integer stock;
 
     public VendorProductDTO(
@@ -21,11 +32,14 @@ public class VendorProductDTO {
             String description,
             String brand,
             String category,
-            Integer variantId,
-            Integer colorId,
-            Double sellingPrice,
+            Long variantId,
+            Long colorId,
+            BigDecimal basePrice,
+            BigDecimal discount,
+            BigDecimal finalPrice,
             Integer stock
     ) {
+
         this.id = id;
         this.name = name;
         this.description = description;
@@ -33,7 +47,9 @@ public class VendorProductDTO {
         this.category = category;
         this.variantId = variantId;
         this.colorId = colorId;
-        this.sellingPrice = sellingPrice;
+        this.basePrice = basePrice;
+        this.discount = discount;
+        this.finalPrice = finalPrice;
         this.stock = stock;
     }
 
@@ -57,16 +73,24 @@ public class VendorProductDTO {
         return category;
     }
 
-    public Integer getVariantId() {
+    public Long getVariantId() {
         return variantId;
     }
 
-    public Integer getColorId() {
+    public Long getColorId() {
         return colorId;
     }
 
-    public Double getSellingPrice() {
-        return sellingPrice;
+    public BigDecimal getBasePrice() {
+        return basePrice;
+    }
+
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+
+    public BigDecimal getFinalPrice() {
+        return finalPrice;
     }
 
     public Integer getStock() {

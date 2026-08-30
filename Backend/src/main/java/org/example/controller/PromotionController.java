@@ -80,5 +80,13 @@ public ResponseEntity<?> getTrendingPromotions() {
     );
 
 }
+@GetMapping("/active/count")
+public ResponseEntity<Long> getActivePromotionCount() {
+
+    return ResponseEntity.ok(
+        promotionService.getActivePromotionCount()
+    );
+
+}
 
 }

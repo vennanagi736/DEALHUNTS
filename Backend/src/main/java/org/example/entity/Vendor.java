@@ -1,11 +1,14 @@
 package org.example.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Vendor {
@@ -13,10 +16,10 @@ public class Vendor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
-@CreationTimestamp
-@Column(name = "created_at", updatable= false)
-private LocalDateTime createdAt;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     private String fullName;
     private String shopName;
@@ -36,7 +39,10 @@ private LocalDateTime createdAt;
     @Column(nullable = false)
     private String status = "PENDING";
 
-    // ---------------- GETTERS & SETTERS ----------------
+
+    // ============================================================
+    // GETTERS / SETTERS
+    // ============================================================
 
     public int getId() {
         return id;
@@ -149,17 +155,27 @@ private LocalDateTime createdAt;
     public void setStatus(String status) {
         this.status = status;
     }
-    public LocalDateTime getCreatedAt(){
+
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(LocalDateTime createdAt){
+
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    } 
-    // ---------------- DERIVED FIELD (NO DB COLUMN) ----------------
+    }
+
+
+    // ============================================================
+    // GOOGLE MAPS LOCATION
+    // ============================================================
+
     public String getLocationLink() {
+
         if (latitude != null && longitude != null) {
-            return "https://www.google.com/maps?q=" + latitude + "," + longitude;
+            return "https://www.google.com/maps?q="
+                    + latitude + "," + longitude;
         }
+
         return null;
     }
 }

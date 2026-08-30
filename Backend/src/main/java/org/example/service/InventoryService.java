@@ -1,9 +1,10 @@
-
 package org.example.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.example.dto.InventoryTable;
+import org.example.dto.InventoryVendorDTO;
 import org.example.entity.Color;
 import org.example.entity.Inventory;
 import org.example.entity.Product;
@@ -14,7 +15,9 @@ import org.example.repository.InventoryRepository;
 import org.example.repository.ProductRepository;
 import org.example.repository.VariantRepository;
 import org.example.repository.VendorRepository;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InventoryService {
@@ -32,7 +35,6 @@ public class InventoryService {
             ColorRepository colorRepository,
             VendorRepository vendorRepository
     ) {
-
         this.inventoryRepository = inventoryRepository;
         this.productRepository = productRepository;
         this.variantRepository = variantRepository;
@@ -40,16 +42,18 @@ public class InventoryService {
         this.vendorRepository = vendorRepository;
     }
 
+    // ============================================================
+    // ADD INVENTORY
+    // ============================================================
+
+    @Transactional
     public Inventory saveInventory(
             InventoryTable dto,
             String email
     ) {
 
-        // =====================================================
-        // 1. CHECK VENDOR
-        // =====================================================
-
-        Vendor vendor = vendorRepository.findByEmail(email);
+        Vendor vendor =
+                vendorRepository.findByEmail(email);
 
         if (vendor == null) {
             throw new RuntimeException(
@@ -57,10 +61,9 @@ public class InventoryService {
             );
         }
 
-
-        // =====================================================
-        // 2. CHECK PRODUCT ID
-        // =====================================================
+        // ========================================================
+        // PRODUCT
+        // ========================================================
 
         if (dto.getProductId() == null) {
             throw new RuntimeException(
@@ -68,19 +71,34 @@ public class InventoryService {
             );
         }
 
-        Product product = productRepository
-                .findById(dto.getProductId())
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "Product not found: "
-                                        + dto.getProductId()
-                        )
-                );
+        Product product =
+                productRepository
+                        .findById(dto.getProductId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Product not found: "
+                                                + dto.getProductId()
+                                )
+                        );
 
+        if (!product.isActive()) {
+            throw new RuntimeException(
+                    "Product is not active"
+            );
+        }
 
-        // =====================================================
-        // 3. CHECK VARIANT ID
-        // =====================================================
+        if (product.getBasePrice() == null ||
+                product.getBasePrice()
+                        .compareTo(BigDecimal.ZERO) <= 0) {
+
+            throw new RuntimeException(
+                    "Base price is not configured for this product"
+            );
+        }
+
+        // ========================================================
+        // VARIANT
+        // ========================================================
 
         if (dto.getVariantId() == null) {
             throw new RuntimeException(
@@ -88,19 +106,19 @@ public class InventoryService {
             );
         }
 
-        Variant variant = variantRepository
-                .findById(dto.getVariantId())
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "Variant not found: "
-                                        + dto.getVariantId()
-                        )
-                );
+        Variant variant =
+                variantRepository
+                        .findById(dto.getVariantId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Variant not found: "
+                                                + dto.getVariantId()
+                                )
+                        );
 
-
-        // =====================================================
-        // 4. CHECK COLOR ID
-        // =====================================================
+        // ========================================================
+        // COLOR
+        // ========================================================
 
         if (dto.getColorId() == null) {
             throw new RuntimeException(
@@ -108,61 +126,92 @@ public class InventoryService {
             );
         }
 
-        Color color = colorRepository
-                .findById(dto.getColorId())
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "Color not found: "
-                                        + dto.getColorId()
-                        )
-                );
+        Color color =
+                colorRepository
+                        .findById(dto.getColorId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Color not found: "
+                                                + dto.getColorId()
+                                )
+                        );
 
+        // ========================================================
+        // VERIFY VARIANT
+        // ========================================================
 
-        // =====================================================
-        // 5. CHECK SELLING PRICE
-        // =====================================================
-
-        if (dto.getSellingPrice() == null ||
-            dto.getSellingPrice() <= 0) {
+        if (variant.getProduct() == null ||
+                !variant.getProduct()
+                        .getId()
+                        .equals(product.getId())) {
 
             throw new RuntimeException(
-                    "Selling price must be greater than 0"
+                    "Variant does not belong to selected product"
             );
         }
 
+        // ========================================================
+        // VERIFY COLOR
+        // ========================================================
 
-        // =====================================================
-        // 6. CHECK STOCK
-        // =====================================================
+        if (color.getProduct() == null ||
+                !color.getProduct()
+                        .getId()
+                        .equals(product.getId())) {
+
+            throw new RuntimeException(
+                    "Color does not belong to selected product"
+            );
+        }
+
+        if (color.getVariant() == null ||
+                !color.getVariant()
+                        .getId()
+                        .equals(variant.getId())) {
+
+            throw new RuntimeException(
+                    "Color does not belong to selected variant"
+            );
+        }
+
+        // ========================================================
+        // STOCK
+        // ========================================================
 
         if (dto.getStock() == null ||
-            dto.getStock() < 0) {
+                dto.getStock() < 0) {
 
             throw new RuntimeException(
                     "Stock is required and cannot be negative"
             );
         }
 
+        // ========================================================
+        // DISCOUNT
+        // ========================================================
 
-        // =====================================================
-        // 7. CREATE INVENTORY
-        // =====================================================
+        if (dto.getDiscount() == null ||
+                dto.getDiscount()
+                        .compareTo(BigDecimal.ZERO) < 0 ||
+                dto.getDiscount()
+                        .compareTo(BigDecimal.valueOf(100)) > 0) {
 
-        Inventory inventory = new Inventory();
+            throw new RuntimeException(
+                    "Discount must be between 0 and 100"
+            );
+        }
+
+        // ========================================================
+        // CREATE INVENTORY
+        // ========================================================
+
+        Inventory inventory =
+                new Inventory();
 
         inventory.setVendor(vendor);
         inventory.setProduct(product);
         inventory.setVariant(variant);
         inventory.setColor(color);
-
-
-        // =====================================================
-        // 8. SET INVENTORY DATA
-        // =====================================================
-
-        inventory.setSellingPrice(
-                dto.getSellingPrice()
-        );
 
         inventory.setStock(
                 dto.getStock()
@@ -224,14 +273,14 @@ public class InventoryService {
                 dto.getMaxPurchase()
         );
 
-
-        // =====================================================
-        // 9. SAVE ONLY AFTER EVERYTHING IS VALID
-        // =====================================================
-
-        return inventoryRepository.save(inventory);
+        return inventoryRepository.save(
+                inventory
+        );
     }
 
+    // ============================================================
+    // GET VENDOR INVENTORY
+    // ============================================================
 
     public List<Inventory> getVendorInventory(
             Long vendorId
@@ -242,15 +291,43 @@ public class InventoryService {
         );
     }
 
+    // ============================================================
+    // GET ALL INVENTORY
+    // ============================================================
 
     public List<Inventory> getAllInventory() {
 
         return inventoryRepository.findAll();
     }
 
+    // ============================================================
+    // DELETE INVENTORY
+    // ============================================================
 
     public void deleteInventory(Long id) {
 
+        if (!inventoryRepository.existsById(id)) {
+
+            throw new RuntimeException(
+                    "Inventory not found"
+            );
+        }
+
         inventoryRepository.deleteById(id);
+    }
+
+    // ============================================================
+    // GET AVAILABLE VENDORS
+    // ============================================================
+
+    public List<InventoryVendorDTO>
+    getAvailableVendorsByProductId(
+            Long productId
+    ) {
+
+        return inventoryRepository
+                .findAvailableVendorsByProductId(
+                        productId
+                );
     }
 }
