@@ -75,6 +75,9 @@ public class SecurityConfig {
                 // CART REQUIRES LOGIN
                 .requestMatchers("/cart/**").authenticated()
 
+                //Wishlist Requires Login  
+                .requestMatchers("/wishlist/**").authenticated()
+
                 // Keep everything else public for now
                 .anyRequest().permitAll()
             )

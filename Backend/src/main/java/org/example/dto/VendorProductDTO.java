@@ -4,30 +4,28 @@ import java.math.BigDecimal;
 
 public class VendorProductDTO {
 
-    private Long id;
+    private Long inventoryId;
+    private Long productId;
 
     private String name;
-
     private String description;
-
     private String brand;
-
     private String category;
 
     private Long variantId;
-
     private Long colorId;
 
     private BigDecimal basePrice;
-
     private BigDecimal discount;
-
-    private BigDecimal finalPrice;
+    private BigDecimal sellingPrice;
 
     private Integer stock;
 
+    private String image;
+
     public VendorProductDTO(
-            Long id,
+            Long inventoryId,
+            Long productId,
             String name,
             String description,
             String brand,
@@ -36,11 +34,12 @@ public class VendorProductDTO {
             Long colorId,
             BigDecimal basePrice,
             BigDecimal discount,
-            BigDecimal finalPrice,
-            Integer stock
+            BigDecimal sellingPrice,
+            Integer stock,
+            String image
     ) {
-
-        this.id = id;
+        this.inventoryId = inventoryId;
+        this.productId = productId;
         this.name = name;
         this.description = description;
         this.brand = brand;
@@ -49,12 +48,17 @@ public class VendorProductDTO {
         this.colorId = colorId;
         this.basePrice = basePrice;
         this.discount = discount;
-        this.finalPrice = finalPrice;
+        this.sellingPrice = sellingPrice;
         this.stock = stock;
+        this.image = image;
     }
 
-    public Long getId() {
-        return id;
+    public Long getInventoryId() {
+        return inventoryId;
+    }
+
+    public Long getProductId() {
+        return productId;
     }
 
     public String getName() {
@@ -89,11 +93,15 @@ public class VendorProductDTO {
         return discount;
     }
 
-    public BigDecimal getFinalPrice() {
-        return finalPrice;
+    public BigDecimal getSellingPrice() {
+        return sellingPrice;
     }
 
     public Integer getStock() {
         return stock;
+    }
+
+    public String getImage() {
+        return image;
     }
 }

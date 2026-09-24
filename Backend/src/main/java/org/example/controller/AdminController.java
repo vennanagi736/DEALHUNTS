@@ -11,7 +11,9 @@ import org.example.repository.VendorRepository;
 import org.example.security.JWTUtil;
 import org.example.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -91,4 +93,20 @@ public class AdminController {
     public List<Vendor> getAllVendors(){
         return vendorRepository.findAll();
     }
+    // ---------------- DELETE VENDOR ----------------
+@DeleteMapping("/vendor/{id}")
+public ResponseEntity<?> deleteVendor(@PathVariable Integer id) {
+
+    if (!vendorRepository.existsById(id)) {
+        return ResponseEntity
+                .notFound()
+                .build();
+    }
+
+    vendorRepository.deleteById(id);
+
+    return ResponseEntity.ok(
+            "Vendor deleted successfully"
+    );
+}
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import SideWindow from "../../components/SideBar";
 import ProductManagementPopup from "../../components/ProductPopupManagement";
 
 import "../../styles/AProduct.css";
@@ -116,12 +115,18 @@ function AdminManageProduct() {
     // =========================================================
 
     const handleProductClick = (product) => {
-        console.log("SELECTED PRODUCT:",product);
+
+        console.log(
+            "SELECTED PRODUCT:",
+            product
+        );
+
 
         // Don't open popup while selection mode is active
         if (selectionMode) {
             return;
         }
+
 
         setSelectedProduct(product);
 
@@ -311,79 +316,11 @@ function AdminManageProduct() {
 
 
             {/* =================================================
-                HEADER
-            ================================================= */}
-
-            <header className="header">
-
-                <div className="left-section">
-
-                    <SideWindow />
-
-                </div>
-
-
-                <div className="logo-container">
-
-                    <div className="logo">
-
-                        <span className="Gold">
-                            DEAL
-                        </span>
-
-                        <span className="Black">
-                            HUNTS
-                        </span>
-
-                        <span className="Admin">
-                            Admin
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <nav className="admin-nav-links">
-
-                    <NavLink to="/admin/manage-promotions">
-                        Manage Promotions
-                    </NavLink>
-
-
-                    <NavLink to="/adminAddProduct">
-                        Add Product
-                    </NavLink>
-
-
-                    <div className="search-box">
-
-                        <input
-                            type="text"
-                            placeholder="Search"
-                        />
-
-                        <span className="icon">
-                            🔍
-                        </span>
-
-                    </div>
-
-
-                    <div
-                        className="back-btn"
-                        onClick={() => navigate(-1)}
-                    >
-                        &#8592;
-                    </div>
-
-                </nav>
-
-            </header>
-
-
-            {/* =================================================
                 MAIN
+               
+                IMPORTANT:
+                Common Header.jsx is provided by Layout.jsx.
+                No page-level header is used here.
             ================================================= */}
 
             <main className="main">
@@ -730,10 +667,7 @@ function AdminManageProduct() {
             <ProductManagementPopup
                 open={showPopup}
                 product={selectedProduct}
-                onClose={() => {
-                    setShowPopup(false);
-                    setSelectedProduct(null);
-                }}
+                onClose={handleClosePopup}
                 navigate={navigate}
             />
 

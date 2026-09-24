@@ -1,9 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 
-import "../../styles/Admin.css";
+import "../../styles/adminmasterdata.css";
 
-import SideWindow from "../../components/SideBar";
 import Popup from "../../components/Popup";
 
 import {
@@ -31,8 +29,6 @@ import {
 
 function AdminMasterData() {
 
-    const navigate = useNavigate();
-
     const deleteRef = useRef(null);
 
 
@@ -58,10 +54,14 @@ function AdminMasterData() {
 
     const [editId, setEditId] = useState(null);
 
-    // New category image
-    const [categoryImage, setCategoryImage] = useState(null);
 
-    // Existing category image while editing
+    // =====================================================
+    // CATEGORY IMAGE
+    // =====================================================
+
+    const [categoryImage, setCategoryImage] =
+        useState(null);
+
     const [existingCategoryImage, setExistingCategoryImage] =
         useState("");
 
@@ -148,7 +148,6 @@ function AdminMasterData() {
     // =====================================================
 
     const handleAdd = async () => {
-
 
         // -------------------------------------------------
         // CATEGORY VALIDATION
@@ -287,15 +286,20 @@ function AdminMasterData() {
 
                 default:
                     return;
+
             }
 
 
-            // Reload data
+            // =================================================
+            // RELOAD DATA
+            // =================================================
 
             await loadMasterData(popupType);
 
 
-            // Clear fields
+            // =================================================
+            // CLEAR FIELDS
+            // =================================================
 
             setNewValue("");
 
@@ -365,11 +369,10 @@ function AdminMasterData() {
 
                 default:
                     return;
+
             }
 
-
             await loadMasterData(popupType);
-
 
         } catch (error) {
 
@@ -430,6 +433,7 @@ function AdminMasterData() {
 
                     default:
                         break;
+
                 }
 
             }
@@ -600,13 +604,16 @@ function AdminMasterData() {
 
                 default:
                     return;
+
             }
 
 
             await loadMasterData(popupType);
 
 
-            // Clear edit state
+            // =================================================
+            // CLEAR EDIT STATE
+            // =================================================
 
             setEditId(null);
 
@@ -679,47 +686,7 @@ function AdminMasterData() {
 
     return (
 
-        <div className="adminhome-container">
-
-
-            {/* =================================================
-                HEADER
-            ================================================= */}
-
-            <header className="header">
-
-                <div className="left-section">
-
-                    <SideWindow />
-
-                </div>
-
-
-                <div className="logo">
-
-                    <span className="Gold">
-                        DEAL
-                    </span>
-
-                    <span className="Black">
-                        HUNTS
-                    </span>
-
-                    <span className="Admin">
-                        Admin
-                    </span>
-
-                </div>
-
-
-                <div
-                    className="back-btn"
-                    onClick={() => navigate(-1)}
-                >
-                    &#8592;
-                </div>
-
-            </header>
+        <div className="adminhome-container-md">
 
 
             {/* =================================================
@@ -728,20 +695,23 @@ function AdminMasterData() {
 
             <main>
 
-                <h1 className="page-title">
+                <h1 className="page-title-md">
                     Manage Product Options
                 </h1>
 
 
-                <div className="master-layout">
+                <div className="master-layout-md">
 
-                    <div className="master-form-section">
+                    <div className="master-form-section-md">
 
 
-                        {/* CATEGORY */}
+                        {/* =================================================
+                            CATEGORY
+                        ================================================= */}
 
                         <button
-                            className="master-action-btn"
+                            type="button"
+                            className="master-action-btn-md"
                             onClick={() =>
                                 openPopup("category")
                             }
@@ -750,10 +720,13 @@ function AdminMasterData() {
                         </button>
 
 
-                        {/* BRAND */}
+                        {/* =================================================
+                            BRAND
+                        ================================================= */}
 
                         <button
-                            className="master-action-btn"
+                            type="button"
+                            className="master-action-btn-md"
                             onClick={() =>
                                 openPopup("brand")
                             }
@@ -762,10 +735,13 @@ function AdminMasterData() {
                         </button>
 
 
-                        {/* VARIANT */}
+                        {/* =================================================
+                            VARIANT
+                        ================================================= */}
 
                         <button
-                            className="master-action-btn"
+                            type="button"
+                            className="master-action-btn-md"
                             onClick={() =>
                                 openPopup("variant")
                             }
@@ -774,16 +750,20 @@ function AdminMasterData() {
                         </button>
 
 
-                        {/* COLOR */}
+                        {/* =================================================
+                            COLOR
+                        ================================================= */}
 
                         <button
-                            className="master-action-btn"
+                            type="button"
+                            className="master-action-btn-md"
                             onClick={() =>
                                 openPopup("color")
                             }
                         >
                             Manage Color
                         </button>
+
 
                     </div>
 
@@ -988,11 +968,12 @@ function AdminMasterData() {
 
 
                 {/* =================================================
-                    SAVE BUTTON
+                    SAVE / UPDATE BUTTON
                 ================================================= */}
 
                 <button
-                    className="save-master-btn"
+                    type="button"
+                    className="save-master-btn-md"
                     onClick={
                         editId
                             ? handleUpdate
@@ -1034,22 +1015,22 @@ function AdminMasterData() {
                     SELECT ALL
                 ================================================= */}
 
-                <div className="category-row">
+                <div className="category-row-md">
 
-                    <span className="count">
+                    <span className="count-md">
                         Total:{" "}
                         {masterData.length}
                     </span>
 
 
-                    <span className="category-name">
+                    <span className="category-name-md">
                         Select All
                     </span>
 
 
                     <input
                         type="checkbox"
-                        className="category-checkbox"
+                        className="category-checkbox-md"
                         checked={
                             masterData.length > 0 &&
                             selectedItems.length ===
@@ -1082,17 +1063,19 @@ function AdminMasterData() {
                     MASTER DATA LIST
                 ================================================= */}
 
-                <div className="master-list-container">
+                <div className="master-list-container-md">
 
                     {masterData.map(item => (
 
                         <div
                             key={item.id}
-                            className="category-row"
+                            className="category-row-md"
                         >
 
 
-                            {/* CATEGORY IMAGE */}
+                            {/* =================================================
+                                CATEGORY IMAGE
+                            ================================================= */}
 
                             {popupType === "category" &&
                                 item.imageUrl && (
@@ -1104,31 +1087,28 @@ function AdminMasterData() {
                                         alt={
                                             item.name
                                         }
-                                        style={{
-                                            width: "45px",
-                                            height: "45px",
-                                            objectFit: "contain",
-                                            marginRight: "10px"
-                                        }}
                                     />
 
                                 )}
 
 
-                            <span className="category-name">
+                            <span className="category-name-md">
 
                                 {item.name}
 
                             </span>
 
 
-                            <div className="category-actions">
+                            <div className="category-actions-md">
 
 
-                                {/* EDIT */}
+                                {/* =================================================
+                                    EDIT
+                                ================================================= */}
 
                                 <button
-                                    className="edit-master-btn"
+                                    type="button"
+                                    className="edit-master-btn-md"
                                     onClick={() =>
                                         handleEdit(item)
                                     }
@@ -1137,10 +1117,13 @@ function AdminMasterData() {
                                 </button>
 
 
-                                {/* DELETE */}
+                                {/* =================================================
+                                    DELETE
+                                ================================================= */}
 
                                 <button
-                                    className="delete-master-btn"
+                                    type="button"
+                                    className="delete-master-btn-md"
                                     onClick={() =>
                                         handleDelete(
                                             item.id
@@ -1167,7 +1150,8 @@ function AdminMasterData() {
                 <div ref={deleteRef}>
 
                     <button
-                        className="delete-selected-btn"
+                        type="button"
+                        className="delete-selected-btn-md"
                         onClick={
                             handleDeleteSelected
                         }
@@ -1179,6 +1163,7 @@ function AdminMasterData() {
 
 
             </Popup>
+
 
         </div>
 

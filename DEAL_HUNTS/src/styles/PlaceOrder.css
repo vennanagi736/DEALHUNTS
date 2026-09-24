@@ -1,302 +1,1899 @@
-.place-order-page__heading h1 {
-  font-family: var(--font-display);
-  font-size: 28px;
-  color: var(--navy);
-  margin: 0 0 6px;
+/* ============================================================
+   DEALHUNTS — PLACE ORDER USER
+   PREFIX : po-
+   SUFFIX : -user
+============================================================ */
+
+
+/* ============================================================
+   PAGE
+============================================================ */
+
+.po-page-user {
+
+    width: 100%;
+    min-width: 0;
+
+    height: 100vh;
+    height: 100dvh;
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+    color: #111111;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
 }
 
-.place-order-page__heading p {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin: 0 0 28px;
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.po-header-user {
+
+    position: sticky;
+    top: 0;
+
+    z-index: 50;
+
+    width: 100%;
+    min-width: 0;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 18px;
+
+    padding: 12px 16px;
+
+    box-sizing: border-box;
+
+    background: rgba(255, 255, 255, 0.97);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    border-bottom: 1px solid #e7e7e7;
 }
 
-.place-order-layout {
-  display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: 24px;
-  align-items: start;
+
+/* ============================================================
+   HEADER LEFT
+============================================================ */
+
+.po-header-left-user {
+
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    flex-shrink: 0;
 }
 
-.place-order-left {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+
+/* ============================================================
+   SIDEBAR AREA
+============================================================ */
+
+.po-header-sidebar-user {
+
+    width: 40px;
+    min-width: 40px;
+
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
 }
 
-.po-card {
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 22px;
-  box-shadow: var(--shadow-sm);
+
+.po-header-sidebar-user .dh-sidebar-trigger {
+
+    width: 40px;
+    height: 40px;
+
+    margin-top: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    background: transparent;
+
+    color: #111111;
+
+    font-size: 24px;
+
+    cursor: pointer;
 }
 
-.po-card__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  gap: 10px;
+
+/* ============================================================
+   BRAND
+============================================================ */
+
+.po-brand-user {
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    line-height: 1;
 }
 
-.po-card__header h2 {
-  font-family: var(--font-display);
-  font-size: 17px;
-  color: var(--navy);
-  margin: 0;
+
+.po-logo-user {
+
+    display: flex;
+    align-items: center;
+
+    font-size: 24px;
+    font-weight: 800;
+
+    letter-spacing: -0.8px;
 }
 
-.po-card__header-actions {
-  display: flex;
-  gap: 8px;
+
+.po-logo-deal-user {
+    color: #d4af37;
 }
 
-.btn-ghost {
-  background: var(--blue-light);
-  color: var(--blue);
-  border: none;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-ui);
-  font-size: 12.5px;
-  font-weight: 600;
-  padding: 8px 12px;
-  cursor: pointer;
+
+.po-logo-hunts-user {
+    color: #000000;
 }
 
-.btn-ghost:hover {
-  background: #dbe8ff;
+
+.po-header-tagline-user {
+
+    margin-top: 4px;
+
+    color: #666666;
+
+    font-size: 10px;
+
+    line-height: 1;
+
+    white-space: nowrap;
 }
 
-.po-address-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+
+/* ============================================================
+   HEADER RIGHT
+============================================================ */
+
+.po-header-right-user {
+
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
+
+    flex-shrink: 0;
 }
 
-.po-address-form__full {
-  grid-column: 1 / -1;
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+
+.po-header-nav-user {
+
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
 }
 
-.po-address-form label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--text-secondary);
+
+.po-header-nav-user button {
+
+    padding: 5px 0;
+
+    border: none;
+    background: transparent;
+
+    color: #222222;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        color 0.15s ease;
 }
 
-.po-address-form input {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 10px 12px;
-  font-family: var(--font-ui);
-  font-size: 14px;
-  color: var(--text-primary);
-  background: var(--bg-section);
+
+.po-header-nav-user button:hover {
+
+    color: #d4af37;
 }
 
-.po-address-form input:focus {
-  outline: none;
-  border-color: var(--blue);
-  background: #ffffff;
+
+/* ============================================================
+   HEADER ACTIONS
+============================================================ */
+
+.po-header-actions-user {
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
 }
 
-.po-payment-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+
+.po-header-icon-user {
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #111111;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
 }
 
-.po-payment-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-md);
-  background: #ffffff;
-  cursor: pointer;
-  text-align: left;
-  transition: border-color 0.15s ease, background 0.15s ease;
+
+.po-header-icon-user:hover {
+
+    background: #f5f5f5;
 }
 
-.po-payment-option:hover {
-  border-color: #b9cdf7;
+
+.po-header-icon-user svg {
+
+    width: 19px;
+    height: 19px;
 }
 
-.po-payment-option--selected {
-  border-color: var(--blue);
-  background: var(--blue-light);
+
+/* ============================================================
+   LOGIN
+============================================================ */
+
+.po-header-login-user {
+
+    min-height: 36px;
+
+    padding: 7px 14px;
+
+    border: 1px solid #111111;
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #111111;
+
+    font-family: inherit;
+
+    font-size: 12.5px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
 }
 
-.po-payment-option__icon {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-section);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--navy);
-  flex-shrink: 0;
+
+.po-header-login-user:hover {
+
+    background: #111111;
+    color: #ffffff;
 }
 
-.po-payment-option--selected .po-payment-option__icon {
-  background: #ffffff;
-  color: var(--blue);
+
+/* ============================================================
+   CONTENT SCROLL AREA
+============================================================ */
+
+.po-content-user {
+
+    flex: 1;
+
+    min-height: 0;
+
+    width: 100%;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: thin;
+    scrollbar-color: #cfcfcf transparent;
 }
 
-.po-payment-option__text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  font-size: 12.5px;
-  color: var(--text-secondary);
+
+/* ============================================================
+   PAGE CONTENT
+============================================================ */
+
+.po-page-heading-user {
+
+    width: 100%;
+    max-width: 1280px;
+
+    margin: 0 auto;
+
+    padding: 26px 24px 22px;
+
+    box-sizing: border-box;
 }
 
-.po-payment-option__text strong {
-  font-size: 14px;
-  color: var(--text-primary);
+
+.po-page-heading-user h1 {
+
+    margin: 0 0 5px;
+
+    color: #111111;
+
+    font-size: 28px;
+
+    line-height: 1.2;
+
+    font-weight: 750;
+
+    letter-spacing: -0.35px;
 }
 
-/* Summary */
-.po-summary {
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 22px;
-  box-shadow: var(--shadow-sm);
-  position: sticky;
-  top: 88px;
+
+.po-page-heading-user p {
+
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 13px;
+
+    line-height: 1.5;
 }
 
-.po-summary h2 {
-  font-family: var(--font-display);
-  font-size: 17px;
-  color: var(--navy);
-  margin: 0 0 16px;
+
+/* ============================================================
+   ERROR
+============================================================ */
+
+.po-error-user {
+
+    width: calc(100% - 48px);
+    max-width: 1232px;
+
+    margin: 0 auto 16px;
+
+    padding: 11px 14px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #e5bcbc;
+
+    border-left: 3px solid #b63232;
+
+    border-radius: 8px;
+
+    background: #fff7f7;
+
+    color: #9d2929;
+
+    font-size: 12.5px;
+
+    font-weight: 550;
+
+    line-height: 1.45;
 }
 
-.po-summary__items {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-height: 220px;
-  overflow-y: auto;
+
+/* ============================================================
+   MAIN LAYOUT
+============================================================ */
+
+.po-layout-user {
+
+    width: 100%;
+    max-width: 1280px;
+
+    margin: 0 auto;
+
+    padding: 0 24px 42px;
+
+    box-sizing: border-box;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        375px;
+
+    gap: 22px;
+
+    align-items: start;
 }
 
-.po-summary__item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+
+/* ============================================================
+   LEFT
+============================================================ */
+
+.po-left-user {
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 17px;
 }
 
-.po-summary__item img {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-sm);
-  object-fit: cover;
-  background: var(--bg-section);
-  flex-shrink: 0;
+
+/* ============================================================
+   COMMON CARD
+============================================================ */
+
+.po-card-user {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 19px 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e4e4;
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.035);
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
 }
 
-.po-summary__item-info {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
+
+.po-card-user:hover {
+
+    border-color: #d8d8d8;
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
-.po-summary__item-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+/* ============================================================
+   CARD HEADER
+============================================================ */
+
+.po-card-header-user {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 17px;
 }
 
-.po-summary__item-meta {
-  font-size: 11.5px;
-  color: var(--text-muted);
+
+.po-card-header-user h2 {
+
+    margin: 0;
+
+    color: #111111;
+
+    font-size: 16.5px;
+
+    line-height: 1.3;
+
+    font-weight: 720;
+
+    letter-spacing: -0.15px;
 }
 
-.po-summary__item-price {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-  flex-shrink: 0;
+
+/* ============================================================
+   ADDRESS FORM
+============================================================ */
+
+.po-address-form-user {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 13px 15px;
 }
 
-.po-summary__divider {
-  height: 1px;
-  background: var(--border);
-  margin: 14px 0;
+
+.po-address-form-user label {
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    color: #4f4f4f;
+
+    font-size: 11.5px;
+
+    line-height: 1.3;
+
+    font-weight: 650;
 }
 
-.po-summary__row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  color: var(--text-secondary);
-  padding: 5px 0;
+
+.po-address-form-full-user {
+
+    grid-column: 1 / -1;
 }
 
-.po-summary__row--discount span:last-child {
-  color: var(--green);
-  font-weight: 600;
+
+.po-address-form-user input {
+
+    width: 100%;
+    height: 40px;
+
+    box-sizing: border-box;
+
+    padding: 0 11px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 7px;
+
+    background: #fbfbfb;
+
+    color: #171717;
+
+    font-family: inherit;
+
+    font-size: 12.5px;
+
+    outline: none;
+
+    transition:
+        border-color 0.16s ease,
+        background 0.16s ease,
+        box-shadow 0.16s ease;
 }
 
-.po-summary__row--total {
-  font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
+
+.po-address-form-user input::placeholder {
+
+    color: #a5a5a5;
 }
 
-.po-summary__cta {
-  width: 100%;
-  margin-top: 18px;
+
+.po-address-form-user input:hover {
+
+    border-color: #cccccc;
+
+    background: #ffffff;
 }
 
-.po-summary__cta:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+
+.po-address-form-user input:focus {
+
+    border-color: #c4a12f;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(212, 175, 55, 0.12);
 }
 
-.po-summary__secure {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-top: 14px;
-  font-size: 12px;
-  color: var(--text-muted);
+
+/* ============================================================
+   PAYMENT GRID
+============================================================ */
+
+.po-payment-grid-user {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
 }
 
-.po-summary__secure svg {
-  color: var(--green);
-  flex-shrink: 0;
+
+/* ============================================================
+   PAYMENT OPTION
+============================================================ */
+
+.po-payment-option-user {
+
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 12px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #222222;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition:
+        border-color 0.16s ease,
+        background 0.16s ease,
+        box-shadow 0.16s ease,
+        transform 0.16s ease;
 }
+
+
+.po-payment-option-user:hover {
+
+    border-color: #d0b35c;
+
+    background: #fffdf8;
+}
+
+
+.po-payment-option-user:active {
+
+    transform: translateY(1px);
+}
+
+
+.po-payment-option-user:focus-visible {
+
+    outline: 2px solid #d4af37;
+
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   SELECTED PAYMENT
+============================================================ */
+
+.po-payment-option-selected-user {
+
+    border-color: #c6a02e;
+
+    background: #fffaf0;
+
+    box-shadow:
+        0 0 0 1px
+        rgba(198, 160, 46, 0.16);
+}
+
+
+.po-payment-option-selected-user::after {
+
+    content: "✓";
+
+    position: absolute;
+
+    top: 8px;
+    right: 8px;
+
+    width: 17px;
+    height: 17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #111111;
+
+    color: #d4af37;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+.po-payment-option-selected-user:hover {
+
+    border-color: #b98f18;
+
+    background: #fff8e9;
+}
+
+
+/* ============================================================
+   PAYMENT ICON
+============================================================ */
+
+.po-payment-option-icon-user {
+
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 8px;
+
+    background: #f5f5f5;
+
+    color: #333333;
+
+    transition:
+        background 0.16s ease,
+        border-color 0.16s ease,
+        color 0.16s ease;
+}
+
+
+.po-payment-option-selected-user
+.po-payment-option-icon-user {
+
+    border-color: #111111;
+
+    background: #111111;
+
+    color: #d4af37;
+}
+
+
+/* ============================================================
+   PAYMENT TEXT
+============================================================ */
+
+.po-payment-option-text-user {
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+
+    padding-right: 17px;
+
+    color: #888888;
+
+    font-size: 10.8px;
+
+    line-height: 1.35;
+}
+
+
+.po-payment-option-text-user strong {
+
+    overflow: hidden;
+
+    color: #181818;
+
+    font-size: 12.5px;
+
+    line-height: 1.25;
+
+    font-weight: 700;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.po-payment-option-text-user span {
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   ORDER SUMMARY
+============================================================ */
+
+.po-summary-user {
+
+    position: sticky;
+
+    top: 18px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 19px;
+
+    background: #ffffff;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 4px 16px
+        rgba(0, 0, 0, 0.055);
+}
+
+
+.po-summary-user h2 {
+
+    margin: 0 0 16px;
+
+    color: #111111;
+
+    font-size: 16.5px;
+
+    line-height: 1.3;
+
+    font-weight: 720;
+}
+
+
+.po-summary-user h2::after {
+
+    content: "";
+
+    display: block;
+
+    width: 34px;
+    height: 2px;
+
+    margin-top: 7px;
+
+    border-radius: 10px;
+
+    background: #d4af37;
+}
+
+
+/* ============================================================
+   SUMMARY ITEMS
+============================================================ */
+
+.po-summary-items-user {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 11px;
+
+    max-height: 230px;
+
+    overflow-y: auto;
+
+    padding: 1px 3px 1px 0;
+}
+
+
+.po-summary-items-user::-webkit-scrollbar {
+
+    width: 4px;
+}
+
+
+.po-summary-items-user::-webkit-scrollbar-track {
+
+    background: transparent;
+}
+
+
+.po-summary-items-user::-webkit-scrollbar-thumb {
+
+    border-radius: 10px;
+
+    background: #d5d5d5;
+}
+
+
+.po-summary-items-user::-webkit-scrollbar-thumb:hover {
+
+    background: #b9b9b9;
+}
+
+
+/* ============================================================
+   SUMMARY ITEM
+============================================================ */
+
+.po-summary-item-user {
+
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.po-summary-item-user img {
+
+    width: 50px;
+    height: 50px;
+
+    flex: 0 0 50px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #e9e9e9;
+
+    border-radius: 7px;
+
+    object-fit: cover;
+
+    background: #f7f7f7;
+}
+
+
+.po-summary-item-info-user {
+
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.po-summary-item-name-user {
+
+    overflow: hidden;
+
+    color: #151515;
+
+    font-size: 12px;
+
+    line-height: 1.35;
+
+    font-weight: 680;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.po-summary-item-meta-user {
+
+    overflow: hidden;
+
+    color: #888888;
+
+    font-size: 10.5px;
+
+    line-height: 1.3;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.po-summary-item-price-user {
+
+    flex-shrink: 0;
+
+    color: #111111;
+
+    font-size: 12px;
+
+    font-weight: 720;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   DIVIDER
+============================================================ */
+
+.po-summary-divider-user {
+
+    width: 100%;
+    height: 1px;
+
+    margin: 14px 0;
+
+    background: #e9e9e9;
+}
+
+
+/* ============================================================
+   SUMMARY ROW
+============================================================ */
+
+.po-summary-row-user {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 4px 0;
+
+    color: #707070;
+
+    font-size: 12.5px;
+
+    line-height: 1.4;
+}
+
+
+.po-summary-row-user span:last-child {
+
+    color: #222222;
+
+    font-weight: 650;
+}
+
+
+/* ============================================================
+   DISCOUNT
+============================================================ */
+
+.po-summary-row-discount-user span:last-child {
+
+    color: #2f8b58;
+
+    font-weight: 680;
+}
+
+
+/* ============================================================
+   TOTAL
+============================================================ */
+
+.po-summary-row-total-user {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 1px;
+
+    padding: 4px 0;
+
+    color: #111111;
+
+    font-size: 17px;
+
+    line-height: 1.35;
+
+    font-weight: 750;
+}
+
+
+.po-summary-row-total-user span:last-child {
+
+    color: #111111;
+
+    font-size: 18px;
+
+    font-weight: 780;
+}
+
+
+/* ============================================================
+   PRIMARY BUTTON
+============================================================ */
+
+.po-btn-primary-user {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 41px;
+
+    padding: 9px 16px;
+
+    border: 1px solid #c29b2d;
+
+    border-radius: 8px;
+
+    background: #d4af37;
+
+    color: #111111;
+
+    font-family: inherit;
+
+    font-size: 12.5px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.16s ease,
+        border-color 0.16s ease,
+        box-shadow 0.16s ease,
+        transform 0.1s ease;
+}
+
+
+.po-btn-primary-user:hover {
+
+    border-color: #b78f1d;
+
+    background: #c9a32f;
+
+    box-shadow:
+        0 4px 10px
+        rgba(0, 0, 0, 0.09);
+}
+
+
+.po-btn-primary-user:active {
+
+    transform: translateY(1px);
+}
+
+
+.po-btn-primary-user:focus-visible {
+
+    outline: 2px solid #111111;
+
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   SUMMARY CTA
+============================================================ */
+
+.po-summary-cta-user {
+
+    width: 100%;
+
+    min-height: 44px;
+
+    margin-top: 16px;
+
+    padding: 10px 16px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #c29a25;
+
+    border-radius: 8px;
+
+    background: #d4af37;
+
+    color: #111111;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 8px
+        rgba(0, 0, 0, 0.08);
+
+    transition:
+        background 0.16s ease,
+        border-color 0.16s ease,
+        box-shadow 0.16s ease,
+        transform 0.1s ease;
+}
+
+
+.po-summary-cta-user:hover:not(:disabled) {
+
+    border-color: #b78d18;
+
+    background: #c9a32f;
+
+    box-shadow:
+        0 5px 13px
+        rgba(0, 0, 0, 0.11);
+}
+
+
+.po-summary-cta-user:active:not(:disabled) {
+
+    transform: translateY(1px);
+}
+
+
+.po-summary-cta-user:focus-visible {
+
+    outline: 2px solid #111111;
+
+    outline-offset: 2px;
+}
+
+
+.po-summary-cta-user:disabled {
+
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   SECURITY
+============================================================ */
+
+.po-summary-secure-user {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 7px;
+
+    margin-top: 12px;
+
+    color: #858585;
+
+    font-size: 10.5px;
+
+    line-height: 1.45;
+
+    text-align: left;
+}
+
+
+.po-summary-secure-user svg {
+
+    flex-shrink: 0;
+
+    margin-top: 1px;
+
+    color: #39875b;
+}
+
+
+/* ============================================================
+   EMPTY
+============================================================ */
+
+.po-summary-empty-user {
+
+    margin-bottom: 16px;
+
+    padding: 17px 4px;
+
+    color: #888888;
+
+    font-size: 12.5px;
+
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   LOADING
+============================================================ */
+
+.po-loading-user {
+
+    flex: 1;
+
+    min-height: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    color: #777777;
+
+    font-size: 13px;
+}
+
+
+.po-loading-spinner-user {
+
+    width: 26px;
+    height: 26px;
+
+    border: 3px solid #eeeeee;
+
+    border-top-color: #d4af37;
+
+    border-radius: 50%;
+
+    animation:
+        po-spin-user 0.75s linear infinite;
+}
+
+
+@keyframes po-spin-user {
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   CONTENT SCROLLBAR
+============================================================ */
+
+.po-content-user::-webkit-scrollbar {
+
+    width: 7px;
+}
+
+
+.po-content-user::-webkit-scrollbar-track {
+
+    background: transparent;
+}
+
+
+.po-content-user::-webkit-scrollbar-thumb {
+
+    border-radius: 10px;
+
+    background: #d0d0d0;
+}
+
+
+.po-content-user::-webkit-scrollbar-thumb:hover {
+
+    background: #b8b8b8;
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
 
 @media (max-width: 1100px) {
-  .place-order-layout {
-    grid-template-columns: 1fr;
-  }
-  .po-summary {
-    position: static;
-    order: -1;
-  }
+
+    .po-page-heading-user {
+
+        padding:
+            24px
+            20px
+            20px;
+    }
+
+
+    .po-layout-user {
+
+        padding:
+            0
+            20px
+            36px;
+    }
+
+
+    .po-layout-user {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .po-summary-user {
+
+        position: static;
+
+        order: -1;
+    }
+
+
+    .po-summary-items-user {
+
+        max-height: none;
+    }
 }
 
-@media (max-width: 640px) {
-  .po-address-form {
-    grid-template-columns: 1fr;
-  }
-  .po-payment-grid {
-    grid-template-columns: 1fr;
-  }
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 768px) {
+
+    /* ========================================================
+       HEADER
+    ======================================================== */
+
+    .po-header-user {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+
+    .po-header-right-user {
+        gap: 8px;
+    }
+
+
+    .po-header-nav-user {
+        display: none;
+    }
+
+
+    .po-header-left-user {
+        gap: 8px;
+    }
+
+    .po-header-sidebar-user {
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+    .po-header-sidebar-user .dh-sidebar-trigger {
+        width: 40px;
+        height: 40px;
+        margin-top: -4px !important;
+    }
+
+    .po-logo-user {
+        font-size: 21px;
+    }
+
+
+    .po-header-tagline-user {
+        font-size: 9px;
+    }
+
+
+    .po-header-actions-user {
+        gap: 3px;
+    }
+
+
+    .po-header-icon-user {
+        width: 36px;
+        height: 36px;
+    }
+
+
+    .po-header-settings-user {
+        display: none;
+    }
+
+
+    /* ========================================================
+       PAGE HEADING
+    ======================================================== */
+
+    .po-page-heading-user {
+        padding:
+            20px
+            16px
+            18px;
+    }
+
+
+    /* ========================================================
+       MAIN LAYOUT
+       
+       Mobile order:
+       1. Summary
+       2. Payment
+       3. Delivery
+    ======================================================== */
+
+    .po-layout-user {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding:
+            0
+            16px
+            32px;
+    }
+
+
+    /* ========================================================
+       SUMMARY FIRST
+    ======================================================== */
+
+    .po-summary-user {
+        position: static;
+        order: 1;
+        width: 100%;
+    }
+
+
+    /* ========================================================
+       LEFT CONTENT
+       
+       Contains:
+       Payment
+       Delivery
+    ======================================================== */
+
+    .po-left-user {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        order: 2;
+    }
+
+
+    /* ========================================================
+       PAYMENT FIRST INSIDE LEFT
+    ======================================================== */
+
+    .po-left-user .po-card-user:nth-child(2) {
+        order: 1;
+    }
+
+
+    /* ========================================================
+       DELIVERY SECOND INSIDE LEFT
+    ======================================================== */
+
+    .po-left-user .po-card-user:first-child {
+        order: 2;
+    }
+
+
+    /* ========================================================
+       ADDRESS FORM
+    ======================================================== */
+
+    .po-address-form-user {
+        grid-template-columns: 1fr;
+    }
+
+
+    .po-address-form-full-user {
+        grid-column: auto;
+    }
+
+
+    /* ========================================================
+       PAYMENT
+    ======================================================== */
+
+    .po-payment-grid-user {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* ========================================================
+       CARDS
+    ======================================================== */
+
+    .po-card-user,
+    .po-summary-user {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+
+    /* ========================================================
+       SUMMARY ITEMS
+    ======================================================== */
+
+    .po-summary-items-user {
+        max-height: none;
+    }
+
+
+    /* ========================================================
+       PLACE ORDER BUTTON
+       
+       Keep CTA at the bottom of the summary.
+    ======================================================== */
+
+    .po-summary-cta-user {
+        margin-top: 16px;
+    }
+
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .po-header-user {
+        padding: 8px 8px;
+    }
+
+
+    .po-header-left-user {
+        gap: 5px;
+    }
+
+
+    .po-header-sidebar-user {
+        width: 36px;
+        min-width: 36px;
+        height: 36px;
+    }
+
+
+    .po-header-sidebar-user .dh-sidebar-trigger {
+        width: 36px;
+        height: 36px;
+        margin-top: -6px !important;
+        font-size: 22px;
+    }
+
+
+    .po-logo-user {
+        font-size: 19px;
+    }
+
+
+    .po-header-tagline-user {
+        margin-top: 3px;
+        font-size: 8px;
+    }
+
+
+    .po-header-icon-user {
+        width: 34px;
+        height: 34px;
+    }
+
+
+    .po-header-icon-user svg {
+        width: 18px;
+        height: 18px;
+    }
+
+
+    .po-content-user {
+        width: 100%;
+    }
+
+
+    .po-page-heading-user {
+        padding:
+            17px
+            12px
+            17px;
+    }
+
+
+    .po-page-heading-user h1 {
+        font-size: 22px;
+    }
+
+
+    .po-page-heading-user p {
+        font-size: 12px;
+    }
+
+
+    .po-error-user {
+        width: calc(100% - 24px);
+        margin-bottom: 12px;
+    }
+
+
+    .po-layout-user {
+        gap: 12px;
+        padding:
+            0
+            12px
+            32px;
+    }
+
+
+    .po-card-user,
+    .po-summary-user {
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+
+    .po-card-header-user {
+        align-items: flex-start;
+    }
+
+
+    .po-card-header-user h2,
+    .po-summary-user h2 {
+        font-size: 15.5px;
+    }
+
+
+    .po-payment-option-user {
+        padding: 11px;
+    }
+
+
+    .po-payment-option-icon-user {
+        width: 34px;
+        height: 34px;
+        flex-basis: 34px;
+    }
+
+
+    .po-summary-item-user img {
+        width: 46px;
+        height: 46px;
+        flex-basis: 46px;
+    }
+
+
+    .po-summary-item-price-user {
+        font-size: 11.5px;
+    }
+
+
+    .po-summary-row-user {
+        font-size: 12px;
+    }
+
+
+    .po-summary-row-total-user {
+        font-size: 16.5px;
+    }
+
+
+    .po-summary-row-total-user span:last-child {
+        font-size: 17.5px;
+    }
+
+}
+
+
+/* ============================================================
+   VERY SMALL
+============================================================ */
+
+@media (max-width: 360px) {
+
+    .po-logo-user {
+        font-size: 18px;
+    }
+
+
+    .po-header-tagline-user {
+        font-size: 7.5px;
+    }
+
+
+    .po-header-actions-user {
+        gap: 1px;
+    }
+
+
+    .po-header-icon-user {
+        width: 32px;
+        height: 32px;
+    }
+
+
+    .po-page-heading-user {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+
+    .po-layout-user {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+
+    .po-card-user,
+    .po-summary-user {
+        padding: 13px;
+    }
+
+
+    .po-summary-item-user {
+        gap: 7px;
+    }
+
+
+    .po-summary-item-user img {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+    }
+
+
+    .po-summary-item-price-user {
+        font-size: 11px;
+    }
+
 }

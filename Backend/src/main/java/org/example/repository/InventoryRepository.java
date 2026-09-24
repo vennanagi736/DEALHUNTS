@@ -19,15 +19,14 @@ public interface InventoryRepository
     // VENDOR INVENTORY
     // ============================================================
 
-    List<Inventory> findByVendor_Id(int id);
-
+    List<Inventory> findByVendor_Id(Long vendorId);
 
     // ============================================================
     // PRODUCT INVENTORY
     // ============================================================
 
     List<Inventory> findByProduct_Id(Long productId);
-
+    boolean existsByColor_Id(Long colorId);
 
     // ============================================================
     // AVAILABLE VENDORS FOR PRODUCT
@@ -48,7 +47,7 @@ public interface InventoryRepository
                 i.product.basePrice -
                 (
                     i.product.basePrice *
-                    COALESCE(i.discount, 0) / 100.0
+                    COALESCE(i.discount, 0) / 100
                 )
             ),
 
@@ -86,9 +85,7 @@ public interface InventoryRepository
         FROM Inventory i
 
         WHERE i.product.id = :productId
-
           AND i.product.active = true
-
           AND i.stock > 0
 
         ORDER BY
@@ -96,7 +93,7 @@ public interface InventoryRepository
             i.product.basePrice -
             (
                 i.product.basePrice *
-                COALESCE(i.discount, 0) / 100.0
+                COALESCE(i.discount, 0) / 100
             )
         ) ASC
     """)
@@ -104,53 +101,44 @@ public interface InventoryRepository
             @Param("productId") Long productId
     );
 
-
     // ============================================================
-    // VENDOR PRODUCTS
+    // ACTIVE PRODUCTS FOR VENDOR
     // ============================================================
 
-    @Query("""
-        SELECT new org.example.dto.VendorProductDTO(
-
-            i.product.id,
-
-            i.product.name,
-
-            i.product.description,
-
-            i.product.brand.name,
-
-            i.product.category.name,
-
-            i.variant.id,
-
-            i.color.id,
-
-            i.product.basePrice,
-
-            COALESCE(i.discount, 0),
-
+   @Query("""
+    SELECT new org.example.dto.VendorProductDTO(
+        i.id,
+        i.product.id,
+        i.product.name,
+        i.product.description,
+        i.product.brand.name,
+        i.product.category.name,
+        i.variant.id,
+        i.color.id,
+        i.product.basePrice,
+        COALESCE(i.discount, 0),
+        (
+            i.product.basePrice -
             (
-                i.product.basePrice -
-                (
-                    i.product.basePrice *
-                    COALESCE(i.discount, 0) / 100.0
-                )
-            ),
-
-            i.stock
+                i.product.basePrice *
+                COALESCE(i.discount, 0) / 100
+            )
+        ),
+        i.stock,
+        (
+            SELECT MIN(img.thumbnailUrl)
+            FROM Image img
+            WHERE img.product.id = i.product.id
         )
-
-        FROM Inventory i
-
-        WHERE i.vendor.id = :vendorId
-
-          AND i.product.active = true
-    """)
-    List<VendorProductDTO> findActiveProductsByVendorId(
-            @Param("vendorId") int vendorId
-    );
-
+    )
+    FROM Inventory i
+    WHERE i.vendor.id = :vendorId
+      AND i.product.active = true
+    ORDER BY i.product.name ASC
+""")
+List<VendorProductDTO> findActiveProductsByVendorId(
+        @Param("vendorId") Long vendorId
+);
 
     // ============================================================
     // USER PRODUCT CARDS
@@ -159,21 +147,20 @@ public interface InventoryRepository
     @Query("""
         SELECT new org.example.dto.ProductCardDTO(
 
-            i.product.id,
-
-            i.product.name,
-
-            i.product.brand.name,
-
-            i.product.category.name,
+            p.id,
+            p.name,
+            p.brand.name,
+            p.category.name,
 
             MIN(img.thumbnailUrl),
 
             MIN(
-                i.product.basePrice -
                 (
-                    i.product.basePrice *
-                    COALESCE(i.discount, 0) / 100.0
+                    p.basePrice -
+                    (
+                        p.basePrice *
+                        COALESCE(i.discount, 0) / 100
+                    )
                 )
             ),
 
@@ -187,16 +174,15 @@ public interface InventoryRepository
         LEFT JOIN p.images img
 
         WHERE p.active = true
-
           AND i.stock > 0
 
         GROUP BY
-            i.product.id,
-            i.product.name,
-            i.product.brand.name,
-            i.product.category.name
+            p.id,
+            p.name,
+            p.brand.name,
+            p.category.name
 
-        ORDER BY i.product.name ASC
+        ORDER BY p.name ASC
     """)
     List<ProductCardDTO> findActiveProductCards();
 }

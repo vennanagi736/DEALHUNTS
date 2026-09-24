@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
-import SideWindow from "../../components/SideBar";
 import Popup from "../../components/Popup";
 
 import "../../styles/AManageTrendingCategories.css";
@@ -17,9 +15,6 @@ import {
 
 function AdminManageTrendingCategories() {
 
-    const navigate = useNavigate();
-
-
     // =====================================================
     // ALL AVAILABLE CATEGORIES
     // =====================================================
@@ -29,7 +24,6 @@ function AdminManageTrendingCategories() {
 
     // =====================================================
     // CURRENT TRENDING CATEGORIES
-    // These are already saved in database
     // =====================================================
 
     const [selectedCategories, setSelectedCategories] =
@@ -61,13 +55,6 @@ function AdminManageTrendingCategories() {
         try {
 
             const res = await getAllCategories();
-
-            /*
-             * Load all categories.
-             *
-             * If your Category entity does NOT have
-             * an "active" field, do NOT filter here.
-             */
 
             setCategories(res.data);
 
@@ -126,7 +113,6 @@ function AdminManageTrendingCategories() {
     const handleOpenPopup = () => {
 
         setPendingCategory(null);
-
         setShowPopup(true);
 
     };
@@ -139,57 +125,7 @@ function AdminManageTrendingCategories() {
     const handleClosePopup = () => {
 
         setPendingCategory(null);
-
         setShowPopup(false);
-
-    };
-
-
-    // =====================================================
-    // SELECT CATEGORY
-    // =====================================================
-
-    const handleSelectCategory = (category) => {
-
-        /*
-         * Do not allow more than 4 categories.
-         */
-
-        if (selectedCategories.length >= 7) {
-
-            alert(
-                "You can select maximum 7 trending categories."
-            );
-
-            return;
-
-        }
-
-
-        /*
-         * Check whether category is already trending.
-         */
-
-        const alreadyTrending =
-            selectedCategories.some(
-                trending =>
-                    trending.category.id ===
-                    category.id
-            );
-
-
-        if (alreadyTrending) {
-
-            return;
-
-        }
-
-
-        /*
-         * Select category temporarily.
-         */
-
-        setPendingCategory(category);
 
     };
 
@@ -200,24 +136,14 @@ function AdminManageTrendingCategories() {
 
     const handleConfirmCategory = async () => {
 
-        /*
-         * No category selected.
-         */
-
         if (!pendingCategory) {
 
-            alert(
-                "Please select a category."
-            );
+            alert("Please select a category.");
 
             return;
 
         }
 
-
-        /*
-         * Maximum 7 check.
-         */
 
         if (selectedCategories.length >= 7) {
 
@@ -232,33 +158,13 @@ function AdminManageTrendingCategories() {
 
         try {
 
-            /*
-             * Send category ID to backend.
-             */
-
             await addTrendingCategory(
                 pendingCategory.id
             );
 
-
-            /*
-             * Refresh trending categories.
-             */
-
             await fetchTrendingCategories();
 
-
-            /*
-             * Clear temporary selection.
-             */
-
             setPendingCategory(null);
-
-
-            /*
-             * Close popup.
-             */
-
             setShowPopup(false);
 
         } catch (error) {
@@ -284,10 +190,9 @@ function AdminManageTrendingCategories() {
 
     const handleRemoveTrendingCategory = async (id) => {
 
-        const confirmed =
-            window.confirm(
-                "Remove this category from Trending Categories?"
-            );
+        const confirmed = window.confirm(
+            "Remove this category from Trending Categories?"
+        );
 
 
         if (!confirmed) {
@@ -326,321 +231,239 @@ function AdminManageTrendingCategories() {
 
     return (
 
-        <div className="adminhome-container">
-
-
-            {/* =================================================
-                HEADER
-            ================================================= */}
-
-            <header className="header">
-
-
-                {/* LEFT */}
-
-                <div className="left-section">
-
-                    <SideWindow />
-
-                </div>
-
-
-                {/* LOGO */}
-
-                <div className="logo-container">
-
-                    <div className="logo">
-
-                        <span className="Gold">
-                            DEAL
-                        </span>
-
-                        <span className="Black">
-                            HUNTS
-                        </span>
-
-                        <span className="Admin">
-                            Admin
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                {/* NAVIGATION */}
-
-                <nav className="admin-nav-links">
-
-                    <div
-                        className="back-btn"
-                        onClick={() => navigate(-1)}
-                    >
-                        &#8592;
-                    </div>
-
-                </nav>
-
-
-            </header>
-
+        <div className="adminhome-container-tc">
 
             {/* =================================================
                 MAIN
             ================================================= */}
 
-            <main className="manage-trending-categories-main">
+            <main className="manage-trending-categories-main-tc">
 
+                        <h2>
+                            Manage Trending Categories
+                        </h2>
 
-                {/* =================================================
-                    PAGE HEADER
-                ================================================= */}
-
-                <div className="manage-trending-categories-heading">
-
-                    <h1>
-                        Manage Trending Categories
-                    </h1>
-
-                    <p>
-                        Select and manage the categories displayed
-                        in the trending categories section.
-                    </p>
-
-                </div>
-
+                        <p>
+                            Select and manage the categories displayed
+                            in the trending categories section.
+                        </p>
 
                 {/* =================================================
                     TRENDING CATEGORIES
                 ================================================= */}
 
-                <section className="trending-categories-section">
-
+                <section className="trending-categories-section-tc">
 
                     {/* =================================================
                         SECTION HEADER
                     ================================================= */}
 
-                    <div className="trending-categories-header">
-
-                        <h2>
+                    <div className="trending-categories-header-tc">
+                         <h2>
                             Trending Categories
                         </h2>
 
-
                         <button
                             type="button"
-                            className="add-trending-category-btn"
+                            className="add-trending-category-btn-tc"
                             onClick={handleOpenPopup}
                             disabled={
                                 selectedCategories.length >= 7
                             }
                         >
-
                             {selectedCategories.length >= 7
                                 ? "Manage"
                                 : "+ Add Category"}
-
                         </button>
 
                     </div>
-{/* =================================================
-    SELECTED TRENDING CATEGORIES
-================================================= */}
 
-<div className="trending-categories-container">
 
-    {selectedCategories.length === 0 ? (
+                    {/* =================================================
+                        SELECTED TRENDING CATEGORIES
+                    ================================================= */}
 
-        <div className="empty-trending-categories">
+                    <div className="trending-categories-container-tc">
 
-            <div className="empty-icon">
-                🏷️
-            </div>
+                        {selectedCategories.length === 0 ? (
 
-            <h3>
-                No Trending Categories
-            </h3>
+                            <div className="empty-trending-categories-tc">
 
-            <p>
-                Add categories to display them
-                in the trending categories section.
-            </p>
+                                <div className="empty-icon-tc">
+                                    🏷️
+                                </div>
 
-        </div>
+                                <h3>
+                                    No Trending Categories
+                                </h3>
 
-    ) : (
+                                <p>
+                                    Add categories to display them
+                                    in the trending categories section.
+                                </p>
 
-        selectedCategories.map((trending) => (
+                            </div>
 
-            <div
-                key={trending.id}
-                className="trending-category-item"
-            >
+                        ) : (
 
-                <div className="trending-category-info">
+                            selectedCategories.map((trending) => (
 
-                    <h3>
-                        {trending.category.name}
-                    </h3>
+                                <div
+                                    key={trending.id}
+                                    className="trending-category-item-tc"
+                                >
 
-                    <p>
-                        Category ID:{" "}
-                        {trending.category.id}
-                    </p>
+                                    <div className="trending-category-info-tc">
 
-                    <button
-                        type="button"
-                        onClick={() =>
-                            handleRemoveTrendingCategory(
-                                trending.id
-                            )
-                        }
-                    >
-                        Remove
-                    </button>
+                                        <h3>
+                                            {trending.category.name}
+                                        </h3>
 
-                </div>
+                                        <p>
+                                            Category ID:{" "}
+                                            {trending.category.id}
+                                        </p>
 
-            </div>
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                handleRemoveTrendingCategory(
+                                                    trending.id
+                                                )
+                                            }
+                                        >
+                                            Remove
+                                        </button>
 
-        ))
+                                    </div>
 
-    )}
+                                </div>
 
-</div>
+                            ))
 
+                        )}
+
+                    </div>
 
                 </section>
 
-
             </main>
 
-{/* =================================================
-    CATEGORY POPUP
-================================================= */}
 
-<Popup
-    open={showPopup}
-    onClose={handleClosePopup}
-    title="Add Trending Category"
-    width="500px"
->
+            {/* =================================================
+                CATEGORY POPUP
+            ================================================= */}
 
-    <div className="trending-category-popup-wrapper">
-
-
-        {/* =================================================
-            CATEGORY SELECT
-        ================================================= */}
-
-        <div className="trending-category-select-box">
-
-            <label htmlFor="trendingCategory">
-                Select Category
-            </label>
-
-
-            <select
-                id="trendingCategory"
-                value={pendingCategory?.id || ""}
-                onChange={(e) => {
-
-                    const categoryId =
-                        Number(e.target.value);
-
-                    const category =
-                        categories.find(
-                            item =>
-                                item.id === categoryId
-                        );
-
-                    setPendingCategory(
-                        category || null
-                    );
-
-                }}
+            <Popup
+                open={showPopup}
+                onClose={handleClosePopup}
+                title="Add Trending Category"
+                className="trending-category-popup-tc"
             >
 
-                <option value="">
-                    -- Select Category --
-                </option>
+                <div className="trending-category-popup-wrapper-tc">
 
+                    {/* =================================================
+                        CATEGORY SELECT
+                    ================================================= */}
 
-                {categories
-                    .filter(category =>
-                        !selectedCategories.some(
-                            trending =>
-                                trending.category.id ===
-                                category.id
-                        )
-                    )
-                    .map(category => (
+                    <div className="trending-category-select-box-tc">
 
-                        <option
-                            key={category.id}
-                            value={category.id}
+                        <label htmlFor="trendingCategory">
+                            Select Category
+                        </label>
+
+                        <select
+                            id="trendingCategory"
+                            value={pendingCategory?.id || ""}
+                            onChange={(e) => {
+
+                                const categoryId =
+                                    Number(e.target.value);
+
+                                const category =
+                                    categories.find(
+                                        item =>
+                                            item.id === categoryId
+                                    );
+
+                                setPendingCategory(
+                                    category || null
+                                );
+
+                            }}
                         >
-                            {category.name}
-                        </option>
 
-                    ))}
+                            <option value="">
+                                -- Select Category --
+                            </option>
 
-            </select>
+                            {categories
+                                .filter(category =>
+                                    !selectedCategories.some(
+                                        trending =>
+                                            trending.category.id ===
+                                            category.id
+                                    )
+                                )
+                                .map(category => (
 
-        </div>
+                                    <option
+                                        key={category.id}
+                                        value={category.id}
+                                    >
+                                        {category.name}
+                                    </option>
 
+                                ))}
 
-        {/* =================================================
-            POPUP FOOTER
-        ================================================= */}
+                        </select>
 
-        <div className="trending-category-popup-content">
-
-
-            {/* CANCEL */}
-
-            <button
-                type="button"
-                onClick={handleClosePopup}
-            >
-                Cancel
-            </button>
-
-
-            {/* ADD CATEGORY */}
-
-            <button
-                type="button"
-                onClick={handleConfirmCategory}
-                disabled={
-                    !pendingCategory ||
-                    selectedCategories.length >= 7
-                }
-            >
-                Add Trending Category
-            </button>
+                    </div>
 
 
-        </div>
+                    {/* =================================================
+                        POPUP ACTIONS
+                    ================================================= */}
 
-    </div>
+                    <div className="trending-category-popup-content-tc">
 
-</Popup>
+                        <button
+                            type="button"
+                            onClick={handleClosePopup}
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={handleConfirmCategory}
+                            disabled={
+                                !pendingCategory ||
+                                selectedCategories.length >= 7
+                            }
+                        >
+                            Add Trending Category
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </Popup>
 
 
             {/* =================================================
                 FOOTER
             ================================================= */}
 
-            <footer className="footer">
+            <footer className="footer-tc">
 
                 <p>
                     © 2026 Website. All rights reserved.
                 </p>
 
             </footer>
-
 
         </div>
 

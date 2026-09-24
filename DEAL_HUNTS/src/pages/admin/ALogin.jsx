@@ -1,117 +1,251 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { adminLogin } from "../../api/AdminApi";
-import Layout from "../../components/Layout";
 import Details from "../../components/LoginDetails";
 import { validateLogin } from "../../components/validation";
-import {useRole} from "../../context/UseRole";
-import "../../styles/Admin.css";
+import { useRole } from "../../context/UseRole";
+
+import "../../styles/ALogin.css";
 
 function AdminLogin() {
   const navigate = useNavigate();
-  const {updateRole} = useRole();
+  const { updateRole } = useRole();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false); // To disable button while submitting
+
+  const [loading, setLoading] = useState(false);
+
+  // ============================================================
+  // ADMIN LOGIN
+  // ============================================================
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault();
 
-    // Frontend validation
-    const errorMessage = validateLogin(email, password);
+    // ==========================================================
+    // FRONTEND VALIDATION
+    // ==========================================================
 
-if (errorMessage) {
-  setError(errorMessage);
-  setMessage("");
-  return;
-}
-
-
-setError("");
-setMessage("");
-setLoading(true);
-
-
-try {
-
-  const response = await adminLogin(email, password);
-
-
-  if (response.data.success) {
-
-
-    localStorage.setItem(
-      "adminJwtToken",
-      response.data.token
+    const errorMessage = validateLogin(
+      email,
+      password
     );
 
+    if (errorMessage) {
+      setError(errorMessage);
+      setMessage("");
+      return;
+    }
 
-    localStorage.setItem(
-      "adminEmail",
-      response.data.email
-    );
+    setError("");
+    setMessage("");
+    setLoading(true);
 
+    // ==========================================================
+    // ADMIN LOGIN API
+    // ==========================================================
 
-    localStorage.setItem(
-      "adminRole",
-      response.data.role
-    );
+    try {
+      const response = await adminLogin(
+        email,
+        password
+      );
 
-    setMessage("Login Successful");
-    updateRole("ROLE_ADMIN");
-    console.log("Going to admin");
-    navigate("/adminDashboard");
+      // ========================================================
+      // LOGIN SUCCESS
+      // ========================================================
 
-  } else {
-    alert(response.data.message);
-  }
+      if (response.data.success) {
 
-} catch(err) {
-  alert("Server Error");
-  console.error(err);
-} finally {
-  setLoading(false);
-}
-  }
+        // ======================================================
+        // STORE ADMIN JWT
+        // ======================================================
+
+        localStorage.setItem(
+          "adminJwtToken",
+          response.data.token
+        );
+
+        // ======================================================
+        // STORE ADMIN EMAIL
+        // ======================================================
+
+        localStorage.setItem(
+          "adminEmail",
+          response.data.email
+        );
+
+        // ======================================================
+        // STORE ADMIN ROLE
+        // ======================================================
+
+        localStorage.setItem(
+          "adminRole",
+          response.data.role
+        );
+
+        // ======================================================
+        // SUCCESS MESSAGE
+        // ======================================================
+
+        setMessage("Login Successful");
+
+        // ======================================================
+        // UPDATE ROLE
+        // ======================================================
+
+        updateRole("ROLE_ADMIN");
+
+        console.log("Going to admin");
+
+        // ======================================================
+        // NAVIGATE TO ADMIN DASHBOARD
+        // ======================================================
+
+        navigate("/adminDashboard");
+
+      } else {
+
+        // ======================================================
+        // LOGIN FAILED
+        // ======================================================
+
+        setMessage(
+          response.data.message ||
+          "Login failed"
+        );
+      }
+
+    } catch (err) {
+
+      // ========================================================
+      // SERVER ERROR
+      // ========================================================
+
+      console.error(
+        "Admin login error:",
+        err
+      );
+
+      setMessage("Server Error");
+
+    } finally {
+
+      setLoading(false);
+    }
+  };
+
+  // ============================================================
+  // UI
+  // ============================================================
 
   return (
-    <Layout title="Admin Login">
-      <div className="admin-handler">
-      <form className="handlingform" onSubmit={handleLogin}>
-        <Details
-          email={email}
-          setEmail={setEmail}
-          password={password}
-          setPassword={setPassword}
-        />
+    <div className="al-admin-login-page">
 
-        {error && <p className="error-message">{error}</p>}
+      {/* ======================================================
+          LOGIN FORM
+      ====================================================== */}
 
-        {message && (
-          <p
-            className="response-message"
-            style={{
-              color: message.includes("Successful") ? "green" : "red",
-            }}
-          >
-            {message}
-          </p>
-        )}
+      <form
+        className="al-admin-login-form"
+        onSubmit={handleLogin}
+      >
 
-        <div className="login-actions">
-          <button type="submit" disabled={!email || !password || loading}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
-          <div className="tagline">
-            <p>Hunt Deals, Save Money</p>
+        <div className="al-admin-login-box">
+
+          {/* ==================================================
+              TITLE
+          ================================================== */}
+
+          <h2 className="al-admin-login-title">
+            Admin Login
+          </h2>
+
+          {/* ==================================================
+              LOGIN DETAILS
+          ================================================== */}
+
+          <div className="al-admin-login-details">
+
+            <Details
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+            />
+
           </div>
+
+          {/* ==================================================
+              VALIDATION ERROR
+          ================================================== */}
+
+          {error && (
+            <p className="al-admin-login-error">
+              {error}
+            </p>
+          )}
+
+          {/* ==================================================
+              RESPONSE MESSAGE
+          ================================================== */}
+
+          {message && (
+            <p
+              className={`al-admin-login-response ${
+                message.includes("Successful")
+                  ? "al-admin-login-success"
+                  : "al-admin-login-failure"
+              }`}
+            >
+              {message}
+            </p>
+          )}
+
+          {/* ==================================================
+              LOGIN BUTTON
+          ================================================== */}
+
+          <div className="al-admin-login-actions">
+
+            <button
+              type="submit"
+              className="al-admin-login-submit"
+              disabled={
+                !email ||
+                !password ||
+                loading
+              }
+            >
+              {loading
+                ? "Logging in..."
+                : "Login"}
+            </button>
+
+          </div>
+
+          {/* ==================================================
+              TAGLINE
+          ================================================== */}
+
+          <div className="al-admin-login-tagline">
+
+            <p>
+              Hunt Deals, Save Money
+            </p>
+
+          </div>
+
         </div>
+
       </form>
-      </div>
-    </Layout>
+
+    </div>
   );
 }
 

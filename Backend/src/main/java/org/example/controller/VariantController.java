@@ -34,4 +34,14 @@ public class VariantController {
 
         return ResponseEntity.ok(variants);
     }
+    @GetMapping("/variants/{variantId}")
+public ResponseEntity<?> getVariantById(
+        @PathVariable Long variantId
+) {
+
+    return variantRepository
+            .findById(variantId)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+}
 }

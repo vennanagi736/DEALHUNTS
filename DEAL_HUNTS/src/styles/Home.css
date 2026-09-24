@@ -1,291 +1,109 @@
 /* ============================================================
-   ROOT / GLOBAL
+   DEALHUNTS HOME PAGE - USER
+
+   GOLD : #d4af37
+   BLACK: #000000
+   WHITE: #ffffff
+
+   HEADER + SIDEBAR ARE HANDLED BY Layout.jsx
+   Home.css ONLY STYLES HOME CONTENT
+============================================================ */
+
+
+/* ============================================================
+   ROOT VARIABLES
 ============================================================ */
 
 :root {
-  --bg-page: #ffffff;
-  --border-soft: #e5e5e7;
-  --text-primary: #111111;
-  --text-secondary: #555555;
-  --text-muted: #888888;
-
-  --accent: #d4af37;
-  --accent-2: #b89628;
-
-  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.08);
-
-  --radius-md: 14px;
-  --radius-sm: 10px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body,
-#root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-
-  background: var(--bg-page);
-  color: var(--text-primary);
-
-  font-family:
-    Inter,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
+    --dh-home-bg: #ffffff;
+    --dh-home-border: #e5e5e7;
+    --dh-home-text: #111111;
+    --dh-home-secondary: #555555;
+    --dh-home-muted: #888888;
+    --dh-home-gold: #d4af37;
+    --dh-home-gold-dark: #b89628;
+    --dh-home-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 
 /* ============================================================
-   PAGE
+   RESET
 ============================================================ */
 
-.pc-page {
-  min-height: 100vh;
-
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-
-  background: #ffffff;
+.dh-home-user,
+.dh-home-user *,
+.dh-home-user *::before,
+.dh-home-user *::after {
+    box-sizing: border-box;
 }
 
 
 /* ============================================================
-   HEADER
+   HOME PAGE
 ============================================================ */
 
-.pc-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
+.dh-home-user {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    height: calc(100vh - 72px);
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    background: var(--dh-home-bg);
+    color: var(--dh-home-text);
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    overflow-x: hidden;
+    overflow-y: auto;
 
-  gap: 16px;
-
-  padding: 14px 24px;
-
-  background: rgba(255, 255, 255, 0.95);
-
-  backdrop-filter: blur(8px);
-
-  border-bottom: 1px solid var(--border-soft);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
 }
-
-.pc-header-left,
-.pc-header-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
 
 /* ============================================================
-   SIDEBAR
+   HOME SCROLL AREA
 ============================================================ */
 
-.pc-header-sidebar {
-  display: flex;
-  align-items: center;
-}
+.dh-home-scroll-area-user {
+    width: 100%;
+    min-width: 0;
+    min-height: 100%;
 
+    overflow-x: hidden;
+    overflow-y: visible;
+
+    padding: 0;
+
+    -webkit-overflow-scrolling: touch;
+}
 
 /* ============================================================
-   BRAND
+   TRENDING SECTION
 ============================================================ */
 
-.pc-brand {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+.dh-home-trending-section-user {
+    position: relative;
 
-  cursor: pointer;
-}
+    width: calc(100% - 40px);
+    max-width: 900px;
+    min-width: 0;
 
-.pc-logo {
-  display: flex;
-  align-items: center;
+    margin: 12px auto 0;
 
-  gap: 6px;
+    background: transparent;
+    border-radius: 16px;
 
-  font-weight: 900;
-  font-size: 22px;
-
-  letter-spacing: 0.5px;
-  user-select: none;
-
-  text-transform: uppercase;
-}
-
-.pc-logo-deal {
-  color: #d4af37 !important;
-}
-.pc-logo-hunts {
-  color: black !important;
-
-}
- /* .pc-logo-hunts {
-  color: #d4af37 !important;
-} */
-
-.pc-header-tagline {
-  font-size: 12px;
-
-  color: var(--text-secondary);
-
-  margin-top: 2px;
-}
-
-
-/* ============================================================
-   HEADER NAVIGATION
-============================================================ */
-
-.pc-header-nav {
-  display: flex;
-  align-items: center;
-
-  gap: 8px;
-}
-
-.pc-header-nav button {
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 14px;
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition:
-    color 0.2s ease,
-    background 0.2s ease;
-}
-
-.pc-header-nav button:hover {
-  color: var(--text-primary);
-
-  background: #f3f3f5;
-}
-
-.pc-nav-active {
-  color: var(--text-primary) !important;
-
-  background: #ececf0 !important;
-}
-
-
-/* ============================================================
-   HEADER ACTIONS
-============================================================ */
-
-.pc-header-actions {
-  display: flex;
-  align-items: center;
-
-  gap: 8px;
-}
-/* LOGIN BUTTON */
-.pc-header-login {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: auto;
-  min-width: 70px;
-  height: 38px;
-
-  padding: 0 18px;
-
-  box-sizing: border-box;
-  white-space: nowrap;
-
-  border: none;
-  border-radius: 7px;
-
-  background-color: #0b1f3a;
-  color: #ffffff;
-
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1;
-
-  cursor: pointer;
-
-  flex-shrink: 0;
-
-  transition: all 0.2s ease;
-}
-
-.pc-header-login:hover {
-  background-color: #163b6d;
-  transform: translateY(-1px);
-}
-
-.pc-header-login:active {
-  transform: translateY(0);
-}
-
-.pc-header-icon {
-  display: inline-flex;
-
-  align-items: center;
-  justify-content: center;
-
-  width: 38px;
-  height: 38px;
-
-  border-radius: 50%;
-
-  border: 1px solid var(--border-soft);
-
-  background: #fafafa;
-
-  color: var(--text-primary);
-
-  cursor: pointer;
-
-  transition:
-    transform 0.15s ease,
-    background 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.pc-header-icon:hover {
-  background: #f3f3f5;
-
-  transform: translateY(-1px);
-
-  border-color: #d8d8dc;
-}
-
-
-/* ============================================================
-   TRENDING CAROUSEL SECTION
-============================================================ */
-
-.pc-trending-section {
-  width: calc(100% - 80px);
-
-  margin: 12px 40px 0;
-
-  position: relative;
-
-  background: transparent;
-
-  border-radius: 16px;
-
-  padding-bottom: 8px;
+    padding-bottom: 8px;
 }
 
 
@@ -293,100 +111,92 @@ body,
    SECTION HEADING
 ============================================================ */
 
-.pc-section-heading {
-  font-family: cursive;
+.dh-home-section-heading-user {
+    padding-top: 10px;
+    padding-bottom: 20px;
 
-  padding-top: 10px;
-
-  padding-bottom: 20px;
+    font-family: cursive;
 }
 
-.pc-section-heading h2 {
-  margin: 0;
+.dh-home-section-heading-user h2 {
+    margin: 0;
 
-  font-size: 24px;
+    font-size: 24px;
+    font-weight: 700;
 
-  font-weight: 700;
+    color: #111111;
 
-  color: #111111;
-}
-
-
-/* ============================================================
-   MAIN TRENDING CAROUSEL
-============================================================ */
-
-.pc-trending-carousel {
-  position: relative;
-
-  width: 100%;
-
-  height: 270px;
-
-  background: #ffffff;
-
-  border: 1px solid #e4e8ee;
-
-  border-radius: 14px;
-
-  box-shadow:
-    0 6px 20px rgba(15, 35, 65, 0.07);
-
-  overflow: hidden;
+    line-height: 1.2;
 }
 
 
 /* ============================================================
-   CAROUSEL VIEWPORT
+   TRENDING CAROUSEL
 ============================================================ */
 
-.pc-trend-viewport {
-  position: absolute;
+.dh-home-trending-carousel-user {
+    position: relative;
 
-  inset: 0;
+    width: 100%;
+    height: 270px;
 
-  width: 100%;
-  height: 100%;
+    background: #ffffff;
 
-  overflow: hidden;
+    border: 1px solid #e4e8ee;
+    border-radius: 14px;
 
-  background: transparent;
+    box-shadow:
+        0 6px 20px rgba(15, 35, 65, 0.07);
 
-  border: none;
-
-  border-radius: 0;
-
-  box-shadow: none;
+    overflow: hidden;
 }
 
 
 /* ============================================================
-   CAROUSEL TRACK
+   VIEWPORT
 ============================================================ */
 
-.pc-trend-track {
-  display: flex;
+.dh-home-trend-viewport-user {
+    position: absolute;
 
-  width: 100%;
-  height: 100%;
+    inset: 0;
 
-  transition:
-    transform 0.45s
-    cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background: transparent;
 }
 
 
 /* ============================================================
-   CAROUSEL SLIDE
+   TRACK
 ============================================================ */
 
-.pc-trend-slide {
-  flex: 0 0 100%;
+.dh-home-trend-track-user {
+    display: flex;
 
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 
-  position: relative;
+    transition:
+        transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* ============================================================
+   SLIDE
+============================================================ */
+
+.dh-home-trend-slide-user {
+    position: relative;
+
+    flex: 0 0 100%;
+
+    width: 100%;
+    min-width: 100%;
+    height: 100%;
 }
 
 
@@ -394,54 +204,39 @@ body,
    TREND CARD
 ============================================================ */
 
-.pc-trend-card {
-  position: relative;
+.dh-home-trend-card-user {
+    position: relative;
 
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 
-  display: block;
+    display: block;
 
-  padding: 10px;
+    padding: 10px;
 
-  margin: 0;
-
-  background: transparent;
-
-  border: none;
-
-  box-shadow: none;
+    background: transparent;
 }
 
 
 /* ============================================================
-   TREND IMAGE AREA
+   TREND IMAGE BOX
 ============================================================ */
 
-.pc-trend-image-box {
-  position: absolute;
+.dh-home-trend-image-box-user {
+    position: absolute;
 
-  top: 10px;
-  right: 10px;
-  bottom: 10px;
-  left: 10px;
+    top: 10px;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
 
-  display: flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  align-items: center;
-  justify-content: center;
+    background: transparent;
 
-  padding: 0;
-
-  background: transparent;
-
-  border: none;
-
-  border-radius: 12px;
-
-  box-shadow: none;
-
-  z-index: 1;
+    z-index: 1;
 }
 
 
@@ -449,38 +244,46 @@ body,
    TREND IMAGE
 ============================================================ */
 
-.pc-trend-image {
-  display: block;
+.dh-home-trend-image-user {
+    display: block;
 
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 
-  object-fit: contain;
+    object-fit: contain;
+    object-position: center;
 
-  object-position: center;
+    margin: 0;
+    padding: 0;
 
-  padding: 0;
+    border: none;
 
-  margin: 0;
-
-  border: none;
-
-  border-radius: 0;
-
-  background: transparent;
-
-  box-shadow: none;
+    background: transparent;
 }
 
 
 /* ============================================================
-   HIDE TREND TEXT
+   TREND DETAILS HIDDEN
 ============================================================ */
 
-.pc-trend-details,
-.pc-trend-name,
-.pc-trend-price {
-  display: none !important;
+.dh-home-trend-details-user,
+.dh-home-trend-name-user,
+.dh-home-trend-price-user {
+    display: none !important;
+}
+
+
+/* ============================================================
+   IMAGE FALLBACK
+============================================================ */
+
+.dh-home-trend-image-fallback-user {
+    color: #999999;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    text-align: center;
 }
 
 
@@ -488,72 +291,72 @@ body,
    CAROUSEL ARROWS
 ============================================================ */
 
-.pc-trending-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 5;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #d8dee7;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.96);
-  color: black;
-  font-size: 20px;
-  cursor: pointer;
-  box-shadow:
-    0 4px 14px rgba(15, 35, 65, 0.12);
+.dh-home-trending-arrow-user {
+    position: absolute;
 
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    top: 50%;
+    z-index: 5;
+
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid #d8dee7;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    color: #000000;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transform: translateY(-50%);
+
+    box-shadow:
+        0 4px 14px rgba(15, 35, 65, 0.12);
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-
-/* LEFT */
-
-.pc-trending-prev {
-  left: 14px;
+.dh-home-trending-prev-user {
+    left: 14px;
 }
 
-
-/* RIGHT */
-
-.pc-trending-next {
-  right: 14px;
+.dh-home-trending-next-user {
+    right: 14px;
 }
 
+.dh-home-trending-arrow-user:hover {
+    background: var(--dh-home-gold);
 
-/* HOVER */
+    color: #000000;
 
-.pc-trending-arrow:hover {
-  background: #d4af37;
+    border-color: var(--dh-home-gold);
 
-  color: black;
+    transform:
+        translateY(-50%)
+        scale(1.06);
 
-  border: 2px solid #d4af37;
-
-  transform:
-    translateY(-50%)
-    scale(1.06);
-
-  box-shadow:
-    0 7px 18px rgba(18, 59, 122, 0.22);
+    box-shadow:
+        0 7px 18px rgba(18, 59, 122, 0.22);
 }
 
-
-/* ACTIVE */
-
-.pc-trending-arrow:active {
-  transform:
-    translateY(-50%)
-    scale(0.97);
+.dh-home-trending-arrow-user:active {
+    transform:
+        translateY(-50%)
+        scale(0.97);
 }
 
 
@@ -561,71 +364,80 @@ body,
    CAROUSEL DOTS
 ============================================================ */
 
-.pc-trend-dots {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 10px;
-  z-index: 6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  pointer-events: auto;
+.dh-home-trend-dots-user {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 10px;
+
+    z-index: 6;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
 }
 
-.pc-trend-dot {
-  width: 7px;
-  height: 7px;
-  padding: 0;
-  border:1px solid black ;
-  border-radius: 50%;
-  background: black;
+.dh-home-trend-dot-user {
+    width: 7px;
+    height: 7px;
 
-  opacity: 0.9;
-  cursor: pointer;
-  transition:
-    width 0.25s ease,
-    background 0.25s ease,
-    transform 0.2s ease;
+    padding: 0;
+
+    border: 1px solid #000000;
+    border-radius: 50%;
+
+    background: #000000;
+
+    opacity: 0.9;
+
+    cursor: pointer;
+
+    transition:
+        width 0.25s ease,
+        background 0.25s ease,
+        transform 0.2s ease;
 }
 
-.pc-trend-dot:hover {
-  background: #7f8da1;
+.dh-home-trend-dot-user:hover {
+    background: #7f8da1;
 
-  transform: scale(1.15);
+    transform: scale(1.15);
 }
 
-.pc-trend-dot-active {
-  width: 22px;
+.dh-home-trend-dot-active-user {
+    width: 22px;
 
-  border-radius: 10px;
+    border-radius: 10px;
 
-  background: #d4af37;
+    background: var(--dh-home-gold);
 
-  opacity: 1;
+    opacity: 1;
 }
 
 
 /* ============================================================
-   EMPTY CAROUSEL
+   EMPTY TRENDING
 ============================================================ */
 
-.pc-trending-empty {
-  display: none;
+.dh-home-trending-empty-user {
+    display: none;
 }
 
 
 /* ============================================================
-   ============================================================
-   TRENDING DEALS PLACEHOLDER
-   ============================================================
+   TRENDING DEALS SECTION
 ============================================================ */
 
-.pc-trending-deals-section {
-  width: calc(100% - 80px);
+.dh-home-trending-deals-section-user {
+    width: calc(100% - 80px);
 
-  margin: 24px 40px 0;
+    margin: 24px 40px 0;
+
+    min-width: 0;
 }
 
 
@@ -633,223 +445,495 @@ body,
    TRENDING DEALS HEADING
 ============================================================ */
 
-.pc-trending-deals-heading,.pc-trending-categories-heading {
-  display: flex;
+.dh-home-trending-deals-heading-user,
+.dh-home-trending-categories-heading-user {
+    display: flex;
 
-  align-items: center;
+    align-items: center;
+    justify-content: space-between;
 
-  justify-content: space-between;
+    gap: 12px;
 
-  margin-bottom: 14px;
+    margin-bottom: 14px;
+
+    min-width: 0;
 }
 
-.pc-trending-deals-heading h2,.pc-trending-categories-heading h2 {
-  margin: 0;
+.dh-home-trending-deals-heading-user h2,
+.dh-home-trending-categories-heading-user h2 {
+    margin: 0;
 
-  font-family: cursive;
+    font-family: cursive;
 
-  font-size: 24px;
+    font-size: 24px;
+    font-weight: 700;
 
-  font-weight: 700;
+    color: #111111;
 
-  color: #111111;
-}
-
-
-/* ============================================================
-   TRENDING DEALS BOX
-============================================================ */
-
-.pc-trending-deals-placeholder {
-  width: 100%;
-
-  height: 270px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background: #ffffff;
-
-  border: 1px solid #e4e8ee;
-
-  border-radius: 14px;
-
-  box-shadow:
-    0 6px 20px rgba(15, 35, 65, 0.07);
-}
-
-
-/*
-   Temporary text only.
-   You can remove this later when
-   actual trending deals are connected.
-*/
-
-.pc-trending-deals-placeholder-text {
-  color: #a0a0a0;
-
-  font-size: 15px;
-
-  font-weight: 500;
-
-  letter-spacing: 0.2px;
+    line-height: 1.2;
 }
 
 
 /* ============================================================
-   VIEW ALL PRODUCTS BUTTON
+   TRENDING DEALS PLACEHOLDER
 ============================================================ */
 
-.pc-view-all-wrapper {
-  width: 100%;
+.dh-home-trending-deals-placeholder-user {
+    width: 100%;
+    height: 270px;
 
-  display: flex;
+    display: flex;
 
-  justify-content: center;
+    align-items: center;
+    justify-content: center;
 
-  margin-top: 22px;
+    background: #ffffff;
 
-  margin-bottom: 30px;
+    border: 1px solid #e4e8ee;
+    border-radius: 14px;
+
+    box-shadow:
+        0 6px 20px rgba(15, 35, 65, 0.07);
 }
 
-
-.pc-view-all-products,.pc-view-all-categories {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-width: 190px;
-  padding: 11px 22px;
-  border: 2px solid #d4af37;
-  border-radius: 10px;
-  background: #d4af37;
-  color: black;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.15s ease,
-    box-shadow 0.2s ease;
+.dh-home-trending-deals-placeholder-content-user {
+    text-align: center;
 }
 
+.dh-home-trending-deals-placeholder-content-user span {
+    display: block;
 
-.pc-view-all-products:hover,.pc-view-all-categories:hover {
-  background: #d4af37;
-  border-color: #d4af37;
-  transform: translateY(-2px);
-  box-shadow:
-    0 7px 18px rgba(18, 59, 122, 0.2);
+    color: #999999;
+
+    font-size: 15px;
+    font-weight: 600;
 }
 
+.dh-home-trending-deals-placeholder-content-user p {
+    margin: 6px 0 0;
 
-.pc-view-all-products:active,.pc-view-all-categories {
-  transform: translateY(0);
+    color: #aaaaaa;
+
+    font-size: 13px;
 }
 
 
 /* ============================================================
-   MAIN
+   VIEW ALL BUTTONS
 ============================================================ */
 
-.pc-main {
-  width: 100%;
+.dh-home-view-all-products-user,
+.dh-home-view-all-categories-user {
+    display: inline-flex;
 
-  padding: 0;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    width: auto;
+    min-width: 190px;
+    max-width: 100%;
+
+    padding: 11px 22px;
+
+    border: 2px solid var(--dh-home-gold);
+    border-radius: 10px;
+
+    background: var(--dh-home-gold);
+
+    color: #000000;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+.dh-home-view-all-products-user:hover,
+.dh-home-view-all-categories-user:hover {
+    background: #e2bf45;
+
+    border-color: var(--dh-home-gold);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 18px rgba(0, 0, 0, 0.15);
+}
+
+.dh-home-view-all-products-user:active,
+.dh-home-view-all-categories-user:active {
+    transform: translateY(0);
 }
 
 
-/*
-   Main is intentionally empty now.
+/* ============================================================
+   TRENDING DEALS HORIZONTAL SCROLL
+============================================================ */
 
-   Search bar
-   Filters
-   Categories
-   Sort
-   Product grid
-   Pagination
+.dh-home-trending-deals-grid-user {
+    display: flex;
 
-   have all been removed.
-*/
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    gap: 18px;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    padding: 4px 4px 14px;
+
+    scroll-behavior: smooth;
+
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: thin;
+
+    overscroll-behavior-x: contain;
+}
+
+
+/* ============================================================
+   TRENDING DEAL CARD
+============================================================ */
+
+.dh-home-trending-deal-card-user {
+    flex: 0 0 calc((100% - 54px) / 4);
+
+    min-width: 0;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e8ee;
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 6px 20px rgba(15, 35, 65, 0.07);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dh-home-trending-deal-card-user:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 10px 25px rgba(15, 35, 65, 0.12);
+}
+
+
+/* ============================================================
+   DEAL IMAGE
+============================================================ */
+
+.dh-home-trending-deal-image-box-user {
+    width: 100%;
+    height: 180px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 16px;
+
+    background: #ffffff;
+}
+
+.dh-home-trending-deal-image-user {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    object-position: center;
+}
+
+.dh-home-trending-deal-no-image-user {
+    color: #999999;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    text-align: center;
+}
+
+
+/* ============================================================
+   DEAL DETAILS
+============================================================ */
+
+.dh-home-trending-deal-details-user {
+    padding: 14px 16px 16px;
+
+    background: #ffffff;
+
+    min-width: 0;
+}
+
+.dh-home-trending-deal-details-user h3 {
+    margin: 0 0 6px;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #111111;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.dh-home-trending-deal-details-user p {
+    margin: 0 0 8px;
+
+    font-size: 13px;
+
+    color: #666666;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.dh-home-trending-deal-details-user span {
+    font-size: 12px;
+
+    color: #9b7b16;
+
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   TRENDING CATEGORIES
+============================================================ */
+
+.dh-home-trending-categories-section-user {
+    width: calc(100% - 80px);
+
+    margin: 24px 40px 30px;
+
+    min-width: 0;
+}
+
+
+/* ============================================================
+   CATEGORY SCROLL
+============================================================ */
+
+.dh-home-trending-categories-scroll-user {
+    display: flex;
+
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    gap: 18px;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    padding: 4px 4px 14px;
+
+    scroll-behavior: smooth;
+
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: thin;
+
+    overscroll-behavior-x: contain;
+}
+
+
+/* ============================================================
+   CATEGORY CARD
+============================================================ */
+
+.dh-home-trending-category-card-user {
+    flex: 0 0 calc((100% - 54px) / 4);
+
+    min-width: 0;
+
+    height: 130px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e8ee;
+    border-radius: 14px;
+
+    box-shadow:
+        0 6px 20px rgba(15, 35, 65, 0.07);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+    cursor: pointer;
+}
+
+.dh-home-trending-category-card-user:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 10px 25px rgba(15, 35, 65, 0.12);
+}
+
+
+/* ============================================================
+   CATEGORY CONTENT
+============================================================ */
+
+.dh-home-trending-category-content-user {
+    width: 100%;
+
+    padding: 16px;
+
+    text-align: center;
+
+    min-width: 0;
+}
+
+.dh-home-trending-category-content-user h3 {
+    margin: 0 0 8px;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    color: #111111;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.dh-home-trending-category-content-user span {
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #9b7b16;
+}
+
+
+/* ============================================================
+   CATEGORY EMPTY
+============================================================ */
+
+.dh-home-trending-categories-empty-user {
+    width: 100%;
+    height: 130px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e8ee;
+    border-radius: 14px;
+
+    color: #999999;
+
+    font-size: 14px;
+
+    text-align: center;
+}
 
 
 /* ============================================================
    FOOTER
 ============================================================ */
 
-.pc-footer {
-  display: flex;
+.dh-home-footer-user {
+    width: 100%;
 
-  align-items: center;
+    display: flex;
 
-  justify-content: space-between;
+    align-items: center;
+    justify-content: space-between;
 
-  gap: 12px;
+    gap: 12px;
 
-  padding: 16px 24px;
+    padding: 16px 24px;
 
-  border-top: 1px solid var(--border-soft);
+    border-top: 1px solid var(--dh-home-border);
 
-  background: #fafafa;
+    background: #fafafa;
 
-  font-size: 13px;
+    font-size: 13px;
 
-  color: var(--text-secondary);
+    color: var(--dh-home-secondary);
 }
 
-.pc-footer strong {
-  color: var(--text-primary);
+.dh-home-footer-user strong {
+    color: #111111;
 }
 
 
 /* ============================================================
    LARGE DESKTOP
-   1400px+
 ============================================================ */
 
 @media (min-width: 1400px) {
 
-  .pc-trending-section {
-    width: calc(100% - 80px);
+    .dh-home-trending-deals-section-user,
+    .dh-home-trending-categories-section-user {
+        width: calc(100% - 40px);
 
-    margin-left: 40px;
-    margin-right: 40px;
-  }
+        margin-left: 20px;
+        margin-right: 20px;
+    }
 
-  .pc-trending-carousel {
-    height: 290px;
-  }
+    .dh-home-trending-carousel-user {
+        height: 290px;
+    }
 
-  .pc-trending-deals-section {
-    width: calc(100% - 80px);
+    .dh-home-trending-deals-placeholder-user {
+        height: 290px;
+    }
 
-    margin-left: 40px;
-    margin-right: 40px;
-  }
+    .dh-home-trending-deal-image-box-user {
+        height: 190px;
+    }
 
-  .pc-trending-deals-placeholder {
-    height: 290px;
-  }
-
-  .pc-trend-card {
-    padding: 10px;
-  }
-
-  .pc-trend-image-box {
-    top: 10px;
-    right: 10px;
-    bottom: 10px;
-    left: 10px;
-  }
-
-  .pc-trending-arrow {
-    width: 46px;
-    height: 46px;
-  }
+    .dh-home-trending-arrow-user {
+        width: 46px;
+        height: 46px;
+    }
 }
 
 
@@ -859,27 +943,37 @@ body,
 
 @media (max-width: 1200px) {
 
-  .pc-trending-section {
-    width: calc(100% - 70px);
+    .dh-home-trending-deals-section-user,
+    .dh-home-trending-categories-section-user {
+        width: calc(100% - 40px);
 
-    margin-left: 35px;
-    margin-right: 35px;
-  }
+        margin-left: 20px;
+        margin-right: 20px;
+    }
 
-  .pc-trending-carousel {
-    height: 250px;
-  }
+    .dh-home-trending-carousel-user {
+        height: 250px;
+    }
 
-  .pc-trending-deals-section {
-    width: calc(100% - 70px);
+    .dh-home-trending-deals-placeholder-user {
+        height: 250px;
+    }
 
-    margin-left: 35px;
-    margin-right: 35px;
-  }
+    .dh-home-trending-deals-grid-user {
+        gap: 16px;
+    }
 
-  .pc-trending-deals-placeholder {
-    height: 250px;
-  }
+    .dh-home-trending-deal-card-user {
+        flex: 0 0 calc((100% - 48px) / 4);
+    }
+
+    .dh-home-trending-category-card-user {
+        flex: 0 0 calc((100% - 48px) / 4);
+    }
+
+    .dh-home-trending-categories-scroll-user {
+        gap: 16px;
+    }
 }
 
 
@@ -889,50 +983,56 @@ body,
 
 @media (max-width: 900px) {
 
-  .pc-trending-section {
-    width: calc(100% - 50px);
+    .dh-home-trending-deals-section-user,
+    .dh-home-trending-categories-section-user {
+        width: calc(100% - 30px);
 
-    margin-left: 25px;
-    margin-right: 25px;
-  }
+        margin-left: 15px;
+        margin-right: 15px;
+    }
 
-  .pc-trending-carousel {
-    height: 220px;
+    .dh-home-trending-carousel-user {
+        height: 220px;
 
-    border-radius: 12px;
-  }
+        border-radius: 12px;
+    }
 
-  .pc-trending-deals-section {
-    width: calc(100% - 50px);
+    .dh-home-trending-deals-placeholder-user {
+        height: 220px;
 
-    margin-left: 25px;
-    margin-right: 25px;
-  }
+        border-radius: 12px;
+    }
 
-  .pc-trending-deals-placeholder {
-    height: 220px;
+    .dh-home-trending-arrow-user {
+        width: 38px;
+        height: 38px;
 
-    border-radius: 12px;
-  }
+        font-size: 17px;
+    }
 
-  .pc-trending-arrow {
-    width: 38px;
-    height: 38px;
+    .dh-home-trending-prev-user {
+        left: 10px;
+    }
 
-    font-size: 17px;
-  }
+    .dh-home-trending-next-user {
+        right: 10px;
+    }
 
-  .pc-trending-prev {
-    left: 10px;
-  }
+    .dh-home-trending-deals-grid-user {
+        gap: 14px;
+    }
 
-  .pc-trending-next {
-    right: 10px;
-  }
+    .dh-home-trending-deal-card-user {
+        flex: 0 0 calc((100% - 28px) / 3);
+    }
 
-  .pc-trend-dots {
-    bottom: 8px;
-  }
+    .dh-home-trending-category-card-user {
+        flex: 0 0 calc((100% - 28px) / 3);
+    }
+
+    .dh-home-trending-categories-scroll-user {
+        gap: 14px;
+    }
 }
 
 
@@ -942,143 +1042,231 @@ body,
 
 @media (max-width: 700px) {
 
-  .pc-header {
-    padding: 12px 16px;
-  }
+    /* ----------------------------------------------------------
+       TRENDING
+    ---------------------------------------------------------- */
 
-  .pc-header-nav {
-    display: none;
-  }
+    .dh-home-trending-section-user {
+        width: calc(100% - 20px);
 
-  .pc-header-left,
-  .pc-header-right {
-    gap: 10px;
-  }
+        margin: 10px 10px 0;
 
-  .pc-logo {
-    font-size: 19px;
-  }
+        padding-bottom: 6px;
+    }
 
-  .pc-header-tagline {
-    font-size: 10px;
-  }
+    .dh-home-section-heading-user {
+        padding-top: 8px;
+        padding-bottom: 12px;
+    }
 
-  .pc-trending-section {
-    width: calc(100% - 28px);
+    .dh-home-section-heading-user h2 {
+        font-size: 20px;
+    }
 
-    margin-left: 14px;
-    margin-right: 14px;
+    .dh-home-trending-carousel-user {
+        width: 100%;
+        height: 170px;
 
-    margin-top: 10px;
-  }
+        border-radius: 11px;
+    }
 
-  .pc-section-heading {
-    padding-top: 8px;
+    .dh-home-trend-card-user {
+        padding: 6px;
+    }
 
-    padding-bottom: 12px;
-  }
-
-  .pc-section-heading h2 {
-    font-size: 20px;
-  }
-
-  .pc-trending-carousel {
-    height: 170px;
-
-    border-radius: 11px;
-  }
+    .dh-home-trend-image-box-user {
+        top: 6px;
+        right: 6px;
+        bottom: 6px;
+        left: 6px;
+    }
 
 
-  /* TRENDING DEALS */
+    /* ----------------------------------------------------------
+       ARROWS
+    ---------------------------------------------------------- */
 
-  .pc-trending-deals-section {
-    width: calc(100% - 28px);
+    .dh-home-trending-arrow-user {
+        width: 32px;
+        height: 32px;
 
-    margin-left: 14px;
-    margin-right: 14px;
+        font-size: 15px;
+    }
 
-    margin-top: 20px;
-  }
+    .dh-home-trending-prev-user {
+        left: 7px;
+    }
 
-  .pc-trending-deals-heading,.pc-trending-categories-heading {
-    margin-bottom: 12px;
-  }
-
-  .pc-trending-deals-heading h2,.pc-trending-categories-heading h2{
-    font-size: 20px;
-  }
-
-  .pc-trending-deals-placeholder {
-    height: 170px;
-
-    border-radius: 11px;
-  }
+    .dh-home-trending-next-user {
+        right: 7px;
+    }
 
 
-  /* ARROWS */
+    /* ----------------------------------------------------------
+       DOTS
+    ---------------------------------------------------------- */
 
-  .pc-trending-arrow {
-    width: 32px;
-    height: 32px;
+    .dh-home-trend-dots-user {
+        bottom: 6px;
 
-    font-size: 15px;
-  }
+        gap: 5px;
+    }
 
-  .pc-trending-prev {
-    left: 7px;
-  }
+    .dh-home-trend-dot-user {
+        width: 6px;
+        height: 6px;
+    }
 
-  .pc-trending-next {
-    right: 7px;
-  }
-
-
-  /* DOTS */
-
-  .pc-trend-dots {
-    bottom: 6px;
-    gap: 5px;
-  }
-
-  .pc-trend-dot {
-    width: 6px;
-    height: 6px;
-  }
-
-  .pc-trend-dot-active {
-    width: 17px;
-  }
+    .dh-home-trend-dot-active-user {
+        width: 17px;
+    }
 
 
-  /* BUTTON */
+    /* ----------------------------------------------------------
+       DEALS
+    ---------------------------------------------------------- */
 
-  .pc-view-all-wrapper {
-    margin-top: 18px;
+    .dh-home-trending-deals-section-user {
+        width: calc(100% - 28px);
 
-    margin-bottom: 24px;
-  }
+        margin: 20px 14px 0;
+    }
 
-  .pc-view-all-products,.pc-view-all-categories {
-    width: 100%;
-    padding-right: 5px;
-    margin-right:5px;
-    display: flex;
-    align-items: center;
-    max-width: 220px;
-  }
+    .dh-home-trending-deals-heading-user,
+    .dh-home-trending-categories-heading-user {
+        margin-bottom: 12px;
+    }
+
+    .dh-home-trending-deals-heading-user h2,
+    .dh-home-trending-categories-heading-user h2 {
+        font-size: 20px;
+    }
+
+    .dh-home-trending-deals-placeholder-user {
+        height: 170px;
+
+        border-radius: 11px;
+    }
 
 
-  /* FOOTER */
+    /* ----------------------------------------------------------
+       DEAL CARDS
+    ---------------------------------------------------------- */
 
-  .pc-footer {
-    flex-direction: column;
+    .dh-home-trending-deals-grid-user {
+        gap: 12px;
 
-    justify-content: center;
+        padding: 4px 3px 10px;
 
-    text-align: center;
+        max-width: 100%;
+    }
 
-    padding: 14px 16px;
-  }
+    .dh-home-trending-deal-card-user {
+        flex: 0 0 calc((100% - 12px) / 2);
+
+        border-radius: 12px;
+    }
+
+    .dh-home-trending-deal-image-box-user {
+        height: 145px;
+
+        padding: 12px;
+    }
+
+    .dh-home-trending-deal-details-user {
+        padding: 11px 12px 13px;
+    }
+
+    .dh-home-trending-deal-details-user h3 {
+        font-size: 14px;
+    }
+
+    .dh-home-trending-deal-details-user p {
+        font-size: 12px;
+    }
+
+    .dh-home-trending-deal-details-user span {
+        font-size: 11px;
+    }
+
+
+    /* ----------------------------------------------------------
+       VIEW ALL
+    ---------------------------------------------------------- */
+
+    .dh-home-view-all-products-user,
+    .dh-home-view-all-categories-user {
+        width: auto;
+
+        min-width: 0;
+        max-width: 180px;
+
+        padding: 9px 13px;
+
+        font-size: 12px;
+
+        white-space: normal;
+
+        text-align: center;
+    }
+
+
+    /* ----------------------------------------------------------
+       CATEGORIES
+    ---------------------------------------------------------- */
+
+    .dh-home-trending-categories-section-user {
+        width: calc(100% - 28px);
+
+        margin: 20px 14px 25px;
+    }
+
+    .dh-home-trending-categories-scroll-user {
+        gap: 12px;
+
+        padding: 4px 3px 10px;
+    }
+
+    .dh-home-trending-category-card-user {
+        flex: 0 0 calc((100% - 12px) / 2);
+
+        height: 115px;
+
+        border-radius: 12px;
+    }
+
+    .dh-home-trending-category-content-user {
+        padding: 12px;
+    }
+
+    .dh-home-trending-category-content-user h3 {
+        font-size: 14px;
+
+        margin-bottom: 6px;
+    }
+
+    .dh-home-trending-category-content-user span {
+        font-size: 11px;
+    }
+
+    .dh-home-trending-categories-empty-user {
+        height: 115px;
+    }
+
+
+    /* ----------------------------------------------------------
+       FOOTER
+    ---------------------------------------------------------- */
+
+    .dh-home-footer-user {
+        flex-direction: column;
+
+        justify-content: center;
+
+        text-align: center;
+
+        padding: 14px 16px;
+    }
 }
 
 
@@ -1088,689 +1276,194 @@ body,
 
 @media (max-width: 400px) {
 
-  .pc-trending-section {
-    width: calc(100% - 20px);
+    /* ----------------------------------------------------------
+       TRENDING
+    ---------------------------------------------------------- */
 
-    margin-left: 10px;
-    margin-right: 10px;
-  }
+    .dh-home-trending-section-user {
+        width: calc(100% - 12px);
 
-  .pc-trending-carousel {
-    height: 155px;
-  }
+        margin-left: 6px;
+        margin-right: 6px;
+    }
 
-  .pc-trending-deals-section {
-    width: calc(100% - 20px);
+    .dh-home-trending-carousel-user {
+        height: 155px;
+    }
 
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-
-  .pc-trending-deals-placeholder {
-    height: 155px;
-  }
-
-  .pc-trending-arrow {
-    width: 29px;
-    height: 29px;
-
-    font-size: 14px;
-  }
-
-  .pc-view-all-products,.pc-view-all-categories {
-    max-width: 200px;
-
-    padding: 10px 18px;
-  }
-}
-
-/* ============================================================
-   TRENDING DEALS OUTER BOX
-   ONLY THIS BOX IS HORIZONTALLY SCROLLABLE
-============================================================ */
-
-.pc-trending-deals-grid {
-  display: flex;
-
-  flex-direction: row;
-
-  flex-wrap: nowrap;
-
-  gap: 18px;
-
-  width: 100%;
-
-  /* Fixed visible area */
-  overflow-x: auto;
-
-  overflow-y: hidden;
-
-  /* IMPORTANT:
-     Prevent horizontal scrolling from affecting the page */
-  max-width: 100%;
-
-  box-sizing: border-box;
-
-  padding: 4px 4px 14px;
-
-  scroll-behavior: smooth;
-
-  -webkit-overflow-scrolling: touch;
-
-  scrollbar-width: thin;
-}
+    .dh-home-section-heading-user h2 {
+        font-size: 19px;
+    }
 
 
-/* ============================================================
-   TRENDING DEAL CARD
+    /* ----------------------------------------------------------
+       DEALS
+    ---------------------------------------------------------- */
 
-   4 CARDS FIT INSIDE THE HOME PAGE
-============================================================ */
+    .dh-home-trending-deals-section-user {
+        width: calc(100% - 20px);
 
-.pc-trending-deal-card {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 
-  /* Four cards will fit inside the container */
-  flex: 0 0 calc(
-    (100% - 54px) / 4
-  );
+    .dh-home-trending-deals-placeholder-user {
+        height: 155px;
+    }
 
-  min-width: 0;
+    .dh-home-trending-deals-grid-user {
+        gap: 10px;
+    }
 
-  background: #ffffff;
+    .dh-home-trending-deal-card-user {
+        flex: 0 0 calc((100% - 10px) / 2);
+    }
 
-  border: 1px solid #e4e8ee;
+    .dh-home-trending-deal-image-box-user {
+        height: 125px;
 
-  border-radius: 14px;
+        padding: 10px;
+    }
 
-  overflow: hidden;
+    .dh-home-trending-deal-details-user {
+        padding: 10px;
+    }
 
-  box-shadow:
-    0 6px 20px rgba(15, 35, 65, 0.07);
+    .dh-home-trending-deal-details-user h3 {
+        font-size: 13px;
+    }
 
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
+    .dh-home-trending-deal-details-user p {
+        font-size: 11px;
+    }
 
-
-.pc-trending-deal-card:hover {
-
-  transform: translateY(-4px);
-
-  box-shadow:
-    0 10px 25px rgba(15, 35, 65, 0.12);
-}
-
-
-/* ============================================================
-   TRENDING DEAL IMAGE
-============================================================ */
-
-.pc-trending-deal-image-box {
-
-  width: 100%;
-
-  height: 180px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  padding: 16px;
-
-  background: #ffffff;
-}
+    .dh-home-trending-deal-details-user span {
+        font-size: 10px;
+    }
 
 
-.pc-trending-deal-image {
+    /* ----------------------------------------------------------
+       BUTTONS
+    ---------------------------------------------------------- */
 
-  display: block;
+    .dh-home-view-all-products-user,
+    .dh-home-view-all-categories-user {
+        max-width: 160px;
 
-  width: 100%;
+        padding: 8px 11px;
 
-  height: 100%;
-
-  object-fit: contain;
-
-  object-position: center;
-}
+        font-size: 11px;
+    }
 
 
-.pc-trending-deal-no-image {
+    /* ----------------------------------------------------------
+       CATEGORIES
+    ---------------------------------------------------------- */
 
-  color: #999999;
+    .dh-home-trending-categories-section-user {
+        width: calc(100% - 20px);
 
-  font-size: 14px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 
-  font-weight: 500;
+    .dh-home-trending-categories-scroll-user {
+        gap: 10px;
+    }
+
+    .dh-home-trending-category-card-user {
+        flex: 0 0 calc((100% - 10px) / 2);
+
+        height: 105px;
+    }
+
+    .dh-home-trending-category-content-user {
+        padding: 10px;
+    }
+
+    .dh-home-trending-category-content-user h3 {
+        font-size: 13px;
+    }
+
+    .dh-home-trending-category-content-user span {
+        font-size: 10px;
+    }
+
+    .dh-home-trending-categories-empty-user {
+        height: 105px;
+    }
 }
 
 
 /* ============================================================
-   TRENDING DEAL DETAILS
+   TOUCH DEVICES
 ============================================================ */
 
-.pc-trending-deal-details {
+@media (hover: none) and (pointer: coarse) {
 
-  padding: 14px 16px 16px;
+    .dh-home-trending-deal-card-user:hover,
+    .dh-home-trending-category-card-user:hover,
+    .dh-home-trending-arrow-user:hover {
+        transform: none;
+    }
 
-  background: #ffffff;
-}
+    .dh-home-trending-deals-grid-user,
+    .dh-home-trending-categories-scroll-user {
+        scrollbar-width: none;
+    }
 
-
-.pc-trending-deal-details h3 {
-
-  margin: 0 0 6px;
-
-  font-size: 16px;
-
-  font-weight: 700;
-
-  color: #111111;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-}
-
-
-.pc-trending-deal-details p {
-
-  margin: 0 0 8px;
-
-  font-size: 13px;
-
-  color: #666666;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-}
-
-
-.pc-trending-deal-details span {
-
-  font-size: 12px;
-
-  color: #123b7a;
-
-  font-weight: 600;
+    .dh-home-trending-deals-grid-user::-webkit-scrollbar,
+    .dh-home-trending-categories-scroll-user::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 
 /* ============================================================
-   LAPTOP
+   ACCESSIBILITY
 ============================================================ */
 
-@media (max-width: 1200px) {
+.dh-home-user button:focus-visible,
+.dh-home-user a:focus-visible,
+.dh-home-user input:focus-visible {
+    outline: 2px solid var(--dh-home-gold);
 
-  .pc-trending-deals-grid {
-
-    gap: 16px;
-
-  }
-
-  .pc-trending-deal-card {
-
-    flex: 0 0 calc(
-      (100% - 48px) / 4
-    );
-
-  }
-
+    outline-offset: 2px;
 }
 
 
 /* ============================================================
-   TABLET
+   HORIZONTAL OVERFLOW PROTECTION
 ============================================================ */
 
-@media (max-width: 900px) {
-
-  .pc-trending-deals-grid {
-
-    gap: 14px;
-
-  }
-
-  .pc-trending-deal-card {
-
-    flex: 0 0 calc(
-      (100% - 42px) / 3
-    );
-
-  }
-
-}
-
-
-/* ============================================================
-   MOBILE
-============================================================ */
-
-@media (max-width: 600px) {
-
-  .pc-trending-deals-grid {
-
-    gap: 12px;
-
-    padding-bottom: 10px;
-
-  }
-
-  .pc-trending-deal-card {
-
-    flex: 0 0 calc(
-      (100% - 12px) / 2
-    );
-
-  }
-
-  .pc-trending-deal-image-box {
-
-    height: 145px;
-
-    padding: 12px;
-
-  }
-
-  .pc-trending-deal-details {
-
-    padding: 11px 12px 13px;
-
-  }
-
-  .pc-trending-deal-details h3 {
-
-    font-size: 14px;
-
-  }
-
-  .pc-trending-deal-details p {
-
-    font-size: 12px;
-
-  }
-
-  .pc-trending-deal-details span {
-
-    font-size: 11px;
-
-  }
-
-}
-
-
-/* ============================================================
-   VERY SMALL MOBILE
-============================================================ */
-
-@media (max-width: 400px) {
-
-  .pc-trending-deals-grid {
-
-    gap: 10px;
-
-  }
-
-  .pc-trending-deal-card {
-
-    flex: 0 0 calc(
-      (100% - 10px) / 2
-    );
-
-  }
-
-  .pc-trending-deal-image-box {
-
-    height: 125px;
-
-    padding: 10px;
-
-  }
-
-  .pc-trending-deal-details {
-
-    padding: 10px;
-
-  }
-
-  .pc-trending-deal-details h3 {
-
-    font-size: 13px;
-
-  }
-
+.dh-home-user,
+.dh-home-trending-deals-section-user,
+.dh-home-trending-categories-section-user {
+    max-width: 100%;
 }
 
 /* ============================================================
-   TRENDING CATEGORIES SECTION
+   VERTICAL PAGE SCROLL
 ============================================================ */
 
-.pc-trending-categories-section {
-
-  width: calc(100% - 80px);
-
-  margin: 24px 40px 30px;
-
+.dh-home-user {
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-
-/* ============================================================
-   HEADING
-============================================================ */
-
-.pc-trending-categories-heading {
-
-  margin-bottom: 14px;
-
+.dh-home-user::-webkit-scrollbar {
+    width: 7px;
 }
 
-.pc-trending-categories-heading h2 {
-
-  margin: 0;
-
-  font-family: cursive;
-
-  font-size: 24px;
-
-  font-weight: 700;
-
-  color: #111111;
-
+.dh-home-user::-webkit-scrollbar-track {
+    background: #f1f1f1;
 }
 
-
-/* ============================================================
-   OUTER SCROLL BOX
-============================================================ */
-
-.pc-trending-categories-scroll {
-
-  display: flex;
-
-  flex-direction: row;
-
-  flex-wrap: nowrap;
-
-  gap: 18px;
-
-  width: 100%;
-
-  max-width: 100%;
-
-  overflow-x: auto;
-
-  overflow-y: hidden;
-
-  padding: 4px 4px 14px;
-
-  box-sizing: border-box;
-
-  scroll-behavior: smooth;
-
-  -webkit-overflow-scrolling: touch;
-
-  scrollbar-width: thin;
-
+.dh-home-user::-webkit-scrollbar-thumb {
+    background: #999999;
+    border-radius: 10px;
 }
 
-
-/* ============================================================
-   CATEGORY CARD
-
-   4 CARDS VISIBLE ON DESKTOP
-============================================================ */
-
-.pc-trending-category-card {
-
-  flex: 0 0 calc(
-    (100% - 54px) / 4
-  );
-
-  min-width: 0;
-
-  height: 130px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background: #ffffff;
-
-  border: 1px solid #e4e8ee;
-
-  border-radius: 14px;
-
-  box-shadow:
-    0 6px 20px rgba(15, 35, 65, 0.07);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-
-  cursor: pointer;
-
-}
-
-
-.pc-trending-category-card:hover {
-
-  transform: translateY(-4px);
-
-  box-shadow:
-    0 10px 25px rgba(15, 35, 65, 0.12);
-
-}
-
-
-/* ============================================================
-   CATEGORY CONTENT
-============================================================ */
-
-.pc-trending-category-content {
-
-  text-align: center;
-
-  padding: 16px;
-
-}
-
-
-.pc-trending-category-content h3 {
-
-  margin: 0 0 8px;
-
-  font-size: 17px;
-
-  font-weight: 700;
-
-  color: #111111;
-
-}
-
-
-.pc-trending-category-content span {
-
-  font-size: 12px;
-
-  font-weight: 600;
-
-  color: #123b7a;
-
-}
-
-
-/* ============================================================
-   EMPTY STATE
-============================================================ */
-
-.pc-trending-categories-empty {
-
-  width: 100%;
-
-  height: 130px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background: #ffffff;
-
-  border: 1px solid #e4e8ee;
-
-  border-radius: 14px;
-
-  color: #999999;
-
-  font-size: 14px;
-
-}
-
-
-/* ============================================================
-   LAPTOP
-============================================================ */
-
-@media (max-width: 1200px) {
-
-  .pc-trending-categories-section {
-
-    width: calc(100% - 70px);
-
-    margin-left: 35px;
-
-    margin-right: 35px;
-
-  }
-
-  .pc-trending-category-card {
-
-    flex: 0 0 calc(
-      (100% - 48px) / 4
-    );
-
-  }
-
-}
-
-
-/* ============================================================
-   TABLET
-============================================================ */
-
-@media (max-width: 900px) {
-
-  .pc-trending-categories-section {
-
-    width: calc(100% - 50px);
-
-    margin-left: 25px;
-
-    margin-right: 25px;
-
-  }
-
-  .pc-trending-category-card {
-
-    flex: 0 0 calc(
-      (100% - 32px) / 3
-    );
-
-  }
-
-}
-
-
-/* ============================================================
-   MOBILE
-============================================================ */
-
-@media (max-width: 600px) {
-
-  .pc-trending-categories-section {
-
-    width: calc(100% - 28px);
-
-    margin-left: 14px;
-
-    margin-right: 14px;
-
-    margin-top: 20px;
-
-  }
-
-  .pc-trending-categories-heading h2 {
-
-    font-size: 20px;
-
-  }
-
-  .pc-trending-categories-scroll {
-
-    gap: 12px;
-
-  }
-
-  .pc-trending-category-card {
-
-    flex: 0 0 calc(
-      (100% - 12px) / 2
-    );
-
-    height: 115px;
-
-  }
-
-  .pc-trending-category-content h3 {
-
-    font-size: 14px;
-
-  }
-
-}
-
-
-/* ============================================================
-   VERY SMALL MOBILE
-============================================================ */
-
-@media (max-width: 400px) {
-
-  .pc-trending-categories-section {
-
-    width: calc(100% - 20px);
-
-    margin-left: 10px;
-
-    margin-right: 10px;
-
-  }
-
-  .pc-trending-categories-scroll {
-
-    gap: 10px;
-
-  }
-
-  .pc-trending-category-card {
-
-    flex: 0 0 calc(
-      (100% - 10px) / 2
-    );
-
-    height: 105px;
-
-  }
-
+.dh-home-user::-webkit-scrollbar-thumb:hover {
+    background: #777777;
 }

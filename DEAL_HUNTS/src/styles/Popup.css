@@ -1,399 +1,514 @@
-/* ================= OVERLAY ================= */
+/* =========================================================
+   POPUP OVERLAY
+========================================================= */
 
-.popup-overlay{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+.dh-popup-overlay {
+    position: fixed !important;
 
-    background: rgba(0,0,0,0.45);
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
 
-    z-index: 1000;
+    margin: 0 !important;
+    padding: 20px !important;
+
+    box-sizing: border-box;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    overflow: hidden;
+
+    z-index: 2147483647 !important;
+
+    isolation: isolate;
+
+    pointer-events: auto;
 }
 
 
-/* ================= POPUP ================= */
+/* =========================================================
+   POPUP CONTAINER
+========================================================= */
 
-.popup-container{
+.dh-popup-container {
+    position: relative !important;
+
+    z-index: 2147483647 !important;
+
+    width: 500px;
+    max-width: 100%;
+
+    height: 520px;
+    max-height: calc(100vh - 30px);
+
+    margin: 0;
 
     background: #ffffff;
 
     border-radius: 12px;
 
-    padding: 25px;
+    padding: 20px;
 
-    box-shadow: 0px 8px 30px rgba(0,0,0,0.25);
+    box-sizing: border-box;
 
-    animation: popupAnimation .25s ease;
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    animation: dh-popup-animation 0.25s ease;
 }
 
 
-/* ================= HEADER ================= */
+/* =========================================================
+   HEADER
+========================================================= */
 
-.popup-header{
+.dh-popup-header {
+    position: relative;
+
+    z-index: 2;
+
+    flex-shrink: 0;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #e5e5e5;
 }
 
-
-.popup-header h2{
-
+.dh-popup-header h2 {
     margin: 0;
-    font-size: 24px;
-    color: #222;
+
+    font-size: 21px;
+
+    color: #222222;
+
+    font-weight: 700;
 }
 
 
-/* ================= CLOSE BUTTON ================= */
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
 
-.popup-close{
+.dh-popup-close {
+    position: relative;
+
+    z-index: 3;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
 
     border: none;
+    border-radius: 6px;
+
     background: transparent;
 
+    color: #555555;
+
     font-size: 24px;
+    line-height: 1;
+
     cursor: pointer;
-
-    color: #555;
 }
 
-.popup-close:hover{
+.dh-popup-close:hover {
+    color: #c0392b;
 
-    color: red;
+    background: #f5f5f5;
+}
+
+.dh-popup-close:focus,
+.dh-popup-close:focus-visible {
+    outline: none;
 }
 
 
-/* ================= BODY ================= */
+/* =========================================================
+   BODY
+========================================================= */
 
-.popup-body{
+.dh-popup-body {
+    flex: 1;
+
+    min-height: 0;
 
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    max-height: auto;
+
+    gap: 12px;
+
     overflow-y: auto;
+    overflow-x: hidden;
+
+    padding-right: 5px;
+
+    box-sizing: border-box;
 }
 
 
-.popup-body input{
+/* =========================================================
+   BODY DIRECT CHILDREN
+========================================================= */
 
-    width: 100%;
-
-    padding: 12px;
-
-    border: 1px solid #ccc;
-
-    border-radius: 8px;
-
-    font-size: 15px;
+.dh-popup-body > * {
+    flex-shrink: 0;
 }
 
 
-.popup-body textarea{
+/* =========================================================
+   BODY SCROLLBAR
+========================================================= */
 
+.dh-popup-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dh-popup-body::-webkit-scrollbar-thumb {
+    background: #a8a8a8;
+
+    border-radius: 10px;
+
+    border: 2px solid #f0f0f0;
+}
+
+.dh-popup-body::-webkit-scrollbar-thumb:hover {
+    background: #888888;
+}
+
+.dh-popup-body::-webkit-scrollbar-track {
+    background: #f0f0f0;
+
+    border-radius: 10px;
+}
+
+.dh-popup-body {
+    scrollbar-width: thin;
+    scrollbar-color: #9a9a9a #f0f0f0;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.dh-popup-body input {
     width: 100%;
 
-    padding: 12px;
+    padding: 10px 12px;
 
-    border: 1px solid #ccc;
+    border: 1px solid #cccccc;
 
-    border-radius: 8px;
+    border-radius: 7px;
+
+    font-size: 14px;
+
+    box-sizing: border-box;
+}
+
+.dh-popup-body input:focus {
+    outline: none;
+
+    border-color: #caa400;
+
+    box-shadow:
+        0 0 0 2px rgba(202, 164, 0, 0.12);
+}
+
+
+.dh-popup-body textarea {
+    width: 100%;
+
+    padding: 10px 12px;
+
+    border: 1px solid #cccccc;
+
+    border-radius: 7px;
 
     resize: vertical;
+
+    box-sizing: border-box;
 }
 
 
-/* ================= BUTTONS ================= */
+/* =========================================================
+   BUTTON GROUP
+========================================================= */
 
-.popup-buttons{
-
+.dh-popup-buttons {
     display: flex;
 
-    gap: 15px;
+    gap: 10px;
 
     width: 100%;
 }
 
-
-.popup-buttons button{
-
+.dh-popup-buttons button {
     flex: 1;
 }
 
 
-/* ================= DEFAULT BUTTON STYLE ================= */
+/* =========================================================
+   DEFAULT BUTTON
+========================================================= */
 
-.popup-body button{
-
-    padding: 10px 20px;
+.dh-popup-body button {
+    padding: 9px 16px;
 
     border: none;
 
-    border-radius: 8px;
+    border-radius: 7px;
 
     cursor: pointer;
 
-    font-size: 15px;
+    font-size: 14px;
 }
 
 
-/* ================= ANIMATION ================= */
+/* =========================================================
+   CATEGORY LIST
+========================================================= */
 
-@keyframes popupAnimation{
+.dh-popup-category-row {
+    display: flex;
 
-    from{
+    align-items: center;
 
+    gap: 8px;
+
+    padding: 7px 9px;
+
+    min-height: 48px;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 7px;
+
+    margin-bottom: 6px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+}
+
+.dh-popup-category-checkbox {
+    width: 17px !important;
+    height: 17px;
+
+    margin-right: 3px;
+
+    cursor: pointer;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   CATEGORY IMAGE
+========================================================= */
+
+.dh-popup-category-row img {
+    width: 38px;
+
+    height: 38px;
+
+    object-fit: contain;
+
+    border-radius: 5px;
+
+    border: 1px solid #eeeeee;
+
+    background: #fafafa;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   CATEGORY NAME
+========================================================= */
+
+.dh-popup-category-name {
+    flex: 1;
+
+    min-width: 0;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.dh-popup-category-actions {
+    display: flex;
+
+    gap: 5px;
+
+    flex-shrink: 0;
+}
+
+.dh-popup-edit-master-btn,
+.dh-popup-delete-master-btn {
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    padding: 4px;
+
+    border-radius: 5px;
+}
+
+.dh-popup-edit-master-btn:hover {
+    background: #fff8dc;
+}
+
+.dh-popup-delete-master-btn:hover {
+    background: #ffeaea;
+}
+
+
+/* =========================================================
+   SELECTED CATEGORY IMAGE
+========================================================= */
+
+.dh-popup-body img[alt="Current category"] {
+    width: 70px !important;
+
+    height: 70px !important;
+
+    object-fit: contain;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 7px;
+
+    background: #fafafa;
+}
+
+
+/* =========================================================
+   POPUP ANIMATION
+========================================================= */
+
+@keyframes dh-popup-animation {
+    from {
         opacity: 0;
-        transform: scale(0.9);
+        transform: scale(0.96);
     }
 
-    to{
-
+    to {
         opacity: 1;
         transform: scale(1);
     }
 }
 
-/* ================= CATEGORY LIST ================= */
 
-.category-row{
+/* =========================================================
+   MOBILE
+========================================================= */
 
-    display: flex;
+@media (max-width: 600px) {
 
-    align-items: center;
+    .dh-popup-overlay {
+        padding: 10px !important;
+    }
 
-    padding: 10px;
+    .dh-popup-container {
+        width: 100%;
 
-    border: 1px solid #ddd;
+        height: 500px;
 
-    border-radius: 8px;
+        max-height: calc(100vh - 20px);
 
-    margin-bottom: 8px;
+        padding: 16px;
+
+        border-radius: 10px;
+    }
+
+    .dh-popup-header h2 {
+        font-size: 19px;
+    }
+
+    .dh-popup-category-row {
+        min-height: 46px;
+
+        padding: 6px 7px;
+    }
+
+    .dh-popup-category-row img {
+        width: 34px;
+
+        height: 34px;
+    }
+
+    .dh-popup-category-name {
+        font-size: 13px;
+    }
 }
 
 
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
 
-.category-checkbox{
+@media (max-width: 400px) {
 
-    width: 18px;
-    height: 18px;
-    margin-right: 12px;
-    cursor: pointer;
-}
+    .dh-popup-container {
+        height: 470px;
 
-.category-name{
-    flex: 1;
-    font-size: 16px;
-    font-weight: 500;
-}
+        padding: 14px;
+    }
 
-.category-actions{
-    display: flex;
-    gap: 5px;
-}
+    .dh-popup-header h2 {
+        font-size: 18px;
+    }
 
+    .dh-popup-category-row img {
+        width: 32px;
 
+        height: 32px;
+    }
 
-.edit-master-btn,
-.delete-master-btn{
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 17px;
-    padding: 3px;
-}
-
-/*Admin Product Page*?
-.image-management-popup{
-
-padding:20px;
-
-}
-
-
-/* PRODUCT HEADER */
-
-.popup-product-header{
-border-bottom:1px solid #ddd;
-padding-bottom:20px;
-}
-
-
-.popup-product-header h2{
-font-size:26px;
-margin-bottom:20px;
-}
-
-.product-info-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:15px;
-}
-
-.product-info-grid p{
-display:flex;
-flex-direction:column;
-background:#fafafa;
-padding:12px;
-border-radius:10px;
-}
-
-.product-info-grid strong{
-font-size:13px;
-color:#777;
-}
-
-.product-info-grid span{
-font-size:16px;
-font-weight:600;
-margin-top:5px;
-}
-
-.status-badge{
-background:#d4edda;
-color:#155724;
-padding:5px 12px;
-border-radius:20px;
-width:max-content;
-}
-
-/* IMAGE SECTION */
-.images-section{
-margin-top:25px;
-}
-
-.image-title{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.select-all{
-font-size:14px;
-display: flex;
-height: 20px;
-gap:8px;
-margin-right: 15px;
-}
-.images-wrapper{
-    margin-top:20px;
-    border:2px dashed black;
-    border-radius:12px;
-    padding:15px;
-    height: 250px;
-    overflow-y:auto;
-    overflow-x:hidden;
-    background:#fafafa;
-}
-.images-wrapper::-webkit-scrollbar{
-    width:8px;
-}
-
-.images-wrapper::-webkit-scrollbar-thumb{
-    background:#caa400;
-    border-radius:10px;
-}
-
-.images-wrapper::-webkit-scrollbar-track{
-    background:#ececec;
-}
-
-.image-grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
-gap:15px;
-margin-top:20px;
-}
-
-.image-card{
-position:relative;
-border-radius:12px;
-overflow:hidden;
-border:1px solid #ddd;
-background:white;
-}
-
-.image-card img{
-width:100%;
-height:120px;
-object-fit:cover;
-}
-
-.image-checkbox{
-position:absolute;
-top:10px;
-right:10px;
-width:20px;
-height:20px;
-z-index:2;
-}
-
-.image-name{
-text-align:center;
-font-size:13px;
-font-weight:600;
-}
-
-/* ADD IMAGE */
-.add-image-card{
-height:180px;
-border:2px dashed #aaa;
-border-radius:10px;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-cursor:pointer;
-color: #caa400;
-transition: .25s;
-}
-
-.add-image-card label{
-font-size:45px;
-cursor:pointer;
-}
-.add-image-card:hover{
-    background: #fff8dc;
-}
-
-.selected-images-section{
-    border: 2px dashed black;
-    width: 400px;
-}
-
-/* ACTION BUTTONS */
-.image-actions{
-display:flex;
-justify-content:flex-end;
-gap:15px;
-margin-top:30px;
-}
-
-.change-btn,.upload-btn{
-background:#d4af37;
-color:black;
-}
-.delete-btn{
-background:#c0392b;
-color:white;
-}
-
-.image-actions button{
-padding:12px 25px;
-border:none;
-border-radius:25px;
-cursor:pointer;
-font-weight:bold;
-}
-.image-actions button:hover{
-transform:translateY(-2px);
+    .dh-popup-edit-master-btn,
+    .dh-popup-delete-master-btn {
+        font-size: 15px;
+    }
 }

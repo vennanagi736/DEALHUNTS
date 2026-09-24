@@ -3,7 +3,10 @@ import React, {
   useEffect,
 } from "react";
 
-import { useNavigate } from "react-router-dom";
+import {
+  useNavigate,
+} from "react-router-dom";
+
 import axios from "axios";
 
 import { getTrendingDeals } from "../../api/TrendingDealApi";
@@ -11,24 +14,21 @@ import { getProductImages } from "../../api/ProductApi";
 import { getTrendingCategories } from "../../api/TrendingCategoryApi";
 
 import {
-  FiShoppingCart,
   FiChevronLeft,
   FiChevronRight,
-  FiUser,
-  FiSettings,
-  FiSearch,
 } from "react-icons/fi";
 
-import Sidebar from "../../components/Sidebar";
 import "../../styles/Home.css";
 
 const API_BASE = "http://localhost:8080";
+
 
 /* ============================================================
    HELPERS
 ============================================================ */
 
 function formatINR(amount) {
+
   if (
     amount === null ||
     amount === undefined ||
@@ -40,50 +40,66 @@ function formatINR(amount) {
   return `₹${Number(amount).toLocaleString("en-IN")}`;
 }
 
+
 /* ============================================================
    TRENDING PRODUCTS CAROUSEL
-
-   Backend:
-   GET /admin/promotions/all
-
-   ONE PRODUCT / IMAGE AT A TIME.
 ============================================================ */
 
 function TrendingProducts({
   items = [],
 }) {
+
   const [index, setIndex] = useState(0);
 
   const count = items.length;
 
-  /* ----------------------------------------------------------
-     Keep index valid when items change
-  ---------------------------------------------------------- */
-
-  useEffect(() => {
-    if (
-      count === 0 ||
-      index >= count
-    ) {
-      setIndex(0);
-    }
-  }, [count, index]);
-
-  /* ----------------------------------------------------------
-     Empty state
-  ---------------------------------------------------------- */
+useEffect(() => {
 
   if (count === 0) {
-    return (
-      <section className="pc-trending-section">
+    return;
+  }
 
-        <div className="pc-section-heading">
-          <h2>
-            Trending Deals
-          </h2>
+  if (index >= count) {
+    setIndex(0);
+    return;
+  }
+
+  if (count <= 1) {
+    return;
+  }
+
+  const timer = setTimeout(() => {
+
+    setIndex((currentIndex) => {
+
+      if (currentIndex >= count - 1) {
+        return 0;
+      }
+
+      return currentIndex + 1;
+
+    });
+
+  }, 5000);
+
+  return () => {
+    clearTimeout(timer);
+  };
+
+}, [count, index]);
+
+
+
+  if (count === 0) {
+
+    return (
+      <section className="dh-home-trending-section-user">
+
+        <div className="dh-home-section-heading-user">
+          <h2>Trending Carousel</h2>
         </div>
 
-        <div className="pc-trending-empty">
+        <div className="dh-home-trending-empty-user">
           No trending products right now.
         </div>
 
@@ -91,9 +107,6 @@ function TrendingProducts({
     );
   }
 
-  /* ----------------------------------------------------------
-     Navigation
-  ---------------------------------------------------------- */
 
   const goTo = (newIndex) => {
 
@@ -110,205 +123,179 @@ function TrendingProducts({
     setIndex(newIndex);
   };
 
-  /* ----------------------------------------------------------
-     UI
-  ---------------------------------------------------------- */
 
   return (
-    <section className="pc-trending-section">
+    <section className="dh-home-trending-section-user">
 
-      {/* ======================================================
-          HEADING
-      ====================================================== */}
-
-      <div className="pc-section-heading">
-        {/* Existing carousel heading intentionally hidden */}
+      <div className="dh-home-section-heading-user">
+        {/* Heading intentionally hidden */}
       </div>
 
-      {/* ======================================================
-          LARGE CAROUSEL
-      ====================================================== */}
 
-      <div className="pc-trending-carousel">
-
-        {/* PREVIOUS */}
+      <div className="dh-home-trending-carousel-user">
 
         {count > 1 && (
+
           <button
             type="button"
-            className="pc-trending-arrow pc-trending-prev"
-            onClick={() =>
-              goTo(index - 1)
-            }
+            className="dh-home-trending-arrow-user dh-home-trending-prev-user"
+            onClick={() => goTo(index - 1)}
             aria-label="Previous trending product"
           >
             <FiChevronLeft />
           </button>
+
         )}
 
-        {/* ====================================================
-            VIEWPORT
-        ==================================================== */}
 
-        <div className="pc-trend-viewport">
+        <div className="dh-home-trend-viewport-user">
 
           <div
-            className="pc-trend-track"
+            className="dh-home-trend-track-user"
             style={{
-              transform:
-                `translateX(-${index * 100}%)`,
+              transform: `translateX(-${index * 100}%)`,
             }}
           >
 
-            {items.map(
-              (item, i) => {
+            {items.map((item, i) => {
 
-                const image =
-                  item.image ||
-                  item.imageUrl ||
-                  item.productImage ||
-                  item.thumbnail ||
-                  item.imagePath ||
-                  "";
+              const image =
+                item.image ||
+                item.imageUrl ||
+                item.productImage ||
+                item.thumbnail ||
+                item.imagePath ||
+                "";
 
-                const name =
-                  item.name ||
-                  item.productName ||
-                  item.title ||
-                  "Product";
 
-                const price =
-                  item.price ??
-                  item.bestPrice ??
-                  item.discountedPrice ??
-                  item.offerPrice;
+              const name =
+                item.name ||
+                item.productName ||
+                item.title ||
+                "Product";
 
-                return (
-                  <div
-                    className="pc-trend-slide"
-                    key={
-                      item.id ||
-                      item.productId ||
-                      i
-                    }
-                    style={{
-                      flex: "0 0 100%",
-                      width: "100%",
-                    }}
-                  >
 
-                    <div className="pc-trend-card">
+              const price =
+                item.price ??
+                item.bestPrice ??
+                item.discountedPrice ??
+                item.offerPrice;
 
-                      {/* IMAGE */}
 
-                      <div className="pc-trend-image-box">
+              return (
+                <div
+                  className="dh-home-trend-slide-user"
+                  key={
+                    item.id ||
+                    item.productId ||
+                    i
+                  }
+                >
 
-                        {image ? (
+                  <div className="dh-home-trend-card-user">
 
-                          <img
-                            src={image}
-                            alt={name}
-                            className="pc-trend-image"
-                          />
+                    <div className="dh-home-trend-image-box-user">
 
-                        ) : (
+                      {image ? (
 
-                          <div className="pc-trend-image-fallback">
-                            No Image
-                          </div>
+                        <img
+                          src={
+                            image.startsWith("http")
+                              ? image
+                              : `${API_BASE}${image}`
+                          }
+                          alt={name}
+                          className="dh-home-trend-image-user"
+                        />
 
-                        )}
+                      ) : (
 
-                      </div>
+                        <div className="dh-home-trend-image-fallback-user">
+                          No Image
+                        </div>
 
-                      {/* DETAILS */}
+                      )}
 
-                      <div className="pc-trend-details">
+                    </div>
 
-                        <p
-                          className="pc-trend-name"
-                          title={name}
-                        >
-                          {name}
-                        </p>
 
-                        {price !== undefined &&
-                          price !== null && (
+                    <div className="dh-home-trend-details-user">
 
-                          <p className="pc-trend-price">
-                            Best Price{" "}
-                            {formatINR(price)}
+                      <p
+                        className="dh-home-trend-name-user"
+                        title={name}
+                      >
+                        {name}
+                      </p>
+
+
+                      {price !== undefined &&
+                        price !== null && (
+
+                          <p className="dh-home-trend-price-user">
+                            Best Price {formatINR(price)}
                           </p>
 
                         )}
 
-                      </div>
-
                     </div>
 
                   </div>
-                );
-              }
-            )}
+
+                </div>
+              );
+
+            })}
 
           </div>
 
         </div>
 
-        {/* ====================================================
-            NEXT
-        ==================================================== */}
 
         {count > 1 && (
+
           <button
             type="button"
-            className="pc-trending-arrow pc-trending-next"
-            onClick={() =>
-              goTo(index + 1)
-            }
+            className="dh-home-trending-arrow-user dh-home-trending-next-user"
+            onClick={() => goTo(index + 1)}
             aria-label="Next trending product"
           >
             <FiChevronRight />
           </button>
+
         )}
 
       </div>
 
-      {/* ======================================================
-          DOTS
-      ====================================================== */}
 
       {count > 1 && (
-        <div className="pc-trend-dots">
 
-          {items.map(
-            (_, i) => (
+        <div className="dh-home-trend-dots-user">
 
-              <button
-                type="button"
-                key={i}
-                className={`pc-trend-dot ${
-                  i === index
-                    ? "pc-trend-dot-active"
-                    : ""
-                }`}
-                onClick={() =>
-                  goTo(i)
-                }
-                aria-label={`Go to trending product ${
-                  i + 1
-                }`}
-              />
+          {items.map((_, i) => (
 
-            )
-          )}
+            <button
+              type="button"
+              key={i}
+              className={`dh-home-trend-dot-user ${
+                i === index
+                  ? "dh-home-trend-dot-active-user"
+                  : ""
+              }`}
+              onClick={() => goTo(i)}
+              aria-label={`Go to trending product ${i + 1}`}
+            />
+
+          ))}
 
         </div>
+
       )}
 
     </section>
   );
 }
+
 
 /* ============================================================
    TRENDING DEALS
@@ -321,22 +308,18 @@ function TrendingDeals({
 }) {
 
   return (
+    <section className="dh-home-trending-deals-section-user">
 
-    <section className="pc-trending-deals-section">
-
-      {/* ======================================================
-          HEADING + VIEW ALL
-      ====================================================== */}
-
-      <div className="pc-trending-deals-heading">
+      <div className="dh-home-trending-deals-heading-user">
 
         <h2>
           Trending Deals
         </h2>
 
+
         <button
           type="button"
-          className="pc-view-all-products"
+          className="dh-home-view-all-products-user"
           onClick={onViewAll}
         >
           View All Products
@@ -344,15 +327,12 @@ function TrendingDeals({
 
       </div>
 
-      {/* ======================================================
-          PRODUCT GRID
-      ====================================================== */}
 
       {deals.length === 0 ? (
 
-        <div className="pc-trending-deals-placeholder">
+        <div className="dh-home-trending-deals-placeholder-user">
 
-          <div className="pc-trending-deals-placeholder-content">
+          <div className="dh-home-trending-deals-placeholder-content-user">
 
             <span>
               No Trending Deals
@@ -368,43 +348,46 @@ function TrendingDeals({
 
       ) : (
 
-        <div className="pc-trending-deals-grid">
+        <div className="dh-home-trending-deals-grid-user">
 
           {deals.map((deal) => {
 
             const product =
               deal.product;
 
+
             const image =
               product?.id
                 ? images[product.id]
                 : "";
 
-            return (
 
+            return (
               <div
-                className="pc-trending-deal-card"
+                className="dh-home-trending-deal-card-user"
                 key={deal.id}
               >
 
-                {/* IMAGE */}
-
-                <div className="pc-trending-deal-image-box">
+                <div className="dh-home-trending-deal-image-box-user">
 
                   {image ? (
 
                     <img
-                      src={image}
+                      src={
+                        image.startsWith("http")
+                          ? image
+                          : `${API_BASE}${image}`
+                      }
                       alt={
                         product?.name ||
                         "Trending Product"
                       }
-                      className="pc-trending-deal-image"
+                      className="dh-home-trending-deal-image-user"
                     />
 
                   ) : (
 
-                    <div className="pc-trending-deal-no-image">
+                    <div className="dh-home-trending-deal-no-image-user">
                       No Image
                     </div>
 
@@ -412,19 +395,18 @@ function TrendingDeals({
 
                 </div>
 
-                {/* DETAILS */}
 
-                <div className="pc-trending-deal-details">
+                <div className="dh-home-trending-deal-details-user">
 
                   <h3>
-                    {product?.name ||
-                      "Product"}
+                    {product?.name || "Product"}
                   </h3>
 
+
                   <p>
-                    {product?.brand ||
-                      ""}
+                    {product?.brand?.name || ""}
                   </p>
+
 
                   <span>
                     Position {deal.position}
@@ -433,7 +415,6 @@ function TrendingDeals({
                 </div>
 
               </div>
-
             );
 
           })}
@@ -446,6 +427,7 @@ function TrendingDeals({
   );
 }
 
+
 /* ============================================================
    TRENDING CATEGORIES
 ============================================================ */
@@ -456,22 +438,18 @@ function TrendingCategories({
 }) {
 
   return (
+    <section className="dh-home-trending-categories-section-user">
 
-    <section className="pc-trending-categories-section">
-
-      {/* ======================================================
-          HEADING + VIEW ALL
-      ====================================================== */}
-
-      <div className="pc-trending-categories-heading">
+      <div className="dh-home-trending-categories-heading-user">
 
         <h2>
           Trending Categories
         </h2>
 
+
         <button
           type="button"
-          className="pc-view-all-categories"
+          className="dh-home-view-all-categories-user"
           onClick={onViewAll}
         >
           View All Categories
@@ -479,13 +457,10 @@ function TrendingCategories({
 
       </div>
 
-      {/* ======================================================
-          CATEGORY SCROLL BOX
-      ====================================================== */}
 
       {categories.length === 0 ? (
 
-        <div className="pc-trending-categories-empty">
+        <div className="dh-home-trending-categories-empty-user">
 
           <span>
             No Trending Categories
@@ -495,53 +470,52 @@ function TrendingCategories({
 
       ) : (
 
-        <div className="pc-trending-categories-scroll">
+        <div className="dh-home-trending-categories-scroll-user">
 
-          {categories.map(
-            (item, index) => {
+          {categories.map((item, index) => {
 
-              const category =
-                item.category || item;
+            const category =
+              item.category || item;
 
-              const categoryId =
-                category?.id ||
-                item.categoryId ||
-                index;
 
-              const categoryName =
-                category?.name ||
-                item.categoryName ||
-                item.name ||
-                "Category";
+            const categoryId =
+              category?.id ||
+              item.categoryId ||
+              index;
 
-              return (
 
-                <div
-                  className="pc-trending-category-card"
-                  key={
-                    item.id ||
-                    categoryId
-                  }
-                >
+            const categoryName =
+              category?.name ||
+              item.categoryName ||
+              item.name ||
+              "Category";
 
-                  <div className="pc-trending-category-content">
 
-                    <h3>
-                      {categoryName}
-                    </h3>
+            return (
+              <div
+                className="dh-home-trending-category-card-user"
+                key={
+                  item.id ||
+                  categoryId
+                }
+              >
 
-                    <span>
-                      Trending
-                    </span>
+                <div className="dh-home-trending-category-content-user">
 
-                  </div>
+                  <h3>
+                    {categoryName}
+                  </h3>
+
+                  <span>
+                    Trending
+                  </span>
 
                 </div>
 
-              );
+              </div>
+            );
 
-            }
-          )}
+          })}
 
         </div>
 
@@ -551,100 +525,101 @@ function TrendingCategories({
   );
 }
 
+
 /* ============================================================
    HOME
 ============================================================ */
 
 function Home() {
 
-  const navigate =
-    useNavigate();
+  const navigate = useNavigate();
 
-  const [isLoggedIn] = useState(
-    !!localStorage.getItem("userJwtToken")
-  );
 
-  /* ==========================================================
+  /* ============================================================
      TRENDING CAROUSEL DATA
-  ========================================================== */
+  ============================================================ */
 
   const [
     trendingItems,
     setTrendingItems,
   ] = useState([]);
 
-  /* ==========================================================
+
+  /* ============================================================
      TRENDING CATEGORIES
-  ========================================================== */
+  ============================================================ */
 
   const [
     trendingCategories,
     setTrendingCategories,
   ] = useState([]);
 
-  /* ==========================================================
+
+  /* ============================================================
      TRENDING DEALS
-  ========================================================== */
+  ============================================================ */
 
   const [
     trendingDeals,
     setTrendingDeals,
   ] = useState([]);
 
+
   const [
     trendingDealImages,
     setTrendingDealImages,
   ] = useState({});
 
-  /* ==========================================================
-     LOAD EXISTING TRENDING CAROUSEL
 
-     GET /admin/promotions/all
-  ========================================================== */
+  /* ============================================================
+     LOAD TRENDING CAROUSEL
+  ============================================================ */
 
   useEffect(() => {
 
-    const loadTrending =
-      async () => {
+    const loadTrending = async () => {
 
-        try {
+      try {
 
-          const response =
-            await axios.get(
-              `${API_BASE}/admin/promotions/all`
-            );
-
-          const data =
-            Array.isArray(response.data)
-              ? response.data
-              : response.data?.products ||
-                response.data?.content ||
-                response.data?.promotions ||
-                [];
-
-          setTrendingItems(data);
-
-        } catch (err) {
-
-          console.error(
-            "Trending carousel error:",
-            err
+        const response =
+          await axios.get(
+            `${API_BASE}/admin/promotions/all`
           );
 
-          setTrendingItems([]);
 
-        }
+        const data =
+          Array.isArray(response.data)
+            ? response.data
+            : response.data?.products ||
+              response.data?.content ||
+              response.data?.promotions ||
+              [];
 
-      };
+
+        setTrendingItems(data);
+
+      } catch (err) {
+
+        console.error(
+          "Trending carousel error:",
+          err
+        );
+
+        setTrendingItems([]);
+
+      }
+
+    };
+
 
     loadTrending();
 
   }, []);
 
 
-  /* ==========================================================
+  /* ============================================================
      LOAD TRENDING CATEGORIES
-  ========================================================== */
+  ============================================================ */
 
   useEffect(() => {
 
@@ -656,15 +631,18 @@ function Home() {
           const response =
             await getTrendingCategories();
 
+
           console.log(
             "User Home Trending Categories:",
             response.data
           );
 
+
           const categories =
             Array.isArray(response.data)
               ? response.data
               : [];
+
 
           setTrendingCategories(
             categories
@@ -683,35 +661,37 @@ function Home() {
 
       };
 
+
     loadTrendingCategories();
 
   }, []);
 
-  /* ==========================================================
+
+  /* ============================================================
      VIEW ALL PRODUCTS
-  ========================================================== */
+  ============================================================ */
 
-  const handleViewAllProducts =
-    () => {
+  const handleViewAllProducts = () => {
 
-      navigate("/products");
+    navigate("/products");
 
-    };
+  };
 
-  /* ==========================================================
+
+  /* ============================================================
      VIEW ALL CATEGORIES
-  ========================================================== */
+  ============================================================ */
 
-  const handleViewAllCategories =
-    () => {
+  const handleViewAllCategories = () => {
 
-      navigate("/categories");
+    navigate("/categories");
 
-    };
+  };
 
-  /* ==========================================================
+
+  /* ============================================================
      LOAD TRENDING DEALS
-  ========================================================== */
+  ============================================================ */
 
   useEffect(() => {
 
@@ -723,28 +703,37 @@ function Home() {
           const response =
             await getTrendingDeals();
 
+
           console.log(
             "User Home Trending Deals:",
             response.data
           );
+
 
           const deals =
             Array.isArray(response.data)
               ? response.data
               : [];
 
-          setTrendingDeals(deals);
+
+          setTrendingDeals(
+            deals
+          );
+
 
           const imageMap = {};
+
 
           for (const deal of deals) {
 
             const product =
               deal.product;
 
+
             if (!product?.id) {
               continue;
             }
+
 
             try {
 
@@ -753,11 +742,13 @@ function Home() {
                   product.id
                 );
 
+
               console.log(
                 "Trending deal images:",
                 product.id,
                 imageResponse.data
               );
+
 
               if (
                 Array.isArray(
@@ -768,6 +759,7 @@ function Home() {
 
                 const firstImage =
                   imageResponse.data[0];
+
 
                 imageMap[product.id] =
                   firstImage.thumbnailUrl ||
@@ -789,10 +781,12 @@ function Home() {
 
           }
 
+
           console.log(
             "Trending Deal Image Map:",
             imageMap
           );
+
 
           setTrendingDealImages(
             imageMap
@@ -806,216 +800,75 @@ function Home() {
           );
 
           setTrendingDeals([]);
-
           setTrendingDealImages({});
 
         }
 
       };
 
+
     loadTrendingDeals();
 
   }, []);
 
-  /* ==========================================================
-     UI
-  ========================================================== */
-
   return (
+    <div className="dh-home-user">
 
-    <div className="pc-page">
 
-      {/* ======================================================
-          HEADER
-      ====================================================== */}
+      {/* ========================================================
+          HOME CONTENT
+      ======================================================== */}
 
-      <header className="pc-header">
+      <div className="dh-home-scroll-area-user">
 
-        {/* ====================================================
-            LEFT SIDE
-        ==================================================== */}
 
-        <div className="pc-header-left">
+        {/* ======================================================
+            TRENDING CAROUSEL
+        ====================================================== */}
 
-          {/* SIDEBAR */}
+        <TrendingProducts
+          items={trendingItems}
+        />
 
-          <div className="pc-header-sidebar">
 
-            <Sidebar />
+        {/* ======================================================
+            TRENDING DEALS
+        ====================================================== */}
 
-          </div>
+        <TrendingDeals
+          deals={trendingDeals}
+          images={trendingDealImages}
+          onViewAll={handleViewAllProducts}
+        />
 
-          {/* BRAND */}
 
-          <div
-            className="pc-brand"
-            onClick={() =>
-              navigate("/")
-            }
-          >
+        {/* ======================================================
+            TRENDING CATEGORIES
+        ====================================================== */}
 
-            <div className="pc-logo">
+        <TrendingCategories
+          categories={trendingCategories}
+          onViewAll={handleViewAllCategories}
+        />
 
-              <span className="pc-logo-deal">
-                DEAL
-              </span>
 
-              <span className="pc-logo-hunts">
-                HUNTS
-              </span>
+        {/* ======================================================
+            FOOTER
+        ====================================================== */}
 
-            </div>
+        {/* <footer className="dh-home-footer-user">
 
-            <div className="pc-header-tagline">
-              Hunt deals, save money
-            </div>
+          <strong>
+            DEALHUNTS
+          </strong>
 
-          </div>
+          <span>
+            © 2026 DealHunts. All rights reserved.
+          </span>
 
-        </div>
+        </footer> */}
 
-        {/* ====================================================
-            RIGHT SIDE
-        ==================================================== */}
-
-        <div className="pc-header-right">
-
-          {/* NAVIGATION */}
-
-          <nav className="pc-header-nav">
-
-            {/* <button
-              type="button"
-              className="pc-nav-active"
-              onClick={() =>
-                navigate("/")
-              }
-            >
-              Home
-            </button> */}
-
-            <button
-              type="button"
-              onClick={() =>
-                navigate("/products")
-              }
-            >
-              Products
-            </button>
-
-            <button
-              type="button"
-              onClick={() =>
-                navigate("/wishlist")
-              }
-            >
-              Wishlist
-            </button>
-
-          </nav>
-
-          {/* HEADER ACTIONS */}
-
-          <div className="pc-header-actions">
-             {/* CART */}
-
-            <button
-              type="button"
-              className="pc-header-icon"
-              onClick={() =>
-                navigate("/cart")
-              }
-              aria-label="Cart"
-            >
-              <FiShoppingCart />
-            </button>
-
-          {isLoggedIn ? (
-            <>
-              <button
-                type="button"
-                className="pc-header-icon"
-                onClick={() => navigate("/profile")}
-                aria-label="Profile"
-              >
-                <FiUser />
-              </button>
-
-              <button
-                type="button"
-                className="pc-header-icon"
-                onClick={() => navigate("/settings")}
-                aria-label="Settings"
-              >
-                <FiSettings />
-              </button>
-            </>
-          ) : (
-            <button
-              type="button"
-              className="pc-header-login"
-              onClick={() => navigate("/login")}
-            >
-              Login
-            </button>
-          )}
-          </div>
       </div>
-      </header>
-
-      {/* ======================================================
-          1. EXISTING TRENDING CAROUSEL
-
-          Backend:
-          /admin/promotions/all
-
-          DO NOT CHANGE
-      ====================================================== */}
-
-      <TrendingProducts
-        items={trendingItems}
-      />
-
-      {/* ======================================================
-          2. TRENDING DEALS
-      ====================================================== */}
-
-      <TrendingDeals
-        deals={trendingDeals}
-        images={trendingDealImages}
-        onViewAll={
-          handleViewAllProducts
-        }
-      />
-
-      {/* ======================================================
-          3. TRENDING CATEGORIES
-      ====================================================== */}
-
-      <TrendingCategories
-        categories={
-          trendingCategories
-        }
-        onViewAll={
-          handleViewAllCategories
-        }
-      />
-
-      {/* ======================================================
-          FOOTER
-      ====================================================== */}
-
-      <footer className="pc-footer">
-
-        <strong>
-          DEALHUNTS
-        </strong>
-
-        <span>
-          © 2026 DealHunts. All rights reserved.
-        </span>
-
-      </footer>
 
     </div>
   );

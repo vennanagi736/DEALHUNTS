@@ -1,247 +1,792 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Inter", Arial, sans-serif;
+/* ============================================================
+   DEALHUNTS — PROFESSIONAL RESPONSIVE SIDEBAR
+
+   DESKTOP : 285px
+   TABLET  : 250px
+   MOBILE  : 220px
+   SMALL   : 205px
+
+   GOLD    : #d4af37
+   BLACK   : #000000
+   WHITE   : #ffffff
+   DARK    : #1f2937
+   HOVER   : #f1f3f5
+============================================================ */
+
+
+/* ============================================================
+   BACKDROP
+============================================================ */
+
+.dh-sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.48);
+
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+
+    z-index: 998;
+
+    cursor: pointer;
+
+    animation: dh-backdrop-fade 0.25s ease;
 }
 
-/* ================= SIDEBAR ================= */
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: -320px;
-  width: 280px;
-  height: 100vh;
+@keyframes dh-backdrop-fade {
+    from {
+        opacity: 0;
+    }
 
-  background: linear-gradient(180deg, #ffffff, #f7f7fb);
-
-  border-right: 1px solid rgba(0,0,0,0.08);
-  box-shadow: 8px 0 25px rgba(0, 0, 0, 0.12);
-
-  padding: 20px;
-  transition: all 0.35s ease;
-  z-index: 999;
-
-  display: flex;
-  flex-direction: column;
+    to {
+        opacity: 1;
+    }
 }
 
-.sidebar.open {
-  left: 0;
+
+/* ============================================================
+   SIDEBAR PANEL
+============================================================ */
+
+.dh-sidebar-panel {
+    position: fixed;
+
+    top: 0;
+    left: -320px;
+
+    width: 285px;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 22px 18px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border-right: 1px solid #e2e2e2;
+
+    box-shadow:
+        8px 0 30px rgba(0, 0, 0, 0.16);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    z-index: 999;
+
+    transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ================= LOGO ================= */
-.logo1 {
-  text-align: center;
-  font-weight: 800;
-  font-size: 22px;
 
-  padding: 15px 0;
-  border-bottom: 1px solid #eee;
+/* ============================================================
+   SIDEBAR OPEN
+============================================================ */
 
-  letter-spacing: 1px;
-  border-bottom: 3px solid black;
+.dh-sidebar-panel-open {
+    left: 0;
 }
 
-.Gold {
-  color: #f5b301;
+
+/* ============================================================
+   SIDEBAR SCROLLBAR
+============================================================ */
+
+.dh-sidebar-panel::-webkit-scrollbar {
+    width: 4px;
 }
 
-.Black {
-  color: #222;
+.dh-sidebar-panel::-webkit-scrollbar-track {
+    background: #ffffff;
 }
 
-/* ================= CLOSE BUTTON ================= */
-.close-btn {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-
-  width: 35px;
-  height: 35px;
-
-  border: none;
-  border-radius: 50%;
-
-  background: #f5f5f5;
-  cursor: pointer;
-
-  font-size: 16px;
-
-  transition: 0.2s ease;
+.dh-sidebar-panel::-webkit-scrollbar-thumb {
+    background: #888888;
+    border-radius: 10px;
 }
 
-.close-btn:hover {
-  background: #111;
-  color: white;
+.dh-sidebar-panel::-webkit-scrollbar-thumb:hover {
+    background: #666666;
 }
 
-/* ================= MENU BOX ================= */
-.menu-box {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+
+/* ============================================================
+   BRAND
+============================================================ */
+
+.dh-sidebar-brand {
+    position: relative;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 14px 0 17px;
+
+    box-sizing: border-box;
+
+    border-bottom: 2px solid #d4af37;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 23px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+    line-height: 1;
+
+    user-select: none;
 }
 
-/* ================= NAV LINKS ================= */
-.sidebar a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 
-  padding: 12px 14px;
-  margin: 4px 0;
+/* ============================================================
+   BRAND — DEAL
+============================================================ */
 
-  text-decoration: none;
-  color: #333;
-
-  border-radius: 10px;
-
-  font-size: 15px;
-  font-weight: 500;
-
-  transition: all 0.25s ease;
-  position: relative;
+.dh-sidebar-brand-deal {
+    color: #d4af37 !important;
 }
 
-/* Hover effect (premium feel) */
-.sidebar a:hover {
-  background: linear-gradient(90deg, #fff3b0, #ffe066);
-  transform: translateX(6px);
-  color: #111;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+/* ============================================================
+   BRAND — HUNTS
+============================================================ */
+
+.dh-sidebar-brand-hunts {
+    color: #000000 !important;
 }
 
-/* Active link */
-.sidebar a.active {
-  background: #111;
-  color: #fff;
+
+/* ============================================================
+   CLOSE BUTTON
+============================================================ */
+
+.dh-sidebar-close {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid #d4af37;
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #000000;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
 }
 
-/* ================= HAMBURGER ================= */
-.hamburger {
-  font-size: 28px;
-  width: 40px;
-  height: 40px;
+.dh-sidebar-close:hover {
+    background: #f1f3f5 !important;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    color: #000000 !important;
 
-  cursor: pointer;
+    border-color: #bfc3c7 !important;
 
-  border-radius: 8px;
-
-  transition: 0.2s ease;
+    transform: rotate(90deg);
 }
 
-.hamburger:hover {
-  background: #f0f0f0;
+.dh-sidebar-close:active {
+    transform: rotate(90deg) scale(0.9);
 }
 
-/* ================= OVERLAY ================= */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
 
-  width: 100%;
-  height: 100%;
+/* ============================================================
+   NAVIGATION
+============================================================ */
 
-  background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(2px);
+.dh-sidebar-navigation {
+    width: 100%;
 
-  z-index: 998;
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    margin-top: 24px;
+
+    box-sizing: border-box;
 }
 
-/* ================= OPTIONAL: SCROLL ================= */
-.sidebar {
-  overflow-y: auto;
+
+/* ============================================================
+   NAVIGATION LINKS
+============================================================ */
+
+.dh-navigation-link {
+    position: relative;
+
+    width: 100%;
+    min-height: 44px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 15px;
+
+    margin: 0;
+
+    box-sizing: border-box;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: #ffffff !important;
+
+    color: #222222 !important;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.22s ease,
+        color 0.22s ease,
+        border-color 0.22s ease,
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
 }
 
-.sidebar::-webkit-scrollbar {
-  width: 4px;
+
+/* ============================================================
+   LEFT INDICATOR
+============================================================ */
+
+.dh-navigation-link::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 3px;
+    height: 0;
+
+    transform: translateY(-50%);
+
+    background: #d4af37;
+
+    border-radius: 0 4px 4px 0;
+
+    transition: height 0.22s ease;
 }
 
-.sidebar::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 10px;
-}
-.sidebar a:last-child {
-  background: linear-gradient(135deg, #ffd700, #ffbf00);
-  color: #111;
-  font-weight: 700;
-  margin-top: 15px;
-  border-radius: 10px;
-  text-align: center;
-  border: 1px solid black;
+
+/* ============================================================
+   HOVER
+   PROFESSIONAL GRAY
+============================================================ */
+
+.dh-navigation-link:hover {
+    background: #f1f3f5 !important;
+
+    color: #111827 !important;
+
+    border-color: #e1e4e8 !important;
+
+    transform: translateX(3px);
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.05);
 }
 
-.sidebar a:last-child:hover {
-  background:black;
-  color: gold;
-  transform: translateX(0);
+.dh-navigation-link:hover::before {
+    height: 20px;
 }
 
-.dh-sidebar {
-  width: 84px;
-  flex-shrink: 0;
-  min-height: 100vh;
-  background: var(--navy);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0 24px;
-  position: sticky;
-  top: 0;
+
+/* ============================================================
+   ACTIVE / CURRENT PAGE
+   DARK PROFESSIONAL
+============================================================ */
+
+.dh-navigation-link-active {
+    background: #d4af37 !important;
+
+    color: #000000 !important;
+
+    border-color: #d4af37 !important;
+
+    transform: translateX(0);
+
+    box-shadow:
+        0 5px 14px rgba(0, 0, 0, 0.14);
 }
 
-.dh-sidebar__nav {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  width: 100%;
+.dh-navigation-link-active::before {
+    height: 24px;
+
+    background: #d4af37;
 }
 
-.dh-sidebar__item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  width: 64px;
-  padding: 10px 4px;
-  border-radius: var(--radius-sm);
-  color: rgba(255, 255, 255, 0.6);
-  text-decoration: none;
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 500;
-  transition: background 0.15s ease, color 0.15s ease;
+
+/* ============================================================
+   ACTIVE — HOVER
+============================================================ */
+
+.dh-navigation-link-active:hover {
+    background: #d4af37 !important;
+
+    color: #000000 !important;
+
+    border-color: #1f2937 !important;
+
+    transform: translateX(0);
+
+    box-shadow:
+        0 5px 14px rgba(0, 0, 0, 0.14);
 }
 
-.dh-sidebar__item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+.dh-navigation-link-active:hover::before {
+    height: 24px;
 }
 
-.dh-sidebar__item--active {
-  background: rgba(30, 95, 232, 0.22);
-  color: #ffffff;
+
+/* ============================================================
+   LOGIN BUTTON
+============================================================ */
+
+.dh-sidebar-login {
+    width: 100%;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 15px;
+
+    margin: 12px 0 0;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d4af37 !important;
+    border-radius: 8px;
+
+    background: #d4af37 !important;
+
+    color: #000000 !important;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    transition:
+        background 0.22s ease,
+        color 0.22s ease,
+        border-color 0.22s ease,
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
 }
 
-.dh-sidebar__item--active svg {
-  color: #6fa0ff;
+.dh-sidebar-login:hover {
+    background: #000000 !important;
+
+    color: #d4af37 !important;
+
+    border-color: #000000 !important;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.16);
 }
 
-.dh-sidebar__item--profile {
-  margin-top: 12px;
+.dh-sidebar-login:active {
+    transform: translateY(0);
 }
+
+
+/* ============================================================
+   LOGOUT BUTTON
+============================================================ */
+
+.dh-sidebar-logout {
+    width: 100%;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 0 15px;
+
+    margin: 14px 0 0;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d4d7da !important;
+    border-radius: 8px;
+
+    background: #ffffff !important;
+
+    color: #333333 !important;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    transition:
+        background 0.22s ease,
+        color 0.22s ease,
+        border-color 0.22s ease,
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+.dh-sidebar-logout:hover {
+    background: #f1f3f5 !important;
+
+    color: #111827 !important;
+
+    border-color: #bfc3c7 !important;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dh-sidebar-logout:active {
+    transform: translateY(0);
+}
+
+
+/* ============================================================
+   LOGOUT ICON
+============================================================ */
+
+.dh-sidebar-logout-icon {
+    display: block;
+
+    flex-shrink: 0;
+
+    color: currentColor;
+
+    font-size: 18px;
+}
+
+
+/* ============================================================
+   LOGOUT TEXT
+============================================================ */
+
+.dh-sidebar-logout-text {
+    display: inline-block;
+
+    margin: 0;
+    padding: 0;
+
+    color: inherit;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+/* ============================================================
+   FOCUS
+============================================================ */
+
+.dh-sidebar-close:focus-visible,
+.dh-sidebar-login:focus-visible,
+.dh-sidebar-logout:focus-visible,
+.dh-navigation-link:focus-visible {
+    outline: 2px solid #d4af37 !important;
+
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   TABLET
+   601px — 900px
+============================================================ */
 
 @media (max-width: 900px) {
-  .dh-sidebar {
-    display: none;
-  }
+
+    .dh-sidebar-panel {
+        width: 250px;
+
+        left: -250px;
+
+        padding: 20px 15px;
+    }
+
+    .dh-sidebar-brand {
+        font-size: 21px;
+    }
+
+    .dh-navigation-link {
+        min-height: 42px;
+
+        padding: 0 13px;
+
+        font-size: 13px;
+    }
+
+    .dh-sidebar-login,
+    .dh-sidebar-logout {
+        height: 42px;
+
+        font-size: 13px;
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+   401px — 600px
+============================================================ */
+
+@media (max-width: 600px) {
+
+    .dh-sidebar-panel {
+        width: 220px !important;
+
+        left: -220px;
+
+        padding: 18px 12px;
+
+        box-shadow:
+            6px 0 22px rgba(0, 0, 0, 0.14);
+    }
+
+    .dh-sidebar-panel-open {
+        left: 0;
+    }
+
+    .dh-sidebar-brand {
+        padding: 12px 0 14px;
+
+        font-size: 19px;
+
+        letter-spacing: 0.8px;
+    }
+
+    .dh-sidebar-close {
+        top: 10px;
+
+        right: 10px;
+
+        width: 29px;
+        height: 29px;
+
+        font-size: 12px;
+    }
+
+    .dh-sidebar-navigation {
+        margin-top: 19px;
+
+        gap: 3px;
+    }
+
+    .dh-navigation-link {
+        min-height: 40px;
+
+        padding: 0 11px;
+
+        font-size: 13px;
+
+        border-radius: 7px;
+    }
+
+    .dh-sidebar-login,
+    .dh-sidebar-logout {
+        height: 40px;
+
+        font-size: 13px;
+
+        border-radius: 7px;
+    }
+
+    .dh-sidebar-logout-text {
+        font-size: 13px;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   400px AND BELOW
+============================================================ */
+
+@media (max-width: 400px) {
+
+    .dh-sidebar-panel {
+        width: 205px !important;
+
+        left: -205px;
+
+        padding: 16px 11px;
+    }
+
+    .dh-sidebar-panel-open {
+        left: 0;
+    }
+
+    .dh-sidebar-brand {
+        padding: 11px 0 13px;
+
+        font-size: 18px;
+    }
+
+    .dh-sidebar-close {
+        top: 9px;
+
+        right: 9px;
+
+        width: 28px;
+        height: 28px;
+
+        font-size: 11px;
+    }
+
+    .dh-sidebar-navigation {
+        margin-top: 17px;
+
+        gap: 3px;
+    }
+
+    .dh-navigation-link {
+        min-height: 38px;
+
+        padding: 0 10px;
+
+        font-size: 12.5px;
+    }
+
+    .dh-sidebar-login,
+    .dh-sidebar-logout {
+        height: 38px;
+
+        font-size: 12.5px;
+    }
+
+    .dh-sidebar-logout-text {
+        font-size: 12.5px;
+    }
+
+    .dh-sidebar-logout-icon {
+        font-size: 12px;
+    }
+}
+
+
+/* ============================================================
+   TOUCH DEVICES
+============================================================ */
+
+@media (hover: none) {
+
+    .dh-navigation-link:hover {
+        background: #ffffff !important;
+
+        color: #222222 !important;
+
+        border-color: transparent !important;
+
+        transform: none;
+
+        box-shadow: none;
+    }
+
+    .dh-navigation-link:hover::before {
+        height: 0;
+    }
+
+    .dh-navigation-link-active:hover {
+        background: #1f2937 !important;
+
+        color: #ffffff !important;
+
+        border-color: #1f2937 !important;
+
+        transform: none;
+
+        box-shadow:
+            0 5px 14px rgba(0, 0, 0, 0.14);
+    }
+
+    .dh-navigation-link-active:hover::before {
+        height: 24px;
+    }
 }

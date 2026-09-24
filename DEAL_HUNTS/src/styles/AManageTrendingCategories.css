@@ -1,192 +1,283 @@
-/* .manage-trending-categories-main {
-    padding: 35px 50px;
-    min-height: calc(100vh - 140px);
+/* ============================================================
+   1. GLOBAL RESET
+   ============================================================ */
+
+* {
+    box-sizing: border-box;
 }
 
-.manage-trending-categories-heading {
-    margin-bottom: 30px;
-}
-
-.manage-trending-categories-heading h1 {
-    margin: 0;
-    font-size: 28px;
-    font-weight: 700;
-}
-
-.manage-trending-categories-heading p {
-    margin-top: 8px;
-    color: #777;
-    font-size: 14px;
-}
-
-
-.trending-categories-section {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-}
-
-
-.trending-categories-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 25px;
-}
-
-.trending-categories-header h2 {
-    margin: 0;
-    font-size: 20px;
-}
-
-
-.add-trending-category-btn {
-    border: none;
-    padding: 10px 18px;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-
-.trending-categories-container {
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-.empty-trending-categories {
-    text-align: center;
-    color: #777;
-}
-
-
-.empty-icon {
-    font-size: 45px;
-    margin-bottom: 10px;
-}
-
-
-.empty-trending-categories h3 {
-    margin: 5px 0;
-    color: #333;
-}
-
-
-.empty-trending-categories p {
-    margin-top: 8px;
-    font-size: 14px;
-} */
- /* =========================================================
-   TRENDING CATEGORIES PAGE
-========================================================= */
-
-.manage-trending-categories-main {
+html,
+body {
     width: 100%;
-    min-height: calc(100vh - 140px);
-    padding: 40px 60px;
-}
-
-
-/* =========================================================
-   PAGE HEADING
-========================================================= */
-
-.manage-trending-categories-heading {
-    margin-bottom: 30px;
-}
-
-.manage-trending-categories-heading h1 {
+    height: 100%;
     margin: 0;
-    font-size: 28px;
-    font-weight: 700;
-    color: #172033;
-}
-
-.manage-trending-categories-heading p {
-    margin-top: 8px;
-    font-size: 14px;
-    color: #707784;
+    padding: 0;
+    overflow: hidden;
 }
 
 
-/* =========================================================
-   TRENDING CATEGORY SECTION
-========================================================= */
+/* ============================================================
+   2. PAGE LAYOUT
+   ============================================================ */
 
-.trending-categories-section {
+.adminhome-container-tc {
     width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    background: #f7f7f7;
+    color: #111111;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   3. MAIN CONTENT
+   ============================================================ */
+
+.manage-trending-categories-main-tc {
+    width: 100%;
+    max-width: 1250px;
+
+    flex: 1;
+    min-height: 0;
+
+    margin: 0 auto;
+    padding: 45px 30px 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   4. OPTIONAL PAGE HEADING
+   ============================================================ */
+
+.manage-trending-categories-heading-tc {
+    width: 100%;
+    max-width: 950px;
+
+    flex-shrink: 0;
+
+    margin: 0 0 35px;
+
+    text-align: left;
+}
+
+.manage-trending-categories-heading-tc h1 {
+    margin: 0 0 12px;
+
+    color: #111111;
+
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.25;
+
+    letter-spacing: -0.3px;
+}
+
+.manage-trending-categories-heading-tc p {
+    max-width: 720px;
+
+    margin: 0;
+
+    color: #666666;
+
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   5. TRENDING CATEGORIES CARD
+   ONLY THIS AREA SCROLLS
+   ============================================================ */
+
+.trending-categories-section-tc {
+    --tc-card-max-height: 460px;
+
+    width: 100%;
+    max-width: 1150px;
+
+    margin: 0 auto;
+    padding: 28px;
+
     background: #ffffff;
+
+    border: 1px solid #e2e2e2;
     border-radius: 14px;
-    padding: 25px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
-}
 
+    box-shadow:
+        0 4px 18px rgba(0, 0, 0, 0.05);
 
-/* =========================================================
-   SECTION HEADER
-========================================================= */
-
-.trending-categories-header {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 25px;
+    flex-direction: column;
+    align-items: flex-start;
+
+    max-height: var(--tc-card-max-height);
+
+    flex: 0 1 auto;
+    min-height: 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
 }
 
-.trending-categories-header h2 {
+
+/* ============================================================
+   CARD SCROLLBAR
+   ============================================================ */
+
+.trending-categories-section-tc::-webkit-scrollbar {
+    width: 5px;
+}
+
+.trending-categories-section-tc::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.trending-categories-section-tc::-webkit-scrollbar-thumb {
+    background: #bdbdbd;
+    border-radius: 10px;
+}
+
+.trending-categories-section-tc::-webkit-scrollbar-thumb:hover {
+    background: #999999;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    .trending-categories-section-tc {
+        scrollbar-width: thin;
+        scrollbar-color: #bdbdbd #f1f1f1;
+    }
+}
+
+
+/* ============================================================
+   6. SECTION HEADER
+   ============================================================ */
+
+.trending-categories-header-tc {
+    width: 100%;
+    min-height: 45px;
+
+    margin-bottom: 28px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    position: relative;
+
+    text-align: left;
+
+    flex-shrink: 0;
+}
+
+.trending-categories-header-tc h2 {
     margin: 0;
+
+    color: #111111;
+
     font-size: 21px;
-    font-weight: 650;
-    color: #172033;
+    font-weight: 700;
+    line-height: 1.3;
+
+    text-align: left;
+}
+
+.trending-categories-header-tc p {
+    margin: 8px 0 0;
+
+    color: #666666;
+
+    font-size: 15px;
+    line-height: 1.5;
+
+    text-align: left;
 }
 
 
-/* =========================================================
-   ADD CATEGORY BUTTON
-========================================================= */
+/* ============================================================
+   7. ADD CATEGORY BUTTON
+   ============================================================ */
 
-.add-trending-category-btn {
-    border: none;
-    outline: none;
-    background: #172b4d;
-    color: #ffffff;
+.add-trending-category-btn-tc {
+    position: absolute;
 
-    padding: 11px 20px;
+    top: 50%;
+    right: 0;
 
-    border-radius: 8px;
+    transform: translateY(-50%);
+
+    min-width: 145px;
+    height: 40px;
+
+    padding: 0 18px;
+
+    border: 1px solid #d4af37;
+    border-radius: 7px;
+
+    background: #d4af37;
+    color: #111111;
 
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
 
     cursor: pointer;
 
     transition:
         background 0.2s ease,
-        transform 0.2s ease;
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.add-trending-category-btn:hover {
-    background: #0f1f38;
-    transform: translateY(-1px);
+.add-trending-category-btn-tc:hover:not(:disabled) {
+    background: #c29f2f;
+    border-color: #c29f2f;
+
+    transform:
+        translateY(-50%)
+        translateY(-1px);
+
+    box-shadow:
+        0 4px 12px rgba(212, 175, 55, 0.25);
 }
 
-.add-trending-category-btn:disabled {
-    background: #b8bec8;
+.add-trending-category-btn-tc:active:not(:disabled) {
+    transform: translateY(-50%);
+}
+
+.add-trending-category-btn-tc:disabled {
+    background: #d8d8d8;
+    border-color: #d8d8d8;
+
+    color: #777777;
+
     cursor: not-allowed;
-    transform: none;
+
+    box-shadow: none;
 }
 
 
-/* =========================================================
-   SELECTED TRENDING CATEGORIES CONTAINER
-========================================================= */
+/* ============================================================
+   8. TRENDING CATEGORIES GRID
+   ============================================================ */
 
-.trending-categories-container {
+.trending-categories-container-tc {
     width: 100%;
 
     display: grid;
@@ -194,89 +285,102 @@
     grid-template-columns:
         repeat(4, minmax(0, 1fr));
 
-    gap: 20px;
+    gap: 18px;
 
-    min-height: 180px;
+    align-items: stretch;
+    justify-content: start;
+
+    flex-shrink: 0;
 }
 
 
-/* =========================================================
-   SELECTED CATEGORY CARD
-========================================================= */
+/* ============================================================
+   9. TRENDING CATEGORY CARD
+   ============================================================ */
 
-.trending-category-item {
-    min-height: 170px;
+.trending-category-item-tc {
+    width: 100%;
 
-    background: #f8f9fb;
-
-    border: 1px solid #e2e5ea;
-
-    border-radius: 12px;
+    min-height: 175px;
 
     padding: 22px;
+
+    background: #fafafa;
+
+    border: 1px solid #e2e2e2;
+    border-radius: 11px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    text-align: center;
+
     transition:
         transform 0.2s ease,
-        box-shadow 0.2s ease,
-        border-color 0.2s ease;
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.trending-category-item:hover {
-    transform: translateY(-3px);
+.trending-category-item-tc:hover {
+    border-color: #d4af37;
 
-    border-color: #cbd2dc;
+    transform: translateY(-2px);
 
     box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.08);
+        0 6px 18px rgba(0, 0, 0, 0.07);
 }
 
 
-/* =========================================================
-   CATEGORY INFORMATION
-========================================================= */
+/* ============================================================
+   10. CATEGORY INFORMATION
+   ============================================================ */
 
-.trending-category-info {
+.trending-category-info-tc {
     width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     text-align: center;
 }
 
-.trending-category-info h3 {
+.trending-category-info-tc h3 {
     margin: 0 0 8px;
 
+    color: #111111;
+
     font-size: 18px;
-    font-weight: 650;
-
-    color: #172033;
-
-    word-break: break-word;
+    font-weight: 700;
+    line-height: 1.35;
 }
 
-.trending-category-info p {
+.trending-category-info-tc p {
     margin: 0 0 18px;
 
-    font-size: 12px;
+    color: #777777;
 
-    color: #858c98;
+    font-size: 13px;
+    line-height: 1.4;
 }
 
 
-/* =========================================================
-   REMOVE BUTTON
-========================================================= */
+/* ============================================================
+   11. REMOVE BUTTON
+   ============================================================ */
 
-.trending-category-info button {
-    border: none;
+.trending-category-info-tc button {
+    min-width: 95px;
+    height: 34px;
 
-    background: #fff0f0;
-    color: #d93030;
+    padding: 0 15px;
 
-    padding: 8px 17px;
-
+    border: 1px solid #d8d8d8;
     border-radius: 6px;
+
+    background: #ffffff;
+    color: #555555;
 
     font-size: 13px;
     font-weight: 600;
@@ -284,115 +388,264 @@
     cursor: pointer;
 
     transition:
-        background 0.2s ease,
-        color 0.2s ease;
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
 }
 
-.trending-category-info button:hover {
-    background: #d93030;
-    color: #ffffff;
+.trending-category-info-tc button:hover {
+    color: #b42318;
+
+    border-color: #e0aaa5;
+
+    background: #fff7f6;
 }
 
 
-/* =========================================================
-   EMPTY STATE
-========================================================= */
+/* ============================================================
+   12. EMPTY STATE
+   ============================================================ */
 
-.empty-trending-categories {
+.empty-trending-categories-tc {
     grid-column: 1 / -1;
 
-    min-height: 180px;
+    width: 100%;
+
+    min-height: 230px;
+
+    padding: 35px 20px;
 
     display: flex;
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
 
     text-align: center;
 
-    border: 1px dashed #d5dae1;
+    border: 1px dashed #d5d5d5;
+    border-radius: 10px;
 
-    border-radius: 12px;
+    background: #fafafa;
 
-    background: #fafbfc;
+    flex-shrink: 0;
 }
 
-.empty-icon {
-    font-size: 35px;
-    margin-bottom: 8px;
+.empty-icon-tc {
+    width: 58px;
+    height: 58px;
+
+    margin-bottom: 15px;
+
+    border-radius: 50%;
+
+    background: #f5edcf;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
 }
 
-.empty-trending-categories h3 {
+.empty-trending-categories-tc h3 {
+    margin: 0 0 8px;
+
+    color: #222222;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.empty-trending-categories-tc p {
+    max-width: 500px;
+
     margin: 0;
 
-    font-size: 17px;
-    color: #343b48;
-}
+    color: #777777;
 
-.empty-trending-categories p {
-    margin-top: 7px;
-
-    max-width: 400px;
-
-    font-size: 13px;
-    line-height: 1.5;
-
-    color: #858c98;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 
-/* =========================================================
-   POPUP WRAPPER
-========================================================= */
+/* ============================================================
+   13. ADD TRENDING CATEGORY POPUP
+   ============================================================ */
 
-.trending-category-popup-wrapper {
+.trending-category-popup-tc {
+    width: auto !important;
+    height: auto;
+
+    margin: 0 auto;
+    padding: 0;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    text-align: left;
+}
+
+
+/* ============================================================
+   POPUP OUTER CONTAINER
+   ============================================================ */
+
+.popup-container:has(.trending-category-popup-wrapper-tc) {
+    width: 520px !important;
+
+    max-width: calc(100vw - 40px);
+    max-height: 90vh;
+
+    position: fixed;
+
+    top: 50% !important;
+    left: 50% !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    margin: 0 !important;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.20);
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   POPUP HEADER
+   ============================================================ */
+
+.popup-container:has(.trending-category-popup-wrapper-tc)
+.popup-header {
+    padding: 22px 28px 18px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.popup-container:has(.trending-category-popup-wrapper-tc)
+.popup-header h2 {
+    margin: 0;
+
+    color: #111111;
+
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+
+/* ============================================================
+   POPUP CLOSE BUTTON
+   ============================================================ */
+
+.popup-container:has(.trending-category-popup-wrapper-tc)
+.popup-close {
+    color: #111111;
+
+    background: transparent;
+    border: none;
+
+    font-size: 25px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.popup-container:has(.trending-category-popup-wrapper-tc)
+.popup-close:hover {
+    color: #d4af37;
+
+    transform: rotate(90deg);
+}
+
+
+/* ============================================================
+   POPUP BODY
+   ============================================================ */
+
+.popup-container:has(.trending-category-popup-wrapper-tc)
+.popup-body {
     width: 100%;
-    padding: 5px 2px;
+
+    padding: 28px 32px 30px;
+
+    background: #ffffff;
 }
 
 
-/* =========================================================
-   CATEGORY SELECT BOX
-========================================================= */
+/* ============================================================
+   POPUP CONTENT WRAPPER
+   ============================================================ */
 
-.trending-category-select-box {
+.trending-category-popup-wrapper-tc {
     width: 100%;
+    max-width: none;
+
+    min-width: 0;
+
+    margin: 0;
+    padding: 0;
 
     display: flex;
     flex-direction: column;
+    align-items: stretch;
 
-    gap: 9px;
-
-    margin-bottom: 28px;
+    text-align: left;
 }
 
-.trending-category-select-box label {
+
+/* ============================================================
+   CATEGORY SELECT
+   ============================================================ */
+
+.trending-category-select-box-tc {
+    width: 100%;
+    max-width: none;
+
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.trending-category-select-box-tc label {
+    margin: 0 0 8px;
+
+    color: #222222;
+
     font-size: 14px;
     font-weight: 600;
+    line-height: 1.4;
 
-    color: #303846;
+    text-align: left;
 }
 
-
-/* =========================================================
-   CATEGORY DROPDOWN
-========================================================= */
-
-.trending-category-select-box select {
+.trending-category-select-box-tc select {
     width: 100%;
-
     height: 46px;
 
     padding: 0 14px;
 
-    border: 1px solid #d7dce3;
-
+    border: 1px solid #d3d3d3;
     border-radius: 8px;
 
     background: #ffffff;
-
-    color: #303846;
+    color: #222222;
 
     font-size: 14px;
 
@@ -405,157 +658,766 @@
         box-shadow 0.2s ease;
 }
 
-.trending-category-select-box select:hover {
-    border-color: #aeb6c2;
+.trending-category-select-box-tc select:hover {
+    border-color: #b9b9b9;
 }
 
-.trending-category-select-box select:focus {
-    border-color: #172b4d;
+.trending-category-select-box-tc select:focus {
+    border-color: #d4af37;
 
     box-shadow:
-        0 0 0 3px rgba(23, 43, 77, 0.10);
+        0 0 0 3px rgba(212, 175, 55, 0.16);
 }
 
 
-/* =========================================================
-   POPUP FOOTER
-========================================================= */
+/* ============================================================
+   POPUP ACTIONS
+   ============================================================ */
 
-.trending-category-popup-content {
+.trending-category-popup-content-tc {
     width: 100%;
+    max-width: none;
+
+    margin: 14px 0 0;
+    padding: 0;
 
     display: flex;
-
+    align-items: center;
     justify-content: flex-end;
 
-    align-items: center;
-
-    gap: 12px;
-
-    padding-top: 20px;
-
-    border-top: 1px solid #eceef1;
+    gap: 10px;
 }
 
 
-/* =========================================================
+/* ============================================================
    POPUP BUTTONS
-========================================================= */
+   ============================================================ */
 
-.trending-category-popup-content button {
-    min-width: 110px;
+.trending-category-popup-content-tc button {
+    height: 42px;
 
-    height: 40px;
-
-    padding: 0 17px;
+    padding: 0 18px;
 
     border-radius: 7px;
 
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
+    line-height: 1;
 
     cursor: pointer;
 
     transition:
         background 0.2s ease,
         border-color 0.2s ease,
-        transform 0.2s ease;
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 
-/* =========================================================
-   CANCEL
-========================================================= */
+/* ============================================================
+   CANCEL BUTTON
+   ============================================================ */
 
-.trending-category-popup-content button:first-child {
-    background: #ffffff;
+.trending-category-popup-content-tc button:first-child {
+    min-width: 90px;
 
-    color: #4c5563;
-
-    border: 1px solid #d5dae1;
-}
-
-.trending-category-popup-content button:first-child:hover {
-    background: #f5f6f8;
-}
-
-
-/* =========================================================
-   ADD
-========================================================= */
-
-.trending-category-popup-content button:last-child {
-    background: #172b4d;
-
+    background: #111111;
     color: #ffffff;
 
-    border: 1px solid #172b4d;
+    border: 1px solid #111111;
 }
 
-.trending-category-popup-content button:last-child:hover {
-    background: #0f1f38;
+.trending-category-popup-content-tc button:first-child:hover {
+    background: #000000;
+    border-color: #000000;
 
     transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
-.trending-category-popup-content button:last-child:disabled {
-    background: #b8bec8;
 
-    border-color: #b8bec8;
+/* ============================================================
+   ADD TRENDING CATEGORY BUTTON
+   ============================================================ */
+
+.trending-category-popup-content-tc button:last-child {
+    min-width: 180px;
+
+    background: #d4af37;
+    color: #111111;
+
+    border: 1px solid #d4af37;
+}
+
+.trending-category-popup-content-tc button:last-child:hover:not(:disabled) {
+    background: #c29f2f;
+    border-color: #c29f2f;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 12px rgba(212, 175, 55, 0.28);
+}
+
+.trending-category-popup-content-tc button:last-child:disabled {
+    background: #dddddd;
+
+    color: #888888;
+
+    border-color: #dddddd;
 
     cursor: not-allowed;
+
+    box-shadow: none;
 
     transform: none;
 }
 
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+/* ============================================================
+   14. LARGE DESKTOP
+   4 COLUMNS
+   ============================================================ */
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
 
-    .manage-trending-categories-main {
-        padding: 35px 30px;
+    .manage-trending-categories-main-tc {
+        max-width: 1050px;
+
+        padding-left: 25px;
+        padding-right: 25px;
     }
 
-    .trending-categories-container {
+    .trending-categories-section-tc {
+        max-width: 1000px;
+    }
+
+    .trending-categories-container-tc {
         grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+            repeat(4, minmax(0, 1fr));
+
+        gap: 15px;
     }
 
+    .trending-category-item-tc {
+        padding: 18px;
+    }
 }
 
 
-@media (max-width: 600px) {
+/* ============================================================
+   15. TABLET
+   3 COLUMNS
+   ============================================================ */
 
-    .manage-trending-categories-main {
-        padding: 25px 15px;
+@media (max-width: 900px) {
+
+    .manage-trending-categories-main-tc {
+        padding-top: 35px;
     }
 
-    .trending-categories-section {
+    .trending-categories-container-tc {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 15px;
+    }
+}
+
+
+/* ============================================================
+   16. SMALL TABLET
+   2 COLUMNS
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .manage-trending-categories-main-tc {
+        padding: 30px 20px 30px;
+    }
+
+    .manage-trending-categories-heading-tc {
+        margin-bottom: 28px;
+    }
+
+    .manage-trending-categories-heading-tc h1 {
+        font-size: 26px;
+    }
+
+    .manage-trending-categories-heading-tc p {
+        font-size: 14px;
+    }
+
+
+    /* CARD */
+
+    .trending-categories-section-tc {
+        --tc-card-max-height: 560px;
+
+        padding: 22px 18px;
+
+        border-radius: 12px;
+    }
+
+
+    /* HEADER */
+
+    .trending-categories-header-tc {
+        min-height: auto;
+
+        margin-bottom: 24px;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: flex-start;
+        justify-content: flex-start;
+
+        gap: 8px;
+    }
+
+    .trending-categories-header-tc h2 {
+        font-size: 20px;
+        text-align: left;
+    }
+
+    .trending-categories-header-tc p {
+        margin: 0;
+
+        text-align: left;
+    }
+
+
+    /* ADD BUTTON */
+
+    .add-trending-category-btn-tc {
+        position: static;
+
+        width: auto;
+        min-width: 0;
+
+        height: 38px;
+
+        margin-left: 0;
+
+        padding: 0 10px;
+
+        transform: none;
+    }
+
+    .add-trending-category-btn-tc:hover:not(:disabled) {
+        transform: translateY(-1px);
+    }
+
+    .add-trending-category-btn-tc:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+
+    /* GRID */
+
+    .trending-categories-container-tc {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 15px;
+    }
+
+    .trending-category-item-tc {
+        min-height: 165px;
+
         padding: 18px;
     }
 
-    .trending-categories-header {
-        align-items: flex-start;
 
-        gap: 15px;
+    /* POPUP */
 
-        flex-direction: column;
+    .popup-container:has(.trending-category-popup-wrapper-tc) {
+        width: calc(100vw - 32px) !important;
+        max-width: 520px;
+
+        max-height: calc(100vh - 32px);
+        max-height: calc(100dvh - 32px);
     }
 
-    .trending-categories-container {
-        grid-template-columns: 1fr;
+    .popup-container:has(.trending-category-popup-wrapper-tc)
+    .popup-header {
+        padding: 20px 22px 16px;
     }
 
-    .trending-category-popup-content {
-        flex-direction: column-reverse;
+    .popup-container:has(.trending-category-popup-wrapper-tc)
+    .popup-header h2 {
+        font-size: 21px;
     }
 
-    .trending-category-popup-content button {
-        width: 100%;
+    .popup-container:has(.trending-category-popup-wrapper-tc)
+    .popup-body {
+        padding: 24px 22px 26px;
     }
 
+    .trending-category-popup-wrapper-tc {
+        min-width: 0;
+    }
 }
 
+
+/* ============================================================
+   17. MOBILE
+   1 COLUMN
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    .manage-trending-categories-main-tc {
+        width: 100%;
+
+        padding: 22px 12px 22px;
+    }
+
+
+    /* PAGE HEADING */
+
+    .manage-trending-categories-heading-tc {
+        margin-bottom: 20px;
+    }
+
+    .manage-trending-categories-heading-tc h1 {
+        font-size: 22px;
+        line-height: 1.25;
+    }
+
+    .manage-trending-categories-heading-tc p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+
+    /* MAIN CARD */
+
+    .trending-categories-section-tc {
+        width: 100%;
+
+        --tc-card-max-height: 500px;
+
+        padding: 18px 12px;
+
+        border-radius: 10px;
+    }
+
+
+    /* SECTION HEADER */
+
+    .trending-categories-header-tc {
+        width: 100%;
+
+        margin-bottom: 20px;
+
+        gap: 7px;
+    }
+
+    .trending-categories-header-tc h2 {
+        width: 100%;
+
+        font-size: 19px;
+        line-height: 1.3;
+
+        text-align: left;
+    }
+
+    .trending-categories-header-tc p {
+        width: 100%;
+
+        margin: 0;
+
+        font-size: 13px;
+        line-height: 1.45;
+
+        text-align: left;
+    }
+
+
+    /* ========================================================
+       MOBILE ADD BUTTON
+       SMALL + 5PX HORIZONTAL PADDING
+       ======================================================== */
+
+    .add-trending-category-btn-tc {
+        position: static;
+
+        width: auto;
+        min-width: 0;
+
+        height: 36px;
+
+        margin: 3px 0 0;
+
+        padding: 0 5px;
+
+        border-radius: 6px;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        white-space: nowrap;
+
+        transform: none;
+    }
+
+    .add-trending-category-btn-tc:hover:not(:disabled) {
+        transform: translateY(-1px);
+    }
+
+    .add-trending-category-btn-tc:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+
+    /* GRID */
+
+    .trending-categories-container-tc {
+        width: 100%;
+        max-width: 100%;
+
+        margin: 0;
+
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+    }
+
+
+    /* CATEGORY CARD */
+
+    .trending-category-item-tc {
+        width: 100%;
+
+        min-height: 150px;
+
+        padding: 16px;
+    }
+
+
+    /* CATEGORY TEXT */
+
+    .trending-category-info-tc h3 {
+        font-size: 17px;
+    }
+
+    .trending-category-info-tc p {
+        margin-bottom: 15px;
+
+        font-size: 12.5px;
+    }
+
+
+    /* EMPTY STATE */
+
+    .empty-trending-categories-tc {
+        width: 100%;
+
+        min-height: 210px;
+
+        padding: 28px 14px;
+    }
+
+
+    /* ========================================================
+       MOBILE POPUP
+       ======================================================== */
+
+    .popup-container:has(.trending-category-popup-wrapper-tc) {
+        width: calc(100vw - 24px) !important;
+        max-width: none;
+
+        max-height: calc(100vh - 24px);
+        max-height: calc(100dvh - 24px);
+
+        border-radius: 13px;
+    }
+
+    .popup-container:has(.trending-category-popup-wrapper-tc)
+    .popup-header {
+        padding: 18px 18px 14px;
+    }
+
+    .popup-container:has(.trending-category-popup-wrapper-tc)
+    .popup-header h2 {
+        font-size: 19px;
+    }
+
+    .popup-container:has(.trending-category-popup-wrapper-tc)
+    .popup-body {
+        padding: 20px 18px 22px;
+    }
+
+
+    /* SELECT */
+
+    .trending-category-select-box-tc label {
+        font-size: 13px;
+    }
+
+    .trending-category-select-box-tc select {
+        height: 43px;
+
+        padding: 0 11px;
+
+        font-size: 13px;
+    }
+
+
+    /* POPUP BUTTONS */
+
+    .trending-category-popup-content-tc {
+        width: 100%;
+
+        margin-top: 12px;
+
+        gap: 8px;
+    }
+
+    .trending-category-popup-content-tc button {
+        height: 40px;
+
+        padding: 0 12px;
+
+        font-size: 13px;
+    }
+
+    .trending-category-popup-content-tc button:first-child {
+        min-width: 78px;
+    }
+
+    .trending-category-popup-content-tc button:last-child {
+        min-width: 0;
+
+        flex: 1;
+    }
+}
+
+
+/* ============================================================
+   18. VERY SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 400px) {
+
+    .manage-trending-categories-main-tc {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+
+    /* PAGE HEADING */
+
+    .manage-trending-categories-heading-tc h1 {
+        font-size: 20px;
+    }
+
+    .manage-trending-categories-heading-tc p {
+        font-size: 12px;
+    }
+
+
+    /* CARD */
+
+    .trending-categories-section-tc {
+        --tc-card-max-height: 450px;
+
+        padding: 16px 9px;
+    }
+
+
+    /* HEADER */
+
+    .trending-categories-header-tc {
+        margin-bottom: 18px;
+    }
+
+    .trending-categories-header-tc h2 {
+        font-size: 18px;
+    }
+
+    .trending-categories-header-tc p {
+        font-size: 12.5px;
+    }
+
+
+    /* ADD BUTTON
+       KEEP 5PX HORIZONTAL PADDING */
+
+    .add-trending-category-btn-tc {
+        width: auto;
+        min-width: 0;
+
+        height: 34px;
+
+        padding: 0 5px;
+
+        font-size: 11.5px;
+    }
+
+
+    /* GRID */
+
+    .trending-categories-container-tc {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+    .trending-category-item-tc {
+        min-height: 140px;
+
+        padding: 15px;
+    }
+
+
+    /* CATEGORY TEXT */
+
+    .trending-category-info-tc h3 {
+        font-size: 16px;
+    }
+
+    .trending-category-info-tc p {
+        font-size: 12px;
+    }
+
+
+    /* EMPTY */
+
+    .empty-trending-categories-tc {
+        min-height: 200px;
+
+        padding: 25px 12px;
+    }
+
+
+    /* ========================================================
+       VERY SMALL POPUP
+       ======================================================== */
+
+    .popup-container:has(.trending-category-popup-wrapper-tc) {
+        width: calc(100vw - 18px) !important;
+
+        max-height: calc(100vh - 18px);
+        max-height: calc(100dvh - 18px);
+
+        border-radius: 12px;
+    }
+
+    .popup-container:has(.trending-category-popup-wrapper-tc)
+    .popup-header {
+        padding: 17px 16px 13px;
+    }
+
+    .popup-container:has(.trending-category-popup-wrapper-tc)
+    .popup-header h2 {
+        font-size: 18px;
+    }
+
+    .popup-container:has(.trending-category-popup-wrapper-tc)
+    .popup-body {
+        padding: 18px 15px 20px;
+    }
+
+
+    /* POPUP ACTIONS */
+
+    .trending-category-popup-content-tc {
+        gap: 7px;
+    }
+
+    .trending-category-popup-content-tc button {
+        font-size: 12.5px;
+    }
+}
+
+
+/* ============================================================
+   19. EXTRA SMALL DEVICES
+   PREVENT HORIZONTAL OVERFLOW
+   ============================================================ */
+
+@media (max-width: 340px) {
+
+    .manage-trending-categories-main-tc {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    .trending-categories-section-tc {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .add-trending-category-btn-tc {
+        height: 33px;
+
+        padding-left: 5px;
+        padding-right: 5px;
+
+        font-size: 11px;
+    }
+
+    .trending-category-item-tc {
+        padding: 13px;
+    }
+
+    .popup-container:has(.trending-category-popup-wrapper-tc) {
+        width: calc(100vw - 12px) !important;
+    }
+
+    .popup-container:has(.trending-category-popup-wrapper-tc)
+    .popup-body {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+}
+
+/* ============================================================
+   PAGE TITLE + DESCRIPTION
+   DIRECTLY INSIDE MAIN
+   ============================================================ */
+
+.manage-trending-categories-main-tc > h2 {
+    width: 100%;
+
+    margin: 0 0 10px;
+
+    color: #111111;
+
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.25;
+
+    letter-spacing: -0.3px;
+
+    text-align: left;
+
+    flex-shrink: 0;
+}
+
+.manage-trending-categories-main-tc > p {
+    width: 100%;
+    max-width: 720px;
+
+    margin: 0 0 35px;
+
+    color: #666666;
+
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+
+    text-align: left;
+
+    flex-shrink: 0;
+}
+.manage-trending-categories-main-tc > h2,
+.manage-trending-categories-main-tc > p {
+    margin-left: 30px;
+}

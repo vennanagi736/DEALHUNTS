@@ -1,177 +1,1559 @@
-.dh-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 14px 28px;
-  background: #ffffff;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 20;
+/* ============================================================
+   DEALHUNTS — COMMON HEADER
+
+   GOLD  : #d4af37
+   BLACK : #000000
+   WHITE : #ffffff
+
+   IMPORTANT:
+   - Navigation is always centered.
+   - Header navigation uses .dh-header-navigation.
+   - Header remains stable across user/admin/vendor pages.
+============================================================ */
+
+
+/* ============================================================
+   HEADER WRAPPER
+============================================================ */
+
+.dh-header-wrapper {
+    width: 100%;
+    min-height: 72px;
+
+    display: flex;
+    align-items: center;
+
+    background: #ffffff;
+
+    box-sizing: border-box;
 }
 
-.dh-header__left {
-  display: flex;
-  align-items: center;
-  gap: 36px;
-  min-width: 0;
+
+/* ============================================================
+   COMMON HEADER
+============================================================ */
+
+.header {
+    position: relative;
+
+    width: 100%;
+    min-height: 72px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 28px 0 14px;
+
+    background: #ffffff;
+
+    box-sizing: border-box;
+
+    z-index: 1000;
+
+    border-bottom: 1px solid #eeeeee;
 }
 
-.dh-header__logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 16px;
-  letter-spacing: 0.04em;
-  color: var(--navy);
-  padding: 0;
+
+/* ============================================================
+   LEFT SECTION
+============================================================ */
+
+.left-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    flex-shrink: 0;
+    min-width: max-content;
+
+    gap: 8px;
+
+    z-index: 3;
 }
 
-.dh-header__logo-mark {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: var(--blue);
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: 15px;
+
+/* ============================================================
+   LOGO
+============================================================ */
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    font-size: 28px;
+    font-weight: 800;
+
+    line-height: 1;
+
+    letter-spacing: -0.6px;
+
+    white-space: nowrap;
 }
 
-.dh-header__nav {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+
+/* ============================================================
+   DEAL
+============================================================ */
+
+.Gold {
+    color: #d4af37;
 }
 
-.dh-header__link {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  text-decoration: none;
-  padding: 8px 14px;
-  border-radius: var(--radius-sm);
-  transition: background 0.15s ease, color 0.15s ease;
+
+/* ============================================================
+   HUNTS
+============================================================ */
+
+.Black {
+    color: #000000;
 }
 
-.dh-header__link:hover {
-  background: var(--bg-section);
-  color: var(--text-primary);
+
+/* ============================================================
+   ADMIN TEXT
+============================================================ */
+
+.Admin {
+    color: #555555;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    margin-left: 4px;
 }
 
-.dh-header__link--active {
-  background: var(--blue-light);
-  color: var(--blue);
+
+/* ============================================================
+   CENTER NAVIGATION
+
+   The navigation is positioned relative to .header.
+
+   left: 50%
+   top: 50%
+   transform: translate(-50%, -50%)
+
+   This guarantees that the navigation itself is centered
+   in the header.
+============================================================ */
+
+.dh-header-navigation {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 32px;
+
+    width: max-content;
+
+    max-width: calc(100% - 420px);
+
+    white-space: nowrap;
+
+    z-index: 2;
+
+    box-sizing: border-box;
 }
 
-.dh-header__right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
+
+/* ============================================================
+   NAVIGATION LINKS
+============================================================ */
+
+.header-nav-link {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #111111;
+
+    text-decoration: none;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    line-height: 1;
+
+    padding: 10px 0;
+
+    white-space: nowrap;
+
+    flex-shrink: 0;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
-.dh-header__search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--bg-section);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
-  width: 260px;
-  color: var(--text-muted);
+
+/* ============================================================
+   NAVIGATION HOVER
+============================================================ */
+
+.header-nav-link:hover {
+    color: #111111;
+
+    transform: translateY(-1px);
 }
 
-.dh-header__search input {
-  border: none;
-  background: transparent;
-  outline: none;
-  font-family: var(--font-ui);
-  font-size: 13px;
-  color: var(--text-primary);
-  width: 100%;
+
+/* ============================================================
+   NAVIGATION UNDERLINE
+============================================================ */
+
+.header-nav-link::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: 2px;
+
+    width: 0;
+    height: 2px;
+
+    background: #d4af37;
+
+    transition: width 0.25s ease;
 }
 
-.dh-header__icon-btn {
-  position: relative;
-  width: 38px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: #ffffff;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+/* ============================================================
+   NAVIGATION HOVER UNDERLINE
+============================================================ */
+
+.header-nav-link:hover::after {
+    width: 100%;
 }
 
-.dh-header__icon-btn:hover {
-  background: var(--bg-section);
-  color: var(--navy);
+
+/* ============================================================
+   ACTIVE NAVIGATION
+============================================================ */
+
+.header-nav-link.active {
+    color: #111111;
 }
 
-.dh-header__icon-btn--active {
-  background: var(--blue-light);
-  border-color: var(--blue);
-  color: var(--blue);
+
+.header-nav-link.active::after {
+    width: 100%;
 }
 
-.dh-header__badge {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  min-width: 17px;
-  height: 17px;
-  padding: 0 4px;
-  border-radius: 999px;
-  background: var(--blue);
-  color: #ffffff;
-  font-size: 10px;
-  font-weight: 700;
-  font-family: var(--font-ui);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #ffffff;
+
+/* ============================================================
+   HEADER ACTIONS
+============================================================ */
+
+.header-actions {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 20px;
+
+    flex-shrink: 0;
+    min-width: max-content;
+
+    z-index: 3;
 }
 
-.dh-header__profile {
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--blue-light);
-  color: var(--blue);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+
+/* ============================================================
+   HEADER ICON
+============================================================ */
+
+.header-icon {
+    width: 26px;
+    height: 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #111111;
+
+    text-decoration: none;
+
+    font-size: 20px;
+    line-height: 1;
+
+    flex-shrink: 0;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease,
+        background 0.2s ease;
 }
 
-@media (max-width: 900px) {
-  .dh-header {
-    padding: 12px 16px;
-    gap: 12px;
-  }
-  .dh-header__left {
-    gap: 16px;
-  }
-  .dh-header__nav {
-    display: none;
-  }
-  .dh-header__search {
-    display: none;
-  }
+
+/* ============================================================
+   HEADER ICON HOVER
+============================================================ */
+
+.header-icon:hover {
+    color: #111111;
+
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   HEADER ICON ACTIVE
+============================================================ */
+
+.header-icon.active {
+    color: #d4af37;
+}
+
+
+/* ============================================================
+   HEADER LOGIN
+============================================================ */
+
+.header-login {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+
+    color: #111111;
+
+    text-decoration: none;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    line-height: 1;
+
+    padding: 9px 0;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   LOGIN HOVER
+============================================================ */
+
+.header-login:hover {
+    color: #111111;
+}
+
+
+/* ============================================================
+   LOGIN UNDERLINE
+============================================================ */
+
+.header-login::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: 1px;
+
+    width: 0;
+    height: 2px;
+
+    background: #d4af37;
+
+    transition: width 0.25s ease;
+}
+
+
+.header-login:hover::after {
+    width: 100%;
+}
+
+
+.header-login.active::after {
+    width: 100%;
+}
+
+
+/* ============================================================
+   SEARCH
+   Used by USER HEADER
+============================================================ */
+
+.header-search {
+    position: absolute;
+
+    right: 105px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 250px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    background: #ffffff;
+
+    border: 1px solid #dcdcdc;
+
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+
+    z-index: 2;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* ============================================================
+   SEARCH INPUT
+============================================================ */
+
+.header-search input {
+    flex: 1;
+
+    min-width: 0;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0 12px;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: #111111;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    font-size: 14px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   SEARCH PLACEHOLDER
+============================================================ */
+
+.header-search input::placeholder {
+    color: #888888;
+}
+
+
+/* ============================================================
+   SEARCH BUTTON
+============================================================ */
+
+.header-search button {
+    width: 42px;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #111111;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+
+/* ============================================================
+   SEARCH BUTTON HOVER
+============================================================ */
+
+.header-search button:hover {
+    color: #d4af37;
+}
+
+
+/* ============================================================
+   SEARCH FOCUS
+============================================================ */
+
+.header-search:focus-within {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 0 2px rgba(212, 175, 55, 0.08);
+}
+
+
+/* ============================================================
+   MENU BUTTON
+============================================================ */
+
+.dh-header-menu-button {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 12px 0 0;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: #000000;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 26px;
+    font-weight: 500;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    flex-shrink: 0;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+/* ============================================================
+   MENU BUTTON HOVER
+============================================================ */
+
+.dh-header-menu-button:hover {
+    background: #f1f1f1;
+
+    color: #000000;
+}
+
+
+/* ============================================================
+   MENU BUTTON ACTIVE
+============================================================ */
+
+.dh-header-menu-button:active {
+    background: #e5e5e5;
+}
+
+
+/* ============================================================
+   MENU BUTTON FOCUS
+============================================================ */
+
+.dh-header-menu-button:focus-visible {
+    outline: 2px solid #d4af37;
+
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   PAGE HEADER TITLE
+   Used by Orders
+============================================================ */
+
+.page-header-title {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    color: #111111;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    z-index: 2;
+}
+
+
+/* ============================================================
+   BACK BUTTON
+============================================================ */
+
+.header-back-button {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #111111;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    border-radius: 5px;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* ============================================================
+   BACK BUTTON HOVER
+============================================================ */
+
+.header-back-button:hover {
+    background: #f1f1f1;
+
+    color: #d4af37;
+
+    transform: translateX(-1px);
+}
+
+
+/* ============================================================
+   HEADER WITH MENU
+============================================================ */
+
+.header:has(.dh-header-menu-button) {
+    min-height: 72px;
+}
+
+
+/* ============================================================
+   LARGE TABLET / SMALL DESKTOP
+============================================================ */
+
+@media (max-width: 1200px) {
+
+    .header {
+        padding-right: 22px;
+    }
+
+    .dh-header-navigation {
+        gap: 24px;
+
+        max-width: calc(100% - 360px);
+    }
+
+    .header-search {
+        width: 220px;
+
+        right: 100px;
+    }
+
+    .header-actions {
+        gap: 16px;
+    }
+}
+
+
+/* ============================================================
+   TABLET / SMALL LAPTOP
+============================================================ */
+
+@media (max-width: 1000px) {
+
+    .header {
+        padding: 0 18px 0 12px;
+    }
+
+    .logo {
+        font-size: 25px;
+    }
+
+    .Admin {
+        font-size: 13px;
+    }
+
+    .dh-header-navigation {
+        gap: 18px;
+
+        max-width: calc(100% - 300px);
+    }
+
+    .header-nav-link {
+        font-size: 14px;
+    }
+
+    .header-search {
+        width: 190px;
+
+        right: 92px;
+    }
+
+    .header-actions {
+        gap: 14px;
+    }
+
+    .header-icon {
+        width: 24px;
+        height: 24px;
+
+        font-size: 19px;
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 768px) {
+
+    .dh-header-wrapper {
+        min-height: 64px;
+    }
+
+    .header {
+        min-height: 64px;
+
+        padding: 0 14px 0 10px;
+
+        overflow: hidden;
+    }
+
+    .logo {
+        font-size: 23px;
+
+        letter-spacing: -0.5px;
+    }
+
+    .Admin {
+        font-size: 12px;
+    }
+
+    .dh-header-navigation {
+        position: absolute;
+
+        left: 50%;
+        top: 50%;
+
+        transform: translate(-50%, -50%);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 16px;
+
+        width: max-content;
+
+        max-width: calc(100% - 270px);
+
+        margin: 0;
+
+        flex-shrink: 0;
+    }
+
+    .header-nav-link {
+        font-size: 13px;
+
+        padding: 8px 0;
+    }
+
+    .header-search {
+        position: static;
+
+        transform: none;
+
+        width: 180px;
+        height: 36px;
+
+        margin-left: auto;
+
+        flex-shrink: 1;
+    }
+
+    .header-search input {
+        font-size: 13px;
+
+        padding: 0 10px;
+    }
+
+    .header-search button {
+        width: 38px;
+
+        font-size: 17px;
+    }
+
+    .header-actions {
+        gap: 12px;
+
+        margin-left: 12px;
+    }
+
+    .header-icon {
+        width: 23px;
+        height: 23px;
+
+        font-size: 18px;
+    }
+
+    .header-login {
+        font-size: 13px;
+    }
+
+    .dh-header-menu-button {
+        width: 36px;
+        height: 36px;
+
+        margin-right: 7px;
+
+        font-size: 24px;
+    }
+
+    .page-header-title {
+        font-size: 17px;
+    }
+}
+
+
+/* ============================================================
+   MOBILE — 650px
+============================================================ */
+
+@media (max-width: 650px) {
+
+    .header {
+        padding: 0 10px;
+    }
+
+    .logo {
+        font-size: 21px;
+    }
+
+    .Admin {
+        font-size: 11px;
+    }
+
+    .dh-header-navigation {
+        gap: 11px;
+
+        max-width: calc(100% - 240px);
+    }
+
+    .header-nav-link {
+        font-size: 12px;
+    }
+
+    .header-search {
+        width: 150px;
+    }
+
+    .header-actions {
+        gap: 9px;
+
+        margin-left: 8px;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE — 550px
+============================================================ */
+
+@media (max-width: 550px) {
+
+    .header {
+        padding: 0 8px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .dh-header-navigation {
+        gap: 9px;
+
+        max-width: calc(100% - 210px);
+    }
+
+    .header-nav-link {
+        font-size: 11px;
+    }
+
+    .header-search {
+        width: 125px;
+
+        height: 34px;
+    }
+
+    .header-search input {
+        font-size: 11px;
+
+        padding: 0 7px;
+    }
+
+    .header-search button {
+        width: 32px;
+
+        font-size: 15px;
+    }
+
+    .header-actions {
+        gap: 7px;
+
+        margin-left: 6px;
+    }
+
+    .header-icon {
+        width: 21px;
+        height: 21px;
+
+        font-size: 17px;
+    }
+
+    .header-login {
+        font-size: 12px;
+    }
+
+    .dh-header-menu-button {
+        width: 34px;
+        height: 34px;
+
+        margin-right: 5px;
+
+        font-size: 22px;
+    }
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE — 450px
+============================================================ */
+
+@media (max-width: 450px) {
+
+    .header {
+        min-height: 60px;
+
+        padding: 0 7px;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    .Admin {
+        display: none;
+    }
+
+    .dh-header-navigation {
+        gap: 7px;
+
+        max-width: calc(100% - 150px);
+    }
+
+    .header-nav-link {
+        font-size: 10px;
+
+        padding: 7px 0;
+    }
+
+    .header-search {
+        width: 105px;
+
+        height: 32px;
+    }
+
+    .header-search input {
+        font-size: 10px;
+
+        padding: 0 6px;
+    }
+
+    .header-search button {
+        width: 29px;
+
+        font-size: 14px;
+    }
+
+    .header-actions {
+        gap: 5px;
+
+        margin-left: 5px;
+    }
+
+    .header-icon {
+        width: 20px;
+        height: 20px;
+
+        font-size: 16px;
+    }
+
+    .header-login {
+        font-size: 11px;
+    }
+
+    .dh-header-menu-button {
+        width: 32px;
+        height: 32px;
+
+        margin-right: 3px;
+
+        font-size: 21px;
+    }
+}
+
+
+/* ============================================================
+   EXTRA SMALL MOBILE — 360px
+============================================================ */
+
+@media (max-width: 360px) {
+
+    .header {
+        min-height: 58px;
+
+        padding: 0 5px;
+    }
+
+    .logo {
+        font-size: 17px;
+    }
+
+    .dh-header-navigation {
+        gap: 5px;
+
+        max-width: calc(100% - 120px);
+    }
+
+    .header-nav-link {
+        font-size: 9px;
+
+        padding: 6px 0;
+    }
+
+    .header-search {
+        width: 90px;
+
+        height: 30px;
+    }
+
+    .header-search input {
+        font-size: 9px;
+    }
+
+    .header-search button {
+        width: 27px;
+
+        font-size: 13px;
+    }
+
+    .header-actions {
+        gap: 4px;
+
+        margin-left: 4px;
+    }
+
+    .header-icon {
+        width: 19px;
+        height: 19px;
+
+        font-size: 15px;
+    }
+
+    .header-login {
+        font-size: 10px;
+    }
+
+    .dh-header-menu-button {
+        width: 30px;
+        height: 30px;
+
+        font-size: 20px;
+    }
+}
+
+
+/* ============================================================
+   PREVENT SVG ICON COLLAPSE
+============================================================ */
+
+.header-icon svg,
+.header-search button svg,
+.header-back-button svg {
+    display: block;
+
+    width: 1em;
+    height: 1em;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   HEADER NAVIGATION BOX SIZING
+============================================================ */
+
+.dh-header-navigation,
+.dh-header-navigation * {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DEALHUNTS POPUP - PROFESSIONAL WHITE & GOLD
+========================================================= */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background: rgba(20, 20, 20, 0.52);
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+/* =========================================================
+   MAIN POPUP
+========================================================= */
+.popup-container {
+    position: relative;
+
+    width: 400px;
+    max-width: calc(100vw - 40px);
+
+    margin: 0 auto;
+
+    background: #ffffff;
+
+    border: 1px solid rgba(212, 175, 55, 0.65);
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.20),
+        0 4px 16px rgba(0, 0, 0, 0.08);
+
+    animation: popupOpen 0.2s ease-out;
+}
+
+/* =========================================================
+   POPUP ENTRANCE
+========================================================= */
+
+@keyframes popupOpen {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.popup-header {
+    width: 100%;
+    min-height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eadfbf;
+
+    box-sizing: border-box;
+}
+
+.popup-header h2 {
+    margin: 0;
+
+    color: #171717;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    line-height: 1.2;
+    letter-spacing: -0.2px;
+}
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.popup-close {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #777777;
+
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease;
+}
+
+.popup-close:hover {
+    background: #f7f2e4;
+    color: #b08a1a;
+}
+
+/* =========================================================
+   BODY
+========================================================= */
+
+.popup-body {
+    width: 100%;
+
+    height: auto;
+    min-height: 0;
+
+    padding: 24px 24px 22px;
+
+    background: #ffffff;
+
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   WISHLIST LOGIN POPUP
+========================================================= */
+
+.wishlist-login-popup {
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+.wishlist-login-popup .popup-body {
+    height: auto !important;
+    min-height: 0 !important;
+
+    padding: 24px 28px 20px;
+
+    text-align: center;
+}
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.wishlist-login-popup .popup-body p {
+    margin: 0 0 22px;
+
+    color: #5f5f5f;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    line-height: 1.5;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.wishlist-popup-actions {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+
+    margin: 0;
+    padding: 0;
+}
+
+/* =========================================================
+   PROCEED TO LOGIN
+========================================================= */
+
+.wishlist-proceed-login {
+    width: 100%;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0 16px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d4af37;
+    border-radius: 7px;
+
+    background: #d4af37;
+    color: #111111;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.wishlist-proceed-login:hover {
+    background: #e1bd4e;
+    border-color: #e1bd4e;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 10px rgba(212, 175, 55, 0.20);
+}
+
+/* =========================================================
+   NO THANKS
+========================================================= */
+
+.wishlist-no-thanks {
+    width: 100%;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0 16px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #dedede;
+    border-radius: 7px;
+
+    background: #ffffff;
+    color: #555555;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.wishlist-no-thanks:hover {
+    background: #faf8f1;
+
+    border-color: #d4af37;
+
+    color: #a68119;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .popup-overlay {
+        padding: 16px;
+    }
+
+    .popup-container {
+        width: 100%;
+        max-width: calc(100vw - 32px);
+
+        border-radius: 10px;
+    }
+
+    .popup-header {
+        min-height: 58px;
+
+        padding: 0 16px;
+    }
+
+    .popup-header h2 {
+        font-size: 18px;
+    }
+
+    .popup-body {
+        padding: 20px 18px 18px;
+    }
+
+    .wishlist-login-popup .popup-body {
+        padding: 20px 18px 18px;
+    }
+
+    .wishlist-login-popup .popup-body p {
+        margin-bottom: 18px;
+
+        font-size: 13px;
+    }
+
+    .wishlist-proceed-login {
+        height: 42px;
+        font-size: 13px;
+    }
+
+    .wishlist-no-thanks {
+        height: 40px;
+        font-size: 13px;
+    }
 }

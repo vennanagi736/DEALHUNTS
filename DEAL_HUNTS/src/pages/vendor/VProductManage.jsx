@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import SideWindow from "../../components/SideBar";
+import Header from "../../components/Header";
 
-import "../../styles/VendorHome.css";
-import "../../styles/SideBar.css";
 import "../../styles/VProductManage.css";
 
 import {
     getVendorCategories,
     getVendorBrands
 } from "../../api/VendorApi";
+
+import { deleteInventory } from "../../api/InventoryApi";
 
 
 function VendorProductManage() {
@@ -25,12 +25,12 @@ function VendorProductManage() {
 
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [variantNames, setVariantNames] = useState({});
+    const [colorNames, setColorNames] = useState({});
 
 
     // =========================================================
     // ADMIN MASTER DATA
-    // These are ALL categories and brands created by Admin
-    // Used only for popup dropdowns
     // =========================================================
 
     const [categories, setCategories] = useState([]);
@@ -65,12 +65,106 @@ function VendorProductManage() {
 
     // =========================================================
     // VENDOR-SPECIFIC DATA
-    // These contain ONLY the categories/brands saved by
-    // the currently logged-in vendor
     // =========================================================
 
     const [vendorCategories, setVendorCategories] = useState([]);
     const [vendorBrands, setVendorBrands] = useState([]);
+
+
+    // =========================================================
+    // FETCH VARIANT AND COLOR NAMES
+    // =========================================================
+
+    const fetchVariantAndColorNames = async (productList) => {
+
+        try {
+
+            const productIds = [
+                ...new Set(
+                    productList
+                        .map(item => item.productId)
+                        .filter(id => id != null)
+                )
+            ];
+
+            const variantMap = {};
+            const colorMap = {};
+
+
+            // =====================================================
+            // FETCH VARIANTS FOR EACH PRODUCT
+            // =====================================================
+
+            for (const productId of productIds) {
+
+                const variantResponse = await axios.get(
+                    `http://localhost:8080/admin/products/${productId}/variants`
+                );
+
+                const variants =
+                    Array.isArray(variantResponse.data)
+                        ? variantResponse.data
+                        : [];
+
+
+                variants.forEach(variant => {
+
+                    variantMap[variant.id] =
+                        variant.name;
+
+                });
+
+
+                // =================================================
+                // FETCH COLORS FOR EACH VARIANT
+                // =================================================
+
+                for (const variant of variants) {
+
+                    const colorResponse = await axios.get(
+                        `http://localhost:8080/admin/products/variants/${variant.id}/colors`
+                    );
+
+                    const colors =
+                        Array.isArray(colorResponse.data)
+                            ? colorResponse.data
+                            : [];
+
+
+                    colors.forEach(color => {
+
+                        colorMap[color.id] =
+                            color.name;
+
+                    });
+
+                }
+            }
+
+
+            setVariantNames(variantMap);
+            setColorNames(colorMap);
+
+
+            console.log(
+                "VARIANT NAMES:",
+                variantMap
+            );
+
+            console.log(
+                "COLOR NAMES:",
+                colorMap
+            );
+
+        } catch (error) {
+
+            console.error(
+                "FETCH VARIANT/COLOR NAMES ERROR:",
+                error
+            );
+
+        }
+    };
 
 
     // =========================================================
@@ -111,12 +205,24 @@ function VendorProductManage() {
             );
 
 
-            setProducts(
+            const productData =
                 Array.isArray(response.data)
                     ? response.data
-                    : []
+                    : [];
+
+
+            setProducts(productData);
+
+
+            console.log(
+                "VENDOR PRODUCTS API RESPONSE:",
+                productData
             );
 
+
+            await fetchVariantAndColorNames(
+                productData
+            );
 
         } catch (error) {
 
@@ -144,7 +250,6 @@ function VendorProductManage() {
 
             }
 
-
         } finally {
 
             setIsLoading(false);
@@ -155,7 +260,6 @@ function VendorProductManage() {
 
     // =========================================================
     // FETCH ADMIN CATEGORIES
-    // Used for popup dropdown
     // =========================================================
 
     const fetchVendorCategories = async () => {
@@ -174,7 +278,6 @@ function VendorProductManage() {
 
             setCategories(categoryData);
 
-
         } catch (error) {
 
             console.error(
@@ -191,7 +294,6 @@ function VendorProductManage() {
 
     // =========================================================
     // FETCH ADMIN BRANDS
-    // Used for popup dropdown
     // =========================================================
 
     const fetchVendorBrands = async () => {
@@ -210,7 +312,6 @@ function VendorProductManage() {
 
             setBrands(brandData);
 
-
         } catch (error) {
 
             console.error(
@@ -227,19 +328,24 @@ function VendorProductManage() {
 
     // =========================================================
     // FETCH VENDOR SAVED CATEGORIES
-    // Used for RIGHT SIDE
     // =========================================================
 
     const fetchMyCategories = async () => {
 
-        const token = localStorage.getItem("vendorJwtToken");
-        const vendorId = localStorage.getItem("vendorId");
+        const token =
+            localStorage.getItem("vendorJwtToken");
+
+        const vendorId =
+            localStorage.getItem("vendorId");
+
 
         if (!token || !vendorId) {
             return;
         }
 
+
         try {
+
             const response = await axios.get(
                 "http://localhost:8080/vendor/myCategories",
                 {
@@ -261,20 +367,21 @@ function VendorProductManage() {
                     : []
             );
 
-
         } catch (error) {
 
             console.error(
-                "FETCH MY CATEGORIES ERROR:", error
+                "FETCH MY CATEGORIES ERROR:",
+                error
             );
 
             setVendorCategories([]);
+
         }
     };
 
+
     // =========================================================
     // FETCH VENDOR SAVED BRANDS
-    // Used for RIGHT SIDE
     // =========================================================
 
     const fetchMyBrands = async () => {
@@ -314,7 +421,6 @@ function VendorProductManage() {
                     : []
             );
 
-
         } catch (error) {
 
             console.error(
@@ -327,16 +433,26 @@ function VendorProductManage() {
 
         }
     };
-useEffect(() => {
-    console.log("VENDOR CATEGORIES:", vendorCategories);
-}, [vendorCategories]);
 
-useEffect(() => {
-    console.log("VENDOR BRANDS:", vendorBrands);
-}, [vendorBrands]);
 
-    console.log("VENDOR CATEGORIES:", vendorCategories);
-console.log("VENDOR BRANDS:", vendorBrands);
+    useEffect(() => {
+
+        console.log(
+            "VENDOR CATEGORIES:",
+            vendorCategories
+        );
+
+    }, [vendorCategories]);
+
+
+    useEffect(() => {
+
+        console.log(
+            "VENDOR BRANDS:",
+            vendorBrands
+        );
+
+    }, [vendorBrands]);
 
 
     // =========================================================
@@ -347,11 +463,9 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
         fetchVendorProducts();
 
-        // Admin master data
         fetchVendorCategories();
         fetchVendorBrands();
 
-        // Vendor-specific data
         fetchMyCategories();
         fetchMyBrands();
 
@@ -441,10 +555,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
             setPopupCategory("");
 
-
-            // Refresh vendor-specific categories
             await fetchMyCategories();
-
 
         } catch (error) {
 
@@ -546,10 +657,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
             setPopupBrand("");
 
-
-            // Refresh vendor-specific brands
             await fetchMyBrands();
-
 
         } catch (error) {
 
@@ -572,8 +680,39 @@ console.log("VENDOR BRANDS:", vendorBrands);
     // FILTER PRODUCTS
     // =========================================================
 
+    const groupedProducts = Object.values(
+        products.reduce(
+            (groups, product) => {
+
+                const productId =
+                    product.productId;
+
+
+                if (!groups[productId]) {
+
+                    groups[productId] = {
+                        ...product,
+                        inventoryItems: []
+                    };
+
+                }
+
+
+                groups[productId]
+                    .inventoryItems
+                    .push(product);
+
+
+                return groups;
+
+            },
+            {}
+        )
+    );
+
+
     const filteredProducts =
-        products.filter(
+        groupedProducts.filter(
             product => {
 
                 const categoryMatches =
@@ -595,6 +734,50 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
             }
         );
+
+
+    const getVariantCount =
+        (product) => {
+
+            const variantKeys =
+                new Set(
+                    product.inventoryItems.map(
+                        item =>
+                            item.variantId ??
+                            "default"
+                    )
+                );
+
+
+            return variantKeys.size;
+
+        };
+
+
+    const getSellingPrice =
+        (product) => {
+
+            const basePrice =
+                Number(
+                    product.basePrice || 0
+                );
+
+            const discount =
+                Number(
+                    product.discount || 0
+                );
+
+
+            return (
+                basePrice -
+                (
+                    basePrice *
+                    discount /
+                    100
+                )
+            );
+
+        };
 
 
     // =========================================================
@@ -626,6 +809,71 @@ console.log("VENDOR BRANDS:", vendorBrands);
                     brandName
             ).length;
 
+        };
+
+
+    // =========================================================
+    // DELETE PRODUCT
+    // =========================================================
+
+    const handleDeleteProduct =
+        async () => {
+
+            if (
+                !selectedProduct?.inventoryId
+            ) {
+
+                alert(
+                    "Inventory ID not found."
+                );
+
+                return;
+            }
+
+
+            const confirmed =
+                window.confirm(
+                    `Are you sure you want to delete "${selectedProduct.name}" from your inventory?`
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            try {
+
+                await deleteInventory(
+                    selectedProduct.inventoryId
+                );
+
+
+                alert(
+                    "Product deleted successfully."
+                );
+
+
+                setShowPopup(false);
+                setSelectedProduct(null);
+
+
+                await fetchVendorProducts();
+
+            } catch (error) {
+
+                console.error(
+                    "DELETE PRODUCT ERROR:",
+                    error
+                );
+
+
+                alert(
+                    error.response?.data ||
+                    "Failed to delete product."
+                );
+
+            }
         };
 
 
@@ -662,64 +910,65 @@ console.log("VENDOR BRANDS:", vendorBrands);
         };
 
 
-    const handleClosePopup = () => {
+    const handleClosePopup =
+        () => {
 
-        setShowPopup(false);
+            setShowPopup(false);
 
-        setSelectedProduct(null);
+            setSelectedProduct(null);
 
-    };
+        };
 
 
     // =========================================================
     // OPEN MASTER POPUP
     // =========================================================
 
-    const openMasterPopup = () => {
+    const openMasterPopup =
+        () => {
 
-        setPopupCategory(
-            selectedCategory
-        );
+            setPopupCategory(
+                selectedCategory
+            );
 
-        setPopupBrand(
-            selectedBrand
-        );
+            setPopupBrand(
+                selectedBrand
+            );
 
-        setShowMasterPopup(true);
+            setShowMasterPopup(true);
 
-    };
+        };
 
 
     // =========================================================
     // CLOSE MASTER POPUP
     // =========================================================
 
-    const closeMasterPopup = () => {
+    const closeMasterPopup =
+        () => {
 
-        setShowMasterPopup(false);
+            setShowMasterPopup(false);
 
-        setPopupCategory("");
+            setPopupCategory("");
+            setPopupBrand("");
 
-        setPopupBrand("");
-
-    };
+        };
 
 
     // =========================================================
     // CLEAR FILTERS
     // =========================================================
 
-    const handleClearFilters = () => {
+    const handleClearFilters =
+        () => {
 
-        setSelectedCategory("");
+            setSelectedCategory("");
+            setSelectedBrand("");
 
-        setSelectedBrand("");
+            setPopupCategory("");
+            setPopupBrand("");
 
-        setPopupCategory("");
-
-        setPopupBrand("");
-
-    };
+        };
 
 
     // =========================================================
@@ -734,7 +983,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
         ) {
 
             document.body.classList.remove(
-                "vendor-popup-open"
+                "vendor-popup-open-vpm"
             );
 
             return;
@@ -776,7 +1025,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
 
         document.body.classList.add(
-            "vendor-popup-open"
+            "vendor-popup-open-vpm"
         );
 
 
@@ -789,7 +1038,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
 
             document.body.classList.remove(
-                "vendor-popup-open"
+                "vendor-popup-open-vpm"
             );
 
         };
@@ -801,73 +1050,91 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
 
     // =========================================================
+    // GROUPED VARIANTS
+    // =========================================================
+
+    const groupedVariants =
+        selectedProduct
+            ? Object.values(
+                selectedProduct
+                    .inventoryItems
+                    .reduce(
+                        (groups, item) => {
+
+                            const variantKey =
+                                item.variantId ??
+                                "default";
+
+
+                            if (
+                                !groups[variantKey]
+                            ) {
+
+                                groups[variantKey] = {
+
+                                    variantId:
+                                        item.variantId,
+
+                                    variantName:
+                                        variantNames[
+                                            item.variantId
+                                        ] ||
+                                        "Default Variant",
+
+                                    items: []
+
+                                };
+
+                            }
+
+
+                            groups[
+                                variantKey
+                            ].items.push({
+
+                                ...item,
+
+                                colorName:
+                                    colorNames[
+                                        item.colorId
+                                    ] ||
+                                    "N/A"
+
+                            });
+
+
+                            return groups;
+
+                        },
+                        {}
+                    )
+            )
+            : [];
+
+
+    // =========================================================
     // RENDER
     // =========================================================
 
     return (
 
-        <div className="home-container">
-
-
-            {/* ================================================= */}
-            {/* HEADER */}
-            {/* ================================================= */}
-
-            <header className="header">
-
-                <div className="left-section">
-
-                    <SideWindow />
-
-                </div>
-
-
-                <div className="logo">
-
-                    <span className="Gold">
-                        DEAL
-                    </span>
-
-                    <span className="Black">
-                        HUNTS
-                    </span>
-
-                    <span className="Vendor">
-                        Vendor
-                    </span>
-
-                </div>
-
-
-                <button
-                    className="back-btn"
-                    onClick={() =>
-                        navigate(-1)
-                    }
-                    aria-label="Go back"
-                    title="Go back"
-                >
-                    ←
-                </button>
-
-            </header>
+        <div className="vendor-product-manage-page-vpm">
 
 
             {/* ================================================= */}
             {/* MAIN */}
             {/* ================================================= */}
 
-            <main className="vendor-product-manage">
+            <main className="vendor-product-manage-vpm">
 
 
                 {/* ================================================= */}
                 {/* LEFT — PRODUCTS */}
                 {/* ================================================= */}
 
-                <section className="vendor-products-section">
+                <section className="vendor-products-section-vpm">
 
-
-                    <div className="vendor-manage-header">
+                    <div className="vendor-manage-header-vpm">
 
                         <div>
 
@@ -908,7 +1175,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                         </div>
 
 
-                        <div className="vendor-product-count">
+                        <div className="vendor-product-count-vpm">
 
                             {
                                 filteredProducts.length
@@ -931,7 +1198,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
                     {isLoading ? (
 
-                        <div className="vendor-product-grid">
+                        <div className="vendor-product-grid-vpm">
 
                             {Array.from({
                                 length: 8
@@ -939,15 +1206,15 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                 (_, i) => (
 
                                     <div
-                                        className="vendor-skeleton-card"
+                                        className="vendor-skeleton-card-vpm"
                                         key={i}
                                     >
 
-                                        <div className="vendor-skeleton-media" />
+                                        <div className="vendor-skeleton-media-vpm" />
 
-                                        <div className="vendor-skeleton-line" />
+                                        <div className="vendor-skeleton-line-vpm" />
 
-                                        <div className="vendor-skeleton-line short" />
+                                        <div className="vendor-skeleton-line-vpm short" />
 
                                     </div>
 
@@ -958,15 +1225,14 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
                     ) : (
 
-                        <div className="vendor-product-grid">
-
+                        <div className="vendor-product-grid-vpm">
 
                             {
                                 filteredProducts.length === 0 ? (
 
-                                    <div className="vendor-empty">
+                                    <div className="vendor-empty-vpm">
 
-                                        <div className="vendor-empty-icon">
+                                        <div className="vendor-empty-icon-vpm">
                                             📦
                                         </div>
 
@@ -988,8 +1254,10 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                         product => (
 
                                             <div
-                                                className="vendor-product-card"
-                                                key={product.id}
+                                                className="vendor-product-card-vpm"
+                                                key={
+                                                    product.inventoryId
+                                                }
                                                 onClick={() =>
                                                     handleProductClick(
                                                         product
@@ -1005,7 +1273,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                 tabIndex={0}
                                             >
 
-                                                <div className="vendor-image-wrapper">
+                                                <div className="vendor-image-wrapper-vpm">
 
                                                     {product.image ? (
 
@@ -1016,12 +1284,12 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                             alt={
                                                                 product.name
                                                             }
-                                                            className="vendor-product-image"
+                                                            className="vendor-product-image-vpm"
                                                         />
 
                                                     ) : (
 
-                                                        <div className="vendor-no-image">
+                                                        <div className="vendor-no-image-vpm">
                                                             No Image
                                                         </div>
 
@@ -1031,8 +1299,8 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                     <span
                                                         className={
                                                             product.stock > 0
-                                                                ? "vendor-stock-badge available"
-                                                                : "vendor-stock-badge unavailable"
+                                                                ? "vendor-stock-badge-vpm available-vpm"
+                                                                : "vendor-stock-badge-vpm unavailable-vpm"
                                                         }
                                                     >
 
@@ -1047,7 +1315,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                 </div>
 
 
-                                                <div className="vendor-product-details">
+                                                <div className="vendor-product-details-vpm">
 
                                                     <h3>
                                                         {
@@ -1056,21 +1324,33 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                     </h3>
 
 
-                                                    <p className="vendor-description">
+                                                    <p className="vendor-description-vpm">
                                                         {
                                                             product.description
                                                         }
                                                     </p>
 
 
-                                                    <div className="vendor-product-bottom">
+                                                    <div className="vendor-product-bottom-vpm">
 
-                                                        <span className="vendor-price">
+                                                        <span className="vendor-variant-count-vpm">
+
+                                                            Variants:{" "}
+                                                            {
+                                                                getVariantCount(
+                                                                    product
+                                                                )
+                                                            }
+
+                                                        </span>
+
+
+                                                        <span className="vendor-price-vpm">
 
                                                             ₹
                                                             {
-                                                                Number(
-                                                                    product.sellingPrice
+                                                                getSellingPrice(
+                                                                    product
                                                                 ).toLocaleString(
                                                                     "en-IN"
                                                                 )
@@ -1082,8 +1362,8 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                         <span
                                                             className={
                                                                 product.stock > 0
-                                                                    ? "vendor-stock available"
-                                                                    : "vendor-stock unavailable"
+                                                                    ? "vendor-stock-vpm available-vpm"
+                                                                    : "vendor-stock-vpm unavailable-vpm"
                                                             }
                                                         >
 
@@ -1111,26 +1391,6 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
                     )}
 
-
-                    {/* ================================================= */}
-                    {/* ADD CATEGORY / BRAND */}
-                    {/* ================================================= */}
-
-                    <div className="vendor-master-actions">
-
-                        <button
-                            type="button"
-                            className="vendor-add-master-btn"
-                            onClick={
-                                openMasterPopup
-                            }
-                        >
-                            + Add Category / Brand
-                        </button>
-
-                    </div>
-
-
                 </section>
 
 
@@ -1138,14 +1398,14 @@ console.log("VENDOR BRANDS:", vendorBrands);
                 {/* RIGHT — VENDOR CATEGORIES + BRANDS */}
                 {/* ================================================= */}
 
-                <aside className="vendor-categories-section">
+                <aside className="vendor-categories-section-vpm">
 
 
                     {/* ================================================= */}
                     {/* CATEGORIES */}
                     {/* ================================================= */}
 
-                    <div className="vendor-categories-header">
+                    <div className="vendor-categories-header-vpm">
 
                         <h2>
                             Categories
@@ -1160,23 +1420,24 @@ console.log("VENDOR BRANDS:", vendorBrands);
                     </div>
 
 
-                    <p className="vendor-categories-description">
+                    <p className="vendor-categories-description-vpm">
                         Select a category to view its products.
                     </p>
 
 
-                    <div className="vendor-category-list">
+                    <div className="vendor-category-list-vpm">
 
                         {
                             vendorCategories.length === 0 ? (
 
-                                <div className="vendor-no-categories">
+                                <div className="vendor-no-categories-vpm">
                                     No categories added yet.
                                 </div>
 
                             ) : (
 
-                                vendorCategories.map(item => {
+                                vendorCategories.map(
+                                    item => {
 
                                         const category =
                                             item.category;
@@ -1192,8 +1453,8 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                 className={
                                                     selectedCategory ===
                                                     category.name
-                                                        ? "vendor-category-item active"
-                                                        : "vendor-category-item"
+                                                        ? "vendor-category-item-vpm active-vpm"
+                                                        : "vendor-category-item-vpm"
                                                 }
                                                 onClick={() =>
                                                     setSelectedCategory(
@@ -1202,12 +1463,12 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                 }
                                             >
 
-                                                <span className="vendor-category-icon">
+                                                <span className="vendor-category-icon-vpm">
                                                     📦
                                                 </span>
 
 
-                                                <span className="vendor-category-name">
+                                                <span className="vendor-category-name-vpm">
 
                                                     {
                                                         category.name
@@ -1216,7 +1477,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                 </span>
 
 
-                                                <span className="vendor-category-count">
+                                                <span className="vendor-category-count-vpm">
 
                                                     {
                                                         getCategoryProductCount(
@@ -1243,7 +1504,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                     {/* BRANDS */}
                     {/* ================================================= */}
 
-                    <div className="vendor-categories-header vendor-brands-header">
+                    <div className="vendor-categories-header-vpm vendor-brands-header-vpm">
 
                         <h2>
                             Brands
@@ -1258,17 +1519,17 @@ console.log("VENDOR BRANDS:", vendorBrands);
                     </div>
 
 
-                    <p className="vendor-categories-description">
+                    <p className="vendor-categories-description-vpm">
                         Select a brand to view its products.
                     </p>
 
 
-                    <div className="vendor-category-list">
+                    <div className="vendor-category-list-vpm">
 
                         {
                             vendorBrands.length === 0 ? (
 
-                                <div className="vendor-no-categories">
+                                <div className="vendor-no-categories-vpm">
                                     No brands added yet.
                                 </div>
 
@@ -1291,8 +1552,8 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                 className={
                                                     selectedBrand ===
                                                     brand.name
-                                                        ? "vendor-category-item active"
-                                                        : "vendor-category-item"
+                                                        ? "vendor-category-item-vpm active-vpm"
+                                                        : "vendor-category-item-vpm"
                                                 }
                                                 onClick={() =>
                                                     setSelectedBrand(
@@ -1301,22 +1562,21 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                 }
                                             >
 
-                                                <span className="vendor-category-icon">
+                                                <span className="vendor-category-icon-vpm">
                                                     🏷️
                                                 </span>
 
 
-                                                <span className="vendor-category-name">
+                                                <span className="vendor-category-name-vpm">
 
                                                     {
                                                         brand.name
                                                     }
 
                                                 </span>
-                                                
 
 
-                                                <span className="vendor-category-count">
+                                                <span className="vendor-category-count-vpm">
 
                                                     {
                                                         getBrandProductCount(
@@ -1345,7 +1605,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
                     <button
                         type="button"
-                        className="vendor-clear-filter-btn"
+                        className="vendor-clear-filter-btn-vpm"
                         onClick={
                             handleClearFilters
                         }
@@ -1353,6 +1613,24 @@ console.log("VENDOR BRANDS:", vendorBrands);
                         Clear Filters
                     </button>
 
+
+                    {/* ================================================= */}
+                    {/* ADD CATEGORY / BRAND */}
+                    {/* ================================================= */}
+
+                    <div className="vendor-master-actions-vpm">
+
+                        <button
+                            type="button"
+                            className="vendor-add-master-btn-vpm"
+                            onClick={
+                                openMasterPopup
+                            }
+                        >
+                            + Add Category / Brand
+                        </button>
+
+                    </div>
 
                 </aside>
 
@@ -1367,7 +1645,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                 showMasterPopup && (
 
                     <div
-                        className="vendor-popup-overlay"
+                        className="vendor-popup-overlay-vpm"
                         onClick={
                             closeMasterPopup
                         }
@@ -1375,7 +1653,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                     >
 
                         <div
-                            className="vendor-popup master-popup"
+                            className="vendor-popup-vpm master-popup-vpm"
                             onClick={
                                 e =>
                                     e.stopPropagation()
@@ -1385,10 +1663,9 @@ console.log("VENDOR BRANDS:", vendorBrands);
                             aria-labelledby="master-popup-title"
                         >
 
-
                             <button
                                 type="button"
-                                className="vendor-popup-close"
+                                className="vendor-popup-close-vpm"
                                 onClick={
                                     closeMasterPopup
                                 }
@@ -1398,8 +1675,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                             </button>
 
 
-                            <div className="vendor-popup-details">
-
+                            <div className="vendor-popup-details-vpm">
 
                                 <h2 id="master-popup-title">
                                     Add Category / Brand
@@ -1416,11 +1692,11 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                 {/* CATEGORY */}
                                 {/* ================================================= */}
 
-                                <div className="master-option-content">
+                                <div className="master-option-content-vpm">
 
                                     <label
                                         htmlFor="vendor-category-select"
-                                        className="master-select-label"
+                                        className="master-select-label-vpm"
                                     >
                                         Category
                                     </label>
@@ -1437,7 +1713,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                     e.target.value
                                                 )
                                         }
-                                        className="vendor-master-select"
+                                        className="vendor-master-select-vpm"
                                     >
 
                                         <option value="">
@@ -1471,7 +1747,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
                                     <button
                                         type="button"
-                                        className="vendor-save-master-btn"
+                                        className="vendor-save-master-btn-vpm"
                                         onClick={
                                             handleSaveCategory
                                         }
@@ -1489,11 +1765,11 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                 {/* BRAND */}
                                 {/* ================================================= */}
 
-                                <div className="master-option-content">
+                                <div className="master-option-content-vpm">
 
                                     <label
                                         htmlFor="vendor-brand-select"
-                                        className="master-select-label"
+                                        className="master-select-label-vpm"
                                     >
                                         Brand
                                     </label>
@@ -1510,7 +1786,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                                     e.target.value
                                                 )
                                         }
-                                        className="vendor-master-select"
+                                        className="vendor-master-select-vpm"
                                     >
 
                                         <option value="">
@@ -1544,7 +1820,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
                                     <button
                                         type="button"
-                                        className="vendor-save-master-btn"
+                                        className="vendor-save-master-btn-vpm"
                                         onClick={
                                             handleSaveBrand
                                         }
@@ -1556,7 +1832,6 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                     </button>
 
                                 </div>
-
 
                             </div>
 
@@ -1577,7 +1852,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                 selectedProduct && (
 
                     <div
-                        className="vendor-popup-overlay"
+                        className="vendor-popup-overlay-vpm"
                         onClick={
                             handleClosePopup
                         }
@@ -1585,7 +1860,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                     >
 
                         <div
-                            className="vendor-popup"
+                            className="vendor-popup-vpm"
                             onClick={
                                 e =>
                                     e.stopPropagation()
@@ -1597,10 +1872,9 @@ console.log("VENDOR BRANDS:", vendorBrands);
                             }
                         >
 
-
                             <button
                                 type="button"
-                                className="vendor-popup-close"
+                                className="vendor-popup-close-vpm"
                                 onClick={
                                     handleClosePopup
                                 }
@@ -1610,10 +1884,10 @@ console.log("VENDOR BRANDS:", vendorBrands);
                             </button>
 
 
-                            <div className="vendor-popup-content">
+                            <div className="vendor-popup-content-vpm">
 
 
-                                <div className="vendor-popup-image">
+                                <div className="vendor-popup-image-vpm">
 
                                     {
                                         selectedProduct.image ? (
@@ -1629,7 +1903,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
 
                                         ) : (
 
-                                            <div className="vendor-no-image">
+                                            <div className="vendor-no-image-vpm">
                                                 No Image
                                             </div>
 
@@ -1639,7 +1913,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                 </div>
 
 
-                                <div className="vendor-popup-details">
+                                <div className="vendor-popup-details-vpm">
 
                                     <h2>
                                         {
@@ -1655,7 +1929,7 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                     </p>
 
 
-                                    <div className="vendor-popup-info">
+                                    <div className="vendor-popup-info-vpm">
 
 
                                         <div>
@@ -1667,8 +1941,8 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                             <strong>
                                                 ₹
                                                 {
-                                                    Number(
-                                                        selectedProduct.sellingPrice
+                                                    getSellingPrice(
+                                                        selectedProduct
                                                     ).toLocaleString(
                                                         "en-IN"
                                                     )
@@ -1724,10 +1998,98 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                         </div>
 
 
+                                        {/* ================================================= */}
+                                        {/* VARIANTS */}
+                                        {/* ================================================= */}
+
+                                        <div className="vendor-popup-variants-vpm">
+
+                                            {groupedVariants.map(
+                                                (
+                                                    variant,
+                                                    index
+                                                ) => (
+
+                                                    <div
+                                                        className="vendor-popup-variant-vpm"
+                                                        key={
+                                                            variant.variantId ??
+                                                            `variant-${index}`
+                                                        }
+                                                    >
+
+                                                        <h3>
+                                                            Variant{" "}
+                                                            {index + 1}:
+                                                        </h3>
+
+
+                                                        <p className="vendor-popup-variant-name-vpm">
+
+                                                            Variant:{" "}
+                                                            {
+                                                                variant.variantName
+                                                            }
+
+                                                        </p>
+
+
+                                                        {
+                                                            variant.items.map(
+                                                                (
+                                                                    item,
+                                                                    colorIndex
+                                                                ) => (
+
+                                                                    <div
+                                                                        className="vendor-popup-color-row-vpm"
+                                                                        key={
+                                                                            item.inventoryId ??
+                                                                            `color-${colorIndex}`
+                                                                        }
+                                                                    >
+
+                                                                        <span>
+
+                                                                            Color:{" "}
+                                                                            {
+                                                                                item.colorName ||
+                                                                                "N/A"
+                                                                            }
+
+                                                                        </span>
+
+
+                                                                        <strong>
+
+                                                                            Price: ₹
+                                                                            {
+                                                                                getSellingPrice(
+                                                                                    item
+                                                                                ).toLocaleString(
+                                                                                    "en-IN"
+                                                                                )
+                                                                            }
+
+                                                                        </strong>
+
+                                                                    </div>
+
+                                                                )
+                                                            )
+                                                        }
+
+                                                    </div>
+
+                                                )
+                                            )}
+
+                                        </div>
+
                                     </div>
 
 
-                                    <div className="vendor-popup-vendor">
+                                    <div className="vendor-popup-vendor-vpm">
 
                                         Vendor ID:
 
@@ -1742,6 +2104,35 @@ console.log("VENDOR BRANDS:", vendorBrands);
                                     </div>
 
 
+                                    <div className="vendor-popup-actions-vpm">
+
+                                        <button
+                                            type="button"
+                                            className="vendor-edit-btn-vpm"
+                                            onClick={() => {
+
+                                                navigate(
+                                                    `/vendor/edit-product/${selectedProduct.inventoryId}`
+                                                );
+
+                                            }}
+                                        >
+                                            Edit
+                                        </button>
+
+
+                                        <button
+                                            type="button"
+                                            className="vendor-delete-btn-vpm"
+                                            onClick={
+                                                handleDeleteProduct
+                                            }
+                                        >
+                                            Delete
+                                        </button>
+
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -1753,10 +2144,10 @@ console.log("VENDOR BRANDS:", vendorBrands);
                 )
             }
 
-
         </div>
-    );
-}
 
+    );
+
+}
 
 export default VendorProductManage;

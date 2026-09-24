@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import { loginUser } from "../../api/UserApi";
-import Layout from "../../components/Layout";
 import "../../styles/Login.css";
+
 import { useRole } from "../../context/UseRole";
 import LoginDetails from "../../components/LoginDetails";
 import { validateLogin } from "../../components/validation";
@@ -10,7 +11,6 @@ import { validateLogin } from "../../components/validation";
 function Login() {
   const navigate = useNavigate();
 
-  // Get both updateRole and logout
   const { updateRole, logout } = useRole();
 
   const [email, setEmail] = useState("");
@@ -27,9 +27,9 @@ function Login() {
   // ============================================================
 
   const handleLogin = async (e) => {
-    console.log("user clicked login");
-
     e.preventDefault();
+
+    console.log("user clicked login");
 
     const errorMessage = validateLogin(
       email,
@@ -52,7 +52,6 @@ function Login() {
       );
 
       if (response.data.success) {
-
         setError("");
 
         // ======================================================
@@ -80,12 +79,12 @@ function Login() {
         updateRole("ROLE_USER");
 
         setSuccess(true);
+        setMessage("Login Successful");
 
-        setMessage(
-          "Login Successful"
-        );
+        // ======================================================
+        // NAVIGATE TO HOME
+        // ======================================================
 
-        // Go to Home
         navigate("/home");
 
       } else {
@@ -103,15 +102,11 @@ function Login() {
       console.error(error);
 
       setSuccess(false);
-
-      setMessage(
-        "Server Error"
-      );
+      setMessage("Server Error");
 
     } finally {
 
       setLoading(false);
-
     }
   };
 
@@ -121,13 +116,9 @@ function Login() {
 
   const handleGuest = () => {
 
-    console.log(
-      "Continuing as guest"
-    );
+    console.log("Continuing as guest");
 
     /*
-     * IMPORTANT:
-     *
      * logout() clears:
      * 1. RoleContext state
      * 2. role from localStorage
@@ -137,33 +128,19 @@ function Login() {
 
     logout();
 
-    /*
-     * Extra cleanup for any old user authentication keys.
-     */
+    // ==========================================================
+    // EXTRA CLEANUP
+    // ==========================================================
 
-    localStorage.removeItem(
-      "userToken"
-    );
+    localStorage.removeItem("userToken");
+    localStorage.removeItem("userJwtToken");
+    localStorage.removeItem("jwtToken");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("role");
 
-    localStorage.removeItem(
-      "userJwtToken"
-    );
-
-    localStorage.removeItem(
-      "jwtToken"
-    );
-
-    localStorage.removeItem(
-      "userEmail"
-    );
-
-    localStorage.removeItem(
-      "role"
-    );
-
-    /*
-     * Go to Home as a guest.
-     */
+    // ==========================================================
+    // GO TO HOME AS GUEST
+    // ==========================================================
 
     navigate("/home");
   };
@@ -173,25 +150,32 @@ function Login() {
   // ============================================================
 
   return (
-    <Layout>
+    <div className="dh-user-login-page">
 
-      <div className="login-page">
+      {/* ======================================================
+          LOGIN FORM
+      ====================================================== */}
 
-        <form onSubmit={handleLogin}>
+      <form
+        className="dh-user-login-form"
+        onSubmit={handleLogin}
+      >
 
-          <div className="login-box">
+        <div className="dh-user-login-box">
 
-            {/* ==================================================
-                TITLE
-            ================================================== */}
+          {/* ==================================================
+              TITLE
+          ================================================== */}
 
-            <h2 className="login-title">
-              Login-Form
-            </h2>
+          <h2 className="dh-user-login-title">
+            Login-Form
+          </h2>
 
-            {/* ==================================================
-                LOGIN DETAILS
-            ================================================== */}
+          {/* ==================================================
+              LOGIN DETAILS
+          ================================================== */}
+
+          <div className="dh-user-login-details">
 
             <LoginDetails
               email={email}
@@ -200,122 +184,122 @@ function Login() {
               setPassword={setPassword}
             />
 
-            {/* ==================================================
-                VALIDATION ERROR
-            ================================================== */}
+          </div>
 
-            {error && (
-              <p className="error-message">
-                {error}
-              </p>
-            )}
+          {/* ==================================================
+              VALIDATION ERROR
+          ================================================== */}
 
-            {/* ==================================================
-                RESPONSE MESSAGE
-            ================================================== */}
-
-            {message && (
-              <p
-                className="response-message"
-                style={{
-                  color: success
-                    ? "green"
-                    : "red"
-                }}
-              >
-                {message}
-              </p>
-            )}
-
-            {/* ==================================================
-                LOGIN BUTTON
-            ================================================== */}
-
-            <div className="login-actions">
-
-              <button
-                type="submit"
-                disabled={
-                  !email ||
-                  !password ||
-                  loading
-                }
-              >
-                {loading
-                  ? "Logging in..."
-                  : "Login"}
-              </button>
-
-            </div>
-
-            {/* ==================================================
-                FORGOT PASSWORD
-            ================================================== */}
-
-            <p className="forgot-password">
-
-              <Link
-                to="/forgot-password"
-                className="userregister-link"
-              >
-                Forgot Password?
-              </Link>
-
+          {error && (
+            <p className="dh-user-login-error">
+              {error}
             </p>
+          )}
 
-            {/* ==================================================
-                REGISTER
-            ================================================== */}
+          {/* ==================================================
+              RESPONSE MESSAGE
+          ================================================== */}
 
-            <p className="register">
-
-              I don't have an account?{" "}
-
-              <Link
-                to="/Register"
-                className="userregister-link"
-              >
-                Register
-              </Link>
-
+          {message && (
+            <p
+              className={`dh-user-login-response ${
+                success
+                  ? "dh-user-login-success"
+                  : "dh-user-login-failure"
+              }`}
+            >
+              {message}
             </p>
+          )}
 
-            {/* ==================================================
-                SKIP LOGIN
-            ================================================== */}
+          {/* ==================================================
+              LOGIN BUTTON
+          ================================================== */}
 
-            <p className="register">
+          <div className="dh-user-login-actions">
 
-              Just browsing?{" "}
-
-              <span
-                className="userregister-link"
-                onClick={handleGuest}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-
-                  if (
-                    e.key === "Enter" ||
-                    e.key === " "
-                  ) {
-                    handleGuest();
-                  }
-
-                }}
-              >
-                Skip login
-              </span>
-
-            </p>
+            <button
+              type="submit"
+              className="dh-user-login-submit"
+              disabled={
+                !email ||
+                !password ||
+                loading
+              }
+            >
+              {loading
+                ? "Logging in..."
+                : "Login"}
+            </button>
 
           </div>
 
-        </form>
+          {/* ==================================================
+              FORGOT PASSWORD
+          ================================================== */}
 
-      </div>
+          <p className="dh-user-login-forgot">
 
-    </Layout>
+            <Link
+              to="/forgot-password"
+              className="dh-user-login-link"
+            >
+              Forgot Password?
+            </Link>
+
+          </p>
+
+          {/* ==================================================
+              REGISTER
+          ================================================== */}
+
+          <p className="dh-user-login-register">
+
+            I don't have an account?{" "}
+
+            <Link
+              to="/register"
+              className="dh-user-login-link"
+            >
+              Register
+            </Link>
+
+          </p>
+
+          {/* ==================================================
+              SKIP LOGIN
+          ================================================== */}
+
+          <p className="dh-user-login-guest">
+
+            Just browsing?{" "}
+
+            <span
+              className="dh-user-login-guest-link"
+              onClick={handleGuest}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+
+                if (
+                  e.key === "Enter" ||
+                  e.key === " "
+                ) {
+                  handleGuest();
+                }
+
+              }}
+            >
+              Skip login
+            </span>
+
+          </p>
+
+        </div>
+
+      </form>
+
+    </div>
   );
 }
 

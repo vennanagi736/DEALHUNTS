@@ -22,20 +22,18 @@ public class OrderController {
 
     private final OrderService orderService;
 
-
     public OrderController(
             OrderService orderService
     ) {
         this.orderService = orderService;
     }
 
-
     /* ============================================================
        PLACE ORDER
     ============================================================ */
 
     @PostMapping("/place")
-    public ResponseEntity<OrderResponse> placeOrder(
+    public ResponseEntity<List<OrderResponse>> placeOrder(
             Authentication authentication,
             @RequestBody PlaceOrderRequest request
     ) {
@@ -43,17 +41,16 @@ public class OrderController {
         String email =
                 authentication.getName();
 
-        OrderResponse response =
+        List<OrderResponse> responses =
                 orderService.placeOrder(
                         email,
                         request
                 );
 
         return ResponseEntity.ok(
-                response
+                responses
         );
     }
-
 
     /* ============================================================
        GET MY ORDERS
@@ -76,7 +73,6 @@ public class OrderController {
                 orders
         );
     }
-
 
     /* ============================================================
        GET SINGLE ORDER

@@ -13,6 +13,8 @@ public class ProductDetailsDTO {
 
     private List<ProductSpecificationDTO> specifications;
 
+    private List<VariantDTO> variants;
+
     // ============================================================
     // CONSTRUCTOR
     // ============================================================
@@ -27,7 +29,8 @@ public class ProductDetailsDTO {
             String category,
             String description,
             String thumbnailUrl,
-            List<ProductSpecificationDTO> specifications
+            List<ProductSpecificationDTO> specifications,
+            List<VariantDTO> variants
     ) {
         this.id = id;
         this.name = name;
@@ -36,6 +39,7 @@ public class ProductDetailsDTO {
         this.description = description;
         this.thumbnailUrl = thumbnailUrl;
         this.specifications = specifications;
+        this.variants = variants;
     }
 
     // ============================================================
@@ -70,6 +74,10 @@ public class ProductDetailsDTO {
         return specifications;
     }
 
+    public List<VariantDTO> getVariants() {
+        return variants;
+    }
+
     // ============================================================
     // SETTERS
     // ============================================================
@@ -102,5 +110,11 @@ public class ProductDetailsDTO {
             List<ProductSpecificationDTO> specifications
     ) {
         this.specifications = specifications;
+    }
+
+    public void setVariants(
+            List<VariantDTO> variants
+    ) {
+        this.variants = variants;
     }
 }

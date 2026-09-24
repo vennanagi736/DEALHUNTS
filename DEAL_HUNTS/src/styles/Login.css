@@ -1,139 +1,456 @@
-.header {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 20px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 2px solid #e0e0e0;
-  backdrop-filter: blur(10px);
-}
-.form-wrapper {
-  display: flex;
-  justify-content: center; 
-  align-items: center;     
-  min-height: 100vh;       
-  background-color: #f5f5f5;
-  padding: 20px;
+/* ============================================================
+   PAGE
+   Header is handled by the common Header component. The page
+   fills the remaining viewport height below the header and
+   centers the card vertically, so there's no large empty gap
+   and no page-level scrolling.
+============================================================ */
 
-}
-/* Outer box */
-.form-box {
-  max-width: 450px;
-  margin: 80px auto; /* center horizontally */
-  padding: 20px;
-}
-/* Inner login box */
-.login-box {
-  background:white;
-  padding: 40px;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  margin-top: 50px;
-  box-shadow:
-    0 10px 30px rgba(0,0,0,0.15);
-  width:420px;
-  align-items: center; /* center everything horizontally */
-}
-
-
-
-.login-title{
-    font-size: 25px;
-}
-
-/* Input fields full width */
-.login-box input {
-    width:100%;
-    padding:14px;
-    margin-top:8px;
-    border-radius:10px;
-    border:1px solid #ccc;
-    font-size:16px;
-}
-
-/* BIG login button */
-.login-box button{
+.dh-user-login-page {
     width: 100%;
-    background-color: gold;
-    color: color;
-    font-family: cursive;
-    border: 2px solid white;   
-    font-size: 20px;
-    padding:  10px 110px;
-    border-radius: 8px;
-}
-.login-actions button:hover{
-    background-color: gold;
-    color: black;
-    border: 2px solid black;
-}
-.login-box input:focus{
-    outline:none;
-    border:1px solid gold;
-    box-shadow:0 0 8px rgba(255,215,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 64px);
+    min-height: calc(100dvh - 64px);
+    margin: 0;
+    padding: 24px 20px;
+    box-sizing: border-box;
+    background: #ffffff;
+
+    /* Prevent this page from creating its own scrolling */
+    overflow: hidden;
 }
 
-.login-actions button:hover:not(:disabled) {
-  background-color: gold;
-  color: black;
-
-}
-/* Error & response messages */
-.error-message,
-.response-message {
-  text-align: center;
-  font-weight: 500;
-}
-
-/* Forgot password & register links centered */
-.register {
-  text-align: center;
-  font-size: 0.9rem;
-  margin-top: 5px;
-}
-.userregister-link {
-  color: #1976d2;
-  text-decoration: none;
-}
-
-.userregister-link:hover {
-  text-decoration: underline;
-}
-/*Vendor Login*/
-.register-btn button{
-   width: 100%;
-    background-color: gold;
-    color: black;
-    font-family: cursive;
-    border: 2px solid white;
-    font-size: 20px;
-    padding:  10px 40px;
-    border-radius: 8px;
-}
-.register-btn button:hover{
-  color:black;
-  background-color: gold;
-  border: 2px solid black;
-}
 
 /* ============================================================
-   REGISTER / SKIP LOGIN LINKS
-   ============================================================ */
+   FORM
+============================================================ */
 
-.userregister-link {
-  color: #1d4ed8;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: 500;
+.dh-user-login-form {
+    width: 100%;
+    max-width: 450px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.userregister-link:hover {
-  text-decoration: underline;
+
+/* ============================================================
+   LOGIN BOX
+============================================================ */
+
+.dh-user-login-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    gap: 18px;
+    margin: 0;
 }
 
-/* Skip login specifically */
-.guest-login-link {
-  cursor: pointer;
+
+/* ============================================================
+   TITLE
+============================================================ */
+
+.dh-user-login-title {
+    width: 100%;
+    margin: 0 0 4px;
+    padding: 0;
+    text-align: center;
+    color: #000000;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+
+/* ============================================================
+   LOGIN DETAILS
+============================================================ */
+
+.dh-user-login-details {
+    width: 100%;
+    min-width: 0;
+}
+
+
+/* ============================================================
+   INPUT FIELDS
+============================================================ */
+
+.dh-user-login-details input {
+    width: 100%;
+    padding: 12px 13px;
+    margin: 0 0 16px 0;
+    box-sizing: border-box;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #000000;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dh-user-login-details input:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ============================================================
+   INPUT FOCUS
+============================================================ */
+
+.dh-user-login-details input:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.18);
+}
+
+
+/* ============================================================
+   ERROR
+============================================================ */
+
+.dh-user-login-error {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    color: #c62828;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   RESPONSE MESSAGE
+============================================================ */
+
+.dh-user-login-response {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   SUCCESS
+============================================================ */
+
+.dh-user-login-success {
+    color: #000000;
+}
+
+
+/* ============================================================
+   FAILURE
+============================================================ */
+
+.dh-user-login-failure {
+    color: #c62828;
+}
+
+
+/* ============================================================
+   LOGIN ACTIONS
+============================================================ */
+
+.dh-user-login-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 2px 0 0;
+}
+
+
+/* ============================================================
+   LOGIN BUTTON
+============================================================ */
+
+.dh-user-login-submit {
+    width: 100%;
+    height: 44px;
+    padding: 0 20px;
+    border: 2px solid #d4af37;
+    border-radius: 8px;
+    background: #d4af37;
+    color: #000000;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* ============================================================
+   LOGIN BUTTON HOVER
+============================================================ */
+
+.dh-user-login-submit:hover:not(:disabled) {
+    background: #000000;
+    color: #d4af37;
+    border-color: #000000;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.16);
+}
+
+
+/* ============================================================
+   LOGIN BUTTON ACTIVE
+============================================================ */
+
+.dh-user-login-submit:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+
+/* ============================================================
+   LOGIN BUTTON DISABLED
+============================================================ */
+
+.dh-user-login-submit:disabled {
+    background: #d4af37;
+    color: #000000;
+    border-color: #d4af37;
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   FORGOT PASSWORD
+============================================================ */
+
+.dh-user-login-forgot {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   REGISTER
+============================================================ */
+
+.dh-user-login-register {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    color: #555555;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   LOGIN LINK
+============================================================ */
+
+.dh-user-login-link {
+    color: #000000;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+
+/* ============================================================
+   LOGIN LINK HOVER
+============================================================ */
+
+.dh-user-login-link:hover {
+    color: #d4af37;
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   GUEST LOGIN
+============================================================ */
+
+.dh-user-login-guest {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+    color: #555555;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   GUEST LINK
+============================================================ */
+
+.dh-user-login-guest-link {
+    color: #000000;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+
+/* ============================================================
+   GUEST LINK HOVER
+============================================================ */
+
+.dh-user-login-guest-link:hover {
+    color: #d4af37;
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   FOCUS
+============================================================ */
+
+.dh-user-login-submit:focus-visible,
+.dh-user-login-link:focus-visible,
+.dh-user-login-guest-link:focus-visible,
+.dh-user-login-details input:focus-visible {
+    outline: 2px solid #d4af37;
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 700px) {
+
+    .dh-user-login-page {
+        min-height: calc(100vh - 60px);
+        min-height: calc(100dvh - 60px);
+        padding: 20px 16px;
+    }
+
+    .dh-user-login-box {
+        padding: 26px 22px;
+        border-radius: 14px;
+        gap: 16px;
+    }
+
+    .dh-user-login-title {
+        font-size: 23px;
+    }
+
+    .dh-user-login-details input {
+        padding: 11px 12px;
+        font-size: 14px;
+    }
+
+    .dh-user-login-submit {
+        height: 42px;
+        font-size: 15px;
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .dh-user-login-page {
+        min-height: calc(100vh - 56px);
+        min-height: calc(100dvh - 56px);
+        padding: 16px 12px;
+    }
+
+    .dh-user-login-form {
+        max-width: 100%;
+    }
+
+    .dh-user-login-box {
+        padding: 24px 18px;
+        border-radius: 13px;
+        gap: 15px;
+        box-shadow: 0 7px 22px rgba(0, 0, 0, 0.10);
+    }
+
+    .dh-user-login-title {
+        font-size: 21px;
+    }
+
+    .dh-user-login-details input {
+        padding: 10px 11px;
+        border-radius: 7px;
+        font-size: 14px;
+    }
+
+    .dh-user-login-submit {
+        height: 41px;
+        border-radius: 7px;
+        font-size: 14px;
+    }
+
+    .dh-user-login-forgot,
+    .dh-user-login-register,
+    .dh-user-login-guest {
+        font-size: 12px;
+    }
+
+    .dh-user-login-error,
+    .dh-user-login-response {
+        font-size: 12px;
+    }
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+============================================================ */
+
+@media (max-width: 360px) {
+
+    .dh-user-login-page {
+        padding: 12px 10px;
+    }
+
+    .dh-user-login-box {
+        padding: 21px 15px;
+        gap: 13px;
+    }
+
+    .dh-user-login-title {
+        font-size: 20px;
+    }
+
+    .dh-user-login-details input {
+        font-size: 13px;
+    }
+
+    .dh-user-login-submit {
+        height: 40px;
+        font-size: 13px;
+    }
 }

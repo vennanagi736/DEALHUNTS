@@ -1,9 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import Settings from "./components/Settings";
 
+// ============================================================
+// USER
+// ============================================================
 
-// ---------------- USER ----------------
 import Home from "./pages/user/Home";
 import Login from "./pages/user/Login";
 import Register from "./pages/user/Register";
@@ -11,13 +14,18 @@ import ProductDetails from "./pages/user/ProductOverview";
 import Products from "./pages/user/Products";
 import ProductComparison from "./pages/user/ProductComparison";
 import ShopDetails from "./pages/user/ShopDetails";
-import Settings from "./pages/user/Settings";
+import USettings from "./pages/user/USettings";
 import Wishlist from "./pages/user/Wishlist";
 import Cart from "./pages/user/Cart";
 import PlaceOrder from "./pages/user/PlaceOrder";
 import OrderSuccess from "./pages/user/OrderSuccess";
+import UserOrders from "./pages/user/Orders";
+import Layout from "./components/Layout";
 
-// ---------------- VENDOR ----------------
+// ============================================================
+// VENDOR
+// ============================================================
+
 import VendorLogin from "./pages/vendor/VLogin";
 import VendorRegister from "./pages/vendor/VRegister";
 import VendorHome from "./pages/vendor/VHome";
@@ -26,14 +34,17 @@ import VendorProductManage from "./pages/vendor/VProductManage";
 import RequestStatus from "./pages/vendor/VRequest";
 
 
-// ---------------- ADMIN ----------------
+// ============================================================
+// ADMIN
+// ============================================================
+
 import AdminHome from "./pages/admin/AHome";
 import AdminDashboard from "./pages/admin/ADashboard";
 import AdminProducts from "./pages/admin/AProduct";
 import AdminLogin from "./pages/admin/ALogin";
 import Payments from "./pages/admin/APayments";
 import UsersDetails from "./pages/admin/AUser";
-import Orders from "./pages/admin/AOrders";
+import AdminOrders from "./pages/admin/AOrders";
 import Sales from "./pages/admin/ASales";
 import VendorsDetails from "./pages/admin/AVendor";
 import AdminVendorRequest from "./pages/admin/ARequest";
@@ -42,12 +53,16 @@ import AdminMasterData from "./pages/admin/AMasterData";
 import AdminImportProducts from "./pages/admin/AImportProducts";
 
 
-// ---------------- ADMIN MANAGEMENT ----------------
+// ============================================================
+// ADMIN MANAGEMENT
+// ============================================================
+
 import AdminManageProduct from "./pages/admin/AManageProduct";
 import AdminManagePromotions from "./pages/admin/AManagePromotions";
 import AdminManageCarousel from "./pages/admin/AManageCarousel";
 import AdminManageTrendingDeals from "./pages/admin/AManageTrendingDeals";
 import AdminManageTrendingCategories from "./pages/admin/AManageTrendingCategories";
+
 
 function App() {
 
@@ -58,54 +73,240 @@ function App() {
             <Routes>
 
 
-                {/* ================= USER ================= */}
+                {/* ====================================================
+                    USER PUBLIC ROUTES
+                ==================================================== */}
 
                 <Route
                     path="/"
-                    element={<Home />}
+                    element={
+                        <Layout>
+                            <Home />
+                        </Layout>
+                    }
                 />
 
                 <Route
                     path="/home"
-                    element={<Home />}
+                    element={
+                        <Layout>
+                            <Home />
+                        </Layout>
+                    }
                 />
+
+
+                {/* USER LOGIN */}
 
                 <Route
                     path="/login"
-                    element={<Login />}
+                    element={
+                        <Layout>
+                            <Login />
+                        </Layout>
+                    }
                 />
+
+
+                {/* USER REGISTER */}
 
                 <Route
                     path="/register"
-                    element={<Register />}
+                    element={
+                        <Layout>
+                            <Register />
+                        </Layout>
+                    }
                 />
+
+
+                {/* PRODUCTS */}
 
                 <Route
                     path="/products"
-                    element={<Products />}
+                    element={
+                        <Layout>
+                            <Products />
+                        </Layout>
+                    }
                 />
+
+
+                <Route
+                    path="/products/:productId"
+                    element={
+                        <Layout>
+                            <ProductComparison />
+                        </Layout>
+                    }
+                />
+
+
+                <Route
+                    path="/product/:id"
+                    element={
+                        <Layout>
+                            <ProductDetails />
+                        </Layout>
+                    }
+                />
+
+
                 <Route
                     path="/shop/:vendorId"
-                    element={<ShopDetails />}
+                    element={
+                        <Layout>
+                            <ShopDetails />
+                        </Layout>
+                    }
                 />
-                <Route path="/cart" element={<Cart />} />
-      <Route path="/place-order" element={<PlaceOrder />} />
-      <Route path="/order-success" element={<OrderSuccess />} />
-      <Route path="/wishlist" element={<Wishlist />} />
-      <Route path="/settings" element={<Settings />} />
 
 
-                {/* ================= VENDOR ================= */}
+                {/* ====================================================
+                    USER PROTECTED ROUTES
+                ==================================================== */}
+
+                {/* CART */}
+
+                <Route
+                    path="/cart"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["ROLE_USER"]}
+                        >
+                            <Layout>
+                                <Cart />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/* ====================================================
+    COMMON SETTINGS
+    USER + VENDOR + ADMIN
+==================================================== */}
+
+<Route
+    path="/settings"
+    element={
+        <ProtectedRoute
+            allowedRoles={[
+                "ROLE_USER",
+                "ROLE_VENDOR",
+                "ROLE_ADMIN",
+            ]}
+        >
+            <Layout>
+                <Settings />
+            </Layout>
+        </ProtectedRoute>
+    }
+/>
+
+
+                {/* WISHLIST */}
+
+                <Route
+                    path="/wishlist"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["ROLE_USER"]}
+                        >
+                            <Layout>
+                                <Wishlist />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* USER ORDERS */}
+
+                <Route
+                    path="/orders"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["ROLE_USER"]}
+                        >
+                            <Layout>
+                                <UserOrders />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* PLACE ORDER */}
+
+                <Route
+                    path="/place-order"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["ROLE_USER"]}
+                        >
+                            <Layout>
+                                <PlaceOrder />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* ORDER SUCCESS */}
+
+                <Route
+                    path="/order-success"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["ROLE_USER"]}
+                        >
+                            <Layout>
+                                <OrderSuccess />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* ====================================================
+                    VENDOR PUBLIC ROUTES
+                ==================================================== */}
 
                 <Route
                     path="/vendorLogin"
-                    element={<VendorLogin />}
+                    element={
+                        <Layout>
+                            <VendorLogin />
+                        </Layout>
+                    }
                 />
+
 
                 <Route
                     path="/vendorRegister"
-                    element={<VendorRegister />}
+                    element={
+                        <Layout>
+                            <VendorRegister />
+                        </Layout>
+                    }
                 />
+
+
+                <Route
+                    path="/request-status/:email"
+                    element={
+                        <Layout>
+                            <RequestStatus />
+                        </Layout>
+                    }
+                />
+
+
+                {/* ====================================================
+                    VENDOR PROTECTED ROUTES
+                ==================================================== */}
+
+                {/* VENDOR HOME */}
 
                 <Route
                     path="/vendorHome"
@@ -113,10 +314,15 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_VENDOR"]}
                         >
-                            <VendorHome />
+                            <Layout>
+                                <VendorHome />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
+
+
+                {/* VENDOR PRODUCT PAGE */}
 
                 <Route
                     path="/vendorProductPage"
@@ -124,10 +330,31 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_VENDOR"]}
                         >
-                            <VendorProductPage />
+                            <Layout>
+                                <VendorProductPage />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
+
+
+                {/* VENDOR EDIT PRODUCT */}
+
+                <Route
+                    path="/vendor/edit-product/:inventoryId"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["ROLE_VENDOR"]}
+                        >
+                            <Layout>
+                                <VendorProductPage />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* VENDOR MANAGE PRODUCTS */}
 
                 <Route
                     path="/vendor/manage-products"
@@ -135,24 +362,49 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_VENDOR"]}
                         >
-                            <VendorProductManage />
+                            <Layout>
+                                <VendorProductManage />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
-                <Route
-                    path="/request-status/:email"
-                    element={<RequestStatus />}
-                />
 
-
-                {/* ================= ADMIN ================= */}
+                {/* ====================================================
+                    ADMIN PUBLIC ROUTE
+                ==================================================== */}
 
                 <Route
                     path="/adminLogin"
-                    element={<AdminLogin />}
+                    element={
+                        <Layout>
+                            <AdminLogin />
+                        </Layout>
+                    }
                 />
 
+
+                {/* ====================================================
+                    ADMIN PROTECTED ROUTES
+                ==================================================== */}
+
+                {/* ADMIN HOME */}
+
+                <Route
+                    path="/adminHome"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["ROLE_ADMIN"]}
+                        >
+                            <Layout>
+                                <AdminHome />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* ADMIN DASHBOARD */}
 
                 <Route
                     path="/adminDashboard"
@@ -160,17 +412,15 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <AdminDashboard />
+                            <Layout>
+                                <AdminDashboard />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
 
-                <Route
-                    path="/adminHome"
-                    element={<AdminHome />}
-                />
-
+                {/* ADMIN PRODUCTS */}
 
                 <Route
                     path="/adminProducts"
@@ -178,11 +428,15 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <AdminProducts />
+                            <Layout>
+                                <AdminProducts />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
+
+                {/* MANAGE USERS */}
 
                 <Route
                     path="/manage-users"
@@ -190,15 +444,15 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <UsersDetails />
+                            <Layout>
+                                <UsersDetails />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
-                <Route
-                path="/products/:productId"
-                element={<ProductComparison/>}
-                />
 
+
+                {/* MANAGE VENDORS */}
 
                 <Route
                     path="/manage-vendors"
@@ -206,11 +460,15 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <VendorsDetails />
+                            <Layout>
+                                <VendorsDetails />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
+
+                {/* MANAGE ORDERS */}
 
                 <Route
                     path="/manage-orders"
@@ -218,11 +476,15 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <Orders />
+                            <Layout>
+                                <AdminOrders />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
+
+                {/* MANAGE PAYMENTS */}
 
                 <Route
                     path="/manage-payments"
@@ -230,11 +492,15 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <Payments />
+                            <Layout>
+                                <Payments />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
+
+                {/* MANAGE SALES */}
 
                 <Route
                     path="/manage-sales"
@@ -242,11 +508,15 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <Sales />
+                            <Layout>
+                                <Sales />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
+
+                {/* MANAGE VENDOR REQUEST */}
 
                 <Route
                     path="/manage-request"
@@ -254,11 +524,15 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <AdminVendorRequest />
+                            <Layout>
+                                <AdminVendorRequest />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
+
+                {/* ADMIN VENDOR REQUEST */}
 
                 <Route
                     path="/admin/vendor-requests"
@@ -266,13 +540,17 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <AdminVendorRequest />
+                            <Layout>
+                                <AdminVendorRequest />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
 
-                {/* ================= ADD PRODUCT ================= */}
+                {/* ====================================================
+                    ADMIN ADD PRODUCT
+                ==================================================== */}
 
                 <Route
                     path="/adminAddProduct"
@@ -280,7 +558,9 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <AdminAddProduct />
+                            <Layout>
+                                <AdminAddProduct />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
@@ -292,13 +572,17 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <AdminAddProduct />
+                            <Layout>
+                                <AdminAddProduct />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
 
-                {/* ================= MASTER DATA ================= */}
+                {/* ====================================================
+                    ADMIN MASTER DATA
+                ==================================================== */}
 
                 <Route
                     path="/admin/master-data"
@@ -306,13 +590,17 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <AdminMasterData />
+                            <Layout>
+                                <AdminMasterData />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
 
-                {/* ================= IMPORT PRODUCTS ================= */}
+                {/* ====================================================
+                    ADMIN IMPORT PRODUCTS
+                ==================================================== */}
 
                 <Route
                     path="/admin/import-products"
@@ -320,18 +608,35 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <AdminImportProducts />
+                            <Layout>
+                                <AdminImportProducts />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
 
-                {/* =================================================
-                    PROMOTIONS
-                ================================================= */}
+                {/* ====================================================
+                    ADMIN PRODUCT MANAGEMENT
+                ==================================================== */}
+
+                <Route
+                    path="/admin/manage-product"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={["ROLE_ADMIN"]}
+                        >
+                            <Layout>
+                                <AdminManageProduct />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
 
 
-                {/* MAIN PROMOTIONS PAGE */}
+                {/* ====================================================
+                    ADMIN PROMOTIONS
+                ==================================================== */}
 
                 <Route
                     path="/admin/manage-promotions"
@@ -339,13 +644,17 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <AdminManagePromotions />
+                            <Layout>
+                                <AdminManagePromotions />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
 
-                {/* MANAGE CAROUSEL */}
+                {/* ====================================================
+                    ADMIN CAROUSEL
+                ==================================================== */}
 
                 <Route
                     path="/admin/manage-carousel"
@@ -353,13 +662,17 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <AdminManageCarousel />
+                            <Layout>
+                                <AdminManageCarousel />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
 
-                {/* MANAGE TRENDING DEALS */}
+                {/* ====================================================
+                    ADMIN TRENDING DEALS
+                ==================================================== */}
 
                 <Route
                     path="/admin/manage-trending-deals"
@@ -367,13 +680,17 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <AdminManageTrendingDeals />
+                            <Layout>
+                                <AdminManageTrendingDeals />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
 
-                {/* MANAGE TRENDING CATEGORIES */}
+                {/* ====================================================
+                    ADMIN TRENDING CATEGORIES
+                ==================================================== */}
 
                 <Route
                     path="/admin/manage-trending-categories"
@@ -381,27 +698,17 @@ function App() {
                         <ProtectedRoute
                             allowedRoles={["ROLE_ADMIN"]}
                         >
-                            <AdminManageTrendingCategories />
+                            <Layout>
+                                <AdminManageTrendingCategories />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
 
-
-                {/* ================= PRODUCT ================= */}
-
-                <Route
-                    path="/product/:id"
-                    element={<ProductDetails />}
-                />
-
-
             </Routes>
 
         </BrowserRouter>
-
     );
-
 }
-
 
 export default App;

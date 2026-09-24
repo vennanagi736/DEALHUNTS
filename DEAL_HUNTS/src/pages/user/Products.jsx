@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { createPortal } from "react-dom";
+import Popup from "../../components/Popup";
 
 import {
-  FiHeart,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+
+import {
   FiShoppingCart,
-  FiUser,
   FiArrowLeft,
-  FiSettings,
-  FiSearch,
+  FiBookmark,
 } from "react-icons/fi";
 
-import Sidebar from "../../components/Sidebar";
 import "../../styles/UProduct.css";
+
+/* ============================================================
+   API
+============================================================ */
+
+const API_BASE_URL = "http://localhost:8080";
 
 /* ============================================================
    FORMAT PRICE
@@ -27,7 +35,38 @@ function formatINR(amount) {
     return "—";
   }
 
-  return `₹${Number(amount).toLocaleString("en-IN")}`;
+  const numericAmount = Number(amount);
+
+  if (Number.isNaN(numericAmount)) {
+    return "—";
+  }
+
+  return `₹${numericAmount.toLocaleString("en-IN")}`;
+}
+
+/* ============================================================
+   SAFE DISPLAY VALUE
+============================================================ */
+
+function displayValue(value, fallback = "—") {
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+    return fallback;
+  }
+
+  if (typeof value === "object") {
+    return (
+      value?.name ||
+      value?.title ||
+      value?.label ||
+      fallback
+    );
+  }
+
+  return String(value);
 }
 
 /* ============================================================
@@ -38,14 +77,14 @@ function StarRating({ value = 0 }) {
   const rating = Number(value) || 0;
 
   return (
-    <span className="products-stars">
+    <span className="dh-products-stars-user">
       {Array.from({ length: 5 }).map((_, index) => (
         <span
           key={index}
           className={
             index < Math.round(rating)
-              ? "products-star active"
-              : "products-star"
+              ? "dh-products-star-user dh-products-star-active-user"
+              : "dh-products-star-user"
           }
         >
           ★
@@ -79,85 +118,113 @@ function ProductCard({
   } = product;
 
   /* ----------------------------------------------------------
+     SAFE DISPLAY VALUES
+  ---------------------------------------------------------- */
+
+  const productName = displayValue(
+    name,
+    "Unnamed Product"
+  );
+
+  const brandName = displayValue(
+    brand,
+    "Unknown Brand"
+  );
+
+  const categoryName = displayValue(
+    category,
+    "Unknown Category"
+  );
+
+  /* ----------------------------------------------------------
      IMAGE
   ---------------------------------------------------------- */
 
-  const productImageSrc = image || "";
+  const productImageSrc =
+    typeof image === "string"
+      ? image
+      : image?.url ||
+        image?.imageUrl ||
+        "";
 
   /* ----------------------------------------------------------
      PRICE
   ---------------------------------------------------------- */
 
-  const currentPrice = Number(price) || 0;
-  const discountPercent = Number(discount) || 0;
+  const currentPrice =
+    Number(price) || 0;
 
-  /*
-   * Backend gives:
-   *
-   * price = selling price
-   * discount = percentage
-   *
-   * Example:
-   * price = 140000
-   * discount = 5
-   *
-   * Original price =
-   * 140000 / (1 - 5 / 100)
-   */
+  const discountPercent =
+    Number(discount) || 0;
 
   const originalPrice =
-    discountPercent > 0 && discountPercent < 100
-      ? currentPrice / (1 - discountPercent / 100)
+    discountPercent > 0 &&
+    discountPercent < 100
+      ? currentPrice /
+        (1 - discountPercent / 100)
       : 0;
 
   return (
     <article
-      className="products-card"
-      onClick={() => onProductClick(id)}
+      className="dh-products-card-user"
+      onClick={() =>
+        onProductClick(id)
+      }
     >
-
       {/* ======================================================
           IMAGE
       ====================================================== */}
 
-      <div className="products-card-image">
+      <div className="dh-products-card-image-user">
 
         {productImageSrc ? (
           <img
             src={productImageSrc}
-            alt={name || "Product"}
+            alt={productName}
             loading="lazy"
           />
         ) : (
-          <div className="products-image-placeholder">
+          <div className="dh-products-image-placeholder-user">
             No Image
           </div>
+        )}
+
+        {/* DISCOUNT */}
+
+        {discountPercent > 0 && (
+          <span className="dh-products-discount-user">
+            {discountPercent}% OFF
+          </span>
         )}
 
         {/* WISHLIST */}
 
         <button
           type="button"
-          className={`products-wishlist ${
+          className={`dh-products-wishlist-user ${
             isWishlisted
-              ? "products-wishlist-active"
+              ? "dh-products-wishlist-active-user"
               : ""
           }`}
           onClick={(event) => {
+            event.preventDefault();
             event.stopPropagation();
+
             onToggleWishlist(id);
           }}
+          aria-label={
+            isWishlisted
+              ? "Remove from wishlist"
+              : "Add to wishlist"
+          }
+          title={
+            isWishlisted
+              ? "Remove from wishlist"
+              : "Add to wishlist"
+          }
         >
-          <FiHeart />
+          <FiBookmark />
         </button>
-
-        {/* DISCOUNT */}
-
-        {discountPercent > 0 && (
-          <span className="products-discount">
-            {discountPercent}% OFF
-          </span>
-        )}
 
       </div>
 
@@ -165,32 +232,32 @@ function ProductCard({
           DETAILS
       ====================================================== */}
 
-      <div className="products-card-body">
+      <div className="dh-products-card-body-user">
 
         {/* NAME */}
 
         <h3
-          className="products-name"
-          title={name}
+          className="dh-products-name-user"
+          title={productName}
         >
-          {name || "Unnamed Product"}
+          {productName}
         </h3>
 
         {/* BRAND */}
 
-        <p className="products-brand-name">
-          {brand || "Unknown Brand"}
+        <p className="dh-products-brand-name-user">
+          {brandName}
         </p>
 
         {/* CATEGORY */}
 
-        <p className="products-category">
-          {category || "Unknown Category"}
+        <p className="dh-products-category-user">
+          {categoryName}
         </p>
 
         {/* RATING */}
 
-        <div className="products-rating">
+        <div className="dh-products-rating-user">
 
           <StarRating value={rating} />
 
@@ -198,7 +265,7 @@ function ProductCard({
             {Number(rating || 0).toFixed(1)}
           </span>
 
-          <span className="products-review-count">
+          <span className="dh-products-review-count-user">
             ({Number(reviewCount || 0)})
           </span>
 
@@ -206,49 +273,39 @@ function ProductCard({
 
         {/* PRICE */}
 
-        <div className="products-price-row">
+        <div className="dh-products-price-row-user">
 
-          <span className="products-price">
+          <span className="dh-products-price-user">
             {formatINR(currentPrice)}
           </span>
 
           {originalPrice > currentPrice && (
-            <span className="products-old-price">
-              {formatINR(Math.round(originalPrice))}
+            <span className="dh-products-old-price-user">
+              {formatINR(
+                Math.round(originalPrice)
+              )}
             </span>
           )}
 
         </div>
 
-        {/* CART */}
+        {/* ADD TO CART */}
 
         <button
-  type="button"
-  className="products-add-cart"
-  onClick={(event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    onAddToCart(product);
-  }}
->
-  <FiShoppingCart />
-  Add to Cart
-</button>
-
-        {/* <button
           type="button"
-          className="products-add-cart"
+          className="dh-products-add-cart-user"
           onClick={(event) => {
+            event.preventDefault();
             event.stopPropagation();
+
             onAddToCart(product);
           }}
         >
           <FiShoppingCart />
           Add to Cart
-        </button> */}
+        </button>
 
       </div>
-
     </article>
   );
 }
@@ -258,512 +315,705 @@ function ProductCard({
 ============================================================ */
 
 function Products() {
-
   const navigate = useNavigate();
 
-  const [query, setQuery] = useState("");
-  const [isLoggedIn] = useState(
-    !!localStorage.getItem("userJwtToken")
-  );
+  const [wishlistLoginPopup, setWishlistLoginPopup] =
+    useState(false);
+
+  const [searchParams] =
+    useSearchParams();
+
+  /* ==========================================================
+     SEARCH FROM HEADER
+  ========================================================== */
+
+  const query =
+    searchParams.get("search") || "";
+
+  /* ==========================================================
+     PRODUCTS
+  ========================================================== */
+
+  const [products, setProducts] =
+    useState([]);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  /* ==========================================================
+     WISHLIST
+  ========================================================== */
+
+  const [wishlist, setWishlist] =
+    useState(() => new Set());
+
+  const [wishlistLoading, setWishlistLoading] =
+    useState(false);
 
   /* ==========================================================
      PRODUCT CLICK
   ========================================================== */
 
   const handleProductClick = (productId) => {
+    if (
+      productId === null ||
+      productId === undefined
+    ) {
+      return;
+    }
+
     navigate(`/products/${productId}`);
   };
 
   /* ==========================================================
-     PRODUCTS
+     FILTER PRODUCTS
   ========================================================== */
 
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const filteredProducts =
+    products.filter((product) => {
+      const search =
+        query.trim().toLowerCase();
 
-  const filteredProducts = products.filter((product) => {
-  const search = query.trim().toLowerCase();
+      if (!search) {
+        return true;
+      }
 
-  if (!search) {
-    return true;
-  }
+      const productName =
+        displayValue(
+          product?.name,
+          ""
+        ).toLowerCase();
 
-  return (
-    product.name?.toLowerCase().includes(search) ||
-    product.brand?.toLowerCase().includes(search) ||
-    product.category?.toLowerCase().includes(search)
-  );
-});
+      const brandName =
+        displayValue(
+          product?.brand,
+          ""
+        ).toLowerCase();
+
+      const categoryName =
+        displayValue(
+          product?.category,
+          ""
+        ).toLowerCase();
+
+      return (
+        productName.includes(search) ||
+        brandName.includes(search) ||
+        categoryName.includes(search)
+      );
+    });
 
   /* ==========================================================
-     FETCH PRODUCTS FROM BACKEND
+     FETCH PRODUCTS
   ========================================================== */
 
   useEffect(() => {
-
     const fetchProducts = async () => {
-
       try {
-
         setLoading(true);
         setError("");
 
-        const response = await axios.get(
-          "http://localhost:8080/admin/products/cards"
-        );
+        const response =
+          await axios.get(
+            `${API_BASE_URL}/admin/products/cards`
+          );
 
         console.log(
           "Products received from backend:",
           response.data
         );
 
-        setProducts(response.data);
+        if (Array.isArray(response.data)) {
+          setProducts(
+            response.data
+          );
+        } else if (
+          Array.isArray(
+            response.data?.content
+          )
+        ) {
+          setProducts(
+            response.data.content
+          );
+        } else {
+          console.error(
+            "Unexpected products response:",
+            response.data
+          );
 
+          setProducts([]);
+
+          setError(
+            "Invalid product data received from server."
+          );
+        }
       } catch (error) {
-
         console.error(
           "Failed to fetch products:",
           error
         );
 
+        console.error(
+          "Backend response:",
+          error.response?.data
+        );
+
         setError(
           "Unable to load products. Please try again."
         );
-
       } finally {
-
         setLoading(false);
-
       }
-
     };
 
     fetchProducts();
-
   }, []);
-  
+
   /* ==========================================================
-     WISHLIST
+     LOAD WISHLIST FROM BACKEND
   ========================================================== */
 
-  const [wishlist, setWishlist] = useState(
-    () => new Set()
-  );
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      const token =
+        localStorage.getItem(
+          "userJwtToken"
+        );
 
-  const toggleWishlist = (id) => {
+      if (!token) {
+        setWishlist(
+          new Set()
+        );
 
-    setWishlist((previous) => {
-
-      const next = new Set(previous);
-
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
+        return;
       }
 
-      return next;
+      try {
+        console.log(
+          "========== FETCH WISHLIST =========="
+        );
 
-    });
+        const response =
+          await axios.get(
+            `${API_BASE_URL}/wishlist`,
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+              },
+            }
+          );
 
-  };
+        console.log(
+          "Wishlist response:",
+          response.data
+        );
+
+        const wishlistItems =
+          Array.isArray(response.data)
+            ? response.data
+            : [];
+
+        const productIds =
+          wishlistItems
+            .map((item) => {
+              const productId =
+                item?.productId;
+
+              if (
+                productId === null ||
+                productId === undefined
+              ) {
+                return null;
+              }
+
+              return String(
+                productId
+              );
+            })
+            .filter(Boolean);
+
+        setWishlist(
+          new Set(productIds)
+        );
+
+        console.log(
+          "Loaded wishlist product IDs:",
+          productIds
+        );
+      } catch (error) {
+        console.error(
+          "Failed to load wishlist:",
+          error
+        );
+
+        console.error(
+          "Wishlist backend response:",
+          error.response?.data
+        );
+
+        setWishlist(
+          new Set()
+        );
+      }
+    };
+
+    fetchWishlist();
+  }, []);
 
   /* ==========================================================
-     CART
+     TOGGLE WISHLIST
   ========================================================== */
-const handleAddToCart = async (product) => {
 
-  console.log("========== ADD TO CART START ==========");
-  console.log("Product:", product);
+  const toggleWishlist =
+    async (productId) => {
+      if (
+        productId === null ||
+        productId === undefined
+      ) {
+        console.error(
+          "Invalid product ID for wishlist:",
+          productId
+        );
 
-  try {
+        return;
+      }
 
-    // ============================================================
-    // CHECK LOGIN
-    // ============================================================
+      const token =
+        localStorage.getItem(
+          "userJwtToken"
+        );
 
-    const token =
-      localStorage.getItem("userJwtToken");
+      /* ======================================================
+         LOGIN CHECK
+      ====================================================== */
 
-    if (!token) {
+      if (!token) {
+        setWishlistLoginPopup(true);
+        return;
+      }
 
-      alert(
-        "Please login to add products to your cart."
-      );
+      const normalizedProductId =
+        String(productId);
 
-      navigate("/login");
+      const alreadyWishlisted =
+        wishlist.has(
+          normalizedProductId
+        );
 
-      return;
-    }
+      try {
+        setWishlistLoading(
+          true
+        );
 
+        console.log(
+          "========== WISHLIST ACTION =========="
+        );
 
-    // ============================================================
-    // GET AVAILABLE VENDORS
-    // ============================================================
+        console.log(
+          "Product ID:",
+          normalizedProductId
+        );
 
-    const vendorResponse =
-      await axios.get(
-        `http://localhost:8080/inventory/product/${product.id}/vendors`
-      );
+        console.log(
+          "Already wishlisted:",
+          alreadyWishlisted
+        );
 
-    console.log(
-      "VENDOR RESPONSE:",
-      vendorResponse.data
-    );
+        /* ==================================================
+           REMOVE
+        ================================================== */
 
+        if (alreadyWishlisted) {
+          const response =
+            await axios.delete(
+              `${API_BASE_URL}/wishlist/remove/${normalizedProductId}`,
+              {
+                headers: {
+                  Authorization:
+                    `Bearer ${token}`,
+                },
+              }
+            );
 
-    const inventories =
-      vendorResponse.data;
+          console.log(
+            "Wishlist remove response:",
+            response.data
+          );
 
+          setWishlist(
+            (previous) => {
+              const next =
+                new Set(previous);
 
-    // ============================================================
-    // CHECK INVENTORY
-    // ============================================================
+              next.delete(
+                normalizedProductId
+              );
 
-    if (
-      !inventories ||
-      inventories.length === 0
-    ) {
+              return next;
+            }
+          );
 
-      alert(
-        "This product is currently out of stock."
-      );
-
-      return;
-    }
-
-
-    // ============================================================
-    // FIRST INVENTORY = CHEAPEST VENDOR
-    //
-    // Backend sorts vendors by finalPrice ASC.
-    // ============================================================
-
-    const inventory =
-      inventories[0];
-
-
-    console.log(
-      "SELECTED INVENTORY:",
-      inventory
-    );
-
-    console.log(
-      "Inventory ID:",
-      inventory.inventoryId
-    );
-
-    console.log(
-      "Vendor:",
-      inventory.shopName
-    );
-
-    console.log(
-      "Final Price:",
-      inventory.finalPrice
-    );
-
-
-    // ============================================================
-    // ADD TO CART
-    // ============================================================
-
-    const cartResponse =
-      await axios.post(
-        "http://localhost:8080/cart/add",
-
-        {
-          inventoryId:
-            inventory.inventoryId,
-
-          quantity: 1
-        },
-
-        {
-          headers: {
-            Authorization:
-              `Bearer ${token}`,
-
-            "Content-Type":
-              "application/json"
-          }
+          console.log(
+            "Removed from wishlist."
+          );
         }
+
+        /* ==================================================
+           ADD
+        ================================================== */
+
+        else {
+          const response =
+            await axios.post(
+              `${API_BASE_URL}/wishlist/add/${normalizedProductId}`,
+              {},
+              {
+                headers: {
+                  Authorization:
+                    `Bearer ${token}`,
+
+                  "Content-Type":
+                    "application/json",
+                },
+              }
+            );
+
+          console.log(
+            "Wishlist add response:",
+            response.data
+          );
+
+          setWishlist(
+            (previous) => {
+              const next =
+                new Set(previous);
+
+              next.add(
+                normalizedProductId
+              );
+
+              return next;
+            }
+          );
+
+          console.log(
+            "Added to wishlist."
+          );
+        }
+      } catch (error) {
+        console.error(
+          "========== WISHLIST ERROR =========="
+        );
+
+        console.error(
+          "Wishlist error:",
+          error
+        );
+
+        console.error(
+          "Wishlist backend response:",
+          error.response?.data
+        );
+
+        /* ==================================================
+           SESSION EXPIRED
+        ================================================== */
+
+        if (
+          error.response?.status === 401 ||
+          error.response?.status === 403
+        ) {
+          localStorage.removeItem(
+            "userJwtToken"
+          );
+
+          setWishlist(
+            new Set()
+          );
+
+          alert(
+            "Your session has expired. Please login again."
+          );
+
+          navigate("/login");
+
+          return;
+        }
+
+        /* ==================================================
+           BACKEND MESSAGE
+        ================================================== */
+
+        let message =
+          "Unable to update wishlist.";
+
+        if (
+          typeof error.response?.data ===
+          "string"
+        ) {
+          message =
+            error.response.data;
+        } else if (
+          error.response?.data?.message
+        ) {
+          message =
+            error.response.data.message;
+        }
+
+        alert(message);
+      } finally {
+        setWishlistLoading(
+          false
+        );
+      }
+    };
+
+  /* ==========================================================
+     ADD TO CART
+  ========================================================== */
+
+  const handleAddToCart =
+    async (product) => {
+      console.log(
+        "========== ADD TO CART START =========="
       );
 
-
-    // ============================================================
-    // SUCCESS
-    // ============================================================
-
-    console.log(
-      "CART RESPONSE:",
-      cartResponse.data
-    );
-
-    console.log(
-      "========== ADD TO CART END =========="
-    );
-
-    alert(
-      "Product added to cart!"
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "========== ADD TO CART ERROR =========="
-    );
-
-    console.error(
-      "ERROR:",
-      error
-    );
-
-    console.error(
-      "ERROR RESPONSE:",
-      error.response?.data
-    );
-
-
-    // ============================================================
-    // UNAUTHORIZED
-    // ============================================================
-
-    if (
-      error.response?.status === 401 ||
-      error.response?.status === 403
-    ) {
-
-      localStorage.removeItem(
-        "userJwtToken"
+      console.log(
+        "Product:",
+        product
       );
 
-      alert(
-        "Your session has expired. Please login again."
-      );
+      try {
+        /* ====================================================
+           CHECK LOGIN
+        ==================================================== */
 
-      navigate("/login");
+        const token =
+          localStorage.getItem(
+            "userJwtToken"
+          );
 
-      return;
-    }
+        if (!token) {
+          alert(
+            "Please login to add products to your cart."
+          );
 
+          navigate("/login");
 
-    // ============================================================
-    // BACKEND ERROR
-    // ============================================================
+          return;
+        }
 
-    const message =
-      error.response?.data?.message ||
-      error.response?.data ||
-      "Unable to add product to cart.";
+        /* ====================================================
+           VALIDATE PRODUCT
+        ==================================================== */
 
+        if (
+          !product ||
+          !product.id
+        ) {
+          alert(
+            "Invalid product."
+          );
 
-    alert(message);
-  }
-};
+          return;
+        }
+
+        /* ====================================================
+           GET AVAILABLE VENDORS
+        ==================================================== */
+
+        const vendorResponse =
+          await axios.get(
+            `${API_BASE_URL}/inventory/product/${product.id}/vendors`
+          );
+
+        console.log(
+          "VENDOR RESPONSE:",
+          vendorResponse.data
+        );
+
+        const inventories =
+          Array.isArray(
+            vendorResponse.data
+          )
+            ? vendorResponse.data
+            : [];
+
+        /* ====================================================
+           CHECK INVENTORY
+        ==================================================== */
+
+        if (
+          inventories.length === 0
+        ) {
+          alert(
+            "This product is currently out of stock."
+          );
+
+          return;
+        }
+
+        /* ====================================================
+           FIRST INVENTORY
+        ==================================================== */
+
+        const inventory =
+          inventories[0];
+
+        console.log(
+          "SELECTED INVENTORY:",
+          inventory
+        );
+
+        /* ====================================================
+           VALIDATE INVENTORY ID
+        ==================================================== */
+
+        if (
+          !inventory.inventoryId
+        ) {
+          alert(
+            "Unable to identify the selected inventory."
+          );
+
+          return;
+        }
+
+        /* ====================================================
+           ADD TO CART
+        ==================================================== */
+
+        const cartResponse =
+          await axios.post(
+            `${API_BASE_URL}/cart/add`,
+            {
+              inventoryId:
+                inventory.inventoryId,
+
+              quantity: 1,
+            },
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+
+                "Content-Type":
+                  "application/json",
+              },
+            }
+          );
+
+        /* ====================================================
+           SUCCESS
+        ==================================================== */
+
+        console.log(
+          "CART RESPONSE:",
+          cartResponse.data
+        );
+
+        console.log(
+          "========== ADD TO CART END =========="
+        );
+
+        alert(
+          "Product added to cart!"
+        );
+      } catch (error) {
+        console.error(
+          "========== ADD TO CART ERROR =========="
+        );
+
+        console.error(
+          "ERROR:",
+          error
+        );
+
+        console.error(
+          "ERROR RESPONSE:",
+          error.response?.data
+        );
+
+        /* ==================================================
+           UNAUTHORIZED
+        ================================================== */
+
+        if (
+          error.response?.status === 401 ||
+          error.response?.status === 403
+        ) {
+          localStorage.removeItem(
+            "userJwtToken"
+          );
+
+          alert(
+            "Your session has expired. Please login again."
+          );
+
+          navigate("/login");
+
+          return;
+        }
+
+        /* ==================================================
+           BACKEND ERROR MESSAGE
+        ================================================== */
+
+        let message =
+          "Unable to add product to cart.";
+
+        if (
+          typeof error.response?.data ===
+          "string"
+        ) {
+          message =
+            error.response.data;
+        } else if (
+          error.response?.data?.message
+        ) {
+          message =
+            error.response.data.message;
+        }
+
+        alert(message);
+      }
+    };
 
   /* ==========================================================
      UI
   ========================================================== */
 
   return (
-    <div className="products-page">
-
-     {/* ======================================================
-    HEADER — SAME AS HOME
-====================================================== */}
-
-<header className="pc-header">
-
-  {/* ====================================================
-      LEFT SIDE
-  ==================================================== */}
-
-  <div className="pc-header-left">
-
-    {/* SIDEBAR */}
-
-    <div className="pc-header-sidebar">
-      <Sidebar />
-    </div>
-
-    {/* BRAND */}
-
-    <div
-      className="pc-brand"
-      onClick={() => navigate("/")}
-    >
-
-      <div className="pc-logo">
-
-        <span className="pc-logo-deal">
-          DEAL
-        </span>
-
-        <span className="pc-logo-hunts">
-          HUNTS
-        </span>
-
-      </div>
-
-      <div className="pc-header-tagline">
-        Hunt deals, save money
-      </div>
-
-    </div>
-
-  </div>
-  <div className="pc-header-center">
-     {/* NAVIGATION */}
-
-  <nav className="pc-header-nav">
-
-    <button
-      type="button"
-      onClick={() =>
-        navigate("/home")
-      }
-    >
-      Home
-    </button>
-
-    <button
-      type="button"
-      onClick={() =>
-        navigate("/products")
-      }
-    >
-      Products
-    </button>
-
-    <button
-      type="button"
-      onClick={() =>
-        navigate("/wishlist")
-      }
-    >
-      Wishlist
-    </button>
-
-  </nav>
-
-  </div>
-
-{/* ====================================================
-    RIGHT SIDE
-==================================================== */}
-
-<div className="pc-header-right">
-
-  {/* SEARCH */}
-
-<div className="pc-search-box">
-
-  <input
-    type="text"
-    placeholder="Search"
-    value={query}
-    onChange={(e) => setQuery(e.target.value)}
-  />
-
-  <button
-    type="button"
-    className="pc-search-btn"
-    aria-label="Search"
-  >
-    <FiSearch />
-  </button>
-
-</div>
-
-  {/* HEADER ACTIONS */}
-
-  <div className="pc-header-actions">
-
-    {/* CART */}
-
-    <button
-      type="button"
-      className="pc-header-icon"
-      onClick={() =>
-        navigate("/cart")
-      }
-      aria-label="Cart"
-    >
-      <FiShoppingCart />
-    </button>
-
-
-    {/* LOGGED IN */}
-
-    {isLoggedIn ? (
-      <>
-
-        <button
-          type="button"
-          className="pc-header-icon"
-          onClick={() =>
-            navigate("/profile")
-          }
-          aria-label="Profile"
-        >
-          <FiUser />
-        </button>
-
-        <button
-          type="button"
-          className="pc-header-icon"
-          onClick={() =>
-            navigate("/settings")
-          }
-          aria-label="Settings"
-        >
-          <FiSettings />
-        </button>
-
-      </>
-    ) : (
-
-      <button
-        type="button"
-        className="pc-header-login"
-        onClick={() =>
-          navigate("/login")
-        }
-      >
-        Login
-      </button>
-
-    )}
-
-  </div>
-
-</div>
-
-</header>
+    <div className="dh-products-page-user">
 
       {/* ======================================================
           MAIN
       ====================================================== */}
 
-      <main className="products-main">
+      <main className="dh-products-main-user">
 
-        {/* BACK BUTTON */}
+        {/* BACK */}
 
         <button
           type="button"
-          className="products-back"
-          onClick={() => navigate("/")}
+          className="dh-products-back-home-user"
+          onClick={() =>
+            navigate("/home")
+          }
         >
           <FiArrowLeft />
           Back to Home
         </button>
 
-        {/* TITLE */}
+        {/* ====================================================
+            TITLE
+        ==================================================== */}
 
-        <div className="products-title-section">
+        <div className="dh-products-title-section-user">
 
           <h1>
             All Products
@@ -776,12 +1026,28 @@ const handleAddToCart = async (product) => {
         </div>
 
         {/* ====================================================
+            SEARCH RESULT
+        ==================================================== */}
+
+        {query.trim() && (
+          <div className="dh-products-search-result-user">
+
+            Showing results for:
+
+            <strong>
+              {" "}
+              "{query}"
+            </strong>
+
+          </div>
+        )}
+
+        {/* ====================================================
             LOADING
         ==================================================== */}
 
         {loading && (
-
-          <div className="products-empty">
+          <div className="dh-products-empty-user">
 
             <h2>
               Loading products...
@@ -792,7 +1058,6 @@ const handleAddToCart = async (product) => {
             </p>
 
           </div>
-
         )}
 
         {/* ====================================================
@@ -800,8 +1065,7 @@ const handleAddToCart = async (product) => {
         ==================================================== */}
 
         {!loading && error && (
-
-          <div className="products-empty">
+          <div className="dh-products-empty-user">
 
             <h2>
               Something went wrong
@@ -812,7 +1076,6 @@ const handleAddToCart = async (product) => {
             </p>
 
           </div>
-
         )}
 
         {/* ====================================================
@@ -822,32 +1085,32 @@ const handleAddToCart = async (product) => {
         {!loading &&
           !error &&
           filteredProducts.length > 0 && (
+            <div className="dh-products-grid-user">
 
-            <div className="products-grid">
-
-              {filteredProducts.map((product) => (
-
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  isWishlisted={
-                    wishlist.has(product.id)
-                  }
-                  onToggleWishlist={
-                    toggleWishlist
-                  }
-                  onAddToCart={
-                    handleAddToCart
-                  }
-                  onProductClick={
-                    handleProductClick
-                  }
-                />
-
-              ))}
+              {filteredProducts.map(
+                (product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    isWishlisted={
+                      wishlist.has(
+                        String(product.id)
+                      )
+                    }
+                    onToggleWishlist={
+                      toggleWishlist
+                    }
+                    onAddToCart={
+                      handleAddToCart
+                    }
+                    onProductClick={
+                      handleProductClick
+                    }
+                  />
+                )
+              )}
 
             </div>
-
           )}
 
         {/* ====================================================
@@ -855,34 +1118,80 @@ const handleAddToCart = async (product) => {
         ==================================================== */}
 
         {!loading &&
-  !error &&
-  filteredProducts.length === 0 && (
+          !error &&
+          filteredProducts.length === 0 && (
+            <div className="dh-products-empty-user">
 
-  <div className="products-empty">
+              <h2>
+                {query.trim()
+                  ? "No products found"
+                  : "No products available"}
+              </h2>
 
-    <h2>
-      {query.trim()
-        ? "No products found"
-        : "No products available"}
-    </h2>
+              <p>
+                {query.trim()
+                  ? `No products match "${query}".`
+                  : "There are no active products available right now."}
+              </p>
 
-    <p>
-      {query.trim()
-        ? `No products match "${query}".`
-        : "There are no active products available right now."}
-    </p>
-
-  </div>
-
-)}
+            </div>
+          )}
 
       </main>
+
+      {/* ======================================================
+          WISHLIST LOGIN POPUP
+          RENDERED DIRECTLY INTO BODY
+      ====================================================== */}
+
+      {createPortal(
+        <Popup
+          open={wishlistLoginPopup}
+          title="Sign in to continue"
+          onClose={() =>
+            setWishlistLoginPopup(false)
+          }
+          width="400px"
+          className="wishlist-login-popup"
+        >
+          <p>
+            Please login to use your wishlist.
+          </p>
+
+          <div className="wishlist-popup-actions">
+
+            <button
+              type="button"
+              className="wishlist-proceed-login"
+              onClick={() => {
+                setWishlistLoginPopup(false);
+                navigate("/login");
+              }}
+            >
+              Proceed to Login
+            </button>
+
+            <button
+              type="button"
+              className="wishlist-no-thanks"
+              onClick={() =>
+                setWishlistLoginPopup(false)
+              }
+            >
+              No Thanks
+            </button>
+
+          </div>
+        </Popup>,
+        document.body
+      )}
 
       {/* ======================================================
           FOOTER
       ====================================================== */}
 
-      <footer className="products-footer">
+      {/*
+      <footer className="dh-products-footer-user">
 
         <strong>
           DEALHUNTS
@@ -893,6 +1202,7 @@ const handleAddToCart = async (product) => {
         </span>
 
       </footer>
+      */}
 
     </div>
   );

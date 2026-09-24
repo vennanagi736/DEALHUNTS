@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
 import VendorRegistrationDetails from "../../components/VendorRegistrationDetails";
-import "../../styles/Register.css";
 import { vendorRegister } from "../../api/VendorApi";
-import { Link } from "react-router-dom";
 import { validateVendorRegister } from "../../components/Validation";
+
+import "../../styles/VRegister.css";
 
 function VendorRegister() {
   const navigate = useNavigate();
- 
+
   const [fullName, setFullName] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
@@ -25,14 +26,24 @@ function VendorRegister() {
   const [message, setMessage] = useState("");
 
   const getVendorLocation = () => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by this browser.");
+      return;
+    }
+
     navigator.geolocation.getCurrentPosition(
       (post) => {
         setLocation({
           lat: post.coords.latitude,
           lon: post.coords.longitude,
         });
+
+        setError("");
       },
-      (err) => console.error(err)
+      (err) => {
+        console.error(err);
+        setError("Unable to get your location. Please try again.");
+      }
     );
   };
 
@@ -40,8 +51,26 @@ function VendorRegister() {
     getVendorLocation();
   }, []);
 
+  /*
+   * Register button remains disabled until
+   * all required fields have been entered.
+   */
+  const isFormIncomplete =
+    !fullName.trim() ||
+    !shopName.trim() ||
+    !state.trim() ||
+    !city.trim() ||
+    !pincode.trim() ||
+    !location ||
+    !address.trim() ||
+    !phone.trim() ||
+    !email.trim() ||
+    !password ||
+    !confirmPassword;
+
   const handleVendorRegister = async (e) => {
     e.preventDefault();
+
     console.log("SUBMIT WORKING");
 
     const errorMessage = validateVendorRegister(
@@ -65,6 +94,7 @@ function VendorRegister() {
     }
 
     setError("");
+    setMessage("");
 
     try {
       const response = await vendorRegister(
@@ -82,9 +112,15 @@ function VendorRegister() {
 
       if (response.data?.success) {
         setMessage("Vendor Registration Successful");
-        navigate(`/request-status/${email.trim().toLowerCase()}`);
+
+        navigate(
+          `/request-status/${email.trim().toLowerCase()}`
+        );
       } else {
-        setMessage(response.data?.message || "Vendor Registration Failed");
+        setMessage(
+          response.data?.message ||
+          "Vendor Registration Failed"
+        );
       }
     } catch (err) {
       console.error(err);
@@ -93,60 +129,89 @@ function VendorRegister() {
   };
 
   return (
-    <>
-      <header className="header">
-        <div className="logo">
-          <span className="Gold">DEAL</span>
-          <span className="Black">HUNTS</span>
-          <span className="Vendor">Vendor</span>
-        </div>
-        {/* <div className="login-btn">
-          <button onClick={() => navigate("/VendorLogin")}>Login</button>
-        </div> */}
-      </header>
+    <div className="vendor-register-page">
 
       <div className="form-wrapper">
-        <form onSubmit={handleVendorRegister} className="register-box">
+
+        <form
+          onSubmit={handleVendorRegister}
+          className="register-box"
+        >
+
           <h2>Vendor Registration</h2>
 
           <VendorRegistrationDetails
             fullName={fullName}
             setFullName={setFullName}
+
             state={state}
             setState={setState}
+
             city={city}
             setCity={setCity}
+
             pincode={pincode}
             setPincode={setPincode}
+
             email={email}
             setEmail={setEmail}
+
             shopName={shopName}
             setShopName={setShopName}
+
             address={address}
             setAddress={setAddress}
+
             phone={phone}
             setPhone={setPhone}
+
             location={location}
             setLocation={setLocation}
+
+            getVendorLocation={getVendorLocation}
+
             password={password}
             setPassword={setPassword}
+
             confirmPassword={confirmPassword}
             setConfirmPassword={setConfirmPassword}
           />
 
-          {error && <p className="error-message">{error}</p>}
-          {message && <p>{message}</p>}
+          {error && (
+            <p className="error-message">
+              {error}
+            </p>
+          )}
 
-          <button type="submit">Register</button>
+          {message && (
+            <p className="register-message">
+              {message}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={isFormIncomplete}
+          >
+            Register
+          </button>
+
           <p className="login">
             Already account exists?{" "}
-            <Link to="/VendorLogin" className="userregister-link">
+
+            <Link
+              to="/vendorLogin"
+              className="userregister-link"
+            >
               Login
             </Link>
           </p>
+
         </form>
+
       </div>
-    </>
+
+    </div>
   );
 }
 

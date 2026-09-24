@@ -1,0 +1,481 @@
+/* =========================================================
+   ADMIN IMPORT PRODUCTS
+   Professional DEALHUNTS Gold + Black Theme
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+.adminhome-container {
+    min-height: 100vh;
+    background: #f7f7f7;
+    color: #111111;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+    width: 100%;
+    height: 72px;
+    padding: 0 24px;
+
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    border-bottom: 1px solid #dedede;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    position: relative;
+    z-index: 10;
+}
+
+
+/* Sidebar */
+
+.left-section {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   DEALHUNTS LOGO
+   ========================================================= */
+
+.logo {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+
+    margin-left: 18px;
+
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.Gold {
+    color: #d4af37;
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -0.7px;
+}
+
+.Black {
+    color: #111111;
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -0.7px;
+}
+
+.Admin {
+    margin-left: 10px;
+
+    color: #333333;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.back-btn {
+    width: 42px;
+    height: 42px;
+
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #d4af37;
+    color: #111111;
+
+    border: none;
+    border-radius: 9px;
+
+    font-size: 24px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #c5a12f;
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 12px rgba(212, 175, 55, 0.28);
+}
+
+.back-btn:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.adminhome-container main {
+    width: 100%;
+    min-height: calc(100vh - 72px);
+
+    padding: 42px 30px 60px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* =========================================================
+   PAGE TITLE
+   ========================================================= */
+
+.page-title {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 0 0 30px;
+
+    color: #111111;
+
+    text-align: left;
+
+    font-size: 30px;
+    font-weight: 750;
+    letter-spacing: -0.5px;
+
+    position: relative;
+}
+
+
+/* Gold underline */
+
+.page-title::after {
+    content: "";
+
+    display: block;
+
+    width: 48px;
+    height: 3px;
+
+    margin-top: 9px;
+
+    background: #d4af37;
+    border-radius: 3px;
+}
+
+
+/* =========================================================
+   IMPORT CARD
+   ========================================================= */
+
+.import-container {
+    width: 100%;
+    max-width: 760px;
+
+    padding: 38px 42px;
+
+    background: #ffffff;
+
+    border: 1px solid #dddddd;
+    border-radius: 14px;
+
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.06),
+        0 1px 3px rgba(0, 0, 0, 0.04);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   CARD HEADING
+   ========================================================= */
+
+.import-container h2 {
+    margin: 0 0 28px;
+
+    color: #111111;
+
+    font-size: 21px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   FILE INPUT
+   ========================================================= */
+
+.import-container input[type="file"] {
+    width: 100%;
+    max-width: 580px;
+
+    padding: 13px 14px;
+
+    background: #fafafa;
+    color: #333333;
+
+    border: 1px solid #cccccc;
+    border-radius: 9px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.import-container input[type="file"]:hover {
+    background: #ffffff;
+    border-color: #d4af37;
+}
+
+.import-container input[type="file"]:focus {
+    outline: none;
+
+    background: #ffffff;
+
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+
+/* =========================================================
+   FILE SELECTOR BUTTON
+   ========================================================= */
+
+.import-container input[type="file"]::file-selector-button {
+    margin-right: 12px;
+
+    padding: 9px 15px;
+
+    background: #d4af37;
+    color: #111111;
+
+    border: 2px solid #d4af37;
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.import-container input[type="file"]::file-selector-button:hover {
+    background: #d4af37;
+    color: #111111;
+}
+
+
+/* =========================================================
+   SELECTED FILE
+   ========================================================= */
+
+.import-container p {
+    width: 100%;
+    max-width: 580px;
+
+    margin: 18px 0 0;
+    padding: 12px 15px;
+
+    background: #fffdf5;
+    color: #333333;
+
+    border: 1px solid #e6d99f;
+    border-left: 4px solid #d4af37;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    text-align: left;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   UPLOAD BUTTON
+   ========================================================= */
+
+.import-upload {
+    min-width: 190px;
+
+    margin-top: 26px;
+    padding: 12px 24px;
+
+    background: #d4af37;
+    color: #111111;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.import-upload:hover:not(:disabled) {
+    background: #c5a12f;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 14px rgba(212, 175, 55, 0.28);
+}
+
+.import-upload:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+
+/* Disabled */
+
+.import-upload:disabled {
+    background: #dedede;
+    color: #888888;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .header {
+        height: 64px;
+        padding: 0 16px;
+    }
+
+    .Gold,
+    .Black {
+        font-size: 21px;
+    }
+
+    .Admin {
+        font-size: 13px;
+        margin-left: 7px;
+    }
+
+    .logo {
+        margin-left: 12px;
+    }
+
+    .back-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 21px;
+    }
+
+    .adminhome-container main {
+        min-height: calc(100vh - 64px);
+        padding: 30px 18px 45px;
+    }
+
+    .page-title {
+        font-size: 25px;
+        margin-bottom: 24px;
+    }
+
+    .import-container {
+        padding: 30px 24px;
+    }
+
+    .import-container h2 {
+        font-size: 19px;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .header {
+        padding: 0 12px;
+    }
+
+    .Admin {
+        display: none;
+    }
+
+    .logo {
+        margin-left: 10px;
+    }
+
+    .Gold,
+    .Black {
+        font-size: 19px;
+    }
+
+    .back-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .adminhome-container main {
+        padding: 25px 14px 40px;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .import-container {
+        padding: 26px 18px;
+        border-radius: 12px;
+    }
+
+    .import-container input[type="file"] {
+        font-size: 13px;
+    }
+
+    .import-upload {
+        width: 100%;
+    }
+}

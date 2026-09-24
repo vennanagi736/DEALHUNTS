@@ -1,76 +1,78 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../styles/Admin.css";
-import SideWindow from "../../components/SideBar";
-import { FaRegWindowClose } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+
 function AdminVendorRequest() {
-  
-  const token = localStorage.getItem("jwtToken");
+  const token = localStorage.getItem("adminJwtToken");
+
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedVendor, setSelectedVendor] = useState(null);
-  const getLocation = (req) =>req.city && req.state ? `${req.city}, ${req.state}` : "N/A";
-  const navigate = useNavigate();
+
+  const getLocation = (req) =>
+    req.city && req.state ? `${req.city}, ${req.state}` : "N/A";
 
   // ---------------- APPROVE ----------------
   const handleApprove = async (id) => {
-  try {
-    await axios.put(
-      `http://localhost:8080/admin/vendor/${id}/approve`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    try {
+      await axios.put(
+        `http://localhost:8080/admin/vendor/${id}/approve`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setRequests((prev) =>
+        prev.map((v) =>
+          v.id === id ? { ...v, status: "APPROVED" } : v
+        )
+      );
+
+      if (selectedVendor?.id === id) {
+        setSelectedVendor({
+          ...selectedVendor,
+          status: "APPROVED",
+        });
       }
-    );
-
-    setRequests((prev) =>
-      prev.map((v) =>
-        v.id === id ? { ...v, status: "APPROVED" } : v
-      )
-    );
-
-    if (selectedVendor?.id === id) {
-      setSelectedVendor({
-        ...selectedVendor,
-        status: "APPROVED",
-      });
+    } catch (err) {
+      console.error("Approve failed", err);
     }
-  } catch (err) {
-    console.error("Approve failed", err);
-  }
-};  
-// ---------------- REJECT ----------------
-const handleReject = async (id) => {
-  try {
-    await axios.put(
-      `http://localhost:8080/admin/vendor/${id}/reject`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  };
+
+  // ---------------- REJECT ----------------
+  const handleReject = async (id) => {
+    try {
+      await axios.put(
+        `http://localhost:8080/admin/vendor/${id}/reject`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setRequests((prev) =>
+        prev.map((v) =>
+          v.id === id ? { ...v, status: "REJECTED" } : v
+        )
+      );
+
+      if (selectedVendor?.id === id) {
+        setSelectedVendor({
+          ...selectedVendor,
+          status: "REJECTED",
+        });
       }
-    );
-
-    setRequests((prev) =>
-      prev.map((v) =>
-        v.id === id ? { ...v, status: "REJECTED" } : v
-      )
-    );
-
-    if (selectedVendor?.id === id) {
-      setSelectedVendor({
-        ...selectedVendor,
-        status: "REJECTED",
-      });
+    } catch (err) {
+      console.error("Reject failed", err);
     }
-  } catch (err) {
-    console.error("Reject failed", err);
-  }
-};  // ---------------- FETCH ----------------
+  };
+
+  // ---------------- FETCH ----------------
   useEffect(() => {
     const fetchRequests = async () => {
       try {
@@ -96,19 +98,6 @@ const handleReject = async (id) => {
 
   return (
     <div className="adminhome-container">
-      <header className="admin-header">
-        <div className="left-section">
-          <SideWindow />
-        </div>
-        <div className="logo">
-          <span className="Gold">DEAL</span>
-          <span className="Black">HUNTS</span>
-          <span className="Admin">Admin</span>
-        </div>
-        <div className="back-btn" onClick={() => navigate(-1)}>
-           &#8592;
-       </div>
-      </header>
 
       <main className="main">
         <div className="request-content">
@@ -131,109 +120,139 @@ const handleReject = async (id) => {
                 </tr>
               </thead>
 
-             <tbody>
-  {requests.map((req) => {
-    console.log(req);
+              <tbody>
+                {requests.map((req) => {
+                  console.log(req);
 
-    return (
-      <tr key={req.id}>
-        <td>
-            {req.createdAt
-            ? new Date(req.createdAt).toLocaleDateString("en-IN",{
-              day : "2-digit",
-              month: "short",
-              year: "numeric",
-              hour:"2-digit",
-              minute: "2-digit",
-            })
-            : "N/A"}
-        </td>
+                  return (
+                    <tr key={req.id}>
+                      <td>
+                        {req.createdAt
+                          ? new Date(req.createdAt).toLocaleDateString(
+                              "en-IN",
+                              {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )
+                          : "N/A"}
+                      </td>
 
-        <td>{req.fullName}</td>
-        <td>{req.shopName}</td>
-        <td>{getLocation(req)}</td>
+                      <td>{req.fullName}</td>
+                      <td>{req.shopName}</td>
+                      <td>{getLocation(req)}</td>
 
-        <td>
-          <span
-            className={`status-badge ${(req.status || "").toLowerCase()}`}
-          >
-            {req.status}
-          </span>
-        </td>
+                      <td>
+                        <span
+                          className={`status-badge ${(
+                            req.status || ""
+                          ).toLowerCase()}`}
+                        >
+                          {req.status}
+                        </span>
+                      </td>
 
-        <td>
-          <button
-            className="view-btn"
-            onClick={() => setSelectedVendor(req)}
-          >
-            View
-          </button>
-        </td>
-      </tr>
-    );
-  })}
-</tbody>
-</table>
+                      <td>
+                        <button
+                          className="view-btn"
+                          onClick={() => setSelectedVendor(req)}
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           )}
         </div>
       </main>
-            {/* popup model */}
-{selectedVendor && (
-  <>
-    {/* overlay */}
-    <div
-      className="request-pop"
-      onClick={() => setSelectedVendor(null)}
-    />
 
-    {/* drawer */}
-    <div className="vendor-drawer">
+      {/* Popup Modal */}
+      {selectedVendor && (
+        <>
+          {/* Overlay */}
+          <div
+            className="request-pop"
+            onClick={() => setSelectedVendor(null)}
+          />
 
-      <button
-        className="close-drawer"
-        onClick={() => setSelectedVendor(null)}
-      >
-        ✖
-      </button>
+          {/* Drawer */}
+          <div className="vendor-drawer">
 
-      <h3>Vendor Details</h3>
+            <button
+              className="close-drawer"
+              onClick={() => setSelectedVendor(null)}
+            >
+              ✖
+            </button>
 
-      <p><strong>Name:</strong> {selectedVendor.fullName}</p>
-      <p><strong>Email:</strong> {selectedVendor.email}</p>
-      <p><strong>Shop:</strong> {selectedVendor.shopName}</p>
-      <p><strong>City:</strong> {selectedVendor.city}</p>
-      <p><strong>State:</strong> {selectedVendor.state}</p>
-      <p><strong>Address:</strong> {selectedVendor.address}</p>
-      <p><strong>Status:</strong> {selectedVendor.status}</p>
+            <h3>Vendor Details</h3>
 
-      {selectedVendor.status === "PENDING" && (
-        <div className="drawer-actions">
+            <p>
+              <strong>Name:</strong> {selectedVendor.fullName}
+            </p>
 
-          <button
-            className="approve-btn"
-            onClick={() => handleApprove(selectedVendor.id)}
-          >
-            Approve
-          </button>
+            <p>
+              <strong>Email:</strong> {selectedVendor.email}
+            </p>
 
-          <button
-            className="reject-btn"
-            onClick={() => handleReject(selectedVendor.id)}
-          >
-            Reject
-          </button>
+            <p>
+              <strong>Shop:</strong> {selectedVendor.shopName}
+            </p>
 
-        </div>
+            <p>
+              <strong>City:</strong> {selectedVendor.city}
+            </p>
+
+            <p>
+              <strong>State:</strong> {selectedVendor.state}
+            </p>
+
+            <p>
+              <strong>Address:</strong> {selectedVendor.address}
+            </p>
+
+            <p>
+              <strong>Status:</strong> {selectedVendor.status}
+            </p>
+
+            {selectedVendor.status === "PENDING" && (
+              <div className="drawer-actions">
+
+                <button
+                  className="approve-btn"
+                  onClick={() =>
+                    handleApprove(selectedVendor.id)
+                  }
+                >
+                  Approve
+                </button>
+
+                <button
+                  className="reject-btn"
+                  onClick={() =>
+                    handleReject(selectedVendor.id)
+                  }
+                >
+                  Reject
+                </button>
+
+              </div>
+            )}
+          </div>
+        </>
       )}
-    </div>
-  </>
-)}
 
       <footer className="admin-footer">
         <p>© 2026 Website. All rights reserved.</p>
       </footer>
+
     </div>
-    
   );
 }
 

@@ -1,458 +1,2243 @@
-.header{
-  width:100%;                /* full page width */
-  background-color:white;
-  padding:15px 20px; 
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  border-bottom: 2px solid #e0e0e0;
+/* =========================================================
+   ADMIN PRODUCTS PAGE
+   DEALHUNTS - Gold + Black Theme
+========================================================= */
+
+
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", Arial, sans-serif;
 }
-/* Container */
+
+body {
+    background: #f7f7f7;
+    color: #111111;
+}
+
+
+/* =========================================================
+   PAGE TITLE
+========================================================= */
+
+.page-title {
+    margin-bottom: 20px;
+    color: #111111;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
 .adminhome-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-/* Container for arrow + logo */
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* space between arrow and logo */
-}
-
-/* Arrow button */
-.back-btn {
-  font-size: 32px;
-  background-color: gold;
-  padding: 4px 12px;
-  cursor: pointer;
-}
-
-/* NAVIGATION */
-.admin-nav-links{
-  display:flex;
-  align-items:center;
-  gap:28px;
-}
-
-.admin-nav-links a{
-  text-decoration:none;
-  color:#333;
-  transition:0.3s ease;
-  font-size:18px;
-  font-family:"Inter", sans-serif;
-  font-weight:500;
-  position:relative;
-}
-
-.admin-nav-links a:hover{
-  color:goldenrod;
-}
-
-.admin-nav-links a::after{
-  content:"";
-  position:absolute;
-  left:0;
-  bottom:-6px;
-  width:0%;
-  height:2px;
-  background:gold;
-  transition:0.3s;
-}
-
-.admin-nav-links a:hover::after{
-  width:100%;
+    width: 100%;
+    min-height: 100vh;
+    background: #f7f7f7;
+    color: #111111;
 }
 
 
-table {
-  margin: 20px auto;
-  border-collapse: collapse;
-  width: 80%;
-}
-/* Logo */
-.Gold {
-  color: gold;
-  font-size: 24px;
-  font-weight: bold;
-}
+/* =========================================================
+   HEADER
+========================================================= */
 
-.Black {
-  color: black;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.Admin {
-  font-family: cursive;
-  margin-left: 10px;
-  font-size: 20px;
-  color: #333;
-}
-
-/* Main Section */
-.main {
-  flex: 1;
-  background-color: #FFFFFF;
-  padding: 40px;
-  text-align: center;
-}
-
-/* Product Table */
-table {
-  margin: 20px auto;
-  border-collapse: collapse;
-  width: 80%;
-}
-
-th, td {
-  border: 1px solid black;
-  padding: 10px;
-  text-align: center;
-}
-
-th {
-  background-color: gold;
-  color: black;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-/* Footer */
-.footer {
-  background-color: white;
-  color: black;
-  text-align: center;
-  padding: 20px;
-  border-top: 2px solid #e0e0e0;
-}
-
-/* ================= IMPORT PRODUCTS PAGE ================= */
-
-.import-container{
-    width: 50%;
-    margin: 50px auto;
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+.header {
+    position: relative;
+    width: 100%;
+    height: 72px;
 
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 25px;
+
+    padding: 0 24px;
+
+    background: #ffffff;
+    border-bottom: 1px solid #dedede;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    z-index: 100;
 }
 
 
-.import-container h2{
+/* =========================================================
+   SIDE WINDOW / SIDEBAR
+========================================================= */
+
+.header .left-section {
+    display: flex;
+    align-items: center;
+
+    margin: 0;
+    padding: 0;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.header .logo-container {
+    display: flex;
+    align-items: center;
+
+    margin-left: 5px;
+    padding: 0;
+
+    flex-shrink: 0;
+}
+
+.header .logo {
+    display: flex;
+    align-items: baseline;
+
+    margin: 0;
+    padding: 0;
+
+    white-space: nowrap;
+
     font-size: 25px;
-    color:#222;
-    margin-bottom:10px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+}
+
+.header .Gold {
+    color: #d4af37;
+}
+
+.header .Black {
+    color: #111111;
+}
+
+.header .Admin {
+    margin-left: 7px;
+
+    color: #777777;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 
-/* FILE INPUT */
+/* =========================================================
+   CENTER NAVIGATION
+========================================================= */
 
-.import-container input[type="file"]{
-    width: 80%;
-    padding: 12px;
-    border:2px dashed grey;
-    border-radius:10px;
-    background:#fafafa;
-    cursor:pointer;
-    font-size:15px;
+.header .admin-nav-links {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 32px;
+
+    margin: 0;
+    padding: 0;
+
+    white-space: nowrap;
+
+    width: max-content;
+}
+
+.header .admin-nav-links a {
+    position: relative;
+
+    display: inline-block;
+
+    padding: 8px 2px;
+
+    color: #222222;
+
+    text-decoration: none;
+
+    font-size: 16px;
+
+    transition: color 0.2s ease;
+}
+
+.header .admin-nav-links a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: 2px;
+
+    width: 0;
+    height: 2px;
+
+    background: #d4af37;
+
+    transition: width 0.2s ease;
+}
+
+.header .admin-nav-links a:hover {
+    color: #d4af37;
+}
+
+.header .admin-nav-links a:hover::after {
+    width: 100%;
 }
 
 
-/* SELECTED FILE TEXT */
+/* =========================================================
+   SEARCH BOX
+========================================================= */
 
-.import-container p{
-    font-size:16px;
-    color:#444;
-    font-weight:600;
-}
+.header .search-box {
+    position: absolute;
 
+    top: 50%;
+    right: 78px;
 
-/* UPLOAD BUTTON */
+    transform: translateY(-50%);
 
-.import-upload{
+    width: 210px;
+    height: 38px;
 
-    padding:12px 30px;
-    background:linear-gradient(135deg,#ffd700,#ffbf00);
-    border-radius:10px;
+    display: flex;
+    align-items: center;
 
-    font-size:18px;
-    font-weight:600;
-    font-family:cursive;
+    background: #f8f8f8;
 
-    cursor:pointer;
-    transition:all 0.3s ease;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
 
-}
-
-
-/* HOVER */
-
-.import-upload:hover{
-
-    transform:translateY(-3px);
-    box-shadow:0 8px 18px rgba(0,0,0,0.25);
-
-}
-
-
-/* DISABLED BUTTON */
-
-.import-upload:disabled{
-
-    background:#ccc;
-    color:#777;
-    border-color:#aaa;
-    cursor:not-allowed;
-    transform:none;
-    box-shadow:none;
-
-}
-
-
-/* RESPONSIVE */
-
-@media(max-width:768px){
-
-    .import-container{
-
-        width:85%;
-        padding:25px;
-
-    }
-
-
-    .import-container input[type="file"]{
-
-        width:100%;
-
-    }
-
-}
-
-.status{
-
-    padding:6px 14px;
-
-    border-radius:20px;
-
-    font-size:13px;
-
-    font-weight:700;
-
-}
-
-
-.status.active{
-
-    background:#d4edda;
-
-    color:#155724;
-
-}
-
-.status.inactive{
-    background:#f8d7da;
-    color:#721c24;
-}
-
-.image-card {
-    position: relative !important;
-    width: 150px;
-    height: 180px;
     overflow: hidden;
-    border-radius: 10px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.image-card img {
+.header .search-box:focus-within {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 0 2px rgba(212, 175, 55, 0.12);
+}
+
+.header .search-box input {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    display: block;
-}
-.image-card .image-checkbox {
-    position: absolute !important;
-    top: 8px !important;
-    right: 8px !important;
-    left: unset !important;
-    bottom: unset !important;
-    width: 18px !important;
-    height: 18px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    z-index: 999 !important;
-    cursor: pointer;
-}
 
-.delete-btn{
-  background-color: rgb(237, 91, 91);
-}
-.delete-btn:hover{
-  transition: scale(0.3s);
-  background-color: red;
-}
+    padding: 0 40px 0 12px;
 
-.change-btn{
-background:#d4af37;
-color:black;
-}
-
-.change-btn{
-padding:12px 25px;
-border:none;
-border-radius:25px;
-cursor:pointer;
-font-weight:bold;
-}
-.image-actions button:hover{
-transform:translateY(-2px);
-}
-
-/*Mange product*/
-.manage-product-actions {
-    width: 80%;
-    margin: 25px auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.select-all-products,.select-products,.delete-selected-btn{
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    gap: 8px;
-    padding-right: 5px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.mainheading{
-  font-size: 30px;
-  margin-top: 20px;
-}
-.product-action-buttons{
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-  margin-top:20px;
-}
-.select-all-products input,.delete-selected-btn,.restore-selected-btn {
-    margin: 0;
-    cursor: pointer;
-}
-
-.clear-selection {
-    margin-left: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #555;
-    transition: 0.2s ease;
-}
-
-.clear-selection:hover {
-    color: #dc3545;
-}
-
-.restore-selected-btn:enabled{
-  background-color: goldenrod;
-  color: black;
-}
-.delete-selected-btn:enabled{
-   background: #dc3545;
-    color: black;
-}
- .delete-selected-btn,.restore-selected-btn {
-    padding: 10px 20px;
     border: none;
-    font-family: cursive;
-    border-radius: 18px;
-    font-weight: 600;
+    outline: none;
+
+    background: transparent;
+
+    color: #111111;
+
+    font-size: 13px;
+}
+
+.header .search-box input::placeholder {
+    color: #999999;
+}
+
+.header .search-box .icon {
+    position: absolute;
+
+    right: 11px;
+
+    width: 20px;
+    height: 20px;
+
     display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 15px;
+
     cursor: pointer;
-    transition: 0.25s ease;
-} 
 
-.delete-selected-btn:hover:not(:disabled) {
-    background: #b02a37;
-    transform: translateY(-2px);
+    user-select: none;
 }
 
-.delete-selected-btn:disabled,.restore-selected-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
 
-.manage-product-table {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
-}
+/* =========================================================
+   BACK BUTTON
+========================================================= */
 
-.manage-product-table input[type="checkbox"] {
-    width: 17px;
-    height: 17px;
+.header .back-btn {
+    position: absolute;
+
+    top: 50%;
+    right: 22px;
+
+    transform: translateY(-50%);
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #111111;
+
+    font-size: 21px;
+    font-weight: 600;
+
     cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
 }
+
+.header .back-btn:hover {
+    transform: translateY(-50%) translateX(-2px);
+
+    background: #111111;
+
+    border-color: #111111;
+
+    color: #d4af37;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.main {
+    width: 100%;
+
+    padding: 30px 32px 40px;
+}
+
+.mainheading {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 0 16px;
+
+    text-align: center;
+}
+
+.mainheading h1 {
+    margin: 0;
+
+    color: #111111;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   PRODUCT STATUS TABS
+   CENTERED BELOW HEADING
+========================================================= */
 
 .product-status-tabs {
+    width: 100%;
+
     display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 12px;
-    margin: 20px 0;
+
+    gap: 10px;
+
+    margin: 0 auto 20px;
 }
 
 .product-tab {
-    padding: 10px 25px;
-    border: none;
-    border-radius: 20px;
-    font-family: cursive;
+    padding: 9px 18px;
+
+    border: 1px solid #dddddd;
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #555555;
+
+    font-size: 13px;
     font-weight: 600;
-    font-size: 14px;
+
     cursor: pointer;
-    background: #e0e0e0;
-    color: #333;
-    transition: all 0.25s ease;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .product-tab:hover {
-    transform: translateY(-2px);
+    border-color: #d4af37;
+    color: #111111;
 }
 
-/* Available */
-.active-tab {
-    background: #28a745;
-    color: white;
+.product-tab.active-tab {
+    background: #d4af37;
+    border-color: #d4af37;
+    color: #111111;
 }
 
-/* Unavailable */
-.unavailable-tab {
-    background: #dc3545;
-    color: white;
+.product-tab.unavailable-tab {
+    color: #111111;
+    background-color: #d4af37;
 }
+
+
+/* =========================================================
+   PRODUCT ACTION AREA
+   SELECT / SELECTION CONTROLS TO RIGHT
+========================================================= */
+
+.manage-product-actions {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 15px;
+
+    margin: 0 0 18px;
+}
+
+.select-products {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 9px 16px;
+
+    border: 1px solid #d4af37;
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #111111;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.select-products:hover {
+    background: #d4af37;
+    color: #111111;
+}
+
+
+/* =========================================================
+   SELECT ALL PRODUCTS
+========================================================= */
+
+.select-all-products {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #333333;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+}
+
+.select-all-products input {
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   CLEAR SELECTION
+========================================================= */
+
+.clear-selection {
+    padding: 8px 14px;
+
+    border: 1px solid #dddddd;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #555555;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.clear-selection:hover {
+    background: #f1f1f1;
+
+    border-color: #bbbbbb;
+
+    color: #111111;
+}
+
+
+/* =========================================================
+   PRODUCT ACTION BUTTONS
+========================================================= */
+
+.product-action-buttons {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.delete-selected-btn,
+.restore-selected-btn {
+    padding: 9px 16px;
+
+    margin-top: 15px;
+
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.delete-selected-btn {
+    border: 1px solid #b33a3a;
+
+    background: #ffffff;
+
+    color: #b33a3a;
+}
+
+.delete-selected-btn:hover {
+    background: #b33a3a;
+
+    color: #ffffff;
+}
+
+.restore-selected-btn {
+    border: 1px solid #d4af37;
+
+    background: #ffffff;
+
+    color: #8f7415;
+}
+
+.restore-selected-btn:hover {
+    background: #d4af37;
+
+    color: #111111;
+}
+
+
+/* =========================================================
+   PRODUCT TABLE
+========================================================= */
+
+.manage-product-table {
+    width: 100%;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    background: #ffffff;
+
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+}
+
+.manage-product-table th {
+    padding: 14px 16px;
+
+    /* Professional light header */
+    background: #f1f2f4;
+
+    border-bottom: 1px solid #dcdfe3;
+
+    color: #333333;
+
+    text-align: left;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.manage-product-table td {
+    padding: 14px 16px;
+
+    border-bottom: 1px solid #eeeeee;
+
+    color: #333333;
+
+    font-size: 13px;
+
+    vertical-align: middle;
+}
+
+.manage-product-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.manage-product-table tbody tr:hover {
+    background: #fffdf5;
+}
+
+
+/* =========================================================
+   PRODUCT ROW
+========================================================= */
+
+.product-row {
+    transition: background 0.2s ease;
+}
+
+.product-row.selection-active {
+    background: #fff8dc;
+}
+
+.product-row.selection-active:hover {
+    background: #fff3c4;
+}
+
+
+/* =========================================================
+   PRODUCT CHECKBOX
+========================================================= */
+
+.manage-product-table input[type="checkbox"],
+.select-all-products input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 18px;
+    height: 18px;
+
+    margin: 0;
+    padding: 0;
+
+    border: none !important;
+    outline: none !important;
+
+    border-radius: 4px;
+
+    background: transparent;
+
+    box-shadow: none !important;
+
+    cursor: pointer;
+
+    vertical-align: middle;
+
+    transition: background 0.15s ease;
+}
+
+.manage-product-table input[type="checkbox"]:hover,
+.select-all-products input[type="checkbox"]:hover {
+    background: #f2f2f2;
+}
+
+.manage-product-table input[type="checkbox"]:checked,
+.select-all-products input[type="checkbox"]:checked {
+    background-color: #d4af37;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='%23111111' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 15px 15px;
+}
+
+.manage-product-table input[type="checkbox"]:checked:hover,
+.select-all-products input[type="checkbox"]:checked:hover {
+    background-color: #c9a52f;
+}
+
+
+/* =========================================================
+   PRODUCT STATUS
+========================================================= */
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 72px;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+}
+
+.status.active {
+    background: #eaf7ed;
+
+    color: #267a3d;
+}
+
+.status.inactive {
+    background: #fceaea;
+
+    color: #a33a3a;
+}
+
+
+/* =========================================================
+   EDIT PRODUCT BUTTON
+========================================================= */
 
 .edit-product-btn {
-    margin-top: 15px;
-    padding: 10px 22px;
-    border: none;
-    border-radius: 18px;
-    background: goldenrod;
-    color: black;
-    font-family: cursive;
-    font-weight: 500;
+    padding: 7px 13px;
+
+    border: 1px solid #d4af37;
+    border-radius: 6px;
+
+    background: #d4af37;
+
+    color: #111111;
+
+    font-size: 12px;
+    font-weight: 600;
+
     cursor: pointer;
-    transition: 0.25s ease;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .edit-product-btn:hover {
-    background: #d4a017;
-    transform: translateY(-2px);
+    background: #c9a52f;
+
+    border-color: #c9a52f;
+
+    color: #111111;
+}
+
+
+/* =========================================================
+   IMAGE CARD
+========================================================= */
+
+.image-card {
+    position: relative;
+
+    width: 170px;
+
+    padding: 10px;
+
+    border: 1px solid #e2e2e2;
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.image-card img {
+    display: block;
+
+    width: 100%;
+    height: 140px;
+
+    object-fit: contain;
+
+    border-radius: 6px;
+
+    background: #f7f7f7;
+}
+
+
+/* =========================================================
+   IMAGE CHECKBOX
+   TOP RIGHT
+========================================================= */
+
+.image-checkbox {
+    position: absolute !important;
+
+    top: 8px !important;
+    right: 8px !important;
+
+    left: auto !important;
+    bottom: auto !important;
+
+    z-index: 20 !important;
+
+    width: 18px !important;
+    height: 18px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    cursor: pointer;
+
+    accent-color: #d4af37;
+}
+
+
+/* =========================================================
+   IMAGE ACTION BUTTONS
+========================================================= */
+
+.image-card .delete-btn,
+.image-card .change-btn {
+    margin-top: 8px;
+
+    padding: 6px 10px;
+
+    border-radius: 5px;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.image-card .delete-btn {
+    border: 1px solid #b33a3a;
+
+    background: #ffffff;
+
+    color: #b33a3a;
+}
+
+.image-card .delete-btn:hover {
+    background: #b33a3a;
+
+    color: #ffffff;
+}
+
+.image-card .change-btn {
+    border: 1px solid #d4af37;
+
+    background: #ffffff;
+
+    color: #8f7415;
+}
+
+.image-card .change-btn:hover {
+    background: #d4af37;
+
+    color: #111111;
+}
+
+
+/* =========================================================
+   IMAGE PREVIEW
+========================================================= */
+
+.image-preview {
+    max-width: 100%;
+    max-height: 75vh;
+
+    object-fit: contain;
+
+    border-radius: 8px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+    width: 100%;
+
+    margin-top: 40px;
+    padding: 22px 30px;
+
+    /* No dark background */
+    background: transparent;
+
+    color: #777777;
+
+    text-align: center;
+
+    font-size: 12px;
+
+    border-top: 1px solid #e6e6e6;
+}
+
+.footer strong {
+    color: #d4af37;
+}
+
+
+/* =========================================================
+   RESPONSIVE - 1100px
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .header .admin-nav-links {
+        gap: 20px;
+    }
+
+    .header .admin-nav-links a {
+        font-size: 13px;
+    }
+
+    .header .search-box {
+        width: 180px;
+    }
+
+    .main {
+        padding-right: 24px;
+        padding-left: 24px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 900px
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .header .logo {
+        font-size: 22px;
+    }
+
+    .header .Admin {
+        margin-left: 5px;
+        font-size: 10px;
+    }
+
+    .header .admin-nav-links {
+        gap: 14px;
+    }
+
+    .header .admin-nav-links a {
+        font-size: 12px;
+    }
+
+    .header .search-box {
+        right: 70px;
+        width: 150px;
+    }
+
+    .header .back-btn {
+        right: 18px;
+    }
+
+    .main {
+        overflow-x: auto;
+    }
+
+    .manage-product-table {
+        min-width: 850px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 768px
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .header {
+        height: 64px;
+        padding: 0 10px;
+    }
+
+    .header .logo-container {
+        margin-left: 5px;
+    }
+
+    .header .logo {
+        font-size: 20px;
+    }
+
+    .header .Admin {
+        display: none;
+    }
+
+    .header .admin-nav-links {
+        display: none;
+    }
+
+    .header .search-box {
+        right: 62px;
+
+        width: 145px;
+        height: 34px;
+    }
+
+    .header .back-btn {
+        right: 10px;
+
+        width: 34px;
+        height: 34px;
+    }
+
+    .main {
+        padding: 22px 16px 30px;
+    }
+
+    .mainheading {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+
+        margin-bottom: 14px;
+    }
+
+    .mainheading h1 {
+        font-size: 23px;
+
+        text-align: center;
+    }
+
+    .product-status-tabs {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-bottom: 18px;
+    }
+
+    .manage-product-actions {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+
+        margin-bottom: 18px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 600px
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .header {
+        height: 60px;
+    }
+
+    .header .logo {
+        font-size: 18px;
+    }
+
+    .header .search-box {
+        right: 56px;
+        width: 120px;
+    }
+
+    .header .search-box input {
+        padding-left: 9px;
+        padding-right: 32px;
+
+        font-size: 11px;
+    }
+
+    .header .search-box .icon {
+        right: 8px;
+    }
+
+    .header .back-btn {
+        right: 8px;
+
+        width: 32px;
+        height: 32px;
+
+        font-size: 18px;
+    }
+
+    .mainheading {
+        justify-content: center;
+
+        margin-bottom: 12px;
+    }
+
+    .mainheading h1 {
+        font-size: 21px;
+    }
+
+    .product-status-tabs {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        overflow-x: auto;
+
+        padding-bottom: 2px;
+
+        margin-bottom: 18px;
+    }
+
+    .product-tab {
+        white-space: nowrap;
+    }
+
+    .manage-product-actions {
+        width: 100%;
+
+        align-items: center;
+        justify-content: flex-end;
+
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .select-products {
+        margin-left: auto;
+    }
+
+    .product-action-buttons {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 400px
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .header {
+        padding: 0 6px;
+    }
+
+    .header .logo-container {
+        margin-left: 3px;
+    }
+
+    .header .logo {
+        font-size: 16px;
+    }
+
+    .header .search-box {
+        right: 50px;
+        width: 100px;
+    }
+
+    .header .search-box .icon {
+        display: none;
+    }
+
+    .header .search-box input {
+        padding-right: 8px;
+    }
+
+    .header .back-btn {
+        right: 6px;
+
+        width: 30px;
+        height: 30px;
+    }
+
+    .main {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .mainheading h1 {
+        font-size: 20px;
+    }
+
+    .product-status-tabs {
+        gap: 8px;
+    }
+
+    .product-tab {
+        padding: 8px 14px;
+    }
+
+    .manage-product-actions {
+        justify-content: flex-end;
+    }
+}
+
+
+/* =========================================================
+   =========================================================
+   PRODUCT MANAGEMENT POPUP
+   -PP
+   DEALHUNTS GOLD + BLACK THEME
+   =========================================================
+========================================================= */
+
+
+/* =========================================================
+   POPUP MAIN CONTAINER
+========================================================= */
+
+.image-management-popup-pp {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    color: #111111;
+
+    overflow: visible;
+
+    /* Gray scrollbar if this container ever becomes scrollable */
+    scrollbar-width: thin;
+    scrollbar-color: #999999 #eeeeee;
+}
+
+.image-management-popup-pp::-webkit-scrollbar {
+    width: 8px;
+}
+
+.image-management-popup-pp::-webkit-scrollbar-track {
+    background: #eeeeee;
+}
+
+.image-management-popup-pp::-webkit-scrollbar-thumb {
+    background: #999999;
+    border-radius: 10px;
+}
+
+.image-management-popup-pp::-webkit-scrollbar-thumb:hover {
+    background: #777777;
+}
+
+
+/* =========================================================
+   PRODUCT INFORMATION HEADER
+========================================================= */
+
+.popup-product-header-pp {
+    width: 100%;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.popup-product-header-pp h2 {
+    margin: 0 0 18px;
+
+    color: #111111;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   PRODUCT INFORMATION
+   ONE BY ONE
+========================================================= */
+
+.product-info-grid-pp {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+
+    margin-bottom: 18px;
+}
+
+.product-info-grid-pp p {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: 135px minmax(0, 1fr);
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin: 0;
+
+    padding: 10px 0;
+
+    border-bottom: 1px solid #f0f0f0;
+
+    color: #555555;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+.product-info-grid-pp p:last-child {
+    border-bottom: none;
+}
+
+.product-info-grid-pp p strong {
+    color: #222222;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.product-info-grid-pp p span {
+    min-width: 0;
+
+    color: #555555;
+
+    font-size: 13px;
+
+    text-align: left;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   POPUP STATUS
+========================================================= */
+
+.status-pp {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+    min-width: 78px;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    font-size: 10px !important;
+    font-weight: 700 !important;
+
+    text-transform: uppercase;
+}
+
+.status-pp.active-pp {
+    background: #eaf7ed;
+    color: #267a3d !important;
+}
+
+.status-pp.inactive-pp {
+    background: #fceaea;
+    color: #a33a3a !important;
+}
+
+
+/* =========================================================
+   EDIT PRODUCT BUTTON
+========================================================= */
+
+.edit-product-btn-pp {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 15px;
+
+    border: 1px solid #d4af37;
+    border-radius: 6px;
+
+    background: #d4af37;
+
+    color: #111111;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.edit-product-btn-pp:hover {
+    background: #c9a52f;
+
+    border-color: #c9a52f;
+
+    color: #111111;
+}
+
+
+/* =========================================================
+   IMAGES SECTION
+========================================================= */
+
+.images-section-pp {
+    width: 100%;
+
+    padding-top: 20px;
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   IMAGE TITLE
+   SELECT ALL ONE LINE
+========================================================= */
+
+.image-title-pp {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 15px;
+
+    min-width: 0;
+
+    flex-wrap: nowrap;
+}
+
+.image-title-pp h3 {
+    margin: 0;
+
+    color: #111111;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.select-all-pp {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    flex-shrink: 0;
+
+    color: #444444;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    white-space: nowrap;
+}
+
+.select-all-pp input {
+    width: 16px;
+    height: 16px;
+
+    flex-shrink: 0;
+
+    margin: 0;
+
+    cursor: pointer;
+
+    accent-color: #d4af37;
+}
+
+
+/* =========================================================
+   IMAGE WRAPPER
+   GRAY SCROLLBAR
+========================================================= */
+
+.images-wrapper-pp {
+    position: relative;
+
+    width: 100%;
+
+    height: 300px;
+    max-height: 300px;
+
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+
+    padding: 6px 8px 6px 4px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+
+    /* Firefox */
+    scrollbar-width: thin !important;
+    scrollbar-color: #999999 #eeeeee !important;
+}
+
+
+/* =========================================================
+   GRAY SCROLLBAR
+   CHROME / EDGE / SAFARI
+========================================================= */
+
+.images-wrapper-pp::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+.images-wrapper-pp::-webkit-scrollbar-track {
+    background: #eeeeee !important;
+    border-radius: 10px !important;
+}
+
+.images-wrapper-pp::-webkit-scrollbar-thumb {
+    background: #999999 !important;
+
+    border-radius: 10px !important;
+
+    border: 1px solid #eeeeee !important;
+}
+
+.images-wrapper-pp::-webkit-scrollbar-thumb:hover {
+    background: #777777 !important;
+}
+
+
+/* =========================================================
+   IMAGE GRID
+========================================================= */
+
+.image-grid-pp {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 12px;
+
+    align-items: start;
+
+    padding-bottom: 6px;
+}
+
+
+/* =========================================================
+   EMPTY IMAGE MESSAGE
+========================================================= */
+
+.no-images-message-pp {
+    grid-column: 1 / -1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 180px;
+
+    padding: 25px;
+
+    border: 1px dashed #cccccc;
+
+    border-radius: 8px;
+
+    background: #fafafa;
+
+    text-align: center;
+}
+
+.no-images-message-pp p {
+    margin: 0 0 7px;
+
+    color: #444444;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.no-images-message-pp span {
+    color: #999999;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   IMAGE CARD
+========================================================= */
+
+.image-card-pp {
+    position: relative !important;
+
+    width: 100%;
+    min-width: 0;
+
+    height: 165px;
+
+    padding: 8px;
+
+    border: 1px solid #e2e2e2;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.04);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.image-card-pp:hover {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.07);
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.image-card-pp img {
+    display: block;
+
+    width: 100%;
+    height: 125px;
+
+    object-fit: contain;
+
+    border-radius: 5px;
+
+    background: #f7f7f7;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   IMAGE CHECKBOX
+   FORCE TOP RIGHT
+========================================================= */
+
+.image-card-pp .image-checkbox-pp {
+    position: absolute !important;
+
+    top: 8px !important;
+    right: 8px !important;
+
+    left: auto !important;
+    bottom: auto !important;
+
+    z-index: 100 !important;
+
+    width: 18px !important;
+    height: 18px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+
+    cursor: pointer;
+
+    accent-color: #d4af37;
+}
+
+
+/* =========================================================
+   IMAGE NAME
+========================================================= */
+
+.image-name-pp {
+    width: 100%;
+
+    margin-top: 7px;
+
+    padding: 0 2px;
+
+    overflow: hidden;
+
+    color: #555555;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    text-align: center;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   REMOVE NEW IMAGE BUTTON
+   TOP LEFT
+========================================================= */
+
+.remove-image-btn-pp {
+    position: absolute;
+
+    top: 6px;
+    left: 6px;
+
+    z-index: 100;
+
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #111111;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.remove-image-btn-pp:hover {
+    background: #b33a3a;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   ADD IMAGE CARD
+========================================================= */
+
+.add-image-card-pp {
+    width: 100%;
+    height: 165px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 2px dashed #cccccc;
+
+    border-radius: 8px;
+
+    background: #fafafa;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.add-image-card-pp:hover {
+    border-color: #d4af37;
+
+    background: #fffdf5;
+}
+
+
+/* =========================================================
+   PLUS ICON
+========================================================= */
+
+.plus-icon-pp {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid #d4af37;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #d4af37;
+
+    font-size: 28px;
+    font-weight: 400;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   IMAGE ACTIONS
+========================================================= */
+
+.image-actions-pp {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+    padding-top: 18px;
+
+    border-top: 1px solid #e5e5e5;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.upload-btn-pp,
+.change-btn-pp,
+.delete-btn-pp {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 36px;
+
+    padding: 8px 14px;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+
+.upload-btn-pp {
+    border: 1px solid #d4af37;
+
+    background: #d4af37;
+
+    color: #111111;
+}
+
+.upload-btn-pp:hover:not(:disabled) {
+    background: #c9a52f;
+
+    border-color: #c9a52f;
+
+    color: #111111;
+}
+
+.upload-btn-pp:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   CHANGE
+========================================================= */
+
+.change-btn-pp {
+    border: 1px solid #d4af37;
+
+    background: #ffffff;
+
+    color: #8f7415;
+}
+
+.change-btn-pp:hover {
+    background: #d4af37;
+
+    color: #111111;
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+.delete-btn-pp {
+    border: 1px solid #b33a3a;
+
+    background: #ffffff;
+
+    color: #b33a3a;
+}
+
+.delete-btn-pp:hover:not(:disabled) {
+    background: #b33a3a;
+
+    color: #ffffff;
+}
+
+.delete-btn-pp:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVE - 750px
+========================================================= */
+
+@media (max-width: 750px) {
+
+    .image-grid-pp {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .image-card-pp img {
+        height: 115px;
+    }
+
+    .image-card-pp {
+        height: 155px;
+    }
+
+    .add-image-card-pp {
+        height: 155px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 650px
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .product-info-grid-pp p {
+        grid-template-columns: 120px minmax(0, 1fr);
+
+        gap: 12px;
+    }
+
+    .image-grid-pp {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .image-card-pp img {
+        height: 115px;
+    }
+
+    .image-card-pp {
+        height: 155px;
+    }
+
+    .add-image-card-pp {
+        height: 155px;
+    }
+
+    .image-actions-pp {
+        justify-content: stretch;
+
+        flex-wrap: wrap;
+    }
+
+    .upload-btn-pp,
+    .change-btn-pp,
+    .delete-btn-pp {
+        flex: 1 1 0;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 480px
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .popup-product-header-pp h2 {
+        font-size: 19px;
+    }
+
+    .image-title-pp {
+        display: flex;
+
+        flex-direction: row;
+
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 8px;
+
+        flex-wrap: nowrap;
+    }
+
+    .image-title-pp h3 {
+        font-size: 14px;
+
+        min-width: 0;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+    }
+
+    .select-all-pp {
+        font-size: 11px;
+
+        gap: 5px;
+
+        flex-shrink: 0;
+
+        white-space: nowrap;
+    }
+
+    .select-all-pp input {
+        width: 15px;
+        height: 15px;
+    }
+
+    .product-info-grid-pp p {
+        grid-template-columns: 105px minmax(0, 1fr);
+
+        gap: 10px;
+
+        padding: 9px 0;
+    }
+
+    .product-info-grid-pp p strong {
+        font-size: 11px;
+    }
+
+    .product-info-grid-pp p span {
+        font-size: 12px;
+    }
+
+    .images-wrapper-pp {
+        height: 280px;
+        max-height: 280px;
+
+        padding-right: 7px;
+    }
+
+    .image-grid-pp {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 9px;
+    }
+
+    .image-card-pp {
+        height: 145px;
+
+        padding: 7px;
+    }
+
+    .image-card-pp img {
+        height: 105px;
+    }
+
+    .add-image-card-pp {
+        height: 145px;
+    }
+
+    /* KEEP CHECKBOX TOP-RIGHT ON MOBILE */
+
+    .image-card-pp .image-checkbox-pp {
+        position: absolute !important;
+
+        top: 6px !important;
+        right: 6px !important;
+
+        left: auto !important;
+        bottom: auto !important;
+
+        width: 17px !important;
+        height: 17px !important;
+
+        z-index: 100 !important;
+    }
+
+    .remove-image-btn-pp {
+        top: 5px;
+        left: 5px;
+
+        width: 21px;
+        height: 21px;
+    }
+
+    .image-actions-pp {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .upload-btn-pp,
+    .change-btn-pp,
+    .delete-btn-pp {
+        width: 100%;
+
+        flex: none;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 360px
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .product-info-grid-pp p {
+        grid-template-columns: 95px minmax(0, 1fr);
+
+        gap: 8px;
+    }
+
+    .images-wrapper-pp {
+        height: 260px;
+        max-height: 260px;
+    }
+
+    .image-grid-pp {
+        gap: 7px;
+    }
+
+    .image-card-pp {
+        height: 138px;
+    }
+
+    .image-card-pp img {
+        height: 98px;
+    }
+
+    .add-image-card-pp {
+        height: 138px;
+    }
+
+    .image-name-pp {
+        font-size: 9px;
+    }
+
+    /* CHECKBOX STILL TOP-RIGHT */
+
+    .image-card-pp .image-checkbox-pp {
+        position: absolute !important;
+
+        top: 5px !important;
+        right: 5px !important;
+
+        left: auto !important;
+        bottom: auto !important;
+
+        width: 16px !important;
+        height: 16px !important;
+
+        z-index: 100 !important;
+    }
 }

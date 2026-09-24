@@ -13,7 +13,8 @@ public class InventoryVendorDTO {
     // Admin-defined product base price
     private BigDecimal basePrice;
 
-    // Final price after vendor discount
+    // Calculated price after vendor discount
+    // NOT stored in inventory table
     private BigDecimal finalPrice;
 
     private String condition;
@@ -80,7 +81,6 @@ public class InventoryVendorDTO {
         this.shopName = shopName;
 
         this.basePrice = basePrice;
-        this.finalPrice = finalPrice;
 
         this.condition = condition;
         this.stock = stock;
@@ -89,6 +89,10 @@ public class InventoryVendorDTO {
                 ? discount
                 : BigDecimal.ZERO;
 
+// ========================================================
+// FINAL PRICE CALCULATED BY REPOSITORY
+// ========================================================
+        this.finalPrice = finalPrice;
         this.warranty = warranty;
         this.deliveryTime = deliveryTime;
 

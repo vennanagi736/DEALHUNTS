@@ -1,13 +1,54 @@
 /* =========================================================
-   PRODUCTS PAGE
+   PAGE
 ========================================================= */
 
-.products-page {
-  min-height: 100vh;
+.dh-products-page-user {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+
   background: #ffffff;
   color: #111111;
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: thin;
+  scrollbar-color: #999999 #f1f1f1;
+}
+
+.dh-products-page-user::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dh-products-page-user::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.dh-products-page-user::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 10px;
+}
+
+.dh-products-page-user::-webkit-scrollbar-thumb:hover {
+  background: #777777;
 }
 
 
@@ -15,131 +56,391 @@
    HEADER
 ========================================================= */
 
-.products-header {
+.dh-products-header-user {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  width: 100%;
+  min-height: 64px;
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 18px 40px;
+  box-sizing: border-box;
+  padding: 10px 32px;
 
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid #e8e8e8;
 
-  border-bottom: 1px solid #e5e7eb;
-
-  position: sticky;
-  top: 0;
-
-  z-index: 50;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 
-/* LEFT */
+/* =========================================================
+   HEADER LEFT
+========================================================= */
 
-.products-header-left {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
+.dh-products-header-left-user {
+  min-width: 0;
 
-
-/* LOGO */
-
-.products-logo {
   display: flex;
   align-items: center;
 
-  font-size: 23px;
-  font-weight: 900;
-
-  letter-spacing: 0.5px;
-
-  cursor: pointer;
-}
-
-.products-logo-deal {
-  color: #d4af37;
-}
-
-.products-logo-hunts {
-  color: #111111;
+  gap: 5px;
+  flex-shrink: 0;
 }
 
 
-/* NAVIGATION */
+/* =========================================================
+   PRODUCTS HEADER SIDEBAR
+========================================================= */
 
-.products-nav {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.products-nav button {
-  border: none;
-  background: transparent;
-
-  padding: 8px 14px;
-
-  border-radius: 8px;
-
-  color: #555555;
-
-  font-size: 14px;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-}
-
-.products-nav button:hover {
-  background: #f4f5f7;
-  color: #111111;
-}
-
-.products-nav-active {
-  background: #f0f1f3 !important;
-  color: #111111 !important;
-  font-weight: 600;
-}
-
-
-/* RIGHT */
-
-.products-header-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.products-header-icon {
-  width: 38px;
-  height: 38px;
+.dh-products-header-sidebar-user {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 50%;
+  flex-shrink: 0;
+}
 
-  border: 1px solid #e5e7eb;
+.dh-products-header-sidebar-user .dh-sidebar-trigger {
+  margin-top: -1px !important;
+}
 
-  background: #fafafa;
 
+/* =========================================================
+   BRAND
+========================================================= */
+
+.dh-products-brand-user {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  min-width: 0;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.dh-products-logo-user {
+  display: flex;
+  align-items: center;
+
+  white-space: nowrap;
+
+  font-size: 21px;
+  line-height: 24px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+}
+
+.dh-products-logo-deal-user {
+  color: #d4af37;
+}
+
+.dh-products-logo-hunts-user {
   color: #111111;
+}
 
-  font-size: 18px;
+.dh-products-header-tagline-user {
+  margin-top: 1px;
+
+  color: #929292;
+
+  font-size: 9px;
+  line-height: 13px;
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   HEADER CENTER
+========================================================= */
+
+.dh-products-header-center-user {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 1;
+  min-width: 0;
+
+  padding: 0 20px;
+}
+
+.dh-products-header-nav-user {
+  display: flex;
+  align-items: center;
+
+  gap: 3px;
+}
+
+.dh-products-header-nav-user button {
+  border: none;
+  background: transparent;
+
+  padding: 7px 11px;
+  border-radius: 6px;
+
+  color: #666666;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
 
   cursor: pointer;
 
   transition:
-    background 0.2s ease,
-    transform 0.15s ease;
+    background 0.18s ease,
+    color 0.18s ease;
 }
 
-.products-header-icon:hover {
-  background: #f1f2f4;
-  transform: translateY(-1px);
+.dh-products-header-nav-user button:hover {
+  background: #f5f5f5;
+  color: #000000;
+}
+
+.dh-products-header-nav-user button:focus,
+.dh-products-header-nav-user button:focus-visible {
+  outline: none;
+}
+
+
+/* =========================================================
+   HEADER RIGHT
+========================================================= */
+
+.dh-products-header-right-user {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.dh-products-search-box-user {
+  width: 280px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+
+  box-sizing: border-box;
+  padding: 0 4px;
+
+  background: #ffffff;
+  border: 1px solid #dedede;
+  border-radius: 7px;
+
+  overflow: hidden;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.dh-products-search-box-user:focus-within {
+  border-color: #aaaaaa;
+
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.04);
+}
+
+.dh-products-search-box-user input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+
+  box-sizing: border-box;
+  padding: 0 7px;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+  color: #111111;
+
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.dh-products-search-box-user input::placeholder {
+  color: #999999;
+}
+
+
+/* =========================================================
+   SEARCH BUTTON
+========================================================= */
+
+.dh-products-search-btn-user {
+  width: 31px;
+  height: 31px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 5px;
+
+  background: transparent;
+  color: #555555;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.dh-products-search-btn-user:hover {
+  background: #f2f2f2;
+  color: #555555;
+}
+
+.dh-products-search-btn-user:focus,
+.dh-products-search-btn-user:focus-visible {
+  outline: none;
+}
+
+.dh-products-search-btn-user svg {
+  width: 17px;
+  height: 17px;
+
+  stroke-width: 2;
+}
+
+
+/* =========================================================
+   HEADER ACTIONS
+========================================================= */
+
+.dh-products-header-actions-user {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+}
+
+
+/* =========================================================
+   HEADER ICONS
+========================================================= */
+
+.dh-products-header-icon-user {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  padding: 0;
+
+  border: 1px solid #e4e4e4;
+  border-radius: 7px;
+
+  background: #ffffff;
+  color: #444444;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.dh-products-header-icon-user:hover {
+  background: #ffffff;
+  color: #444444;
+
+  box-shadow:
+    0 3px 9px rgba(0, 0, 0, 0.07);
+}
+
+.dh-products-header-icon-user:active {
+  box-shadow: none;
+}
+
+.dh-products-header-icon-user:focus,
+.dh-products-header-icon-user:focus-visible {
+  outline: none;
+}
+
+.dh-products-header-icon-user svg {
+  width: 17px;
+  height: 17px;
+
+  stroke-width: 2;
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+.dh-products-header-login-user {
+  height: 36px;
+
+  padding: 0 14px;
+
+  border: 1px solid #dedede;
+  border-radius: 7px;
+
+  background: #111111;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.dh-products-header-login-user:hover {
+  background: #111111;
+  color: #ffffff;
+
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dh-products-header-login-user:active {
+  box-shadow: none;
+}
+
+.dh-products-header-login-user:focus,
+.dh-products-header-login-user:focus-visible {
+  outline: none;
 }
 
 
@@ -147,36 +448,168 @@
    MAIN CONTENT
 ========================================================= */
 
-.products-main {
+.dh-products-main-user {
   width: 100%;
 
-  padding: 35px 40px 50px;
+  flex: 1 1 auto;
+
+  box-sizing: border-box;
+
+  padding: 24px 32px 42px;
+
+  display: block;
+
+  min-height: 0;
+
+  overflow: visible;
 }
 
 
 /* =========================================================
-   PAGE TITLE
+   BACK TO HOME
 ========================================================= */
 
-.products-title-section {
-  margin-bottom: 28px;
+.dh-products-back-home-user {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  width: fit-content;
+
+  margin-top: 0;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  margin-bottom: 18px;
+
+  padding: 8px 14px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dedede;
+  border-radius: 7px;
+
+  background: #ffffff;
+  color: #555555;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
-.products-title {
+.dh-products-back-home-user:hover {
+  background: #ffffff;
+  color: #555555;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.dh-products-back-home-user:active {
+  box-shadow: none;
+}
+
+.dh-products-back-home-user:focus,
+.dh-products-back-home-user:focus-visible {
+  outline: none;
+}
+
+.dh-products-back-home-user svg {
+  width: 15px;
+  height: 15px;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   OLD BACK CLASS
+========================================================= */
+
+.dh-products-back-user {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin: 0 0 17px;
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  color: #666666;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    color 0.18s ease;
+}
+
+.dh-products-back-user:hover {
+  color: #666666;
+}
+
+.dh-products-back-user:focus,
+.dh-products-back-user:focus-visible {
+  outline: none;
+}
+
+.dh-products-back-user svg {
+  width: 15px;
+  height: 15px;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.dh-products-title-section-user {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin: 0 0 20px;
+}
+
+.dh-products-title-user,
+.dh-products-title-section-user h1 {
   margin: 0;
 
-  font-size: 30px;
-  font-weight: 800;
-
   color: #111111;
+
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 750;
+
+  letter-spacing: -0.3px;
 }
 
-.products-count {
-  margin-top: 7px;
+.dh-products-count-user {
+  margin: 0;
 
-  font-size: 14px;
+  color: #858585;
 
-  color: #777777;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+
+  white-space: nowrap;
 }
 
 
@@ -184,13 +617,23 @@
    PRODUCT GRID
 ========================================================= */
 
-.products-grid {
+.dh-products-grid-user {
+  width: 100%;
+
   display: grid;
 
   grid-template-columns:
     repeat(4, minmax(0, 1fr));
 
-  gap: 22px;
+  gap: 16px;
+
+  height: auto;
+
+  min-height: 0;
+
+  align-items: stretch;
+
+  overflow: visible;
 }
 
 
@@ -198,35 +641,40 @@
    PRODUCT CARD
 ========================================================= */
 
-.products-card {
+.dh-products-card-user {
   position: relative;
+
+  width: 100%;
+  min-width: 0;
 
   display: flex;
   flex-direction: column;
 
-  min-width: 0;
+  box-sizing: border-box;
+
+  height: auto;
+  min-height: 100%;
 
   background: #ffffff;
 
-  border: 1px solid #e5e7eb;
-
-  border-radius: 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
 
   overflow: hidden;
 
+  cursor: pointer;
+
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
 }
 
-.products-card:hover {
-  transform: translateY(-4px);
-
-  border-color: #d5d7db;
+.dh-products-card-user:hover {
+  background: #ffffff;
+  border-color: #e5e5e5;
 
   box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.09);
+    0 7px 20px rgba(0, 0, 0, 0.07);
 }
 
 
@@ -234,41 +682,55 @@
    PRODUCT IMAGE
 ========================================================= */
 
-.products-card-image {
-  width: 100%;
+.dh-products-card-image-user {
+  position: relative;
 
-  height: 230px;
+  width: 100%;
+  height: 215px;
+
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  box-sizing: border-box;
+
   background: #fafafa;
+
+  border-bottom: 1px solid #eeeeee;
 
   overflow: hidden;
 }
 
-.products-card-image img {
+.dh-products-card-image-user img {
   width: 100%;
   height: 100%;
 
-  object-fit: contain;
-
   display: block;
 
+  box-sizing: border-box;
+
+  padding: 8px;
+
+  object-fit: contain;
+
   transition:
-    transform 0.25s ease;
+    transform 0.22s ease;
 }
 
-.products-card:hover
-.products-card-image img {
-  transform: scale(1.04);
+.dh-products-card-user:hover
+.dh-products-card-image-user img {
+  transform: scale(1.025);
 }
 
 
-/* NO IMAGE */
+/* =========================================================
+   NO IMAGE
+========================================================= */
 
-.products-no-image {
+.dh-products-no-image-user,
+.dh-products-image-placeholder-user {
   width: 100%;
   height: 100%;
 
@@ -276,45 +738,252 @@
   align-items: center;
   justify-content: center;
 
+  background: #f7f7f7;
   color: #999999;
 
-  font-size: 13px;
-
-  background: #f6f6f7;
+  font-size: 12px;
 }
 
 
 /* =========================================================
-   PRODUCT INFORMATION
+   DISCOUNT
 ========================================================= */
 
-.products-card-body {
-  display: flex;
-  flex-direction: column;
+.dh-products-discount-user {
+  position: absolute;
 
-  gap: 8px;
+  top: 10px;
+  left: 10px;
 
-  padding: 16px;
+  z-index: 5;
+
+  padding: 5px 7px;
+
+  border-radius: 5px;
+
+  background: #111111;
+  color: #d4af37;
+
+  font-size: 10px;
+  font-weight: 700;
 }
 
 
-/* PRODUCT NAME */
+/* =========================================================
+   WISHLIST / BOOKMARK
+========================================================= */
 
-.products-card-name {
+.dh-products-wishlist-user {
+  position: absolute;
+
+  top: 10px;
+  right: 10px;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  margin: 0;
+  padding: 0;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 50%;
+
+  background: #ffffff;
+  color: #666666;
+
+  cursor: pointer;
+
+  z-index: 20;
+
+  box-shadow:
+    0 2px 7px rgba(0, 0, 0, 0.08);
+
+  transform: none !important;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+
+/* =========================================================
+   WISHLIST HOVER
+========================================================= */
+
+.dh-products-wishlist-user:hover {
+  background: #ffffff;
+  color: #666666;
+
+  border-color: #d8d8d8;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.12);
+
+  transform: none !important;
+}
+
+
+/* =========================================================
+   WISHLIST ACTIVE / MOUSE DOWN
+========================================================= */
+
+.dh-products-wishlist-user:active {
+  background: #ffffff;
+  color: #666666;
+
+  border-color: #d8d8d8;
+
+  box-shadow:
+    0 2px 7px rgba(0, 0, 0, 0.08);
+
+  transform: none !important;
+}
+
+
+/* =========================================================
+   WISHLIST FOCUS
+========================================================= */
+
+.dh-products-wishlist-user:focus,
+.dh-products-wishlist-user:focus-visible {
+  outline: none;
+
+  transform: none !important;
+}
+
+
+/* =========================================================
+   WISHLIST ICON
+========================================================= */
+
+.dh-products-wishlist-user svg {
+  width: 18px;
+  height: 18px;
+
+  display: block;
+
+  flex-shrink: 0;
+
+  stroke-width: 2;
+
+  fill: transparent;
+
+  transform: none !important;
+
+  transition:
+    fill 0.18s ease,
+    stroke 0.18s ease;
+}
+
+
+/* =========================================================
+   ACTIVE WISHLIST
+========================================================= */
+
+.dh-products-wishlist-active-user {
+  color: #ef3b75;
+
+  border-color: #f1c2d1;
+
+  background: #ffffff;
+
+  transform: none !important;
+}
+
+
+/* =========================================================
+   ACTIVE WISHLIST HOVER
+========================================================= */
+
+.dh-products-wishlist-active-user:hover {
+  color: #ef3b75;
+
+  background: #ffffff;
+
+  border-color: #f1c2d1;
+
+  transform: none !important;
+}
+
+
+/* =========================================================
+   ACTIVE WISHLIST ACTIVE
+========================================================= */
+
+.dh-products-wishlist-active-user:active {
+  color: #ef3b75;
+
+  background: #ffffff;
+
+  border-color: #f1c2d1;
+
+  transform: none !important;
+}
+
+
+/* =========================================================
+   ACTIVE WISHLIST ICON
+========================================================= */
+
+.dh-products-wishlist-active-user svg {
+  fill: #ef3b75;
+  stroke: #ef3b75;
+
+  transform: none !important;
+}
+
+
+/* =========================================================
+   PRODUCT BODY
+========================================================= */
+
+.dh-products-card-body-user {
+  width: 100%;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+
+  min-height: 0;
+
+  gap: 6px;
+
+  padding: 13px;
+}
+
+
+/* =========================================================
+   PRODUCT NAME
+========================================================= */
+
+.dh-products-card-name-user,
+.dh-products-name-user {
   margin: 0;
 
-  font-size: 16px;
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
 
-  font-weight: 700;
+  color: #161616;
 
-  line-height: 1.4;
-
-  color: #111111;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 650;
 
   display: -webkit-box;
 
   -webkit-line-clamp: 2;
-
   -webkit-box-orient: vertical;
 
   overflow: hidden;
@@ -322,48 +991,207 @@
 
 
 /* =========================================================
-   PRICE
+   BRAND
 ========================================================= */
 
-.products-card-price {
+.dh-products-card-brand-user,
+.dh-products-brand-name-user {
   margin: 0;
 
-  font-size: 18px;
+  height: 18px;
+  min-height: 18px;
 
-  font-weight: 800;
+  color: #777777;
 
-  color: #111111;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 450;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
 /* =========================================================
-   OPTIONAL BRAND / CATEGORY
+   CATEGORY
 ========================================================= */
 
-.products-card-brand {
-  margin: 0;
-
-  font-size: 13px;
-
-  color: #777777;
-}
-
-.products-card-category {
-  display: inline-flex;
-
+.dh-products-card-category-user,
+.dh-products-category-user {
   width: fit-content;
+  max-width: 100%;
 
-  padding: 4px 8px;
+  height: 22px;
+  min-height: 22px;
 
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
 
-  background: #f4f5f7;
+  box-sizing: border-box;
 
+  margin: 0;
+  padding: 0 7px;
+
+  border-radius: 5px;
+
+  background: #f3f3f3;
   color: #666666;
 
-  font-size: 11px;
-
+  font-size: 10px;
+  line-height: 14px;
   font-weight: 600;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   RATING
+========================================================= */
+
+.dh-products-rating-user {
+  min-height: 19px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  color: #555555;
+
+  font-size: 12px;
+  line-height: 19px;
+}
+
+.dh-products-stars-user {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 1px;
+}
+
+.dh-products-star-user {
+  color: #d5d5d5;
+
+  font-size: 13px;
+  line-height: 1;
+}
+
+.dh-products-star-active-user {
+  color: #d4af37;
+}
+
+.dh-products-review-count-user {
+  color: #909090;
+}
+
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.dh-products-price-row-user {
+  min-height: 26px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.dh-products-price-user,
+.dh-products-card-price-user {
+  margin: 0;
+
+  color: #111111;
+
+  font-size: 17px;
+  line-height: 26px;
+  font-weight: 750;
+}
+
+.dh-products-old-price-user {
+  color: #999999;
+
+  font-size: 12px;
+  line-height: 18px;
+
+  text-decoration: line-through;
+}
+
+
+/* =========================================================
+   ADD TO CART
+========================================================= */
+
+.dh-products-add-cart-user {
+  width: 100%;
+  height: 40px;
+  min-height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  margin-top: auto;
+
+  box-sizing: border-box;
+
+  padding: 0 10px;
+
+  border: 1px solid #d4af37;
+  border-radius: 6px;
+
+  background: #d4af37;
+  color: #000000;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.dh-products-add-cart-user svg {
+  width: 16px;
+  height: 16px;
+
+  flex-shrink: 0;
+
+  stroke-width: 2;
+}
+
+.dh-products-add-cart-user:hover {
+  background: #d4af37;
+  border-color: #d4af37;
+  color: #000000;
+
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.dh-products-add-cart-user:active {
+  box-shadow: none;
+}
+
+.dh-products-add-cart-user:focus,
+.dh-products-add-cart-user:focus-visible {
+  outline: none;
 }
 
 
@@ -371,16 +1199,22 @@
    LOADING
 ========================================================= */
 
-.products-loading {
-  min-height: 400px;
+.dh-products-loading-user {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  min-height: 300px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  text-align: center;
+
   color: #666666;
 
-  font-size: 15px;
+  font-size: 14px;
 }
 
 
@@ -388,7 +1222,11 @@
    ERROR
 ========================================================= */
 
-.products-error {
+.dh-products-error-user {
+  width: 100%;
+
+  box-sizing: border-box;
+
   min-height: 300px;
 
   display: flex;
@@ -397,25 +1235,25 @@
   align-items: center;
   justify-content: center;
 
-  gap: 10px;
+  gap: 8px;
 
   text-align: center;
 
   color: #dc2626;
 }
 
-.products-error h2 {
+.dh-products-error-user h2 {
   margin: 0;
 
-  font-size: 18px;
+  font-size: 17px;
 }
 
-.products-error p {
+.dh-products-error-user p {
   margin: 0;
 
   color: #777777;
 
-  font-size: 14px;
+  font-size: 13px;
 }
 
 
@@ -423,127 +1261,962 @@
    EMPTY
 ========================================================= */
 
-.products-empty {
+.dh-products-empty-user {
+  width: 100%;
+
+  box-sizing: border-box;
+
   min-height: 300px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  text-align: center;
+
+  color: #777777;
+}
+
+.dh-products-empty-user h2 {
+  margin: 0;
+
+  color: #333333;
+
+  font-size: 17px;
+}
+
+.dh-products-empty-user p {
+  margin: 0;
+
+  color: #888888;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.dh-products-footer-user {
+  position: fixed;
+
+  left: 0;
+  bottom: 0;
+
+  z-index: 200;
+
+  width: 100%;
+
+  min-height: 58px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  color: #777777;
+  gap: 8px;
 
-  font-size: 15px;
+  box-sizing: border-box;
+
+  padding: 16px 32px;
+
+  border-top: 1px solid #eeeeee;
+
+  background: #fafafa;
+
+  color: #888888;
+
+  font-size: 11px;
+}
+
+.dh-products-footer-user strong {
+  color: #333333;
+
+  font-size: 11px;
+  font-weight: 700;
 }
 
 
 /* =========================================================
-   RESPONSIVE
+   GLOBAL PAGE SCROLL SAFETY
 ========================================================= */
 
+html,
+body {
+  min-height: 100vh;
 
-/* LARGE LAPTOP */
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+#root {
+  width: 100%;
+
+  min-height: 100vh;
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  text-align: left;
+}
+
+
+/* =========================================================
+   LARGE LAPTOP
+========================================================= */
 
 @media (max-width: 1200px) {
 
-  .products-grid {
-    grid-template-columns:
-      repeat(3, minmax(0, 1fr));
+  .dh-products-header-user {
+    padding-left: 24px;
+    padding-right: 24px;
   }
 
+  .dh-products-main-user {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .dh-products-search-box-user {
+    width: 240px;
+  }
+
+  .dh-products-grid-user {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 15px;
+  }
 }
 
 
-/* TABLET */
+/* =========================================================
+   TABLET
+========================================================= */
 
 @media (max-width: 900px) {
 
-  .products-header {
-    padding: 16px 24px;
+  .dh-products-header-user {
+    min-height: 60px;
+
+    padding: 10px 20px;
   }
 
-  .products-main {
-    padding: 28px 24px 40px;
+  .dh-products-header-center-user {
+    padding: 0 10px;
   }
 
-  .products-grid {
+  .dh-products-header-nav-user button {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .dh-products-search-box-user {
+    width: 200px;
+  }
+
+  .dh-products-main-user {
+    padding:
+      22px 20px 36px;
+  }
+
+  .dh-products-grid-user {
     grid-template-columns:
       repeat(2, minmax(0, 1fr));
 
-    gap: 16px;
+    gap: 14px;
   }
 
-  .products-card-image {
-    height: 210px;
+  .dh-products-card-image-user {
+    height: 205px;
   }
-
 }
 
 
-/* MOBILE */
+/* =========================================================
+   SMALL TABLET / LARGE MOBILE
+========================================================= */
 
-@media (max-width: 650px) {
+@media (max-width: 720px) {
 
-  .products-header {
-    padding: 13px 16px;
+  .dh-products-header-user {
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    padding: 9px 14px;
   }
 
-  .products-header-left {
+  .dh-products-header-left-user {
     gap: 10px;
   }
 
-  .products-nav {
-    display: none;
+  .dh-products-header-center-user {
+    order: 3;
+
+    width: 100%;
+
+    flex: none;
+
+    justify-content: flex-start;
+
+    padding: 0;
   }
 
-  .products-logo {
-    font-size: 20px;
+  .dh-products-header-right-user {
+    margin-left: auto;
   }
 
-  .products-main {
-    padding: 22px 14px 30px;
+  .dh-products-search-box-user {
+    width: 190px;
   }
 
-  .products-title {
-    font-size: 24px;
+  .dh-products-main-user {
+    padding:
+      20px 14px 30px;
   }
 
-  .products-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-    gap: 12px;
+  .dh-products-back-home-user {
+    margin-left: auto !important;
+    margin-right: 0 !important;
   }
-
-  .products-card-image {
-    height: 170px;
-  }
-
-  .products-card-body {
-    padding: 11px;
-    gap: 6px;
-  }
-
-  .products-card-name {
-    font-size: 14px;
-  }
-
-  .products-card-price {
-    font-size: 16px;
-  }
-
 }
 
 
-/* VERY SMALL MOBILE */
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+  .dh-products-header-user {
+    min-height: 56px;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    flex-wrap: nowrap;
+
+    padding: 8px 10px;
+
+    gap: 0;
+
+    box-sizing: border-box;
+  }
+
+
+  /* =======================================================
+     HEADER LEFT
+  ======================================================= */
+
+  .dh-products-header-left-user {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 3px;
+
+    flex-shrink: 1;
+  }
+
+
+  /* =======================================================
+     SIDEBAR
+  ======================================================= */
+
+  .dh-products-header-sidebar-user {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+  }
+
+  .dh-products-header-sidebar-user .dh-sidebar-trigger {
+    width: 36px;
+    height: 36px;
+
+    margin-top: -4px !important;
+
+    font-size: 22px;
+  }
+
+
+  /* =======================================================
+     BRAND
+  ======================================================= */
+
+  .dh-products-brand-user {
+    min-width: 0;
+
+    flex-shrink: 1;
+  }
+
+  .dh-products-logo-user {
+    font-size: 18px;
+    line-height: 21px;
+
+    letter-spacing: 0.2px;
+  }
+
+  .dh-products-header-tagline-user {
+    display: none;
+  }
+
+
+  /* =======================================================
+     HEADER CENTER
+  ======================================================= */
+
+  .dh-products-header-center-user {
+    display: none;
+  }
+
+
+  /* =======================================================
+     HEADER RIGHT
+  ======================================================= */
+
+  .dh-products-header-right-user {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    margin-left: auto;
+
+    flex-shrink: 0;
+  }
+
+
+  /* =======================================================
+     SEARCH
+  ======================================================= */
+
+  .dh-products-search-box-user {
+    width: 130px;
+    height: 34px;
+  }
+
+  .dh-products-search-box-user input {
+    font-size: 12px;
+  }
+
+  .dh-products-search-btn-user {
+    width: 29px;
+    height: 29px;
+  }
+
+
+  /* =======================================================
+     HEADER ACTIONS
+  ======================================================= */
+
+  .dh-products-header-actions-user {
+    display: flex;
+    align-items: center;
+
+    gap: 4px;
+  }
+
+
+  /* =======================================================
+     HEADER ICONS
+  ======================================================= */
+
+  .dh-products-header-icon-user {
+    width: 34px;
+    height: 34px;
+  }
+
+  .dh-products-header-icon-user svg {
+    width: 16px;
+    height: 16px;
+  }
+
+
+  /* =======================================================
+     LOGIN
+  ======================================================= */
+
+  .dh-products-header-login-user {
+    height: 34px;
+
+    padding: 0 10px;
+
+    font-size: 11px;
+  }
+
+
+  /* =======================================================
+     MAIN
+  ======================================================= */
+
+  .dh-products-main-user {
+    padding:
+      18px 12px 28px;
+  }
+
+  .dh-products-back-home-user {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+
+    margin-bottom: 14px;
+
+    padding: 7px 11px;
+
+    font-size: 11px;
+  }
+
+  .dh-products-back-home-user svg {
+    width: 14px;
+    height: 14px;
+  }
+
+
+  /* =======================================================
+     TITLE
+  ======================================================= */
+
+  .dh-products-title-section-user {
+    margin-bottom: 16px;
+  }
+
+  .dh-products-title-user,
+  .dh-products-title-section-user h1 {
+    font-size: 23px;
+    line-height: 29px;
+  }
+
+  .dh-products-count-user {
+    font-size: 12px;
+  }
+
+
+  /* =======================================================
+     PRODUCT GRID
+  ======================================================= */
+
+  .dh-products-grid-user {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+  }
+
+  .dh-products-card-user {
+    border-radius: 8px;
+  }
+
+  .dh-products-card-image-user {
+    height: 165px;
+  }
+
+  .dh-products-card-image-user img {
+    padding: 6px;
+  }
+
+  .dh-products-card-body-user {
+    gap: 5px;
+
+    padding: 9px;
+  }
+
+  .dh-products-card-name-user,
+  .dh-products-name-user {
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  .dh-products-card-brand-user,
+  .dh-products-brand-name-user {
+    font-size: 11px;
+  }
+
+  .dh-products-card-category-user,
+  .dh-products-category-user {
+    height: 20px;
+    min-height: 20px;
+
+    padding: 0 6px;
+
+    font-size: 9px;
+  }
+
+  .dh-products-rating-user {
+    font-size: 11px;
+  }
+
+  .dh-products-price-user,
+  .dh-products-card-price-user {
+    font-size: 15px;
+  }
+
+  .dh-products-old-price-user {
+    font-size: 11px;
+  }
+
+  .dh-products-add-cart-user {
+    height: 38px;
+    min-height: 38px;
+
+    font-size: 11px;
+  }
+
+  .dh-products-add-cart-user svg {
+    width: 15px;
+    height: 15px;
+  }
+
+
+  /* =======================================================
+     WISHLIST
+  ======================================================= */
+
+  .dh-products-wishlist-user {
+    top: 8px;
+    right: 8px;
+
+    width: 31px;
+    height: 31px;
+
+    z-index: 20;
+
+    transform: none !important;
+  }
+
+  .dh-products-wishlist-user:hover,
+  .dh-products-wishlist-user:active,
+  .dh-products-wishlist-user:focus,
+  .dh-products-wishlist-user:focus-visible {
+    transform: none !important;
+  }
+
+  .dh-products-wishlist-user svg {
+    width: 16px;
+    height: 16px;
+
+    transform: none !important;
+  }
+
+
+  /* =======================================================
+     FOOTER
+  ======================================================= */
+
+  .dh-products-footer-user {
+    flex-direction: column;
+
+    gap: 3px;
+
+    padding: 14px 12px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
 
 @media (max-width: 400px) {
 
-  .products-grid {
-    grid-template-columns: 1fr;
+  .dh-products-header-user {
+    padding: 7px 8px;
   }
 
-  .products-card-image {
+  .dh-products-header-left-user {
+    gap: 2px;
+  }
+
+  .dh-products-header-sidebar-user {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+  }
+
+  .dh-products-header-sidebar-user .dh-sidebar-trigger {
+    width: 34px;
+    height: 34px;
+
+    font-size: 21px;
+  }
+
+  .dh-products-logo-user {
+    font-size: 17px;
+    line-height: 20px;
+  }
+
+  .dh-products-header-right-user {
+    gap: 4px;
+  }
+
+  .dh-products-search-box-user {
+    width: 120px;
+    height: 33px;
+  }
+
+  .dh-products-header-icon-user {
+    width: 33px;
+    height: 33px;
+  }
+
+  .dh-products-header-icon-user svg {
+    width: 15px;
+    height: 15px;
+  }
+
+
+  /* =======================================================
+     PRODUCT GRID
+  ======================================================= */
+
+  .dh-products-grid-user {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+  .dh-products-card-image-user {
     height: 220px;
   }
 
+  .dh-products-card-image-user img {
+    padding: 6px;
+  }
+
+  .dh-products-card-body-user {
+    gap: 5px;
+
+    padding: 9px;
+  }
+
+  .dh-products-card-name-user,
+  .dh-products-name-user {
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  .dh-products-card-brand-user,
+  .dh-products-brand-name-user {
+    font-size: 11px;
+  }
+
+  .dh-products-card-category-user,
+  .dh-products-category-user {
+    height: 20px;
+    min-height: 20px;
+
+    padding: 0 6px;
+
+    font-size: 9px;
+  }
+
+  .dh-products-rating-user {
+    font-size: 11px;
+  }
+
+  .dh-products-price-user,
+  .dh-products-card-price-user {
+    font-size: 15px;
+  }
+
+  .dh-products-old-price-user {
+    font-size: 11px;
+  }
+
+  .dh-products-add-cart-user {
+    height: 38px;
+    min-height: 38px;
+
+    font-size: 11px;
+  }
+
+  .dh-products-add-cart-user svg {
+    width: 15px;
+    height: 15px;
+  }
+
+
+  /* =======================================================
+     WISHLIST
+  ======================================================= */
+
+  .dh-products-wishlist-user {
+    top: 8px;
+    right: 8px;
+
+    width: 31px;
+    height: 31px;
+
+    z-index: 20;
+
+    transform: none !important;
+  }
+
+  .dh-products-wishlist-user:hover,
+  .dh-products-wishlist-user:active,
+  .dh-products-wishlist-user:focus,
+  .dh-products-wishlist-user:focus-visible {
+    transform: none !important;
+  }
+
+  .dh-products-wishlist-user svg {
+    width: 16px;
+    height: 16px;
+
+    transform: none !important;
+  }
+
+  .dh-products-footer-user {
+    flex-direction: column;
+
+    gap: 3px;
+
+    padding: 14px 12px;
+  }
+}
+
+
+/* =========================================================
+   POPUP OVERLAY
+   Keeps popup above wishlist/product elements
+========================================================= */
+
+.dh-popup-overlay {
+  position: fixed !important;
+
+  z-index: 2147483647 !important;
+
+  box-sizing: border-box;
+
+  padding: 24px !important;
+}
+
+
+/* =========================================================
+   POPUP CONTAINER
+   Increased popup size + cleaner internal spacing
+========================================================= */
+
+.dh-popup-overlay > div {
+  box-sizing: border-box;
+
+  width: min(460px, calc(100vw - 32px)) !important;
+  min-width: 0 !important;
+
+  padding: 30px !important;
+
+  border-radius: 14px !important;
+
+  margin: 0 auto !important;
+}
+
+
+/* =========================================================
+   POPUP CONTENT SPACING
+========================================================= */
+
+.dh-popup-overlay h1,
+.dh-popup-overlay h2,
+.dh-popup-overlay h3 {
+  margin-top: 0 !important;
+
+  margin-bottom: 12px !important;
+}
+
+.dh-popup-overlay p {
+  margin-top: 0 !important;
+
+  margin-bottom: 20px !important;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   POPUP BUTTON AREA
+========================================================= */
+
+.dh-popup-overlay button {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   NO THANKS
+   Simple appearance — NO GOLD HOVER
+========================================================= */
+
+.dh-popup-overlay button.dh-popup-no-thanks,
+.dh-popup-overlay .dh-popup-no-thanks {
+  background: transparent !important;
+
+  color: #666666 !important;
+
+  border: none !important;
+
+  box-shadow: none !important;
+
+  transform: none !important;
+}
+
+.dh-popup-overlay button.dh-popup-no-thanks:hover,
+.dh-popup-overlay .dh-popup-no-thanks:hover {
+  background: transparent !important;
+
+  color: #666666 !important;
+
+  border-color: transparent !important;
+
+  box-shadow: none !important;
+
+  transform: none !important;
+}
+
+.dh-popup-overlay button.dh-popup-no-thanks:active,
+.dh-popup-overlay .dh-popup-no-thanks:active {
+  background: transparent !important;
+
+  color: #666666 !important;
+
+  box-shadow: none !important;
+
+  transform: none !important;
+}
+
+.dh-popup-overlay button.dh-popup-no-thanks:focus,
+.dh-popup-overlay button.dh-popup-no-thanks:focus-visible,
+.dh-popup-overlay .dh-popup-no-thanks:focus,
+.dh-popup-overlay .dh-popup-no-thanks:focus-visible {
+  outline: none !important;
+
+  background: transparent !important;
+
+  color: #666666 !important;
+
+  box-shadow: none !important;
+}
+
+
+/* =========================================================
+   POPUP BUTTON SPACING
+========================================================= */
+
+.dh-popup-overlay button + button {
+  margin-left: 10px;
+}
+
+
+/* =========================================================
+   MOBILE POPUP
+========================================================= */
+
+@media (max-width: 650px) {
+
+  .dh-popup-overlay {
+    padding: 16px !important;
+  }
+
+  .dh-popup-overlay > div {
+    width: min(440px, calc(100vw - 24px)) !important;
+
+    padding: 24px !important;
+
+    border-radius: 12px !important;
+  }
+
+  .dh-popup-overlay p {
+    margin-bottom: 18px !important;
+  }
+
+  .dh-popup-overlay button + button {
+    margin-left: 6px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE POPUP
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .dh-popup-overlay {
+    padding: 12px !important;
+  }
+
+  .dh-popup-overlay > div {
+    width: calc(100vw - 20px) !important;
+
+    padding: 20px !important;
+
+    border-radius: 11px !important;
+  }
+
+  .dh-popup-overlay button + button {
+    margin-left: 4px;
+  }
+}
+
+
+/* =========================================================
+   FORCE PRODUCT WISHLIST BELOW GLOBAL POPUP
+========================================================= */
+
+.dh-products-wishlist-user {
+  position: absolute !important;
+
+  z-index: 10 !important;
+}
+
+.dh-products-card-image-user {
+  position: relative;
+
+  z-index: 1;
+}
+
+.dh-products-card-user {
+  position: relative;
+
+  z-index: 1;
+}
+
+.dh-popup-overlay {
+  position: fixed !important;
+
+  z-index: 2147483647 !important;
 }

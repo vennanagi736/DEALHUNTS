@@ -2,7 +2,82 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:8080/vendor";
 
-// ---------------- VENDOR LOGIN ----------------
+const getVendorToken = () => {
+    const token = localStorage.getItem("vendorJwtToken");
+
+    if (!token) {
+        throw new Error("No Vendor JWT token found. Please login.");
+    }
+
+    return token;
+};
+
+export const getActiveProducts = () => {
+    const token = getVendorToken();
+
+    const vendorId = localStorage.getItem("vendorId");
+
+    if (!vendorId) {
+        throw new Error("No Vendor ID found. Please login again.");
+    }
+
+    console.log("========== GET ACTIVE PRODUCTS ==========");
+    console.log("Vendor ID:", vendorId);
+    console.log("Token exists:", !!token);
+    console.log(
+        "Request URL:",
+        `${BASE_URL}/products/active`
+    );
+
+    return axios.get(
+        `${BASE_URL}/products/active`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            params: {
+                vendorId: Number(vendorId),
+            },
+        }
+    );
+};
+// ============================================================
+// FETCH ACTIVE PRODUCTS FOR LOGGED-IN VENDOR
+// ============================================================
+
+// export const getActiveProducts = (vendorId) => {
+
+//     const token = getVendorToken();
+
+//     if (!vendorId) {
+//         throw new Error(
+//             "No Vendor ID found. Please login again."
+//         );
+//     }
+
+//     console.log("========== GET ACTIVE PRODUCTS ==========");
+//     console.log("Vendor ID:", vendorId);
+//     console.log("Token exists:", !!token);
+//     console.log("Request URL:", `${BASE_URL}/products/active`);
+
+//     return axios.get(
+//         `${BASE_URL}/products/active`,
+//         {
+//             headers: {
+//                 Authorization: `Bearer ${token}`,
+//             },
+//             params: {
+//                 vendorId: Number(vendorId),
+//             },
+//         }
+//     );
+// };
+
+
+// ============================================================
+// VENDOR LOGIN
+// ============================================================
+
 export const vendorLogin = (email, password) => {
     return axios.post(
         `${BASE_URL}/login`,
@@ -18,7 +93,10 @@ export const vendorLogin = (email, password) => {
     );
 };
 
-// ---------------- ADD PRODUCT ----------------
+// ============================================================
+// ADD PRODUCT
+// ============================================================
+
 export const vendorProduct = (product, images) => {
     const formData = new FormData();
 
@@ -27,25 +105,32 @@ export const vendorProduct = (product, images) => {
     formData.append("category", product.category);
     formData.append("price", product.price);
     formData.append("stock", product.stock);
-    formData.append("description", product.description || "");
+    formData.append(
+        "description",
+        product.description || ""
+    );
 
-    images.forEach((img) => formData.append("images", img));
-
-    const token = localStorage.getItem("vendorJwtToken");
-
-    if (!token) {
-        throw new Error("No Vendor JWT token found. Please login.");
-    }
-
-    return axios.post(`${BASE_URL}/addProduct`, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-        },
+    images.forEach((img) => {
+        formData.append("images", img);
     });
+
+    const token = getVendorToken();
+
+    return axios.post(
+        `${BASE_URL}/addProduct`,
+        formData,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
 };
 
-// ---------------- VENDOR REGISTER ----------------
+// ============================================================
+// VENDOR REGISTER
+// ============================================================
+
 export const vendorRegister = (
     fullName,
     shopName,
@@ -73,98 +158,86 @@ export const vendorRegister = (
         role: "VENDOR",
     };
 
-    return axios.post(`${BASE_URL}/register`, payload, {
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-};
-
-// ---------------- FETCH PRODUCTS ----------------
-export const fetchProductNames = (query = "") => {
-    const token = localStorage.getItem("vendorJwtToken");
-
-    if (!token) {
-        throw new Error("No Vendor JWT token found. Please login.");
-    }
-
-    return axios.get(`${BASE_URL}/allProducts`, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        params: query ? { name: query } : {},
-    });
-};
-
-// ---------------- FETCH PRODUCT SUGGESTIONS ----------------
-export const fetchProductSuggestions = (name) => {
-    const token = localStorage.getItem("vendorJwtToken");
-
-    if (!token) {
-        throw new Error("No Vendor JWT token found. Please login.");
-    }
-
-    return axios.get(`${BASE_URL}/product-suggestions`, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        params: { name },
-    });
-};
-
-// ---------------- FETCH ACTIVE PRODUCTS ----------------
-export const getActiveProducts = () => {
-    const token = localStorage.getItem("vendorJwtToken");
-
-    if (!token) {
-        throw new Error("No Vendor JWT token found. Please login.");
-    }
-
-    return axios.get(`${BASE_URL}/products/active`, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-    });
-};
-
-// ---------------- FETCH AVAILABLE CATEGORIES ----------------
-
-export const getVendorCategories = async () => {
-    const token = localStorage.getItem("vendorJwtToken");
-
-    if (!token) {
-        throw new Error("No Vendor JWT token found. Please login.");
-    }
-
-    return axios.get(
-        "http://localhost:8080/admin/categories/all",
+    return axios.post(
+        `${BASE_URL}/register`,
+        payload,
         {
             headers: {
                 "Content-Type": "application/json",
+            },
+        }
+    );
+};
+
+// ============================================================
+// FETCH PRODUCTS
+// ============================================================
+
+export const fetchProductNames = (query = "") => {
+    const token = getVendorToken();
+
+    return axios.get(
+        `${BASE_URL}/allProducts`,
+        {
+            headers: {
                 Authorization: `Bearer ${token}`,
+            },
+            params: query
+                ? { name: query }
+                : {},
+        }
+    );
+};
+
+// ============================================================
+// FETCH PRODUCT SUGGESTIONS
+// ============================================================
+
+export const fetchProductSuggestions = (name) => {
+    const token = getVendorToken();
+
+    return axios.get(
+        `${BASE_URL}/product-suggestions`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            params: {
+                name,
             },
         }
     );
 };
 
 
-// ---------------- FETCH AVAILABLE BRANDS ----------------
+// ============================================================
+// FETCH AVAILABLE CATEGORIES
+// ============================================================
 
-export const getVendorBrands = async () => {
-    const token = localStorage.getItem("vendorJwtToken");
+export const getVendorCategories = () => {
+    const token = getVendorToken();
 
-    if (!token) {
-        throw new Error("No Vendor JWT token found. Please login.");
-    }
+    return axios.get(
+        "http://localhost:8080/admin/categories/all",
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+};
+
+// ============================================================
+// FETCH AVAILABLE BRANDS
+// ============================================================
+
+export const getVendorBrands = () => {
+    const token = getVendorToken();
 
     return axios.get(
         "http://localhost:8080/admin/brands/all",
         {
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         }

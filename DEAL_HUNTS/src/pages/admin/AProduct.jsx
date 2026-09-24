@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import ProductManagementPopup from "../../components/ProductPopupManagement";
-import SideWindow from "../../components/SideBar";
 
 import "../../styles/AProduct.css";
 
@@ -851,439 +850,351 @@ function AdminProducts() {
 
         <div className="adminhome-container">
 
-
             {/* =================================================
-                HEADER
+                PAGE CONTENT
             ================================================= */}
 
-            <header className="header">
-
-                <div className="left-section">
-
-                    <SideWindow />
-
-                </div>
-
-
-                <div className="logo-container">
-
-                    <div className="logo">
-
-                        <span className="Gold">
-                            DEAL
-                        </span>
-
-                        <span className="Black">
-                            HUNTS
-                        </span>
-
-                        <span className="Admin">
-                            Admin
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <nav className="admin-nav-links">
-
-                    <NavLink
-                        to="/admin/manage-promotions"
-                    >
-                        Manage Promotions
-                    </NavLink>
-
-
-                    <NavLink
-                        to="/adminAddProduct"
-                    >
-                        Add Product
-                    </NavLink>
-                    <NavLink
-                        to="/admin/import-products"
-                    >
-                        Import CSV
-                    </NavLink>
-
-
-                    <div className="search-box">
-
-                        <input
-                            type="text"
-                            placeholder="Search"
-                        />
-
-                        <span className="icon">
-                            🔍
-                        </span>
-
-                    </div>
-
-
-                    <div
-                        className="back-btn"
-                        onClick={() =>
-                            navigate(-1)
-                        }
-                    >
-                        &#8592;
-                    </div>
-
-                </nav>
-
-            </header>
+            <h1 className="mainheading">
+                Manage Products
+            </h1>
 
 
             {/* =================================================
-                MAIN
+                AVAILABLE / UNAVAILABLE TABS
             ================================================= */}
 
-            <main className="main">
+            <div className="product-status-tabs">
 
-                <h1 className="mainheading">
-                    Manage Products
-                </h1>
+                <button
+                    className={
+                        productView === "available"
+                            ? "product-tab active-tab"
+                            : "product-tab"
+                    }
+                    onClick={() => {
+
+                        setProductView(
+                            "available"
+                        );
+
+                        setSelectedProducts([]);
+
+                        setSelectionMode(false);
+
+                    }}
+                >
+                    Available
+                </button>
 
 
-                {/* =================================================
-                    AVAILABLE / UNAVAILABLE TABS
-                ================================================= */}
+                <button
+                    className={
+                        productView === "unavailable"
+                            ? "product-tab unavailable-tab"
+                            : "product-tab"
+                    }
+                    onClick={() => {
 
-                <div className="product-status-tabs">
+                        setProductView(
+                            "unavailable"
+                        );
+
+                        setSelectedProducts([]);
+
+                        setSelectionMode(false);
+
+                    }}
+                >
+                    Unavailable
+                </button>
+
+            </div>
+
+
+            {/* =================================================
+                ACTION BAR
+            ================================================= */}
+
+            <div className="manage-product-actions">
+
+                {!selectionMode ? (
 
                     <button
-                        className={
-                            productView === "available"
-                                ? "product-tab active-tab"
-                                : "product-tab"
-                        }
-                        onClick={() => {
-
-                            setProductView(
-                                "available"
-                            );
-
-                            setSelectedProducts([]);
-
-                            setSelectionMode(false);
-
-                        }}
+                        className="select-products"
+                        onClick={handleSelectionMode}
                     >
-                        Available
+                        ✓ Select
                     </button>
 
+                ) : (
 
-                    <button
-                        className={
-                            productView === "unavailable"
-                                ? "product-tab unavailable-tab"
-                                : "product-tab"
-                        }
-                        onClick={() => {
+                    <>
 
-                            setProductView(
-                                "unavailable"
-                            );
+                        <label className="select-all-products">
 
-                            setSelectedProducts([]);
+                            <input
+                                type="checkbox"
+                                checked={
+                                    displayedProducts.length > 0 &&
+                                    selectedProducts.length ===
+                                        displayedProducts.length
+                                }
+                                onChange={(e) => {
 
-                            setSelectionMode(false);
+                                    if (e.target.checked) {
 
-                        }}
-                    >
-                        Unavailable
-                    </button>
+                                        setSelectedProducts(
+                                            displayedProducts.map(
+                                                product =>
+                                                    product.id
+                                            )
+                                        );
 
-                </div>
+                                    } else {
+
+                                        setSelectedProducts([]);
+
+                                    }
+
+                                }}
+                            />
+
+                            Select All
+
+                        </label>
 
 
-                {/* =================================================
-                    ACTION BAR
-                ================================================= */}
-
-                <div className="manage-product-actions">
-
-                    {!selectionMode ? (
-
-                        <button
-                            className="select-products"
-                            onClick={handleSelectionMode}
+                        <span
+                            className="clear-selection"
+                            onClick={
+                                handleClearSelection
+                            }
                         >
-                            ✓ Select
-                        </button>
+                            × Clear
+                        </span>
+
+                    </>
+
+                )}
+
+            </div>
+
+
+            {/* =================================================
+                PRODUCT TABLE
+            ================================================= */}
+
+            <table className="manage-product-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Name</th>
+
+                        <th>Brand</th>
+
+                        <th>Category</th>
+
+                        <th>Variant</th>
+
+                        <th>Status</th>
+
+                        {selectionMode && (
+                            <th>Select</th>
+                        )}
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {displayedProducts.length === 0 ? (
+
+                        <tr>
+
+                            <td
+                                colSpan={
+                                    selectionMode
+                                        ? 7
+                                        : 6
+                                }
+                            >
+                                No products available
+                            </td>
+
+                        </tr>
 
                     ) : (
 
-                        <>
+                        displayedProducts.map(
+                            product => (
 
-                            <label className="select-all-products">
+                                <tr
+                                    key={product.id}
+                                    className={`product-row ${
+                                        selectionMode
+                                            ? "selection-active"
+                                            : ""
+                                    }`}
+                                    onClick={() => {
 
-                                <input
-                                    type="checkbox"
-                                    checked={
-                                        displayedProducts.length > 0 &&
-                                        selectedProducts.length ===
-                                            displayedProducts.length
-                                    }
-                                    onChange={(e) => {
+                                        if (!selectionMode) {
 
-                                        if (e.target.checked) {
-
-                                            setSelectedProducts(
-                                                displayedProducts.map(
-                                                    product =>
-                                                        product.id
-                                                )
+                                            handleOpenProductPopup(
+                                                product
                                             );
-
-                                        } else {
-
-                                            setSelectedProducts([]);
 
                                         }
 
                                     }}
-                                />
+                                >
 
-                                Select All
+                                    {/* ID */}
 
-                            </label>
+                                    <td>
+                                        {product.id}
+                                    </td>
 
 
-                            <span
-                                className="clear-selection"
-                                onClick={
-                                    handleClearSelection
-                                }
-                            >
-                                × Clear
-                            </span>
+                                    {/* NAME */}
 
-                        </>
+                                    <td>
+                                        {product.name || "-"}
+                                    </td>
+
+
+                                    {/* BRAND */}
+
+                                    <td>
+                                        {product.brand?.name || "-"}
+                                    </td>
+
+
+                                    {/* CATEGORY */}
+
+                                    <td>
+                                        {product.category?.name || "-"}
+                                    </td>
+
+
+                                    {/* VARIANTS */}
+
+                                    <td>
+
+                                        {(
+                                            productVariantMap[
+                                                product.id
+                                            ] || []
+                                        )
+                                            .map(
+                                                variant =>
+                                                    variant.name
+                                            )
+                                            .filter(Boolean)
+                                            .join(", ") || "-"}
+
+                                    </td>
+
+
+                                    {/* STATUS */}
+
+                                    <td>
+
+                                        <span
+                                            className={
+                                                product.active
+                                                    ? "status active"
+                                                    : "status inactive"
+                                            }
+                                        >
+                                            {product.active
+                                                ? "Available"
+                                                : "Unavailable"}
+                                        </span>
+
+                                    </td>
+
+
+                                    {/* SELECT */}
+
+                                    {selectionMode && (
+
+                                        <td>
+
+                                            <input
+                                                type="checkbox"
+                                                checked={
+                                                    selectedProducts.includes(
+                                                        product.id
+                                                    )
+                                                }
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
+                                                onChange={() =>
+                                                    handleProductCheck(
+                                                        product.id
+                                                    )
+                                                }
+                                            />
+
+                                        </td>
+
+                                    )}
+
+                                </tr>
+
+                            )
+                        )
 
                     )}
 
-                </div>
+                </tbody>
 
+            </table>
 
-                {/* =================================================
-                    PRODUCT TABLE
-                ================================================= */}
 
-                <table className="manage-product-table">
+            {/* =================================================
+                DELETE / RESTORE BUTTON
+            ================================================= */}
 
-                    <thead>
+            <div className="product-action-buttons">
 
-                        <tr>
+                {selectedProducts.length > 0 &&
+                    productView === "available" && (
 
-                            <th>ID</th>
+                        <button
+                            className="delete-selected-btn"
+                            onClick={
+                                handleDeleteSelected
+                            }
+                        >
+                            Delete Selected
+                        </button>
 
-                            <th>Name</th>
+                    )}
 
-                            <th>Brand</th>
 
-                            <th>Category</th>
+                {selectedProducts.length > 0 &&
+                    productView === "unavailable" && (
 
-                            <th>Variant</th>
+                        <button
+                            className="restore-selected-btn"
+                            onClick={
+                                handleRestoreSelected
+                            }
+                        >
+                            Restore Selected
+                        </button>
 
-                            <th>Status</th>
+                    )}
 
-                            {selectionMode && (
-                                <th>Select</th>
-                            )}
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        {displayedProducts.length === 0 ? (
-
-                            <tr>
-
-                                <td
-                                    colSpan={
-                                        selectionMode
-                                            ? 7
-                                            : 6
-                                    }
-                                >
-                                    No products available
-                                </td>
-
-                            </tr>
-
-                        ) : (
-
-                            displayedProducts.map(
-                                product => (
-
-                                    <tr
-                                        key={product.id}
-                                        className={`product-row ${
-                                            selectionMode
-                                                ? "selection-active"
-                                                : ""
-                                        }`}
-                                        onClick={() => {
-
-                                            if (!selectionMode) {
-
-                                                handleOpenProductPopup(
-                                                    product
-                                                );
-
-                                            }
-
-                                        }}
-                                    >
-
-                                        {/* ID */}
-
-                                        <td>
-                                            {product.id}
-                                        </td>
-
-
-                                        {/* NAME */}
-
-                                        <td>
-                                            {product.name || "-"}
-                                        </td>
-
-
-                                        {/* BRAND */}
-
-                                        <td>
-                                            {product.brand?.name || "-"}
-                                        </td>
-
-
-                                        {/* CATEGORY */}
-
-                                        <td>
-                                            {product.category?.name || "-"}
-                                        </td>
-
-
-                                        {/* VARIANTS */}
-
-                                        <td>
-
-                                            {(
-                                                productVariantMap[
-                                                    product.id
-                                                ] || []
-                                            )
-                                                .map(
-                                                    variant =>
-                                                        variant.name
-                                                )
-                                                .filter(Boolean)
-                                                .join(", ") || "-"}
-
-                                        </td>
-
-
-                                        {/* STATUS */}
-
-                                        <td>
-
-                                            <span
-                                                className={
-                                                    product.active
-                                                        ? "status active"
-                                                        : "status inactive"
-                                                }
-                                            >
-                                                {product.active
-                                                    ? "Available"
-                                                    : "Unavailable"}
-                                            </span>
-
-                                        </td>
-
-
-                                        {/* SELECT */}
-
-                                        {selectionMode && (
-
-                                            <td>
-
-                                                <input
-                                                    type="checkbox"
-                                                    checked={
-                                                        selectedProducts.includes(
-                                                            product.id
-                                                        )
-                                                    }
-                                                    onClick={(e) =>
-                                                        e.stopPropagation()
-                                                    }
-                                                    onChange={() =>
-                                                        handleProductCheck(
-                                                            product.id
-                                                        )
-                                                    }
-                                                />
-
-                                            </td>
-
-                                        )}
-
-                                    </tr>
-
-                                )
-                            )
-
-                        )}
-
-                    </tbody>
-
-                </table>
-
-
-                {/* =================================================
-                    DELETE / RESTORE BUTTON
-                ================================================= */}
-
-                <div className="product-action-buttons">
-
-                    {selectedProducts.length > 0 &&
-                        productView === "available" && (
-
-                            <button
-                                className="delete-selected-btn"
-                                onClick={
-                                    handleDeleteSelected
-                                }
-                            >
-                                Delete Selected
-                            </button>
-
-                        )}
-
-
-                    {selectedProducts.length > 0 &&
-                        productView === "unavailable" && (
-
-                            <button
-                                className="restore-selected-btn"
-                                onClick={
-                                    handleRestoreSelected
-                                }
-                            >
-                                Restore Selected
-                            </button>
-
-                        )}
-
-                </div>
-
-            </main>
+            </div>
 
 
             {/* =================================================
@@ -1366,13 +1277,13 @@ function AdminProducts() {
                 FOOTER
             ================================================= */}
 
-            <footer className="footer">
+            {/* <footer className="footer">
 
                 <p>
                     © 2026 Website. All rights reserved.
                 </p>
 
-            </footer>
+            </footer> */}
 
         </div>
 

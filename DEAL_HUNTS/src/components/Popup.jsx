@@ -5,25 +5,26 @@ function Popup({
     title,
     children,
     onClose,
-    width = "500px"
+    width = "500px",
+    className = ""
 }) {
-
     if (!open) return null;
 
     return (
-        <div className="popup-overlay">
+        <div className="dh-popup-overlay">
 
             <div
-                className="popup-container"
+                className={`dh-popup-container ${className}`}
                 style={{ width }}
             >
 
-                <div className="popup-header">
+                <div className="dh-popup-header">
 
                     <h2>{title}</h2>
 
                     <button
-                        className="popup-close"
+                        type="button"
+                        className="dh-popup-close"
                         onClick={onClose}
                     >
                         ✕
@@ -31,7 +32,7 @@ function Popup({
 
                 </div>
 
-                <div className="popup-body">
+                <div className="dh-popup-body">
                     {children}
                 </div>
 

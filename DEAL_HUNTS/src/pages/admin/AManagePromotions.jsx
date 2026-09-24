@@ -1,7 +1,5 @@
 import React from "react";
-import { useNavigate, NavLink } from "react-router-dom";
-
-import SideWindow from "../../components/SideBar";
+import { useNavigate } from "react-router-dom";
 
 import "../../styles/AManagePromotions.css";
 
@@ -17,67 +15,15 @@ function AdminManagePromotions() {
 
 
             {/* =================================================
-                HEADER
-            ================================================= */}
-
-            <header className="header">
-
-                {/* LEFT */}
-
-                <div className="left-section">
-
-                    <SideWindow />
-
-                </div>
-
-
-                {/* LOGO */}
-
-                <div className="logo-container">
-
-                    <div className="logo">
-
-                        <span className="Gold">
-                            DEAL
-                        </span>
-
-                        <span className="Black">
-                            HUNTS
-                        </span>
-
-                        <span className="Admin">
-                            Admin
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                {/* NAVIGATION */}
-
-                <nav className="admin-nav-links">
-
-                    <div
-                        className="back-btn"
-                        onClick={() => navigate(-1)}
-                    >
-                        &#8592;
-                    </div>
-
-                </nav>
-
-            </header>
-
-
-            {/* =================================================
                 MAIN
             ================================================= */}
 
             <main className="manage-promotions-main">
 
 
-                {/* PAGE HEADER */}
+                {/* =================================================
+                    PAGE HEADER
+                ================================================= */}
 
                 <div className="manage-promotions-heading">
 
@@ -99,7 +45,9 @@ function AdminManagePromotions() {
                 <div className="promotion-options">
 
 
-                    {/* CAROUSEL */}
+                    {/* =================================================
+                        MANAGE CAROUSEL
+                    ================================================= */}
 
                     <button
                         type="button"
@@ -133,7 +81,9 @@ function AdminManagePromotions() {
                     </button>
 
 
-                    {/* TRENDING DEALS */}
+                    {/* =================================================
+                        MANAGE TRENDING DEALS
+                    ================================================= */}
 
                     <button
                         type="button"
@@ -167,7 +117,9 @@ function AdminManagePromotions() {
                     </button>
 
 
-                    {/* TRENDING CATEGORIES */}
+                    {/* =================================================
+                        MANAGE TRENDING CATEGORIES
+                    ================================================= */}
 
                     <button
                         type="button"

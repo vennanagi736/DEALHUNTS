@@ -13,18 +13,22 @@ public class VendorService {
     @Autowired
     private VendorRepository vendorRepository;
 
-    public Long getVendorCount(){
+    public Long getVendorCount() {
         return vendorRepository.count();
     }
 
     public List<Vendor> getAllVendors() {
         return vendorRepository.findAll();
     }
-     public Vendor updateStatus(Integer id, String status) {
+
+    public Vendor updateStatus(Integer id, String status) {
+
         Vendor vendor = vendorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vendor not found"));
+                .orElseThrow(() ->
+                        new RuntimeException("Vendor not found"));
 
         vendor.setStatus(status);
+
         return vendorRepository.save(vendor);
-}
+    }
 }

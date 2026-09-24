@@ -1,32 +1,44 @@
 import React from "react";
+
 import "../../styles/Admin.css";
-import SideWindow from "../../components/SideBar";
 
-function Orders() {
-return ( <div className="adminhome-container">
 
-  <header className="admin-header">
-    <div className="left-section">
-      <SideWindow />
-    </div>
+function AOrders() {
 
-    <div className="logo">
-      <span className="Gold">DEAL</span>
-      <span className="Black">HUNTS</span>
-      <span className="Admin">Admin</span>
-    </div>
-  </header>
+    return (
 
-  <main className="main">
-    {/* Page Content Here */}
-  </main>
+        <div className="adminhome-container">
 
-  <footer className="admin-footer">
-    <p>© 2026 Website. All rights reserved.</p>
-  </footer>
 
-</div>
-);
+            {/* =================================================
+                MAIN
+            ================================================= */}
+
+            <main className="main">
+
+                {/* Page Content Here */}
+
+            </main>
+
+
+            {/* =================================================
+                FOOTER
+            ================================================= */}
+
+            <footer className="admin-footer">
+
+                <p>
+                    © 2026 Website. All rights reserved.
+                </p>
+
+            </footer>
+
+
+        </div>
+
+    );
+
 }
 
-export default Orders;
+
+export default AOrders;

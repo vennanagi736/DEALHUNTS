@@ -1,1945 +1,2866 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
-  FiShoppingCart,
-  FiUser,
-  FiArrowLeft,
-  FiTruck,
-  FiShield,
-  FiCreditCard,
-  FiRefreshCw,
-  FiMapPin,
-  FiCheck,
+    FiShoppingCart,
+    FiArrowLeft,
+    FiArrowRight,
+    FiCheckCircle,
+    FiTruck,
+    FiX,
+    FiMapPin,
+    FiChevronLeft,
+    FiChevronRight,
 } from "react-icons/fi";
-
-import Sidebar from "../../components/Sidebar";
 
 import "../../styles/UProductComparison.css";
 
+/* ============================================================
+   API
+============================================================ */
+
+const API_BASE_URL = "http://localhost:8080";
 
 /* ============================================================
-   FORMAT PRICE
+   FORMAT / SAFE READ HELPERS
 ============================================================ */
 
 function formatINR(amount) {
-  if (
-    amount === null ||
-    amount === undefined ||
-    amount === ""
-  ) {
-    return "—";
-  }
+    if (
+        amount === null ||
+        amount === undefined ||
+        amount === ""
+    ) {
+        return "—";
+    }
 
-  const number = Number(amount);
+    const numericAmount = Number(amount);
 
-  if (Number.isNaN(number)) {
-    return "—";
-  }
+    if (Number.isNaN(numericAmount)) {
+        return "—";
+    }
 
-  return `₹${number.toLocaleString("en-IN")}`;
+    return `₹${numericAmount.toLocaleString("en-IN")}`;
 }
 
+function displayValue(value, fallback = "—") {
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+        return fallback;
+    }
+
+    if (typeof value === "object") {
+        return (
+            value?.name ||
+            value?.title ||
+            value?.label ||
+            value?.value ||
+            value?.shopName ||
+            fallback
+        );
+    }
+
+    return String(value);
+}
+
+/* ============================================================
+   IMAGE URL HANDLER
+============================================================ */
+
+function toImageUrl(entry) {
+    if (!entry) {
+        return "";
+    }
+
+    if (typeof entry === "string") {
+        return entry;
+    }
+
+    return (
+        entry?.thumbnailUrl ||
+        entry?.imageUrl ||
+        entry?.image ||
+        entry?.url ||
+        entry?.src ||
+        entry?.cloudinaryUrl ||
+        ""
+    );
+}
+
+/* ============================================================
+   COLLECT PRODUCT IMAGES
+============================================================ */
+
+function collectImages(product) {
+    if (!product) {
+        return [];
+    }
+
+    const rawImages = [];
+
+    if (Array.isArray(product.images)) {
+        rawImages.push(...product.images);
+    }
+
+    if (Array.isArray(product.productImages)) {
+        rawImages.push(...product.productImages);
+    }
+
+    if (product.image) {
+        rawImages.push(product.image);
+    }
+
+    if (product.imageUrl) {
+        rawImages.push(product.imageUrl);
+    }
+
+    if (product.thumbnailUrl) {
+        rawImages.push(product.thumbnailUrl);
+    }
+
+    const urls = rawImages
+        .map(toImageUrl)
+        .filter(Boolean);
+
+    return Array.from(new Set(urls));
+}
+
+/* ============================================================
+   NORMALIZE ATTRIBUTE VALUE
+============================================================ */
+
+function getAttributeName(attributeValue) {
+    if (!attributeValue) {
+        return "";
+    }
+
+    if (attributeValue?.attribute) {
+        return (
+            attributeValue.attribute.name ||
+            attributeValue.attribute.title ||
+            ""
+        );
+    }
+
+    return (
+        attributeValue?.name ||
+        attributeValue?.attributeName ||
+        ""
+    );
+}
+
+function getAttributeValue(attributeValue) {
+    if (!attributeValue) {
+        return "";
+    }
+
+    if (
+        attributeValue?.value !== undefined &&
+        attributeValue?.value !== null
+    ) {
+        return displayValue(
+            attributeValue.value,
+            ""
+        );
+    }
+
+    return displayValue(
+        attributeValue,
+        ""
+    );
+}
+
+/* ============================================================
+   GET VARIANT ATTRIBUTES
+============================================================ */
+
+function getVariantAttributes(variant) {
+    if (!variant) {
+        return [];
+    }
+
+    if (
+        Array.isArray(
+            variant.attributeValues
+        )
+    ) {
+        return variant.attributeValues
+            .map((item) => ({
+                name: getAttributeName(item),
+                value: getAttributeValue(item),
+            }))
+            .filter(
+                (item) =>
+                    item.name &&
+                    item.value
+            );
+    }
+
+    if (
+        Array.isArray(
+            variant.attributes
+        )
+    ) {
+        return variant.attributes
+            .map((item) => ({
+                name: getAttributeName(item),
+                value: getAttributeValue(item),
+            }))
+            .filter(
+                (item) =>
+                    item.name &&
+                    item.value
+            );
+    }
+
+    if (
+        variant.attributes &&
+        typeof variant.attributes === "object"
+    ) {
+        return Object.entries(
+            variant.attributes
+        )
+            .map(
+                ([name, value]) => ({
+                    name,
+                    value: displayValue(
+                        value,
+                        ""
+                    ),
+                })
+            )
+            .filter(
+                (item) =>
+                    item.name &&
+                    item.value
+            );
+    }
+
+    return [];
+}
+
+/* ============================================================
+   GET VARIANT COLORS
+============================================================ */
+
+function getVariantColors(variant) {
+    if (!variant) {
+        return [];
+    }
+
+    if (
+        !Array.isArray(
+            variant.colors
+        )
+    ) {
+        return [];
+    }
+
+    return variant.colors
+        .map((color) => ({
+            id:
+                color?.id ??
+                color?.colorId ??
+                null,
+            name:
+                color?.name ||
+                color?.colorName ||
+                "",
+            hexCode:
+                color?.hexCode ||
+                color?.hex ||
+                "",
+            price:
+                color?.price ?? null,
+        }))
+        .filter(
+            (color) =>
+                color.name
+        );
+}
+
+/* ============================================================
+   BUILD VARIANT GROUPS
+============================================================ */
+
+function buildVariantGroups(variants) {
+    if (
+        !Array.isArray(variants) ||
+        variants.length === 0
+    ) {
+        return [];
+    }
+
+    const groupOrder = [];
+    const groupValues = {};
+
+    variants.forEach((variant) => {
+        const attributes =
+            getVariantAttributes(
+                variant
+            );
+
+        attributes.forEach(
+            ({
+                name,
+                value,
+            }) => {
+                const key =
+                    name
+                        .trim()
+                        .toLowerCase();
+
+                if (
+                    !key ||
+                    !value
+                ) {
+                    return;
+                }
+
+                if (
+                    !groupValues[
+                        key
+                    ]
+                ) {
+                    groupValues[
+                        key
+                    ] = {
+                        label: name,
+                        options: [],
+                    };
+
+                    groupOrder.push(
+                        key
+                    );
+                }
+
+                if (
+                    !groupValues[
+                        key
+                    ].options.includes(
+                        value
+                    )
+                ) {
+                    groupValues[
+                        key
+                    ].options.push(
+                        value
+                    );
+                }
+            }
+        );
+    });
+
+    return groupOrder.map(
+        (key) => ({
+            key,
+            label:
+                groupValues[key]
+                    .label,
+            options:
+                groupValues[key]
+                    .options,
+        })
+    );
+}
+
+/* ============================================================
+   BUILD COLOR OPTIONS
+============================================================ */
+
+function buildColorOptions(variants) {
+    if (
+        !Array.isArray(variants)
+    ) {
+        return [];
+    }
+
+    const colors = [];
+
+    variants.forEach(
+        (variant) => {
+            const variantColors =
+                getVariantColors(
+                    variant
+                );
+
+            variantColors.forEach(
+                (color) => {
+                    const exists =
+                        colors.some(
+                            (item) =>
+                                (
+                                    item.id &&
+                                    color.id &&
+                                    item.id ===
+                                        color.id
+                                ) ||
+                                (
+                                    item.name
+                                        .toLowerCase() ===
+                                    color.name
+                                        .toLowerCase()
+                                )
+                        );
+
+                    if (!exists) {
+                        colors.push(
+                            color
+                        );
+                    }
+                }
+            );
+        }
+    );
+
+    return colors;
+}
+
+/* ============================================================
+   GET VARIANT PRICE
+============================================================ */
+
+function getVariantPrice(variant) {
+    if (!variant) {
+        return 0;
+    }
+
+    return (
+        Number(
+            variant.price
+        ) ||
+        Number(
+            variant.sellingPrice
+        ) ||
+        Number(
+            variant.basePrice
+        ) ||
+        0
+    );
+}
+
+/* ============================================================
+   GET PRODUCT BASE PRICE
+============================================================ */
+
+function getProductPrice(product) {
+    if (!product) {
+        return 0;
+    }
+
+    return (
+        Number(
+            product.basePrice
+        ) ||
+        Number(
+            product.price
+        ) ||
+        Number(
+            product.sellingPrice
+        ) ||
+        0
+    );
+}
+
+/* ============================================================
+   FIND SELECTED VARIANT
+============================================================ */
+
+function resolveSelectedVariant(
+    variants,
+    selection
+) {
+    if (
+        !Array.isArray(variants) ||
+        variants.length === 0
+    ) {
+        return null;
+    }
+
+    const selectedKeys =
+        Object.keys(
+            selection
+        );
+
+    if (
+        selectedKeys.length ===
+        0
+    ) {
+        return variants[0];
+    }
+
+    const exact =
+        variants.find(
+            (variant) => {
+                const attributes =
+                    getVariantAttributes(
+                        variant
+                    );
+
+                return selectedKeys.every(
+                    (key) => {
+                        const attribute =
+                            attributes.find(
+                                (
+                                    item
+                                ) =>
+                                    item.name
+                                        .trim()
+                                        .toLowerCase() ===
+                                    key
+                                        .trim()
+                                        .toLowerCase()
+                            );
+
+                        return (
+                            attribute &&
+                            String(
+                                attribute.value
+                            ) ===
+                                String(
+                                    selection[
+                                        key
+                                    ]
+                                )
+                        );
+                    }
+                );
+            }
+        );
+
+    return (
+        exact ||
+        variants[0]
+    );
+}
 
 /* ============================================================
    STAR RATING
 ============================================================ */
 
-function StarRating({ value = 0 }) {
-  const rating = Number(value) || 0;
-
-  return (
-    <span className="pc-stars">
-      {Array.from({ length: 5 }).map((_, index) => (
-        <span
-          key={index}
-          className={
-            index < Math.round(rating)
-              ? "pc-star active"
-              : "pc-star"
-          }
-        >
-          ★
-        </span>
-      ))}
-    </span>
-  );
-}
-
-
-/* ============================================================
-   PRODUCT IMAGE
-============================================================ */
-
-function getProductImage(product) {
-  if (product?.thumbnailUrl) {
-    return product.thumbnailUrl;
-  }
-
-  if (
-    Array.isArray(product?.images) &&
-    product.images.length > 0
-  ) {
-    const firstImage = product.images.find(
-      (image) => image?.thumbnailUrl
-    );
-
-    if (firstImage?.thumbnailUrl) {
-      return firstImage.thumbnailUrl;
-    }
-  }
-
-  return "";
-}
-
-
-/* ============================================================
-   PRODUCT IMAGES
-============================================================ */
-
-function getProductImages(product) {
-  if (
-    Array.isArray(product?.images) &&
-    product.images.length > 0
-  ) {
-    return product.images
-      .map((image) => image?.thumbnailUrl)
-      .filter(Boolean);
-  }
-
-  if (product?.thumbnailUrl) {
-    return [product.thumbnailUrl];
-  }
-
-  return [];
-}
-
-
-/* ============================================================
-   PRODUCT OVERVIEW
-============================================================ */
-
-function ProductOverview({
-  product,
-  vendors,
-  onAddToCart,
-  onBuyNow,
-  onBookVisit,
+function StarRating({
+    value = 0,
 }) {
-  const image = getProductImage(product);
-  const productImages = getProductImages(product);
+    const rating =
+        Number(value) || 0;
 
-  const rating = Number(product?.rating) || 0;
-
-
-  /* ==========================================================
-     BEST PRICE
-  ========================================================== */
-
-  const bestPrice =
-    vendors.length > 0
-      ? Math.min(
-          ...vendors
-            .map((vendor) => Number(vendor.sellingPrice))
-            .filter((price) => !Number.isNaN(price) && price > 0)
-        )
-      : null;
-
-
-  /* ==========================================================
-     MAX SAVING
-  ========================================================== */
-
-  const maxSaving =
-    vendors.length > 0
-      ? Math.max(
-          ...vendors.map((vendor) => {
-            const sellingPrice =
-              Number(vendor.sellingPrice) || 0;
-
-            const discount =
-              Number(vendor.discount) || 0;
-
-            if (
-              sellingPrice <= 0 ||
-              discount <= 0 ||
-              discount >= 100
-            ) {
-              return 0;
-            }
-
-            const originalPrice =
-              sellingPrice /
-              (1 - discount / 100);
-
-            return Math.max(
-              0,
-              originalPrice - sellingPrice
-            );
-          })
-        )
-      : 0;
-
-
-  return (
-    <section className="pc-overview">
-
-      <div className="pc-overview-grid">
-
-        {/* ====================================================
-            IMAGE GALLERY
-        ==================================================== */}
-
-        <div className="pc-gallery">
-
-          {/* MAIN IMAGE */}
-
-          <div className="pc-gallery-main">
-
-            {image ? (
-              <img
-                src={image}
-                alt={product?.name || "Product"}
-                onError={(event) => {
-                  event.currentTarget.style.display = "none";
-                }}
-              />
-            ) : (
-              <div className="pc-gallery-placeholder">
-                No Image
-              </div>
-            )}
-
-          </div>
-
-
-          {/* THUMBNAILS */}
-
-          <div className="pc-gallery-thumbs">
-
-            {productImages.length > 0 ? (
-
-              productImages.map((thumbnail, index) => (
-                <div
-                  key={`${thumbnail}-${index}`}
-                  className={`pc-gallery-thumb ${
-                    index === 0 ? "active" : ""
-                  }`}
-                >
-                  <img
-                    src={thumbnail}
-                    alt={`${product?.name || "Product"} ${
-                      index + 1
-                    }`}
-                  />
-                </div>
-              ))
-
-            ) : image ? (
-
-              <div className="pc-gallery-thumb active">
-                <img
-                  src={image}
-                  alt={product?.name || "Product"}
-                />
-              </div>
-
-            ) : (
-
-              <div className="pc-gallery-thumb">
-                <span>No Image</span>
-              </div>
-
-            )}
-
-          </div>
-
-        </div>
-
-
-        {/* ====================================================
-            PRODUCT INFORMATION
-        ==================================================== */}
-
-        <div className="pc-product-info">
-
-          {/* BRAND + RATING */}
-
-          <div className="pc-brand-row">
-
-            <span className="pc-brand-pill">
-              {product?.brand || "Brand"}
-            </span>
-
-            <span className="pc-rating">
-
-              <StarRating value={rating} />
-
-              <strong>
-                {rating.toFixed(1)}
-              </strong>
-
-              <span>
-                (
-                {Number(product?.reviewCount || 0)}
+    return (
+        <span className="dh-product-comparison-stars-user">
+            {Array.from({
+                length: 5,
+            }).map(
+                (_, index) => (
+                    <span
+                        key={index}
+                        className={
+                            index <
+                            Math.round(
+                                rating
+                            )
+                                ? "dh-product-comparison-star-user dh-product-comparison-active-user"
+                                : "dh-product-comparison-star-user"
+                        }
+                    >
+                        ★
+                    </span>
                 )
-              </span>
-
-            </span>
-
-          </div>
-
-
-          {/* PRODUCT NAME */}
-
-          <h1 className="pc-product-title">
-            {product?.name || "Product Name"}
-          </h1>
-
-
-          {/* SUBTITLE */}
-
-          <p className="pc-product-subtitle">
-            Compare prices from multiple
-            verified shops and find the
-            best deal.
-          </p>
-
-
-          {/* ==================================================
-              KEY SPECIFICATIONS
-          ================================================== */}
-
-          <div className="pc-spec-strip">
-
-            {/* PROCESSOR */}
-
-            <div className="pc-spec-chip">
-
-              <span>Processor</span>
-
-              <strong>
-                {product?.processor || "—"}
-              </strong>
-
-            </div>
-
-
-            {/* RAM */}
-
-            <div className="pc-spec-chip">
-
-              <span>RAM</span>
-
-              <strong>
-                {product?.variants?.length > 0
-                  ? product.variants
-                      .map((variant) => variant.ram)
-                      .filter(Boolean)
-                      .join(" / ")
-                  : "—"}
-              </strong>
-
-            </div>
-
-
-            {/* STORAGE */}
-
-            <div className="pc-spec-chip">
-
-              <span>Storage</span>
-
-              <strong>
-                {product?.variants?.length > 0
-                  ? product.variants
-                      .map((variant) => variant.storage)
-                      .filter(Boolean)
-                      .join(" / ")
-                  : "—"}
-              </strong>
-
-            </div>
-
-
-            {/* DISPLAY */}
-
-            <div className="pc-spec-chip">
-
-              <span>Display</span>
-
-              <strong>
-                {product?.displaySize || "—"}
-              </strong>
-
-            </div>
-
-
-            {/* BATTERY */}
-
-            <div className="pc-spec-chip">
-
-              <span>Battery</span>
-
-              <strong>
-                {product?.battery || "—"}
-              </strong>
-
-            </div>
-
-          </div>
-
-
-          {/* ==================================================
-              BEST PRICE
-          ================================================== */}
-
-          <div className="pc-best-price">
-
-            <div>
-
-              <span className="pc-best-price-label">
-                Best price found across{" "}
-                {vendors.length} shops
-              </span>
-
-              <strong>
-                {formatINR(bestPrice)}
-
-                <small>
-                  {" "}onwards
-                </small>
-              </strong>
-
-            </div>
-
-            {maxSaving > 0 && (
-              <span className="pc-save-badge">
-                Save up to{" "}
-                {formatINR(Math.round(maxSaving))}
-              </span>
             )}
-
-          </div>
-
-
-          {/* ==================================================
-              DESCRIPTION
-          ================================================== */}
-
-          <p className="pc-product-description">
-            {product?.description ||
-              "Compare prices, delivery options, warranty, payment methods and return policies from different shops before purchasing."}
-          </p>
-
-
-          {/* ==================================================
-              PRODUCT ACTIONS
-          ================================================== */}
-
-          <div className="pc-product-actions">
-
-            <button
-              type="button"
-              className="pc-action-button pc-action-button--cart"
-              onClick={onAddToCart}
-            >
-              <FiShoppingCart />
-              Add to Cart
-            </button>
-
-
-            <button
-              type="button"
-              className="pc-action-button pc-action-button--buy"
-              onClick={onBuyNow}
-            >
-              Buy Now
-            </button>
-
-
-            <button
-              type="button"
-              className="pc-action-button pc-action-button--visit"
-              onClick={onBookVisit}
-            >
-              <FiMapPin />
-              Book Visit
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-  );
+        </span>
+    );
 }
 
-
 /* ============================================================
-   TOP 5 VENDORS
+   VENDOR / RANK CARD
 ============================================================ */
 
-function TopFiveVendors({
-  vendors
+function RankCard({
+    rank,
+    vendor,
+    isBest,
+    isSelected,
+    lowestPrice,
+    onSelect,
+    onViewDeal,
 }) {
-  const navigate = useNavigate();
-
-  const bestPrice =
-    vendors.length > 0
-      ? Number(vendors[0].sellingPrice) || 0
-      : 0;
-
-
-  return (
-    <section className="pc-section">
-
-      <div className="pc-top5-banner">
-
-        {/* HEADER */}
-
-        <div className="pc-top5-header">
-
-          <div>
-
-            <span className="pc-section-eyebrow">
-              Price comparison
-            </span>
-
-            <h2>
-              🏆 Top 5 Lowest-Price Shops
-            </h2>
-
-            <p>
-              Compare the cheapest available
-              offers from verified vendors.
-            </p>
-
-          </div>
-
-          <div className="pc-live-badge">
-            <span />
-            Live Prices
-          </div>
-
-        </div>
-
-
-        {/* VENDOR CARDS */}
-
-        <div className="pc-top5-grid">
-
-          {vendors
-            .slice(0, 5)
-            .map((vendor, index) => {
-
-              const sellingPrice =
-                Number(vendor.sellingPrice) || 0;
-
-              const difference =
-                sellingPrice - bestPrice;
-
-              const isBest =
-                index === 0;
-
-              const discount =
-                Number(vendor.discount) || 0;
-
-              let originalPrice = 0;
-
-              if (
-                discount > 0 &&
-                discount < 100
-              ) {
-                originalPrice =
-                  sellingPrice /
-                  (1 - discount / 100);
-              }
-
-
-              return (
-                <div
-                  className={`pc-rank-card ${
-                    isBest ? "best" : ""
-                  }`}
-                  key={
-                    vendor.inventoryId ||
-                    `${vendor.vendorId}-${index}`
-                  }
-                >
-
-                  {/* RANK */}
-
-                  <div className="pc-rank-number">
-                    {index + 1}
-                  </div>
-
-
-                  {/* BEST BADGE */}
-
-                  {isBest && (
-                    <div className="pc-best-badge">
-                      🏆 Best Price
-                    </div>
-                  )}
-
-
-                  {/* SHOP */}
-
-                  <div className="pc-rank-shop">
-                    {vendor.shopName || "Shop"}
-                  </div>
-
-
-                  {/* RATING */}
-
-                  <div className="pc-rank-meta">
-
-                    <StarRating value={0} />
-
-                    <span>
-                      New
-                    </span>
-
-                  </div>
-
-
-                  {/* PRICE */}
-
-                  <div className="pc-rank-price">
-                    {formatINR(sellingPrice)}
-                  </div>
-
-
-                  {/* OLD PRICE */}
-
-                  {originalPrice > sellingPrice && (
-                    <div className="pc-rank-old-price">
-                      {formatINR(
-                        Math.round(originalPrice)
-                      )}
-                    </div>
-                  )}
-
-
-                  {/* DIFFERENCE */}
-
-                  {isBest ? (
-                    <div className="pc-rank-difference best">
-                      Cheapest available
-                    </div>
-                  ) : (
-                    <div className="pc-rank-difference more">
-                      +
-                      {formatINR(difference)}
-                      {" "}more
-                    </div>
-                  )}
-
-
-                  {/* STOCK */}
-
-                  <div className="pc-rank-stock">
-
-                    <span />
-
-                    {Number(vendor.stock) > 0
-                      ? `${vendor.stock} available`
-                      : "Out of Stock"}
-
-                  </div>
-
-
-                  {/* BUTTON */}
-
-                  <button
-                    type="button"
-                    className="pc-rank-button"
-                    onClick={() => {
-                      console.log(
-                        "Selected Vendor:",
-                        vendor
-                      );
-
-                      navigate(
-                        `/shop/${
-                          vendor.vendorId ||
-                          vendor.id
-                        }`
-                      );
-                    }}
-                  >
-                    View Deal
-                  </button>
-
-                </div>
-              );
-            })}
-
-        </div>
-
-      </div>
-
-    </section>
-  );
-}
-
-
-/* ============================================================
-   DETAILED COMPARISON
-============================================================ */
-
-function DetailedComparison({
-  vendors
-}) {
-  const navigate = useNavigate();
-
-  const bestPrice =
-    vendors.length > 0
-      ? Number(vendors[0].sellingPrice) || 0
-      : 0;
-
-
-  return (
-    <section className="pc-section">
-
-      {/* HEADING */}
-
-      <div className="pc-section-heading">
-
-        <div>
-
-          <span className="pc-section-eyebrow">
-            Full breakdown
-          </span>
-
-          <h2>
-            Detailed Price Comparison
-          </h2>
-
-          <p>
-            Compare price, delivery,
-            warranty, payment and
-            return options.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      {/* DEAL LIST */}
-
-      <div className="pc-deal-list">
-
-        {vendors.map((vendor, index) => {
-
-          const sellingPrice =
-            Number(vendor.sellingPrice) || 0;
-
-          const difference =
-            sellingPrice - bestPrice;
-
-          const isBest =
-            index === 0;
-
-          const discount =
-            Number(vendor.discount) || 0;
-
-          let originalPrice = 0;
-
-          if (
-            discount > 0 &&
-            discount < 100
-          ) {
-            originalPrice =
-              sellingPrice /
-              (1 - discount / 100);
-          }
-
-
-          return (
-            <article
-              className={`pc-deal-card ${
-                isBest ? "best" : ""
-              }`}
-              key={
-                vendor.inventoryId ||
-                `${vendor.vendorId}-${index}`
-              }
-            >
-
-              {/* SHOP */}
-
-              <div className="pc-deal-shop">
-
-                <div className="pc-shop-mark">
-
-                  {vendor.shopName
-                    ?.substring(0, 2)
-                    .toUpperCase() ||
-                    "SH"}
-
-                </div>
-
-
-                <div>
-
-                  <div className="pc-shop-name-row">
-
-                    <span className="pc-shop-name">
-                      {vendor.shopName || "Shop"}
-                    </span>
-
-                    {isBest && (
-                      <span className="pc-best-tag">
-                        🏆 Best Price
-                      </span>
-                    )}
-
-                  </div>
-
-
-                  <div className="pc-shop-rating">
-
-                    <StarRating value={0} />
-
-                    <strong>
-                      New
-                    </strong>
-
-                    <span>
-                      Verified vendor
-                    </span>
-
-                    <span className="pc-verified">
-                      <FiCheck />
-                      Verified Seller
-                    </span>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-
-              {/* PRICE */}
-
-              <div className="pc-deal-price">
-
-                <div>
-
-                  <strong>
-                    {formatINR(sellingPrice)}
-                  </strong>
-
-                  {originalPrice > sellingPrice && (
-                    <span>
-                      {formatINR(
-                        Math.round(originalPrice)
-                      )}
-                    </span>
-                  )}
-
-                </div>
-
-
-                {discount > 0 && (
-                  <span className="pc-discount">
-                    {discount}% OFF
-                  </span>
-                )}
-
-
-                <div
-                  className={
-                    isBest
-                      ? "pc-price-difference best"
-                      : "pc-price-difference"
-                  }
-                >
-                  {isBest
-                    ? "✓ Cheapest available"
-                    : `▲ ${formatINR(
-                        difference
-                      )} more than best`}
-                </div>
-
-              </div>
-
-
-              {/* META */}
-
-              <div className="pc-deal-meta">
-
-                {/* DELIVERY */}
-
-                <div className="pc-meta-item">
-
-                  <FiTruck />
-
-                  Delivery:
-
-                  <strong>
-                    {vendor.deliveryTime ||
-                      "Not specified"}
-                  </strong>
-
-                </div>
-
-
-                {/* WARRANTY */}
-
-                <div className="pc-meta-item">
-
-                  <FiShield />
-
-                  Warranty:
-
-                  <strong>
-                    {vendor.warranty ||
-                      "Not specified"}
-                  </strong>
-
-                </div>
-
-
-                {/* COD */}
-
-                <div className="pc-meta-item">
-
-                  <FiCreditCard />
-
-                  COD:
-
-                  <strong
-                    className={
-                      vendor.cod
-                        ? "yes"
-                        : "no"
-                    }
-                  >
-                    {vendor.cod
-                      ? "Available"
-                      : "Not available"}
-                  </strong>
-
-                </div>
-
-
-                {/* EMI */}
-
-                <div className="pc-meta-item">
-
-                  <FiCreditCard />
-
-                  EMI:
-
-                  <strong
-                    className={
-                      vendor.emi
-                        ? "yes"
-                        : "no"
-                    }
-                  >
-                    {vendor.emi
-                      ? "Available"
-                      : "Not available"}
-                  </strong>
-
-                </div>
-
-
-                {/* RETURNS */}
-
-                <div className="pc-meta-item">
-
-                  <FiRefreshCw />
-
-                  Returns:
-
-                  <strong>
-                    {vendor.returnPolicy ||
-                      "Not specified"}
-                  </strong>
-
-                </div>
-
-
-                {/* PICKUP */}
-
-                <div className="pc-meta-item">
-
-                  <FiMapPin />
-
-                  Pickup:
-
-                  <strong
-                    className={
-                      vendor.storePickup
-                        ? "yes"
-                        : "no"
-                    }
-                  >
-                    {vendor.storePickup
-                      ? "Available"
-                      : "Not available"}
-                  </strong>
-
-                </div>
-
-
-                {/* EXCHANGE */}
-
-                <div className="pc-meta-item">
-
-                  <FiRefreshCw />
-
-                  Exchange:
-
-                  <strong
-                    className={
-                      vendor.exchange
-                        ? "yes"
-                        : "no"
-                    }
-                  >
-                    {vendor.exchange
-                      ? "Available"
-                      : "Not available"}
-                  </strong>
-
-                </div>
-
-              </div>
-
-
-              {/* ACTION */}
-
-              <div className="pc-deal-action">
-
-                <button
-                  type="button"
-                  className="pc-view-deal"
-                  onClick={() => {
-                    console.log(
-                      "Selected vendor:",
-                      vendor
-                    );
-
-                    navigate(
-                      `/shop/${
-                        vendor.vendorId ||
-                        vendor.id
-                      }`
-                    );
-                  }}
-                >
-                  View Deal →
-                </button>
-
-
-                <span>
-
-                  ●{" "}
-
-                  {Number(vendor.stock) > 0
-                    ? `${vendor.stock} in stock`
-                    : "Out of stock"}
-
+    const price =
+        Number(
+            vendor?.price
+        ) ||
+        Number(
+            vendor?.sellingPrice
+        ) ||
+        Number(
+            vendor?.finalPrice
+        ) ||
+        0;
+
+    const originalPrice =
+        Number(
+            vendor?.originalPrice
+        ) ||
+        Number(
+            vendor?.mrp
+        ) ||
+        Number(
+            vendor?.basePrice
+        ) ||
+        0;
+
+    const difference =
+        Math.max(
+            0,
+            price -
+                lowestPrice
+        );
+
+    const vendorName =
+        displayValue(
+            vendor?.vendorName ??
+                vendor?.shopName ??
+                vendor?.storeName ??
+                vendor?.name,
+            "Vendor"
+        );
+
+    const vendorRating =
+        Number(
+            vendor?.rating
+        ) || 0;
+
+    const stock =
+        Number(
+            vendor?.stock
+        ) || 0;
+
+    return (
+        <div
+            className={[
+                "dh-product-comparison-rank-card-user",
+                isBest
+                    ? "dh-product-comparison-best-user"
+                    : "",
+                isSelected
+                    ? "dh-product-comparison-selected-user"
+                    : "",
+            ]
+                .filter(Boolean)
+                .join(" ")}
+            onClick={() =>
+                onSelect(
+                    vendor
+                )
+            }
+        >
+            <div className="dh-product-comparison-rank-top-row-user">
+                <span className="dh-product-comparison-rank-number-user">
+                    #{rank}
                 </span>
 
-              </div>
+                {isBest && (
+                    <span className="dh-product-comparison-best-badge-user">
+                        Best Price
+                    </span>
+                )}
+            </div>
 
-            </article>
-          );
-        })}
+            <div
+                className="dh-product-comparison-rank-shop-user"
+                title={vendorName}
+            >
+                {vendorName}
+            </div>
 
-      </div>
+            <div className="dh-product-comparison-rank-meta-user">
+                ★{" "}
+                {vendorRating
+                    ? vendorRating.toFixed(
+                          1
+                      )
+                    : "New"}
+            </div>
 
-    </section>
-  );
-}
-
-
-/* ============================================================
-   PRODUCT SPECIFICATIONS
-============================================================ */
-
-function ProductSpecifications({
-  product
-}) {
-
-  const ramValues =
-    product?.variants
-      ?.map((variant) => variant.ram)
-      .filter(Boolean)
-      .join(" / ");
-
-
-  const storageValues =
-    product?.variants
-      ?.map((variant) => variant.storage)
-      .filter(Boolean)
-      .join(" / ");
-
-
-  const specifications = [
-    [
-      "Brand",
-      product?.brand
-    ],
-
-    [
-      "Processor",
-      product?.processor
-    ],
-
-    [
-      "RAM",
-      ramValues
-    ],
-
-    [
-      "Storage",
-      storageValues
-    ],
-
-    [
-      "Display",
-      product?.displaySize
-    ],
-
-    [
-      "Battery",
-      product?.battery
-    ],
-
-    [
-      "Category",
-      product?.category
-    ],
-  ];
-
-
-  return (
-    <section className="pc-section">
-
-      {/* HEADING */}
-
-      <div className="pc-section-heading">
-
-        <div>
-
-          <span className="pc-section-eyebrow">
-            Under the hood
-          </span>
-
-          <h2>
-            Product Details
-          </h2>
-
-        </div>
-
-      </div>
-
-
-      {/* SPECIFICATIONS */}
-
-      <div className="pc-specifications-panel">
-
-        <div className="pc-specifications-grid">
-
-          {specifications.map(
-            ([label, value]) => (
-
-              <div
-                className="pc-spec-row"
-                key={label}
-              >
-
+            <div className="dh-pc-vendor-price-box-user">
                 <span>
-                  {label}
+                    DEAL PRICE
                 </span>
 
                 <strong>
-                  {value || "—"}
+                    {formatINR(
+                        price
+                    )}
                 </strong>
+            </div>
 
-              </div>
+            {originalPrice >
+                price && (
+                <span className="dh-product-comparison-rank-old-price-user">
+                    {formatINR(
+                        originalPrice
+                    )}
+                </span>
+            )}
 
-            )
-          )}
+            <span
+                className={[
+                    "dh-product-comparison-rank-difference-user",
+                    isBest
+                        ? "dh-product-comparison-best-user"
+                        : "dh-product-comparison-more-user",
+                ].join(" ")}
+            >
+                {isBest
+                    ? "Lowest price found"
+                    : `+${formatINR(
+                          difference
+                      )} more`}
+            </span>
 
+            <span className="dh-product-comparison-rank-stock-user">
+                {stock > 0 ||
+                vendor?.available ? (
+                    <>
+                        <FiCheckCircle />
+                        {stock > 0
+                            ? `${stock} available`
+                            : "In stock"}
+                    </>
+                ) : (
+                    "Out of stock"
+                )}
+            </span>
+
+            <button
+                type="button"
+                className="dh-product-comparison-rank-button-user"
+                onClick={(
+                    event
+                ) => {
+                    event.stopPropagation();
+
+                    onViewDeal(
+                        vendor
+                    );
+                }}
+            >
+                View Deal
+                <FiArrowRight />
+            </button>
         </div>
-
-      </div>
-
-    </section>
-  );
+    );
 }
-
-
-/* ============================================================
-   PRODUCT DESCRIPTION
-============================================================ */
-
-function ProductDescription({
-  product
-}) {
-
-  return (
-    <section className="pc-section">
-
-      {/* HEADING */}
-
-      <div className="pc-section-heading">
-
-        <div>
-
-          <span className="pc-section-eyebrow">
-            About this product
-          </span>
-
-          <h2>
-            Product Description
-          </h2>
-
-        </div>
-
-      </div>
-
-
-      {/* DESCRIPTION */}
-
-      <div className="pc-description-panel">
-
-        <p>
-          {product?.description ||
-            "This product is available from multiple shops on DealHunts. Compare prices, delivery options, warranty, payment methods and return policies before making your purchase."}
-        </p>
-
-
-        <p>
-          DealHunts helps you find the best available
-          price by comparing offers from different
-          vendors in one place.
-        </p>
-
-      </div>
-
-    </section>
-  );
-}
-
 
 /* ============================================================
    PRODUCT COMPARISON PAGE
 ============================================================ */
 
 function ProductComparison() {
+    const {
+        productId: id,
+    } = useParams();
 
-  const navigate = useNavigate();
+    const navigate =
+        useNavigate();
 
-  const {
-    productId
-  } = useParams();
-
-
-  /* ==========================================================
-     STATE
-  ========================================================== */
-
-  const [product, setProduct] =
-    useState(null);
-
-  const [vendors, setVendors] =
-    useState([]);
-
-  const [loading, setLoading] =
-    useState(true);
-
-  const [error, setError] =
-    useState("");
-
-
-  /* ==========================================================
-     LOAD PRODUCT + VENDORS
-  ========================================================== */
-
-  useEffect(() => {
-
-    const loadProduct = async () => {
-
-      try {
-
-        setLoading(true);
-        setError("");
-
-
-        /* ==================================================
-           GET PRODUCT
-        ================================================== */
-
-        const productResponse =
-          await axios.get(
-            `http://localhost:8080/admin/products/${productId}`
-          );
-
-
-        console.log(
-          "Product details received:",
-          productResponse.data
+    const [isLoggedIn] =
+        useState(
+            !!localStorage.getItem(
+                "userJwtToken"
+            )
         );
 
+    const [
+        product,
+        setProduct,
+    ] = useState(null);
 
-        /* ==================================================
-           GET AVAILABLE VENDORS
-        ================================================== */
+    const [
+        vendors,
+        setVendors,
+    ] = useState([]);
 
-        const vendorResponse =
-          await axios.get(
-            `http://localhost:8080/inventory/product/${productId}/vendors`
-          );
+    const [
+        loading,
+        setLoading,
+    ] = useState(true);
 
+    const [
+        error,
+        setError,
+    ] = useState("");
 
-        console.log(
-          "Vendor comparison data:",
-          vendorResponse.data
+    const [
+        activeImageIndex,
+        setActiveImageIndex,
+    ] = useState(0);
+
+    const [
+        selectedAttributes,
+        setSelectedAttributes,
+    ] = useState({});
+
+    const [
+        selectedVendorId,
+        setSelectedVendorId,
+    ] = useState(null);
+
+    const [
+        showVendorComparison,
+        setShowVendorComparison,
+    ] = useState(false);
+
+    /* ==========================================================
+       FETCH PRODUCT
+    ========================================================== */
+
+    useEffect(() => {
+        const fetchProduct =
+            async () => {
+                try {
+                    setLoading(
+                        true
+                    );
+
+                    setError("");
+
+                    const response =
+                        await axios.get(
+                            `${API_BASE_URL}/admin/products/${id}`
+                        );
+
+                    const data =
+                        response
+                            .data
+                            ?.content ??
+                        response.data ??
+                        null;
+
+                    setProduct(
+                        data
+                    );
+
+                    const groups =
+                        buildVariantGroups(
+                            data?.variants
+                        );
+
+                    const defaults =
+                        {};
+
+                    groups.forEach(
+                        (
+                            group
+                        ) => {
+                            if (
+                                group
+                                    .options
+                                    .length >
+                                0
+                            ) {
+                                defaults[
+                                    group.key
+                                ] =
+                                    group
+                                        .options[0];
+                            }
+                        }
+                    );
+
+                    setSelectedAttributes(
+                        defaults
+                    );
+
+                    setActiveImageIndex(
+                        0
+                    );
+                } catch (
+                    fetchError
+                ) {
+                    console.error(
+                        "Failed to fetch product:",
+                        fetchError
+                    );
+
+                    console.error(
+                        "Backend response:",
+                        fetchError
+                            .response
+                            ?.data
+                    );
+
+                    setError(
+                        "Unable to load this product. Please try again."
+                    );
+                } finally {
+                    setLoading(
+                        false
+                    );
+                }
+            };
+
+        if (id) {
+            fetchProduct();
+        } else {
+            setLoading(
+                false
+            );
+
+            setError(
+                "Product ID is missing."
+            );
+        }
+    }, [id]);
+
+    /* ==========================================================
+       FETCH VENDORS
+    ========================================================== */
+
+    useEffect(() => {
+        const fetchVendors =
+            async () => {
+                try {
+                    const response =
+                        await axios.get(
+                            `${API_BASE_URL}/inventory/product/${id}/vendors`
+                        );
+
+                    const list =
+                        Array.isArray(
+                            response.data
+                        )
+                            ? response.data
+                            : [];
+
+                    const sorted =
+                        [
+                            ...list,
+                        ].sort(
+                            (
+                                a,
+                                b
+                            ) => {
+                                const priceA =
+                                    Number(
+                                        a?.price
+                                    ) ||
+                                    Number(
+                                        a?.sellingPrice
+                                    ) ||
+                                    Number(
+                                        a?.finalPrice
+                                    ) ||
+                                    0;
+
+                                const priceB =
+                                    Number(
+                                        b?.price
+                                    ) ||
+                                    Number(
+                                        b?.sellingPrice
+                                    ) ||
+                                    Number(
+                                        b?.finalPrice
+                                    ) ||
+                                    0;
+
+                                return (
+                                    priceA -
+                                    priceB
+                                );
+                            }
+                        );
+
+                    setVendors(
+                        sorted
+                    );
+
+                    if (
+                        sorted.length >
+                        0
+                    ) {
+                        setSelectedVendorId(
+                            sorted[0]
+                                ?.inventoryId ??
+                                sorted[0]
+                                    ?.id ??
+                                null
+                        );
+                    }
+                } catch (
+                    fetchError
+                ) {
+                    console.error(
+                        "Failed to fetch vendors:",
+                        fetchError
+                    );
+
+                    console.error(
+                        "Backend response:",
+                        fetchError
+                            .response
+                            ?.data
+                    );
+
+                    setVendors(
+                        []
+                    );
+                }
+            };
+
+        if (id) {
+            fetchVendors();
+        }
+    }, [id]);
+
+    /* ==========================================================
+       DERIVED DATA
+    ========================================================== */
+
+    const images =
+        useMemo(
+            () =>
+                collectImages(
+                    product
+                ),
+            [product]
         );
 
-
-        /* ==================================================
-           SET PRODUCT
-        ================================================== */
-
-        setProduct(
-          productResponse.data
+    const variantGroups =
+        useMemo(
+            () =>
+                buildVariantGroups(
+                    product?.variants
+                ),
+            [product]
         );
 
-
-        /* ==================================================
-           SET VENDORS
-        ================================================== */
-
-        const vendorData =
-          Array.isArray(
-            vendorResponse.data
-          )
-            ? vendorResponse.data
-            : [];
-
-
-        /* ==================================================
-           SORT BY SELLING PRICE
-        ================================================== */
-
-        vendorData.sort(
-          (a, b) =>
-            Number(a.sellingPrice || 0) -
-            Number(b.sellingPrice || 0)
+    const colorOptions =
+        useMemo(
+            () =>
+                buildColorOptions(
+                    product?.variants
+                ),
+            [product]
         );
 
-
-        setVendors(
-          vendorData
+    const selectedVariant =
+        useMemo(
+            () =>
+                resolveSelectedVariant(
+                    product?.variants,
+                    selectedAttributes
+                ),
+            [
+                product,
+                selectedAttributes,
+            ]
         );
 
-      } catch (err) {
-
-        console.error(
-          "Failed to load product comparison:",
-          err
-        );
-
-
-        setError(
-          "Unable to load product details."
-        );
-
-      } finally {
-
-        setLoading(false);
-
-      }
-
-    };
-
-
-    if (productId) {
-      loadProduct();
-    }
-
-  }, [productId]);
-
-
-  /* ==========================================================
-     LOADING
-  ========================================================== */
-
-  if (loading) {
-
-    return (
-      <div className="pc-page">
-
-        <main className="pc-not-found">
-
-          <h1>
-            Loading product...
-          </h1>
-
-        </main>
-
-      </div>
-    );
-
-  }
-
-
-  /* ==========================================================
-     ERROR / NOT FOUND
-  ========================================================== */
-
-  if (
-    error ||
-    !product
-  ) {
-
-    return (
-      <div className="pc-page">
-
-        {/* HEADER */}
-
-        <header className="pc-header">
-
-          <div className="pc-header-left">
-
-            <div className="pc-header-sidebar">
-              <Sidebar />
-            </div>
-
-
-            <div
-              className="pc-brand"
-              onClick={() =>
-                navigate("/")
-              }
-            >
-
-              <div className="pc-logo">
-
-                <span className="pc-logo-deal">
-                  DEAL
-                </span>
-
-                <span className="pc-logo-hunts">
-                  HUNTS
-                </span>
-
-              </div>
-
-              <span className="pc-header-tagline">
-                Hunt deals, save money
-              </span>
-
-            </div>
-
-          </div>
-
-        </header>
-
-
-        {/* ERROR */}
-
-        <main className="pc-not-found">
-
-          <h1>
-            Product Not Found
-          </h1>
-
-
-          <p>
-            {error ||
-              "The product you are looking for does not exist."}
-          </p>
-
-
-          <button
-            type="button"
-            onClick={() =>
-              navigate("/products")
+    const selectedVendor =
+        useMemo(() => {
+            if (
+                !Array.isArray(
+                    vendors
+                ) ||
+                vendors.length ===
+                    0
+            ) {
+                return null;
             }
-          >
 
-            <FiArrowLeft />
+            return (
+                vendors.find(
+                    (
+                        vendor
+                    ) =>
+                        (
+                            vendor?.inventoryId ??
+                            vendor?.id
+                        ) ===
+                        selectedVendorId
+                ) ||
+                vendors[0]
+            );
+        }, [
+            vendors,
+            selectedVendorId,
+        ]);
 
-            Back to Products
+    /* ==========================================================
+       PRICE
+    ========================================================== */
 
-          </button>
+    const variantPrice =
+        getVariantPrice(
+            selectedVariant
+        );
 
-        </main>
+    const productBasePrice =
+        getProductPrice(
+            product
+        );
 
-      </div>
-    );
+    const displayPrice =
+        variantPrice >
+        0
+            ? variantPrice
+            : productBasePrice;
 
-  }
+    const displayOriginalPrice =
+        Number(
+            selectedVariant?.originalPrice
+        ) ||
+        Number(
+            selectedVariant?.mrp
+        ) ||
+        Number(
+            product?.originalPrice
+        ) ||
+        Number(
+            product?.mrp
+        ) ||
+        0;
 
+    const savePercent =
+        displayOriginalPrice >
+            displayPrice &&
+        displayPrice > 0
+            ? Math.round(
+                  ((displayOriginalPrice -
+                      displayPrice) /
+                      displayOriginalPrice) *
+                      100
+              )
+            : 0;
 
-  /* ==========================================================
-     SORT VENDORS
-  ========================================================== */
+    const top5Vendors =
+        vendors.slice(
+            0,
+            5
+        );
 
-  const sortedVendors =
-    [...vendors].sort(
-      (a, b) =>
-        Number(a.sellingPrice || 0) -
-        Number(b.sellingPrice || 0)
-    );
+    const lowestPrice =
+        top5Vendors.length >
+        0
+            ? Number(
+                  top5Vendors[0]
+                      ?.price
+              ) ||
+              Number(
+                  top5Vendors[0]
+                      ?.sellingPrice
+              ) ||
+              Number(
+                  top5Vendors[0]
+                      ?.finalPrice
+              ) ||
+              displayPrice
+            : displayPrice;
 
+    /* ==========================================================
+       PRODUCT DETAILS
+    ========================================================== */
 
-  /* ==========================================================
-     BEST VENDOR
-  ========================================================== */
+    const productDetailFields =
+        useMemo(() => {
+            if (!product) {
+                return [];
+            }
 
-  const bestVendor =
-    sortedVendors.length > 0
-      ? sortedVendors[0]
-      : null;
+            const candidates =
+                [
+                    [
+                        "Brand",
+                        product.brand,
+                    ],
+                    [
+                        "Category",
+                        product.category,
+                    ],
+                    [
+                        "Model",
+                        product.model ??
+                            product.modelNumber,
+                    ],
+                    [
+                        "Availability",
+                        product.active ===
+                            false ||
+                        product.available ===
+                            false
+                            ? "Unavailable"
+                            : "Available",
+                    ],
+                    [
+                        "Rating",
+                        product.rating
+                            ? `${Number(
+                                  product.rating
+                              ).toFixed(
+                                  1
+                              )} / 5 (${
+                                  product.reviewCount ??
+                                  0
+                              } reviews)`
+                            : null,
+                    ],
+                    [
+                        "Warranty",
+                        product.warranty,
+                    ],
+                    [
+                        "SKU",
+                        product.sku,
+                    ],
+                    [
+                        "Country of Origin",
+                        product.countryOfOrigin,
+                    ],
+                ];
 
+            return candidates
+                .map(
+                    ([
+                        label,
+                        value,
+                    ]) => ({
+                        label,
+                        value:
+                            displayValue(
+                                value,
+                                null
+                            ),
+                    })
+                )
+                .filter(
+                    (row) =>
+                        row.value !==
+                        null
+                );
+        }, [product]);
 
-  /* ==========================================================
-     ADD TO CART
-  ========================================================== */
+    /* ==========================================================
+       SPECIFICATIONS
+    ========================================================== */
 
-  const handleAddToCart = () => {
+    const specificationEntries =
+        useMemo(() => {
+            if (!product) {
+                return [];
+            }
 
-    if (!bestVendor) {
+            const specs =
+                product.specifications;
 
-      alert(
-        "No vendor is currently available for this product."
-      );
+            if (
+                specs &&
+                typeof specs ===
+                    "object" &&
+                !Array.isArray(
+                    specs
+                )
+            ) {
+                return Object.entries(
+                    specs
+                )
+                    .filter(
+                        ([, value]) =>
+                            value !==
+                                null &&
+                            value !==
+                                undefined &&
+                            value !==
+                                ""
+                    )
+                    .map(
+                        ([
+                            label,
+                            value,
+                        ]) => [
+                            label,
+                            displayValue(
+                                value
+                            ),
+                        ]
+                    );
+            }
 
-      return;
+            if (
+                Array.isArray(
+                    product.attributeValues
+                )
+            ) {
+                return product.attributeValues
+                    .map(
+                        (
+                            item
+                        ) => [
+                            getAttributeName(
+                                item
+                            ),
+                            getAttributeValue(
+                                item
+                            ),
+                        ]
+                    )
+                    .filter(
+                        ([
+                            label,
+                            value,
+                        ]) =>
+                            label &&
+                            value
+                    );
+            }
+
+            return [];
+        }, [product]);
+
+    /* ==========================================================
+       VARIANT SUMMARY
+    ========================================================== */
+
+    const selectedVariantAttributes =
+        useMemo(() => {
+            if (
+                !selectedVariant
+            ) {
+                return [];
+            }
+
+            return getVariantAttributes(
+                selectedVariant
+            );
+        }, [
+            selectedVariant,
+        ]);
+
+    const selectedVariantText =
+        selectedVariantAttributes
+            .map(
+                (
+                    item
+                ) =>
+                    item.value
+            )
+            .filter(Boolean)
+            .join(
+                " / "
+            ) ||
+        "Standard";
+
+    /* ==========================================================
+       ACTIONS
+    ========================================================== */
+
+    const handleAttributeSelect =
+        (
+            groupKey,
+            value
+        ) => {
+            setSelectedAttributes(
+                (
+                    previous
+                ) => ({
+                    ...previous,
+                    [groupKey]:
+                        value,
+                })
+            );
+        };
+
+    const handleSelectVendor =
+        (vendor) => {
+            const vendorId =
+                vendor?.inventoryId ??
+                vendor?.id ??
+                null;
+
+            setSelectedVendorId(
+                vendorId
+            );
+        };
+
+    /* ==========================================================
+       IMAGE NAVIGATION
+    ========================================================== */
+
+    const showPreviousImage =
+        () => {
+            if (
+                images.length ===
+                0
+            ) {
+                return;
+            }
+
+            setActiveImageIndex(
+                (
+                    previous
+                ) =>
+                    previous ===
+                    0
+                        ? images.length -
+                          1
+                        : previous - 1
+            );
+        };
+
+    const showNextImage =
+        () => {
+            if (
+                images.length ===
+                0
+            ) {
+                return;
+            }
+
+            setActiveImageIndex(
+                (
+                    previous
+                ) =>
+                    previous ===
+                    images.length -
+                    1
+                        ? 0
+                        : previous + 1
+            );
+        };
+
+    /* ==========================================================
+       ADD TO CART
+    ========================================================== */
+
+    const handleAddToCart =
+        async (
+            vendorOverride = null
+        ) => {
+            const token =
+                localStorage.getItem(
+                    "userJwtToken"
+                );
+
+            if (!token) {
+                alert(
+                    "Please login to add products to your cart."
+                );
+
+                navigate(
+                    "/login"
+                );
+
+                return;
+            }
+
+            const vendor =
+                vendorOverride ||
+                selectedVendor;
+
+            const inventoryId =
+                vendor?.inventoryId ??
+                vendor?.id ??
+                null;
+
+            if (!inventoryId) {
+                alert(
+                    "Please select a vendor before adding this product to cart."
+                );
+
+                return;
+            }
+
+            try {
+                await axios.post(
+                    `${API_BASE_URL}/cart/add`,
+                    {
+                        inventoryId,
+                        quantity: 1,
+                    },
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`,
+                            "Content-Type":
+                                "application/json",
+                        },
+                    }
+                );
+
+                alert(
+                    "Product added to cart!"
+                );
+            } catch (
+                cartError
+            ) {
+                console.error(
+                    "Failed to add to cart:",
+                    cartError
+                );
+
+                console.error(
+                    "Backend response:",
+                    cartError
+                        .response
+                        ?.data
+                );
+
+                if (
+                    cartError
+                        .response
+                        ?.status ===
+                        401 ||
+                    cartError
+                        .response
+                        ?.status ===
+                        403
+                ) {
+                    localStorage.removeItem(
+                        "userJwtToken"
+                    );
+
+                    alert(
+                        "Your session has expired. Please login again."
+                    );
+
+                    navigate(
+                        "/login"
+                    );
+
+                    return;
+                }
+
+                let message =
+                    "Unable to add product to cart.";
+
+                if (
+                    typeof cartError
+                        .response
+                        ?.data ===
+                    "string"
+                ) {
+                    message =
+                        cartError
+                            .response
+                            .data;
+                } else if (
+                    cartError
+                        .response
+                        ?.data
+                        ?.message
+                ) {
+                    message =
+                        cartError
+                            .response
+                            .data
+                            .message;
+                }
+
+                alert(
+                    message
+                );
+            }
+        };
+
+    /* ==========================================================
+       BUY NOW
+    ========================================================== */
+
+    const handleBuyNow =
+        async (
+            vendorOverride = null
+        ) => {
+            const token =
+                localStorage.getItem(
+                    "userJwtToken"
+                );
+
+            if (!token) {
+                alert(
+                    "Please login to continue."
+                );
+
+                navigate(
+                    "/login"
+                );
+
+                return;
+            }
+
+            const vendor =
+                vendorOverride ||
+                selectedVendor;
+
+            const inventoryId =
+                vendor?.inventoryId ??
+                vendor?.id ??
+                null;
+
+            if (!inventoryId) {
+                alert(
+                    "Please select a vendor before continuing."
+                );
+
+                return;
+            }
+
+            navigate(
+                "/checkout",
+                {
+                    state: {
+                        productId:
+                            product?.id,
+                        inventoryId,
+                    },
+                }
+            );
+        };
+
+    /* ==========================================================
+       BOOK VISIT
+    ========================================================== */
+
+    const handleBookVisit =
+        () => {
+            navigate(
+                "/book-visit",
+                {
+                    state: {
+                        productId:
+                            product?.id,
+                    },
+                }
+            );
+        };
+
+    /* ==========================================================
+       CLOSE COMPARISON
+    ========================================================== */
+
+    const handleCloseVendorComparison =
+        () => {
+            setShowVendorComparison(
+                false
+            );
+        };
+
+    /* ==========================================================
+       LOADING
+    ========================================================== */
+
+    if (loading) {
+        return (
+            <div className="dh-product-comparison-page-user">
+                <div className="dh-product-comparison-loading-user">
+                    <div className="dh-product-comparison-loading-spinner-user" />
+
+                    <p>
+                        Loading product...
+                    </p>
+                </div>
+            </div>
+        );
     }
 
-
-    const existingCart =
-      JSON.parse(
-        localStorage.getItem(
-          "dealhuntsCart"
-        ) || "[]"
-      );
-
-
-    const vendorId =
-      bestVendor.vendorId ||
-      bestVendor.id;
-
-
-    const cartItem = {
-
-      productId:
-        product.id,
-
-      name:
-        product.name,
-
-      brand:
-        product.brand,
-
-      image:
-        getProductImage(product),
-
-      price:
-        Number(
-          bestVendor.sellingPrice
-        ) || 0,
-
-      quantity:
-        1,
-
-      vendor:
-        bestVendor.shopName ||
-        "Vendor",
-
-      vendorId:
-        vendorId,
-
-    };
-
-
-    const existingItemIndex =
-      existingCart.findIndex(
-        (item) =>
-          String(item.productId) ===
-            String(product.id) &&
-          String(item.vendorId) ===
-            String(vendorId)
-      );
-
+    /* ==========================================================
+       ERROR
+    ========================================================== */
 
     if (
-      existingItemIndex !== -1
+        error ||
+        !product
     ) {
+        return (
+            <div className="dh-product-comparison-page-user">
+                <div className="dh-product-comparison-not-found-user">
+                    <h2>
+                        {error
+                            ? "Something went wrong"
+                            : "Product not found"}
+                    </h2>
 
-      existingCart[
-        existingItemIndex
-      ].quantity += 1;
+                    <p>
+                        {error ||
+                            "We couldn't find the product you're looking for."}
+                    </p>
 
-    } else {
-
-      existingCart.push(
-        cartItem
-      );
-
+                    <button
+                        type="button"
+                        onClick={() =>
+                            navigate(
+                                "/products"
+                            )
+                        }
+                    >
+                        Back to Products
+                    </button>
+                </div>
+            </div>
+        );
     }
 
+    /* ==========================================================
+       BASIC PRODUCT DATA
+    ========================================================== */
 
-    localStorage.setItem(
-      "dealhuntsCart",
-      JSON.stringify(
-        existingCart
-      )
-    );
+    const productName =
+        displayValue(
+            product.name,
+            "Unnamed Product"
+        );
 
+    const brandName =
+        displayValue(
+            product.brand,
+            ""
+        );
 
-    window.dispatchEvent(
-      new Event("cartUpdated")
-    );
+    const categoryName =
+        displayValue(
+            product.category,
+            "Products"
+        );
 
+    const description =
+        product.description ||
+        product.productDescription ||
+        "No description available for this product.";
 
-    alert(
-      "Product added to cart."
-    );
+    const activeImage =
+        images[
+            activeImageIndex
+        ] || "";
 
-  };
+    return (
+        <div className="dh-product-comparison-page-user">
 
+            {/* =====================================================
+                PAGE SCROLL AREA
+            ===================================================== */}
 
-  /* ==========================================================
-     BUY NOW
-  ========================================================== */
+            <div className="dh-product-comparison-scroll-area-user">
 
-  const handleBuyNow = () => {
+                <main className="dh-product-comparison-main-user">
 
-    if (!bestVendor) {
+                    {/* =================================================
+                        BACK
+                    ================================================= */}
 
-      alert(
-        "No vendor is currently available for this product."
-      );
+                    <button
+                        type="button"
+                        className="dh-product-comparison-back-button-user"
+                        onClick={() =>
+                            navigate(-1)
+                        }
+                    >
+                        <FiArrowLeft />
+                        <span>
+                            Back
+                        </span>
+                    </button>
 
-      return;
-    }
+                    {/* =================================================
+                        BREADCRUMB
+                    ================================================= */}
 
+                    <div className="dh-product-comparison-breadcrumb-user">
+                        {categoryName}
 
-    const buyNowItem = {
+                        <span>
+                            {" "}
+                            / Comparison
+                        </span>
+                    </div>
 
-      productId:
-        product.id,
+                    {/* =================================================
+                        MAIN TOP RIGHT GOLD HANDLE
+                    ================================================= */}
 
-      name:
-        product.name,
+                    <button
+                        type="button"
+                        className="dh-pc-vendor-handle-user"
+                        onClick={() =>
+                            setShowVendorComparison(
+                                true
+                            )
+                        }
+                        aria-label="Open vendor comparison"
+                    >
+                        <span className="dh-pc-vendor-handle-arrow-user">
+                            &lt;────────
+                        </span>
 
-      brand:
-        product.brand,
+                        <span className="dh-pc-vendor-handle-label-user">
+                            Compare
+                        </span>
+                    </button>
 
-      image:
-        getProductImage(product),
+                    {/* =================================================
+                        MAIN 40 / 60 LAYOUT
+                    ================================================= */}
 
-      price:
-        Number(
-          bestVendor.sellingPrice
-        ) || 0,
+                    <div className="dh-product-comparison-layout-user">
 
-      quantity:
-        1,
+                        {/* =================================================
+                            LEFT 40%
+                        ================================================= */}
 
-      vendor:
-        bestVendor.shopName ||
-        "Vendor",
+                        <section className="dh-product-comparison-left-user">
 
-      vendorId:
-        bestVendor.vendorId ||
-        bestVendor.id,
+                            <div className="dh-product-comparison-overview-user">
 
-    };
+                                {/* BRAND */}
 
+                                {brandName && (
+                                    <div className="dh-product-comparison-brand-pill-user">
+                                        {brandName}
+                                    </div>
+                                )}
 
-    localStorage.setItem(
-      "dealhuntsBuyNow",
-      JSON.stringify([
-        buyNowItem
-      ])
-    );
+                                {/* PRODUCT TITLE */}
 
+                                <h1 className="dh-product-comparison-product-title-user">
+                                    {productName}
+                                </h1>
 
-    navigate(
-      "/place-order"
-    );
+                                {/* RATING */}
 
-  };
+                                <div className="dh-product-comparison-rating-row-user">
 
+                                    <StarRating
+                                        value={
+                                            product?.rating
+                                        }
+                                    />
 
-  /* ==========================================================
-     BOOK VISIT
-  ========================================================== */
+                                    {product?.rating !==
+                                        null &&
+                                        product?.rating !==
+                                            undefined &&
+                                        product?.rating !==
+                                            "" && (
+                                            <span className="dh-product-comparison-rating-value-user">
+                                                {Number(
+                                                    product.rating
+                                                ).toFixed(
+                                                    1
+                                                )}
+                                            </span>
+                                        )}
 
-  const handleBookVisit = () => {
+                                    {product?.reviewCount !==
+                                        null &&
+                                        product?.reviewCount !==
+                                            undefined && (
+                                            <span className="dh-product-comparison-rating-count-user">
+                                                (
+                                                {
+                                                    product.reviewCount
+                                                }{" "}
+                                                reviews)
+                                            </span>
+                                        )}
 
-    if (!bestVendor) {
+                                </div>
 
-      alert(
-        "No vendor is currently available for this product."
-      );
+                                {/* =================================================
+                                    PRODUCT IMAGE
+                                ================================================= */}
 
-      return;
-    }
+                                <div className="dh-product-comparison-gallery-user">
 
+                                    <div className="dh-product-comparison-gallery-main-user">
 
-    const vendorId =
-      bestVendor.vendorId ||
-      bestVendor.id;
+                                        {activeImage ? (
+                                            <img
+                                                src={
+                                                    activeImage
+                                                }
+                                                alt={
+                                                    productName
+                                                }
+                                            />
+                                        ) : (
+                                            <div className="dh-product-comparison-gallery-placeholder-user">
+                                                <span>
+                                                    No product image available
+                                                </span>
+                                            </div>
+                                        )}
 
+                                        {images.length >
+                                            1 && (
+                                            <>
+                                                <button
+                                                    type="button"
+                                                    className="dh-product-comparison-gallery-arrow-user dh-product-comparison-gallery-prev-user"
+                                                    onClick={
+                                                        showPreviousImage
+                                                    }
+                                                    aria-label="Previous image"
+                                                >
+                                                    <FiChevronLeft />
+                                                </button>
 
-    if (!vendorId) {
+                                                <button
+                                                    type="button"
+                                                    className="dh-product-comparison-gallery-arrow-user dh-product-comparison-gallery-next-user"
+                                                    onClick={
+                                                        showNextImage
+                                                    }
+                                                    aria-label="Next image"
+                                                >
+                                                    <FiChevronRight />
+                                                </button>
+                                            </>
+                                        )}
 
-      alert(
-        "Vendor information is not available."
-      );
+                                    </div>
 
-      return;
-    }
+                                    {/* THUMBNAILS */}
 
+                                    {images.length >
+                                        1 && (
+                                        <div className="dh-product-comparison-gallery-thumbs-user">
 
-    navigate(
-      `/shop/${vendorId}`
-    );
+                                            {images.map(
+                                                (
+                                                    image,
+                                                    index
+                                                ) => (
+                                                    <button
+                                                        type="button"
+                                                        key={`${image}-${index}`}
+                                                        className={`dh-product-comparison-gallery-thumb-user ${
+                                                            activeImageIndex ===
+                                                            index
+                                                                ? "dh-product-comparison-active-user"
+                                                                : ""
+                                                        }`}
+                                                        onClick={() =>
+                                                            setActiveImageIndex(
+                                                                index
+                                                            )
+                                                        }
+                                                    >
+                                                        <img
+                                                            src={
+                                                                image
+                                                            }
+                                                            alt={`${productName} ${index + 1}`}
+                                                        />
+                                                    </button>
+                                                )
+                                            )}
 
-  };
+                                        </div>
+                                    )}
 
+                                </div>
 
-  /* ==========================================================
-     UI
-  ========================================================== */
+                                {/* =================================================
+                                    PRODUCT SPECIFICATION
+                                ================================================= */}
 
-  return (
+                                <div className="dh-product-comparison-section-user">
 
-    <div className="pc-page">
+                                    <div className="dh-product-comparison-section-heading-user">
 
+                                        <div>
+                                            <h2>
+                                                Product Specification
+                                            </h2>
 
-      {/* ======================================================
-          HEADER
-      ====================================================== */}
+                                            <p>
+                                                Technical specifications of this product
+                                            </p>
+                                        </div>
 
-      <header className="pc-header">
+                                    </div>
 
-        <div className="pc-header-left">
+                                    <div className="dh-product-comparison-specifications-panel-user">
 
-          <div className="pc-header-sidebar">
-            <Sidebar />
-          </div>
+                                        {specificationEntries.length >
+                                        0 ? (
+                                            <div className="dh-product-comparison-specifications-grid-user">
 
+                                                {specificationEntries.map(
+                                                    (
+                                                        [
+                                                            label,
+                                                            value,
+                                                        ],
+                                                        index
+                                                    ) => (
+                                                        <div
+                                                            className="dh-product-comparison-spec-row-user"
+                                                            key={`${label}-${index}`}
+                                                        >
+                                                            <span>
+                                                                {label}
+                                                            </span>
 
-          <div
-            className="pc-brand"
-            onClick={() =>
-              navigate("/")
-            }
-          >
+                                                            <span>
+                                                                {displayValue(
+                                                                    value,
+                                                                    "—"
+                                                                )}
+                                                            </span>
+                                                        </div>
+                                                    )
+                                                )}
 
-            <div className="pc-logo">
+                                            </div>
+                                        ) : (
+                                            <div className="dh-product-comparison-empty-user">
+                                                No specifications available.
+                                            </div>
+                                        )}
 
-              <span className="pc-logo-deal">
-                DEAL
-              </span>
+                                    </div>
 
-              <span className="pc-logo-hunts">
-                HUNTS
-              </span>
+                                </div>
+
+                                {/* =================================================
+                                    PRODUCT DETAILS
+                                ================================================= */}
+
+                                <div className="dh-product-comparison-section-user">
+
+                                    <div className="dh-product-comparison-section-heading-user">
+
+                                        <div>
+                                            <h2>
+                                                Product Details
+                                            </h2>
+
+                                            <p>
+                                                General information about this product
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                    <div className="dh-product-comparison-details-panel-user">
+
+                                        {productDetailFields.length >
+                                        0 ? (
+                                            <div className="dh-product-comparison-details-grid-user">
+
+                                                {productDetailFields.map(
+                                                    (
+                                                        row,
+                                                        index
+                                                    ) => (
+                                                        <div
+                                                            className="dh-product-comparison-details-row-user"
+                                                            key={`${row.label}-${index}`}
+                                                        >
+                                                            <span>
+                                                                {
+                                                                    row.label
+                                                                }
+                                                            </span>
+
+                                                            <span>
+                                                                {displayValue(
+                                                                    row.value,
+                                                                    "—"
+                                                                )}
+                                                            </span>
+                                                        </div>
+                                                    )
+                                                )}
+
+                                            </div>
+                                        ) : (
+                                            <div className="dh-product-comparison-empty-user">
+                                                No product details available.
+                                            </div>
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+                                {/* =================================================
+                                    FEEDBACK
+                                ================================================= */}
+
+                                <div className="dh-product-comparison-section-user">
+
+                                    <div className="dh-product-comparison-section-heading-user">
+
+                                        <div>
+                                            <h2>
+                                                Feedback
+                                            </h2>
+
+                                            <p>
+                                                Customer feedback and product rating
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                    <div className="dh-product-comparison-feedback-user">
+
+                                        <div className="dh-product-comparison-feedback-score-user">
+
+                                            <strong>
+                                                {product?.rating
+                                                    ? Number(
+                                                          product.rating
+                                                      ).toFixed(
+                                                          1
+                                                      )
+                                                    : "—"}
+                                            </strong>
+
+                                            <StarRating
+                                                value={
+                                                    product?.rating
+                                                }
+                                            />
+
+                                        </div>
+
+                                        <div className="dh-product-comparison-feedback-text-user">
+
+                                            <strong>
+                                                Customer reviews
+                                            </strong>
+
+                                            <span>
+                                                {product?.reviewCount
+                                                    ? `${product.reviewCount} customer reviews`
+                                                    : "No customer reviews yet"}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+                        {/* =================================================
+                            RIGHT 60%
+                        ================================================= */}
+
+                        <section className="dh-product-comparison-right-user">
+
+                            {/* =================================================
+                                PRODUCT INFORMATION
+                            ================================================= */}
+
+                            <div className="dh-product-comparison-section-user">
+
+                                <div className="dh-product-comparison-section-heading-user">
+
+                                    <div>
+                                        <span className="dh-product-comparison-section-eyebrow-user">
+                                            PRODUCT OVERVIEW
+                                        </span>
+
+                                        <h2>
+                                            {productName}
+                                        </h2>
+
+                                        <p>
+                                            Product information and available configurations.
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                                <div className="dh-product-comparison-description-panel-user">
+
+                                    <p>
+                                        {description}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                            {/* =================================================
+                                VARIANTS
+                            ================================================= */}
+
+                            {variantGroups.length >
+                                0 && (
+                                <div className="dh-product-comparison-section-user">
+
+                                    <div className="dh-product-comparison-section-heading-user">
+
+                                        <div>
+                                            <span className="dh-product-comparison-section-eyebrow-user">
+                                                CONFIGURATION
+                                            </span>
+
+                                            <h2>
+                                                Choose Variant
+                                            </h2>
+
+                                            <p>
+                                                Select the configuration you want to compare.
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                    <div className="dh-product-comparison-variants-panel-user">
+
+                                        {variantGroups.map(
+                                            (
+                                                group
+                                            ) => (
+                                                <div
+                                                    className="dh-product-comparison-variant-group-user"
+                                                    key={
+                                                        group.key
+                                                    }
+                                                >
+
+                                                    <span className="dh-product-comparison-variant-group-label-user">
+                                                        {
+                                                            group.label
+                                                        }
+                                                    </span>
+
+                                                    <div className="dh-product-comparison-variant-options-user">
+
+                                                        {group.options.map(
+                                                            (
+                                                                option
+                                                            ) => {
+                                                                const active =
+                                                                    selectedAttributes[
+                                                                        group.key
+                                                                    ] ===
+                                                                    option;
+
+                                                                return (
+                                                                    <button
+                                                                        type="button"
+                                                                        key={`${group.key}-${option}`}
+                                                                        className={`dh-product-comparison-variant-chip-user ${
+                                                                            active
+                                                                                ? "dh-product-comparison-active-user"
+                                                                                : ""
+                                                                        }`}
+                                                                        onClick={() =>
+                                                                            handleAttributeSelect(
+                                                                                group.key,
+                                                                                option
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            option
+                                                                        }
+                                                                    </button>
+                                                                );
+                                                            }
+                                                        )}
+
+                                                    </div>
+
+                                                </div>
+                                            )
+                                        )}
+
+                                        {/* SELECTED VARIANT */}
+
+                                        <div className="dh-product-comparison-variant-summary-user">
+
+                                            <div>
+
+                                                <span className="dh-product-comparison-variant-summary-label-user">
+                                                    Selected configuration
+                                                </span>
+
+                                                <div className="dh-product-comparison-variant-summary-name-user">
+                                                    {
+                                                        selectedVariantText
+                                                    }
+                                                </div>
+
+                                            </div>
+
+                                            <div className="dh-product-comparison-variant-summary-price-user">
+
+                                                <strong>
+                                                    {formatINR(
+                                                        displayPrice
+                                                    )}
+                                                </strong>
+
+                                                {displayOriginalPrice >
+                                                    displayPrice && (
+                                                    <del>
+                                                        {formatINR(
+                                                            displayOriginalPrice
+                                                        )}
+                                                    </del>
+                                                )}
+
+                                                {savePercent >
+                                                    0 && (
+                                                    <span className="dh-product-comparison-variant-save-badge-user">
+                                                        SAVE{" "}
+                                                        {
+                                                            savePercent
+                                                        }
+                                                        %
+                                                    </span>
+                                                )}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            )}
+
+                            {/* =================================================
+                                COLOR OPTIONS
+                            ================================================= */}
+
+                            {colorOptions.length >
+                                0 && (
+                                <div className="dh-product-comparison-section-user">
+
+                                    <div className="dh-product-comparison-section-heading-user">
+
+                                        <div>
+                                            <span className="dh-product-comparison-section-eyebrow-user">
+                                                COLOR
+                                            </span>
+
+                                            <h2>
+                                                Available Colors
+                                            </h2>
+                                        </div>
+
+                                    </div>
+
+                                    <div className="dh-product-comparison-color-options-user">
+
+                                        {colorOptions.map(
+                                            (
+                                                color,
+                                                index
+                                            ) => (
+                                                <div
+                                                    className="dh-product-comparison-color-option-user"
+                                                    key={
+                                                        color.id ??
+                                                        `${color.name}-${index}`
+                                                    }
+                                                >
+
+                                                    <span
+                                                        className="dh-product-comparison-color-swatch-user"
+                                                        style={{
+                                                            backgroundColor:
+                                                                color.hexCode ||
+                                                                "#cccccc",
+                                                        }}
+                                                    />
+
+                                                    <span>
+                                                        {
+                                                            color.name
+                                                        }
+                                                    </span>
+
+                                                </div>
+                                            )
+                                        )}
+
+                                    </div>
+
+                                </div>
+                            )}
+
+                            {/* =================================================
+                                PRICE SUMMARY
+                            ================================================= */}
+
+                            <div className="dh-product-comparison-price-card-user">
+
+                                <div className="dh-product-comparison-price-content-user">
+
+                                    <span>
+                                        Current best price
+                                    </span>
+
+                                    <strong>
+                                        {formatINR(
+                                            lowestPrice ||
+                                                displayPrice
+                                        )}
+                                    </strong>
+
+                                    {displayOriginalPrice >
+                                        displayPrice && (
+                                        <del>
+                                            {formatINR(
+                                                displayOriginalPrice
+                                            )}
+                                        </del>
+                                    )}
+
+                                </div>
+
+                                <div className="dh-product-comparison-price-note-user">
+
+                                    <FiCheckCircle />
+
+                                    <span>
+                                        Compare prices from multiple vendors
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            {/* =================================================
+                                ACTION BUTTONS
+                            ================================================= */}
+
+                            <div className="dh-product-comparison-product-actions-user">
+
+                                <button
+                                    type="button"
+                                    className="dh-product-comparison-action-button-user dh-product-comparison-action-button-cart-user"
+                                    onClick={() =>
+                                        handleAddToCart(
+                                            selectedVendor
+                                        )
+                                    }
+                                >
+                                    <FiShoppingCart />
+                                    Add to Cart
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className="dh-product-comparison-action-button-user dh-product-comparison-action-button-buy-user"
+                                    onClick={() =>
+                                        handleBuyNow(
+                                            selectedVendor
+                                        )
+                                    }
+                                >
+                                    Buy Now
+                                    <FiArrowRight />
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className="dh-product-comparison-action-button-user dh-product-comparison-action-button-visit-user"
+                                    onClick={
+                                        handleBookVisit
+                                    }
+                                >
+                                    <FiTruck />
+                                    Book Visit
+                                </button>
+
+                            </div>
+
+                            {/* =================================================
+                                VIEW DETAILED COMPARISON
+                            ================================================= */}
+
+                            <div className="dh-product-comparison-reveal-wrap-user">
+
+                                <button
+                                    type="button"
+                                    className="dh-product-comparison-reveal-button-user"
+                                    onClick={() =>
+                                        setShowVendorComparison(
+                                            true
+                                        )
+                                    }
+                                >
+                                    <span>
+                                        View Detailed Comparison
+                                    </span>
+
+                                    <FiArrowRight />
+                                </button>
+
+                            </div>
+
+                            {/* =================================================
+                                SELECTED VENDOR
+                            ================================================= */}
+
+                            {selectedVendor && (
+                                <div className="dh-product-comparison-selected-vendor-user">
+
+                                    <div className="dh-product-comparison-selected-vendor-heading-user">
+
+                                        <span>
+                                            Selected vendor
+                                        </span>
+
+                                        <FiCheckCircle />
+
+                                    </div>
+
+                                    <strong>
+                                        {displayValue(
+                                            selectedVendor.vendorName ||
+                                                selectedVendor.shopName ||
+                                                selectedVendor.storeName ||
+                                                selectedVendor.name,
+                                            "Vendor"
+                                        )}
+                                    </strong>
+
+                                    <div className="dh-product-comparison-selected-vendor-price-user">
+                                        {formatINR(
+                                            selectedVendor.sellingPrice ??
+                                                selectedVendor.price ??
+                                                selectedVendor.finalPrice ??
+                                                displayPrice
+                                        )}
+                                    </div>
+
+                                </div>
+                            )}
+
+                        </section>
+
+                    </div>
+
+                </main>
 
             </div>
 
+            {/* =============================================================
+                GOLD TOP-RIGHT DRAWER HANDLE
+            ============================================================= */}
 
-            <span className="pc-header-tagline">
-              Hunt deals, save money
-            </span>
+            <button
+                type="button"
+                className="dh-pc-vendor-handle-user"
+                onClick={() =>
+                    setShowVendorComparison(
+                        true
+                    )
+                }
+                aria-label="Open vendor comparison"
+            >
+                <span className="dh-pc-vendor-handle-arrow-user">
+                    &lt;────────
+                </span>
 
-          </div>
+                <span className="dh-pc-vendor-handle-label-user">
+                    Compare
+                </span>
+            </button>
+
+            {/* =============================================================
+                VENDOR COMPARISON DRAWER
+            ============================================================= */}
+
+            {showVendorComparison && (
+                <>
+                    <button
+                        type="button"
+                        className="dh-pc-drawer-overlay-user"
+                        onClick={
+                            handleCloseVendorComparison
+                        }
+                        aria-label="Close vendor comparison"
+                    />
+
+                    <aside className="dh-pc-vendor-drawer-user">
+
+                        {/* =================================================
+                            DRAWER HEADER
+                        ================================================= */}
+
+                        <div className="dh-pc-vendor-drawer-header-user">
+
+                            <div>
+
+                                <span className="dh-pc-vendor-drawer-eyebrow-user">
+                                    PRICE COMPARISON
+                                </span>
+
+                                <h2>
+                                    Top 5 Vendors
+                                </h2>
+
+                                <p>
+                                    Compare the best available prices for this product.
+                                </p>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                className="dh-pc-vendor-drawer-close-user"
+                                onClick={
+                                    handleCloseVendorComparison
+                                }
+                                aria-label="Close comparison"
+                            >
+                                <FiX />
+                            </button>
+
+                        </div>
+
+                        {/* =================================================
+                            DRAWER BODY
+                        ================================================= */}
+
+                        <div className="dh-pc-vendor-drawer-body-user">
+
+                            {top5Vendors.length >
+                            0 ? (
+                                top5Vendors.map(
+                                    (
+                                        vendor,
+                                        index
+                                    ) => {
+                                        const vendorPrice =
+                                            Number(
+                                                vendor?.sellingPrice
+                                            ) ||
+                                            Number(
+                                                vendor?.price
+                                            ) ||
+                                            Number(
+                                                vendor?.finalPrice
+                                            ) ||
+                                            0;
+
+                                        const vendorOriginalPrice =
+                                            Number(
+                                                vendor?.originalPrice
+                                            ) ||
+                                            Number(
+                                                vendor?.mrp
+                                            ) ||
+                                            Number(
+                                                vendor?.basePrice
+                                            ) ||
+                                            0;
+
+                                        const vendorId =
+                                            vendor?.inventoryId ??
+                                            vendor?.id ??
+                                            vendor?.vendorId ??
+                                            index;
+
+                                        const selectedId =
+                                            selectedVendor?.inventoryId ??
+                                            selectedVendor?.id ??
+                                            null;
+
+                                        const currentVendorId =
+                                            vendor?.inventoryId ??
+                                            vendor?.id ??
+                                            vendor?.vendorId ??
+                                            null;
+
+                                        const isSelected =
+                                            selectedId !==
+                                                null &&
+                                            selectedId ===
+                                                currentVendorId;
+
+                                        return (
+                                            <div
+                                                key={
+                                                    vendorId
+                                                }
+                                                className={`dh-product-comparison-rank-card-user ${
+                                                    index ===
+                                                    0
+                                                        ? "dh-product-comparison-best-user"
+                                                        : ""
+                                                } ${
+                                                    isSelected
+                                                        ? "dh-product-comparison-selected-user"
+                                                        : ""
+                                                }`}
+                                                onClick={() =>
+                                                    handleSelectVendor(
+                                                        vendor
+                                                    )
+                                                }
+                                            >
+
+                                                {/* RANK */}
+
+                                                <div className="dh-product-comparison-rank-top-row-user">
+
+                                                    <span className="dh-product-comparison-rank-number-user">
+                                                        #
+                                                        {
+                                                            index +
+                                                            1
+                                                        }
+                                                    </span>
+
+                                                    {index ===
+                                                        0 && (
+                                                        <span className="dh-product-comparison-best-badge-user">
+                                                            BEST PRICE
+                                                        </span>
+                                                    )}
+
+                                                </div>
+
+                                                {/* VENDOR */}
+
+                                                <div className="dh-product-comparison-rank-shop-user">
+
+                                                    {displayValue(
+                                                        vendor?.vendorName ||
+                                                            vendor?.shopName ||
+                                                            vendor?.storeName ||
+                                                            vendor?.name,
+                                                        "Vendor"
+                                                    )}
+
+                                                </div>
+
+                                                {/* RATING */}
+
+                                                <div className="dh-product-comparison-rank-meta-user">
+
+                                                    {vendor?.rating
+                                                        ? `★ ${Number(
+                                                              vendor.rating
+                                                          ).toFixed(
+                                                              1
+                                                          )}`
+                                                        : "Verified vendor"}
+
+                                                </div>
+
+                                                {/* GOLD PRICE BOX */}
+
+                                                <div className="dh-pc-vendor-price-box-user">
+
+                                                    <span>
+                                                        DEAL PRICE
+                                                    </span>
+
+                                                    <strong>
+                                                        {formatINR(
+                                                            vendorPrice
+                                                        )}
+                                                    </strong>
+
+                                                </div>
+
+                                                {/* OLD PRICE */}
+
+                                                {vendorOriginalPrice >
+                                                    vendorPrice && (
+                                                    <div className="dh-product-comparison-rank-old-price-user">
+
+                                                        {formatINR(
+                                                            vendorOriginalPrice
+                                                        )}
+
+                                                    </div>
+                                                )}
+
+                                                {/* STOCK */}
+
+                                                <div className="dh-product-comparison-rank-stock-user">
+
+                                                    {Number(
+                                                        vendor?.stock ??
+                                                            0
+                                                    ) >
+                                                        0 ||
+                                                    vendor?.available ? (
+                                                        <>
+                                                            <FiCheckCircle />
+
+                                                            {Number(
+                                                                vendor?.stock ??
+                                                                    0
+                                                            ) >
+                                                            0
+                                                                ? `${vendor.stock} available`
+                                                                : "In stock"}
+                                                        </>
+                                                    ) : (
+                                                        "Currently unavailable"
+                                                    )}
+
+                                                </div>
+
+                                                {/* SELECT VENDOR */}
+
+                                                <button
+                                                    type="button"
+                                                    className="dh-product-comparison-rank-button-user"
+                                                    onClick={(
+                                                        event
+                                                    ) => {
+                                                        event.stopPropagation();
+
+                                                        handleSelectVendor(
+                                                            vendor
+                                                        );
+                                                    }}
+                                                >
+                                                    Select Vendor
+                                                    <FiArrowRight />
+                                                </button>
+
+                                            </div>
+                                        );
+                                    }
+                                )
+                            ) : (
+                                <div className="dh-pc-vendor-empty-user">
+
+                                    <div className="dh-pc-vendor-empty-icon-user">
+                                        <FiMapPin />
+                                    </div>
+
+                                    <h3>
+                                        No vendors available
+                                    </h3>
+
+                                    <p>
+                                        There are no vendor prices available for this product right now.
+                                    </p>
+
+                                </div>
+                            )}
+
+                        </div>
+
+                    </aside>
+                </>
+            )}
 
         </div>
-
-
-        {/* ====================================================
-            HEADER RIGHT
-        ==================================================== */}
-
-        <div className="pc-header-right">
-
-          <nav className="pc-nav">
-
-            <button
-              type="button"
-              onClick={() =>
-                navigate("/")
-              }
-            >
-              Home
-            </button>
-
-
-            <button
-              type="button"
-              className="active"
-              onClick={() =>
-                navigate("/products")
-              }
-            >
-              Products
-            </button>
-
-
-            <button
-              type="button"
-              onClick={() =>
-                navigate("/wishlist")
-              }
-            >
-              Wishlist
-            </button>
-
-          </nav>
-
-
-          <div className="pc-header-actions">
-
-            <button
-              type="button"
-              onClick={() =>
-                navigate("/profile")
-              }
-              aria-label="Profile"
-            >
-              <FiUser />
-            </button>
-
-
-            <button
-              type="button"
-              onClick={() =>
-                navigate("/cart")
-              }
-              aria-label="Cart"
-            >
-              <FiShoppingCart />
-            </button>
-
-          </div>
-
-        </div>
-
-      </header>
-
-
-      {/* ======================================================
-          MAIN
-      ====================================================== */}
-
-      <main className="pc-main">
-
-
-        {/* ====================================================
-            BACK
-        ==================================================== */}
-
-        <button
-          type="button"
-          className="pc-back-button"
-          onClick={() =>
-            navigate("/products")
-          }
-        >
-
-          <FiArrowLeft />
-
-          Back to Products
-
-        </button>
-
-
-        {/* ====================================================
-            PRODUCT OVERVIEW
-        ==================================================== */}
-
-        <ProductOverview
-          product={product}
-          vendors={sortedVendors}
-          onAddToCart={handleAddToCart}
-          onBuyNow={handleBuyNow}
-          onBookVisit={handleBookVisit}
-        />
-
-
-        {/* ====================================================
-            TOP 5
-        ==================================================== */}
-
-        <TopFiveVendors
-          vendors={sortedVendors}
-        />
-
-
-        {/* ====================================================
-            DETAILED COMPARISON
-        ==================================================== */}
-
-        <DetailedComparison
-          vendors={sortedVendors}
-        />
-
-
-        {/* ====================================================
-            PRODUCT SPECIFICATIONS
-        ==================================================== */}
-
-        <ProductSpecifications
-          product={product}
-        />
-
-
-        {/* ====================================================
-            PRODUCT DESCRIPTION
-        ==================================================== */}
-
-        <ProductDescription
-          product={product}
-        />
-
-      </main>
-
-
-      {/* ======================================================
-          FOOTER
-      ====================================================== */}
-
-      <footer className="pc-footer">
-
-        <strong>
-          DEALHUNTS
-        </strong>
-
-        <span>
-          © 2026 DealHunts.
-          All rights reserved.
-        </span>
-
-      </footer>
-
-    </div>
-
-  );
+    );
 }
-
 
 export default ProductComparison;

@@ -1,690 +1,2118 @@
-
-/* ==========================================================================
-   DEALHUNTS — VENDOR PRODUCT FORM & LIVE PREVIEW
-   Production stylesheet
-   Theme: white / light-gray surface with gold (#D4AF37) brand accent
-   ========================================================================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
-
 /* ==========================================================================
    1. DESIGN TOKENS
    ========================================================================== */
-:root{
+
+:root {
+
   /* Brand */
-  --gold:            #D4AF37;
-  --gold-dark:       #B8901F;
-  --gold-darker:     #8F6F17;
-  --gold-soft:       #FBF3D9;
-  --gold-soft-2:     #F5E9C2;
+  --gold: #D4AF37;
+  --gold-dark: #B8901F;
+  --gold-darker: #8F6F17;
+  --gold-soft: #FBF3D9;
+  --gold-soft-2: #F5E9C2;
 
   /* Neutrals */
-  --bg:              #F4F5F7;
-  --surface:         #FFFFFF;
-  --surface-muted:   #F8F9FB;
-  --border:          #E4E7EC;
-  --border-strong:   #D7DBE3;
+  --bg: #F4F5F7;
+  --surface: #FFFFFF;
+  --surface-muted: #F8F9FB;
+  --border: #E4E7EC;
+  --border-strong: #D7DBE3;
 
   /* Text */
-  --text:            #1B1F27;
-  --text-muted:       #667085;
-  --text-faint:      #98A2B3;
+  --text: #1B1F27;
+  --text-muted: #667085;
+  --text-faint: #98A2B3;
 
   /* Feedback */
-  --danger:          #DC2626;
-  --danger-soft:     #FEE9E9;
-  --success:         #16794F;
+  --danger: #DC2626;
+  --danger-soft: #FEE9E9;
+  --success: #16794F;
 
   /* Elevation */
-  --shadow-sm:       0 1px 3px rgba(16,24,40,.06), 0 1px 2px rgba(16,24,40,.04);
-  --shadow-md:       0 6px 20px rgba(16,24,40,.07);
-  --shadow-lg:       0 18px 40px rgba(16,24,40,.12);
-  --shadow-gold:     0 8px 22px rgba(212,175,55,.28);
+  --shadow-sm:
+    0 1px 3px rgba(16, 24, 40, .06),
+    0 1px 2px rgba(16, 24, 40, .04);
 
-  /* Shape & Motion */
-  --radius-sm:       8px;
-  --radius-md:       14px;
-  --radius-lg:       20px;
-  --ease:            cubic-bezier(.4,0,.2,1);
-  --dur:             .22s;
+  --shadow-md:
+    0 6px 20px rgba(16, 24, 40, .07);
 
-  /* Type */
-  --font-display:    'Plus Jakarta Sans', 'Inter', sans-serif;
-  --font-body:       'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --shadow-lg:
+    0 18px 40px rgba(16, 24, 40, .12);
+
+  --shadow-gold:
+    0 8px 22px rgba(212, 175, 55, .28);
+
+  /* Shape */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  /* Motion */
+  --ease: cubic-bezier(.4, 0, .2, 1);
+  --dur: .22s;
+
+  /* Typography */
+  --font-display:
+    'Plus Jakarta Sans',
+    'Inter',
+    sans-serif;
+
+  --font-body:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
 }
+
 
 /* ==========================================================================
    2. GLOBAL RESET & BASE
    ========================================================================== */
-*, *::before, *::after{ box-sizing: border-box; }
 
-body{
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
 }
 
-h2, h3{ font-family: var(--font-display); color: var(--text); margin: 0; }
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  color: var(--text);
+  margin: 0;
+}
 
-button{ font-family: inherit; }
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
 
-input, select, textarea{ font-family: inherit; color: var(--text); }
+input,
+select,
+textarea {
+  color: var(--text);
+}
 
-::selection{ background: var(--gold-soft-2); color: var(--text); }
+::selection {
+  background: var(--gold-soft-2);
+  color: var(--text);
+}
 
-/* Visible keyboard focus everywhere (accessibility) */
-a:focus-visible, button:focus-visible, input:focus-visible,
-select:focus-visible, textarea:focus-visible{
+
+/* ==========================================================================
+   3. KEYBOARD FOCUS
+   ========================================================================== */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
   outline: 2px solid var(--gold-dark);
   outline-offset: 2px;
 }
 
+
 /* ==========================================================================
-   3. HEADER / TOPBAR
+   4. HEADER / TOPBAR
    ========================================================================== */
-.header{
+
+.header {
   position: sticky;
   top: 0;
   z-index: 40;
+
+  width: 100%;
+  min-height: 72px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 14px 28px;
+
+  padding: 12px 28px 12px 6px;
+
   background: var(--surface);
+
   border-bottom: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+
+  box-shadow:
+    0 2px 10px rgba(16, 24, 40, .05);
 }
 
-.left-section{ display: flex; align-items: center; }
 
-.logo{
+/* ==========================================================================
+   4.1 LEFT SIDE
+   ========================================================================== */
+
+.left-section {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  min-width: 0;
+}
+
+
+/* ==========================================================================
+   4.2 LOGO
+   ========================================================================== */
+
+.logo {
   display: flex;
   align-items: baseline;
-  gap: 6px;
+
+  gap: 5px;
+
+  margin-left: 2px;
+
+  white-space: nowrap;
+
   font-family: var(--font-display);
-  font-size: 22px;
+
+  font-size: 23px;
   font-weight: 800;
+
   letter-spacing: .01em;
 }
 
-.logo .Gold{ color: var(--gold-dark); }
-.logo .Black{ color: var(--text); }
-.logo .Vendor{
-  margin-left: 8px;
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--gold-darker);
-  background: var(--gold-soft);
-  border: 1px solid var(--gold-soft-2);
-  padding: 4px 10px;
-  border-radius: 999px;
+.logo .Gold {
+  color: var(--gold);
 }
+
+.logo .Black {
+  color: var(--text);
+}
+
+.logo .Vendor {
+  margin-left: 6px;
+
+  color: var(--text-muted);
+
+  font-family: var(--font-body);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: .08em;
+
+  text-transform: uppercase;
+}
+
+
+/* ==========================================================================
+   4.3 RIGHT HEADER ACTIONS
+   ========================================================================== */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-right: 50px;
+  margin-left: auto;
+}
+
+
+/* ==========================================================================
+   4.4 NAVIGATION
+   ========================================================================== */
+
+.navigation {
+  display: flex;
+  align-items: center;
+}
+
+.navigation a {
+  color: var(--text);
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  padding: 9px 14px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 9px;
+
+  background: var(--surface);
+
+  transition:
+    background var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.navigation a:hover {
+  background: var(--gold-soft);
+
+  border-color: var(--gold);
+
+  color: var(--gold-darker);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 14px rgba(212, 175, 55, .14);
+}
+
+
+/* ==========================================================================
+   4.5 BACK BUTTON
+   ========================================================================== */
 
 .back-btn {
-  font-size: 32px;
-  background-color: gold;
-  padding: 4px 12px;
-  cursor: pointer;
-}
+  width: 38px;
+  height: 38px;
 
- /*
-.back-btn:hover{ background: var(--gold-soft); border-color: var(--gold-soft-2); transform: translateX(-2px); }
-.back-btn:active{ transform: scale(.94); } */
-
-/* ==========================================================================
-   4. LAYOUT — VENDOR PAGE GRID
-   ========================================================================== */
-.master-layout{
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 28px;
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 28px;
-}
+  align-items: center;
+  justify-content: center;
 
-/* ==========================================================================
-   5. FORM SECTION (LEFT — 60%)
-   ========================================================================== */
-.master-form-section{
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  background: var(--surface);
+  padding: 0;
+
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 36px;
-  box-shadow: var(--shadow-md);
+
+  border-radius: 9px;
+
+  background: var(--surface);
+
+  color: var(--text);
+
+  font-size: 22px;
+  font-weight: 500;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
 }
 
-.master-form-section > h2{
-  font-size: 22px;
-  font-weight: 800;
-  padding-bottom: 16px;
-  margin-bottom: 20px;
-  border-bottom: 2px solid var(--gold-soft-2);
-  position: relative;
+.back-btn:hover {
+  background: var(--text);
+
+  color: var(--gold);
+
+  border-color: var(--text);
+
+  transform: translateX(-2px);
+
+  box-shadow:
+    0 5px 14px rgba(16, 24, 40, .12);
 }
-.master-form-section > h2::after{
+
+.back-btn:active {
+  transform: translateX(-2px) scale(.96);
+}
+
+
+/* ==========================================================================
+   5. PAGE TITLE
+   ========================================================================== */
+
+.page-title {
+  width: 100%;
+
+  max-width: 1440px;
+
+  margin: 0 auto;
+
+  padding:
+    28px 28px 0 48px;
+
+  font-family: var(--font-display);
+
+  font-size: 26px;
+
+  font-weight: 800;
+
+  line-height: 1.25;
+
+  color: var(--text);
+
+  text-align: left;
+}
+
+
+/* ==========================================================================
+   6. MAIN LAYOUT
+   ========================================================================== */
+
+.master-layout {
+  display: flex;
+
+  flex-direction: row;
+
+  align-items: stretch;
+
+  gap: 28px;
+
+  width: 100%;
+
+  max-width: 1440px;
+
+  height: calc(100vh - 120px);
+
+  margin: 0 auto;
+
+  padding: 0 28px 28px;
+
+  overflow: hidden;
+}
+
+
+/* ==========================================================================
+   7. FORM SECTION — LEFT 60%
+   ========================================================================== */
+
+.master-form-section {
+  width: 60%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  padding: 32px;
+
+  box-shadow: var(--shadow-md);
+
+  min-height: 0;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+}
+
+
+/* ==========================================================================
+   7.1 MAIN FORM HEADING
+   ========================================================================== */
+
+.master-form-section > h2 {
+  position: relative;
+
+  font-size: 22px;
+
+  font-weight: 800;
+
+  padding-bottom: 15px;
+
+  margin-bottom: 18px;
+
+  border-bottom:
+    2px solid var(--gold-soft-2);
+}
+
+.master-form-section > h2::after {
   content: '';
+
   position: absolute;
+
   left: 0;
+
   bottom: -2px;
+
   width: 64px;
+
   height: 2px;
+
   background: var(--gold);
 }
 
-/* ==========================================================================
-   6. SECTION HEADINGS & DIVIDERS
-   ========================================================================== */
-.master-form-section h3{
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .07em;
-  color: var(--text-muted);
-  margin-top: 28px;
-  margin-bottom: 14px;
-  padding-left: 12px;
-  border-left: 3px solid var(--gold);
-}
-.master-form-section h3:first-of-type{ margin-top: 6px; }
 
 /* ==========================================================================
-   7. FORM FIELDS — LABELS, INPUTS, SELECTS, TEXTAREAS
+   8. SECTION HEADINGS
    ========================================================================== */
-.master-form-section label{
-  display: block;
-  font-size: 12.5px;
-  font-weight: 600;
+
+.master-form-section h3 {
+  position: relative;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: .07em;
+
   color: var(--text-muted);
-  margin-bottom: 6px;
+
+  margin-top: 28px;
+
+  margin-bottom: 14px;
+
+  padding-left: 12px;
+
+  border-left: 3px solid var(--gold);
+}
+
+.master-form-section h3:first-of-type {
+  margin-top: 6px;
+}
+
+.master-form-section h4 {
+  font-size: 13px;
+
+  font-weight: 700;
+
+  color: var(--text);
+
+  margin-top: 22px;
+
+  margin-bottom: 10px;
+}
+
+
+/* ==========================================================================
+   9. FORM FIELDS
+   ========================================================================== */
+
+.master-form-section label {
+  display: block;
+
+  font-size: 12.5px;
+
+  font-weight: 600;
+
+  color: var(--text-muted);
+
   margin-top: 12px;
+
+  margin-bottom: 6px;
 }
 
 .master-form-section input[type="text"],
 .master-form-section input[type="number"],
 .master-form-section select,
-.master-form-section textarea{
+.master-form-section textarea {
   width: 100%;
+
   padding: 11px 14px;
+
   background: var(--surface-muted);
+
   border: 1px solid var(--border);
+
   border-radius: var(--radius-sm);
+
   font-size: 14px;
+
   color: var(--text);
-  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur) var(--ease);
+
+  transition:
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    background var(--dur) var(--ease);
 }
 
-.master-form-section textarea{ min-height: 90px; resize: vertical; }
+.master-form-section textarea {
+  min-height: 90px;
+
+  resize: vertical;
+}
 
 .master-form-section input:hover,
 .master-form-section select:hover,
-.master-form-section textarea:hover{ border-color: var(--border-strong); }
+.master-form-section textarea:hover {
+  border-color: var(--border-strong);
+}
 
 .master-form-section input:focus,
 .master-form-section select:focus,
-.master-form-section textarea:focus{
+.master-form-section textarea:focus {
   outline: none;
+
   background: var(--surface);
+
   border-color: var(--gold);
-  box-shadow: 0 0 0 4px var(--gold-soft);
+
+  box-shadow:
+    0 0 0 4px var(--gold-soft);
 }
 
-.master-form-section input[readOnly]{
+.master-form-section input[readOnly] {
   background: var(--surface-muted);
+
   color: var(--text-muted);
+
   cursor: not-allowed;
 }
 
-.master-form-section select{
+.master-form-section select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23667085' stroke-width='1.6' fill='none' fill-rule='evenodd' stroke-linecap='round'/%3E%3C/svg%3E");
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23667085' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+
   background-repeat: no-repeat;
+
   background-position: right 14px center;
+
   padding-right: 34px;
+
   cursor: pointer;
-}
-
-/* ==========================================================================
-   8. CHECKBOXES — SERVICE / PAYMENT TOGGLE CHIPS
-   ========================================================================== */
-.master-form-section label:has(input[type="checkbox"]){
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  width: auto;
-  margin: 0 10px 10px 0;
-  padding: 9px 16px 9px 12px;
-  background: var(--surface-muted);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-
-.master-form-section label:has(input[type="checkbox"]):hover{
-  border-color: var(--gold-soft-2);
-  transform: translateY(-1px);
-}
-
-.master-form-section label:has(input[type="checkbox"]:checked){
-  background: var(--gold-soft);
-  border-color: var(--gold);
-  color: var(--gold-darker);
-}
-
-.master-form-section input[type="checkbox"]{
-  width: 16px;
-  height: 16px;
-  accent-color: var(--gold-dark);
-  cursor: pointer;
-}
-
-/* ==========================================================================
-   9. IMAGE UPLOAD GRID
-   ========================================================================== */
-.image-section{ margin-top: 8px; }
-
-.preview-container{
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  gap: 14px;
-  margin-top: 10px;
-}
-
-.preview-container .preview-item{
-  position: relative;
-  aspect-ratio: 1 / 1;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--surface-muted);
-}
-
-.preview-container .preview-item img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform .35s var(--ease);
-}
-
-.preview-container .preview-item:hover img{ transform: scale(1.08); }
-
-.preview-container .preview-item button{
-  position: absolute;
-  inset: auto 0 0 0;
-  padding: 7px 0;
-  border: none;
-  background: rgba(27,31,39,.72);
-  color: #fff;
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: .04em;
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(100%);
-  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-
-.preview-container .preview-item:hover button{ opacity: 1; transform: translateY(0); }
-
-.add-image-btn{
-  aspect-ratio: 1 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px dashed var(--border-strong);
-  border-radius: var(--radius-md);
-  background: var(--surface-muted);
-  color: var(--text-faint);
-  font-size: 26px;
-  font-weight: 300;
-  cursor: pointer;
-  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease), background var(--dur) var(--ease);
-}
-
-.add-image-btn:hover{
-  border-color: var(--gold);
-  color: var(--gold-dark);
-  background: var(--gold-soft);
-}
-
-/* ==========================================================================
-   10. BUTTONS
-   ========================================================================== */
-.add-product-btn{
-  margin-top: 28px;
-  width: 100%;
-  padding: 14px 20px;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-  color: #2A2100;
-  font-size: 14.5px;
-  font-weight: 700;
-  letter-spacing: .02em;
-  cursor: pointer;
-  box-shadow: var(--shadow-gold);
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), filter var(--dur) var(--ease);
-}
-
-.add-product-btn:hover:not(:disabled){
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(212,175,55,.36);
-  filter: brightness(1.03);
-}
-
-.add-product-btn:active:not(:disabled){ transform: translateY(0); }
-
-.add-product-btn:disabled{
-  background: var(--border);
-  color: var(--text-faint);
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-/* Legacy / shared action button (kept for compatibility with other pages) */
-.options-btn{
-  display: inline-flex;
-  align-items: center;
-  padding: 10px 18px;
-  margin-left: 15px;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-  color: #2A2100;
-  font-family: var(--font-body);
-  font-weight: 600;
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  box-shadow: var(--shadow-gold);
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
-}
-.options-btn:hover{ transform: translateY(-3px); box-shadow: 0 14px 28px rgba(212,175,55,.34); }
-.options-btn:active{ transform: scale(.96); }
-
-/* ==========================================================================
-   11. PREVIEW SECTION (RIGHT — 40%) — STICKY PRODUCT CARD
-   ========================================================================== */
-.master-preview-section{
-  width: 40%;
-  position: sticky;
-  top: 92px;
-  align-self: flex-start;
-  max-height: calc(100vh - 112px);
-  overflow-y: auto;
-}
-
-.master-preview-section h2{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: 800;
-  margin-bottom: 16px;
-}
-
-.master-preview-section h2::before{
-  content: '';
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 0 4px var(--gold-soft);
-  animation: pulse-live 1.8s ease-in-out infinite;
-  flex-shrink: 0;
-}
-
-@keyframes pulse-live{
-  0%, 100%{ box-shadow: 0 0 0 4px var(--gold-soft); }
-  50%{ box-shadow: 0 0 0 7px var(--gold-soft); }
-}
-
-.master-preview-card{
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 26px 28px;
-  box-shadow: var(--shadow-md);
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-/* Preview rows read like a spec sheet, not a form */
-.master-preview-card .preview-item{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-}
-.master-preview-card .preview-item:last-of-type{ border-bottom: none; }
-
-.master-preview-card .preview-item label{
-  font-size: 11.5px;
-  font-weight: 700;
-  text-transform: capitalize;
-  letter-spacing: .03em;
-  color: var(--text-faint);
-  margin: 0;
-  flex: 0 0 auto;
-}
-
-.master-preview-card .preview-item input{
-  flex: 1;
-  text-align: right;
-  border: none;
-  background: transparent;
-  padding: 0;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--text);
-}
-.master-preview-card .preview-item input:focus{ outline: none; box-shadow: none; }
-
-/* ==========================================================================
-   12. PREVIEW IMAGES GRID
-   ========================================================================== */
-.master-preview-images{
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
-  gap: 10px;
-  margin-top: 8px;
-  width: 100%;
-}
-
-.master-preview-images img{
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
-}
-.master-preview-images img:hover{
-  transform: scale(1.06);
-  box-shadow: var(--shadow-lg);
-}
-
-/* ==========================================================================
-   13. POPUP / MODAL — IMAGE MANAGER
-   ========================================================================== */
-.add-image-container{ display: flex; flex-direction: column; gap: 16px; }
-
-.popup-preview{
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-  gap: 14px;
-}
-
-.popup-preview > div{
-  position: relative;
-  aspect-ratio: 1 / 1;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--surface-muted);
-}
-
-.popup-preview img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.popup-preview button{
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 22px;
-  height: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 50%;
-  background: rgba(27,31,39,.72);
-  color: #fff;
-  font-size: 11px;
-  cursor: pointer;
-  transition: background var(--dur) var(--ease);
-}
-.popup-preview button:hover{ background: var(--danger); }
-
-.popup-preview label{
-  position: absolute;
-  bottom: 6px;
-  left: 6px;
-  right: 6px;
-  text-align: center;
-  padding: 5px 0;
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: .03em;
-  color: #fff;
-  background: rgba(27,31,39,.72);
-  border-radius: 999px;
-  cursor: pointer;
-}
-
-.add-image-popup-btn{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 1 / 1;
-  border: 2px dashed var(--border-strong);
-  border-radius: var(--radius-md);
-  color: var(--text-faint);
-  font-size: 24px;
-  cursor: pointer;
-  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease), background var(--dur) var(--ease);
-}
-.add-image-popup-btn:hover{
-  border-color: var(--gold);
-  color: var(--gold-dark);
-  background: var(--gold-soft);
-}
-
-.popup-btn{
-  align-self: flex-end;
-  padding: 11px 22px;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-  color: #2A2100;
-  font-weight: 700;
-  font-size: 13.5px;
-  cursor: pointer;
-  box-shadow: var(--shadow-gold);
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
-}
-.popup-btn:hover{ transform: translateY(-2px); box-shadow: 0 12px 26px rgba(212,175,55,.34); }
-.popup-btn:active{ transform: translateY(0); }
-
-/* ==========================================================================
-   14. SCROLLABLE LISTS (legacy / shared)
-   ========================================================================== */
-.master-list-container{
-  max-height: 250px;
-  overflow-y: auto;
-  margin-top: 10px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
 }
 
 
 /* ==========================================================================
-   15. RESPONSIVE BREAKPOINTS
-   ========================================================================== */
-
-/* Tablet — keep two columns, tighten proportions and spacing */
-@media (max-width: 1024px){
-  .master-layout{ gap: 20px; padding: 20px; }
-
-  .master-form-section{ width: 58%; padding: 26px; }
-
-  .master-preview-section,
-  .master-preview-card{ width: 42%; }
-
-  .preview-container{ grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
-}
-
-/* Mobile — stack preview below the form, drop sticky behaviour */
-@media (max-width: 768px){
-  .master-layout{ flex-direction: column; padding: 16px; gap: 18px; }
-
-  .master-form-section,
-  .master-preview-section,
-  .master-preview-card{
-    width: 100%;
-  }
-
-  .master-form-section{ padding: 22px; }
-
-  .master-preview-section{
-    position: static;
-    max-height: none;
-  }
-
-  .header{ padding: 12px 16px; }
-  .logo{ font-size: 18px; }
-}
-
-@media (max-width: 480px){
-  .preview-container{ grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); }
-  .master-preview-images{ grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); }
-}
-
-/* ==========================================================================
-   SPECIFICATION FIELDS
+   10. SPECIFICATION FIELDS
    ========================================================================== */
 
 .specification-field {
-    width: 100%;
-    margin: 0;
-    padding: 0;
+  width: 100%;
+
+  margin: 0;
+
+  padding: 0;
 }
 
 .specification-field label {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .specification-field:first-child label {
-    margin-top: 0;
+  margin-top: 0;
+}
+
+
+/* ==========================================================================
+   11. VARIANT BLOCKS
+   ========================================================================== */
+
+.master-form-section > div:not(.specification-field) {
+  width: 100%;
+}
+
+
+/* ==========================================================================
+   11.1 VARIANT SECTION
+   ========================================================================== */
+
+.variant-section {
+  width: 100%;
+
+  margin-top: 18px;
+
+  padding: 18px;
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-md);
+
+  background:
+    linear-gradient(
+      180deg,
+      #FFFFFF 0%,
+      #FAFBFC 100%
+    );
+
+  box-shadow:
+    0 2px 8px rgba(16, 24, 40, .035);
+}
+
+.variant-section > label:first-child {
+  margin-top: 0;
+}
+
+
+/* ==========================================================================
+   11.2 VARIANT COLOR SECTION
+   ========================================================================== */
+
+.variant-color-section {
+  width: 100%;
+
+  margin-top: 14px;
+
+  padding: 16px;
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-md);
+
+  background: var(--surface);
+
+  box-shadow:
+    0 1px 4px rgba(16, 24, 40, .035);
+}
+
+.variant-color-section:first-child {
+  margin-top: 0;
+}
+
+
+/* ==========================================================================
+   11.3 VARIANT SECTION BUTTON GROUP
+   ========================================================================== */
+
+.variant-section > button,
+.variant-color-section > button {
+  margin-right: 8px;
+}
+
+
+/* ==========================================================================
+   12. VARIANT ACTION BUTTONS
+   ========================================================================== */
+
+.variant-action-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 36px;
+
+  margin-top: 10px;
+
+  padding: 0 15px;
+
+  border: 1px solid var(--gold);
+
+  border-radius: var(--radius-sm);
+
+  background: var(--gold-soft);
+
+  color: var(--gold-darker);
+
+  font-size: 12.5px;
+
+  font-weight: 700;
+
+  margin-right: 8px;
+
+  letter-spacing: .01em;
+
+  cursor: pointer;
+
+  transition:
+    background var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.variant-action-btn:hover {
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold) 0%,
+      var(--gold-dark) 100%
+    );
+
+  color: #2A2100;
+
+  border-color: var(--gold-dark);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 14px rgba(212, 175, 55, .22);
+}
+
+.variant-action-btn:active {
+  transform: translateY(0);
+}
+
+
+/* ==========================================================================
+   12.1 ADD ACTION EMPHASIS
+   ========================================================================== */
+
+.master-form-section > .variant-action-btn:last-of-type {
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold) 0%,
+      var(--gold-dark) 100%
+    );
+
+  color: #2A2100;
+
+  border-color: var(--gold-dark);
+
+  box-shadow:
+    0 5px 14px rgba(212, 175, 55, .18);
+}
+
+.master-form-section > .variant-action-btn:last-of-type:hover {
+  filter: brightness(1.04);
+
+  box-shadow:
+    0 8px 18px rgba(212, 175, 55, .28);
+}
+
+
+/* ==========================================================================
+   12.2 VARIANT / COLOR BUTTONS
+   ========================================================================== */
+
+.variant-section > button,
+.variant-color-section > button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 36px;
+
+  margin-top: 10px;
+
+  padding: 0 15px;
+
+  border: 1px solid var(--gold);
+
+  border-radius: var(--radius-sm);
+
+  background: var(--gold-soft);
+
+  color: var(--gold-darker);
+
+  font-size: 12.5px;
+
+  font-weight: 700;
+
+  letter-spacing: .01em;
+
+  cursor: pointer;
+
+  transition:
+    background var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.variant-section > button:hover,
+.variant-color-section > button:hover {
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold) 0%,
+      var(--gold-dark) 100%
+    );
+
+  color: #2A2100;
+
+  border-color: var(--gold-dark);
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 14px rgba(212, 175, 55, .22);
+}
+
+
+/* ==========================================================================
+   12.3 REMOVE ACTION
+   ========================================================================== */
+
+.variant-section > button:not(:last-child),
+.variant-color-section > button:not(:last-child) {
+  color: var(--text-muted);
+
+  background: var(--surface-muted);
+
+  border-color: var(--border);
+}
+
+.variant-section > button:not(:last-child):hover,
+.variant-color-section > button:not(:last-child):hover {
+  color: #7A5A00;
+
+  background: #FFF8E1;
+
+  border-color: #D6B656;
+
+  box-shadow:
+    0 4px 12px rgba(122, 90, 0, 0.12);
+
+  transform: translateY(-1px);
+}
+
+
+/* ==========================================================================
+   13. ADD PRODUCT BUTTON
+   ========================================================================== */
+
+.add-product-btn {
+  width: 100%;
+
+  margin-top: 28px;
+
+  padding: 14px 20px;
+
+  border: none;
+
+  border-radius: var(--radius-sm);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold) 0%,
+      var(--gold-dark) 100%
+    );
+
+  color: #2A2100;
+
+  font-size: 14.5px;
+
+  font-weight: 700;
+
+  letter-spacing: .02em;
+
+  cursor: pointer;
+
+  box-shadow: var(--shadow-gold);
+
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    filter var(--dur) var(--ease);
+}
+
+.add-product-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 30px rgba(212, 175, 55, .36);
+
+  filter: brightness(1.03);
+}
+
+.add-product-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.add-product-btn:disabled {
+  background: var(--border);
+
+  color: var(--text-faint);
+
+  box-shadow: none;
+
+  cursor: not-allowed;
+}
+
+
+/* ==========================================================================
+   14. PREVIEW SECTION — RIGHT 40%
+   ========================================================================== */
+
+.master-preview-section {
+  width: 40%;
+
+  position: relative;
+
+  align-self: stretch;
+
+  min-height: 0;
+
+  max-height: none;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+}
+
+
+/* ==========================================================================
+   14.1 PREVIEW HEADING
+   ========================================================================== */
+
+.master-preview-section h2 {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding-left: 8px;
+
+  font-size: 18px;
+
+  font-weight: 800;
+
+  margin-bottom: 16px;
+}
+
+.master-preview-section h2::before {
+  content: '';
+
+  width: 9px;
+
+  height: 9px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: var(--gold);
+
+  box-shadow:
+    0 0 0 4px var(--gold-soft);
+
+  animation:
+    pulse-live 1.8s ease-in-out infinite;
+}
+
+
+/* ==========================================================================
+   14.2 LIVE PREVIEW ANIMATION
+   ========================================================================== */
+
+@keyframes pulse-live {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 4px var(--gold-soft);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 7px var(--gold-soft);
+  }
+}
+
+
+/* ==========================================================================
+   15. PREVIEW CARD
+   ========================================================================== */
+
+.master-preview-card {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-lg);
+
+  padding: 26px 28px;
+
+  box-shadow: var(--shadow-md);
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+
+/* ==========================================================================
+   15.1 PREVIEW ITEMS
+   ========================================================================== */
+
+.master-preview-card .preview-item {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 14px;
+
+  padding: 10px 0;
+
+  border-bottom:
+    1px solid var(--border);
+}
+
+.master-preview-card .preview-item:last-of-type {
+  border-bottom: none;
+}
+
+.master-preview-card .preview-item label {
+  font-size: 11.5px;
+
+  font-weight: 700;
+
+  text-transform: capitalize;
+
+  letter-spacing: .03em;
+
+  color: var(--text-faint);
+
+  margin: 0;
+
+  flex: 0 0 auto;
+}
+
+.master-preview-card .preview-item input,
+.master-preview-card .preview-item textarea {
+  flex: 1;
+
+  min-width: 0;
+
+  text-align: right;
+
+  border: none;
+
+  background: transparent;
+
+  padding: 0;
+
+  font-size: 13.5px;
+
+  font-weight: 600;
+
+  color: var(--text);
+}
+
+.master-preview-card .preview-item textarea {
+  min-height: 40px;
+
+  resize: none;
+}
+
+.master-preview-card .preview-item input:focus,
+.master-preview-card .preview-item textarea:focus {
+  outline: none;
+
+  box-shadow: none;
+}
+
+
+/* ==========================================================================
+   16. PREVIEW IMAGES
+   ========================================================================== */
+
+.master-preview-images {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(72px, 1fr));
+
+  gap: 10px;
+
+  margin-top: 8px;
+
+  width: 100%;
+}
+
+.master-preview-images img {
+  width: 100%;
+
+  aspect-ratio: 1 / 1;
+
+  object-fit: cover;
+
+  border-radius: var(--radius-sm);
+
+  border: 1px solid var(--border);
+
+  cursor: pointer;
+
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.master-preview-images img:hover {
+  transform: scale(1.06);
+
+  box-shadow: var(--shadow-lg);
+}
+
+
+/* ==========================================================================
+   17. IMAGE UPLOAD GRID
+   ========================================================================== */
+
+.image-section {
+  margin-top: 8px;
+}
+
+.preview-container {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(110px, 1fr));
+
+  gap: 14px;
+
+  margin-top: 10px;
+}
+
+.preview-container .preview-item {
+  position: relative;
+
+  aspect-ratio: 1 / 1;
+
+  border-radius: var(--radius-md);
+
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+
+  background: var(--surface-muted);
+}
+
+.preview-container .preview-item img {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  transition:
+    transform .35s var(--ease);
+}
+
+.preview-container .preview-item:hover img {
+  transform: scale(1.08);
+}
+
+.preview-container .preview-item button {
+  position: absolute;
+
+  inset: auto 0 0 0;
+
+  padding: 7px 0;
+
+  border: none;
+
+  background: rgba(27, 31, 39, .72);
+
+  color: #fff;
+
+  font-size: 11.5px;
+
+  font-weight: 600;
+
+  letter-spacing: .04em;
+
+  cursor: pointer;
+
+  opacity: 0;
+
+  transform: translateY(100%);
+
+  transition:
+    opacity var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.preview-container .preview-item:hover button {
+  opacity: 1;
+
+  transform: translateY(0);
+}
+
+.add-image-btn {
+  aspect-ratio: 1 / 1;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    2px dashed var(--border-strong);
+
+  border-radius: var(--radius-md);
+
+  background: var(--surface-muted);
+
+  color: var(--text-faint);
+
+  font-size: 26px;
+
+  font-weight: 300;
+
+  cursor: pointer;
+
+  transition:
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    background var(--dur) var(--ease);
+}
+
+.add-image-btn:hover {
+  border-color: var(--gold);
+
+  color: var(--gold-dark);
+
+  background: var(--gold-soft);
+}
+
+
+/* ==========================================================================
+   18. POPUP / MODAL — IMAGE MANAGER
+   ========================================================================== */
+
+.add-image-container {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.popup-preview {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(96px, 1fr));
+
+  gap: 14px;
+}
+
+.popup-preview > div {
+  position: relative;
+
+  aspect-ratio: 1 / 1;
+
+  border-radius: var(--radius-md);
+
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+
+  background: var(--surface-muted);
+}
+
+.popup-preview img {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.popup-preview button {
+  position: absolute;
+
+  top: 6px;
+
+  right: 6px;
+
+  width: 22px;
+
+  height: 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background:
+    rgba(27, 31, 39, .72);
+
+  color: #fff;
+
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition:
+    background var(--dur) var(--ease);
+}
+
+.popup-preview button:hover {
+  background: var(--danger);
+}
+
+.popup-preview label {
+  position: absolute;
+
+  bottom: 6px;
+
+  left: 6px;
+
+  right: 6px;
+
+  text-align: center;
+
+  padding: 5px 0;
+
+  font-size: 10.5px;
+
+  font-weight: 600;
+
+  letter-spacing: .03em;
+
+  color: #fff;
+
+  background:
+    rgba(27, 31, 39, .72);
+
+  border-radius: 999px;
+
+  cursor: pointer;
+}
+
+.add-image-popup-btn {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  aspect-ratio: 1 / 1;
+
+  border:
+    2px dashed var(--border-strong);
+
+  border-radius: var(--radius-md);
+
+  color: var(--text-faint);
+
+  font-size: 24px;
+
+  cursor: pointer;
+
+  transition:
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    background var(--dur) var(--ease);
+}
+
+.add-image-popup-btn:hover {
+  border-color: var(--gold);
+
+  color: var(--gold-dark);
+
+  background: var(--gold-soft);
+}
+
+.popup-btn {
+  align-self: flex-end;
+
+  padding: 11px 22px;
+
+  border: none;
+
+  border-radius: var(--radius-sm);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold) 0%,
+      var(--gold-dark) 100%
+    );
+
+  color: #2A2100;
+
+  font-weight: 700;
+
+  font-size: 13.5px;
+
+  cursor: pointer;
+
+  box-shadow: var(--shadow-gold);
+
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.popup-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 26px rgba(212, 175, 55, .34);
+}
+
+.popup-btn:active {
+  transform: translateY(0);
+}
+
+
+/* ==========================================================================
+   19. SCROLLABLE LISTS
+   ========================================================================== */
+
+.master-list-container {
+  max-height: 250px;
+
+  overflow-y: auto;
+
+  margin-top: 10px;
+
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius-sm);
+
+  background: var(--surface);
+}
+
+
+/* ==========================================================================
+   20. CHECKBOXES
+   ========================================================================== */
+
+.master-form-section label:has(input[type="checkbox"]) {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  width: auto;
+
+  margin:
+    0 10px 10px 0;
+
+  padding:
+    9px 16px 9px 12px;
+
+  background: var(--surface-muted);
+
+  border: 1px solid var(--border);
+
+  border-radius: 999px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: var(--text-muted);
+
+  cursor: pointer;
+
+  transition:
+    background var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.master-form-section label:has(input[type="checkbox"]):hover {
+  border-color: var(--gold-soft-2);
+
+  transform: translateY(-1px);
+}
+
+.master-form-section label:has(input[type="checkbox"]:checked) {
+  background: var(--gold-soft);
+
+  border-color: var(--gold);
+
+  color: var(--gold-darker);
+}
+
+.master-form-section input[type="checkbox"] {
+  width: 16px;
+
+  height: 16px;
+
+  accent-color: var(--gold-dark);
+
+  cursor: pointer;
+}
+
+
+/* ==========================================================================
+   21. RESPONSIVE — TABLET
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+
+  .header {
+    padding-right: 20px;
+  }
+
+  .page-title {
+    width: 100%;
+
+    max-width: 1440px;
+
+    margin: 0 auto;
+
+    padding:
+      18px 28px 0 48px;
+
+    font-family: var(--font-display);
+
+    font-size: 26px;
+
+    font-weight: 800;
+
+    line-height: 1.25;
+
+    color: var(--text);
+
+    text-align: left;
+  }
+
+  .master-layout {
+    gap: 20px;
+
+    padding:
+      20px;
+  }
+
+  .master-form-section {
+    width: 58%;
+
+    padding: 26px;
+  }
+
+  .master-preview-section {
+    width: 42%;
+  }
+
+  .preview-container {
+    grid-template-columns:
+      repeat(auto-fill, minmax(90px, 1fr));
+  }
+}
+
+
+/* ==========================================================================
+   22. RESPONSIVE — MOBILE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+  .header {
+    min-height: 68px;
+
+    padding:
+      10px 16px 10px 5px;
+  }
+
+  .logo {
+    font-size: 19px;
+  }
+
+  .logo .Vendor {
+    font-size: 9px;
+  }
+
+  .navigation a {
+    padding:
+      8px 10px;
+
+    font-size: 11px;
+  }
+
+  .back-btn {
+    width: 36px;
+
+    height: 36px;
+  }
+
+  .header-actions {
+    gap: 7px;
+
+    margin-right: 0;
+  }
+
+  .page-title {
+    padding:
+      20px 16px 0;
+
+    font-size: 22px;
+  }
+
+  .master-layout {
+    flex-direction: column;
+
+    width: 100%;
+
+    height: auto;
+
+    min-height: calc(100vh - 110px);
+
+    padding:
+      16px;
+
+    gap: 18px;
+
+    overflow: visible;
+  }
+
+  .master-form-section,
+  .master-preview-section {
+    width: 100%;
+  }
+
+  .master-form-section {
+    padding: 22px;
+
+    border-radius: 16px;
+  }
+
+  .master-preview-section {
+    position: static;
+
+    max-height: none;
+
+    overflow: visible;
+  }
+
+  .master-preview-card {
+    padding:
+      22px 20px;
+  }
+
+  .variant-section {
+    padding: 15px;
+  }
+
+  .variant-color-section {
+    padding: 14px;
+  }
+
+  .variant-action-btn,
+  .variant-section > button,
+  .variant-color-section > button {
+    min-height: 38px;
+
+    padding:
+      0 14px;
+
+    font-size: 12px;
+  }
+}
+
+
+/* ==========================================================================
+   23. RESPONSIVE — SMALL MOBILE
+   ========================================================================== */
+
+@media (max-width: 480px) {
+
+  .header {
+    padding-right: 10px;
+  }
+
+  .logo {
+    font-size: 17px;
+  }
+
+  .logo .Vendor {
+    display: none;
+  }
+
+  .header-actions {
+    gap: 7px;
+
+    margin-right: 0;
+  }
+
+  .navigation a {
+    padding:
+      7px 8px;
+
+    font-size: 10px;
+  }
+
+  .back-btn {
+    width: 34px;
+
+    height: 34px;
+
+    font-size: 20px;
+  }
+
+  .page-title {
+    padding:
+      18px 14px 0;
+
+    font-size: 20px;
+  }
+
+  .master-layout {
+    padding:
+      14px;
+
+    gap: 14px;
+  }
+
+  .master-form-section {
+    padding: 18px;
+
+    border-radius: 14px;
+  }
+
+  .master-form-section > h2 {
+    font-size: 19px;
+  }
+
+  .master-form-section h3 {
+    font-size: 12px;
+  }
+
+  .master-preview-card {
+    padding:
+      18px 16px;
+
+    border-radius: 14px;
+  }
+
+  .preview-container {
+    grid-template-columns:
+      repeat(auto-fill, minmax(78px, 1fr));
+  }
+
+  .master-preview-images {
+    grid-template-columns:
+      repeat(auto-fill, minmax(60px, 1fr));
+  }
+
+  .variant-action-btn,
+  .variant-section > button,
+  .variant-color-section > button {
+    width: 100%;
+
+    min-height: 38px;
+
+    margin-top: 8px;
+  }
+
+  .add-product-btn {
+    margin-top: 22px;
+
+    padding:
+      13px 16px;
+  }
+
+  .master-preview-card .preview-item {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 6px;
+  }
+
+  .master-preview-card .preview-item input,
+  .master-preview-card .preview-item textarea {
+    width: 100%;
+
+    text-align: left;
+  }
+}
+
+
+/* ==========================================================================
+   24. VERY SMALL SCREENS
+   ========================================================================== */
+
+@media (max-width: 360px) {
+
+  .logo {
+    font-size: 15px;
+  }
+
+  .navigation a {
+    padding:
+      6px 7px;
+
+    font-size: 9px;
+  }
+
+  .page-title {
+    font-size: 19px;
+  }
+
+  .master-form-section {
+    padding: 15px;
+  }
+}
+
+
+/* ==========================================================================
+   25. EMPTY PREVIEW
+   ========================================================================== */
+
+.master-empty-preview {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 100%;
+
+  min-height: 500px;
+
+  text-align: center;
+}
+
+
+/* ==========================================================================
+   25.1 EMPTY PREVIEW CARD WRAPPER
+   ========================================================================== */
+
+.master-empty-preview-container {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fafbfc 0%,
+      #f1f3f6 100%
+    );
+
+  border:
+    1px solid rgba(16, 24, 40, 0.06);
+
+  border-radius: 20px;
+
+  padding:
+    40px 32px;
+
+  box-shadow:
+    0 1px 2px rgba(16, 24, 40, 0.04),
+    0 8px 24px rgba(16, 24, 40, 0.06);
+}
+
+
+/* ==========================================================================
+   25.2 EMPTY PREVIEW IMAGE
+   ========================================================================== */
+
+.master-empty-preview-image {
+  width: 380px;
+
+  height: 380px;
+
+  object-fit: contain;
+
+  display: block;
+
+  margin-bottom: 24px;
+
+  border-radius: 8px;
+
+  filter:
+    drop-shadow(
+      0 2px 4px rgba(16, 24, 40, 0.06)
+    )
+    drop-shadow(
+      0 20px 28px rgba(16, 24, 40, 0.10)
+    );
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+
+/* ==========================================================================
+   25.3 ADMIN EMPTY PREVIEW IMAGE
+   ========================================================================== */
+
+.master-empty-preview-image-admin {
+  width: 450px !important;
+
+  height: 450px !important;
+
+  object-fit: contain;
+
+  display: block;
+
+  border-radius: 8px;
+
+  filter:
+    drop-shadow(
+      0 2px 4px rgba(16, 24, 40, 0.06)
+    )
+    drop-shadow(
+      0 20px 28px rgba(16, 24, 40, 0.10)
+    );
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.master-empty-preview-image:hover {
+  transform: translateY(-3px);
+
+  filter:
+    drop-shadow(
+      0 4px 6px rgba(16, 24, 40, 0.08)
+    )
+    drop-shadow(
+      0 28px 32px rgba(16, 24, 40, 0.14)
+    );
+}
+
+
+/* ==========================================================================
+   25.4 EMPTY PREVIEW CAPTION
+   ========================================================================== */
+
+.master-empty-preview-caption {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 15px;
+
+  font-weight: 500;
+
+  color: #344054;
+}
+
+.master-empty-preview-caption .status-dot {
+  width: 8px;
+
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #f2a71b;
+
+  box-shadow:
+    0 0 0 4px rgba(242, 167, 27, 0.15);
+}
+
+
+/* ==========================================================================
+   25.5 EMPTY PREVIEW HEADING
+   ========================================================================== */
+
+.master-empty-preview h2 {
+  margin: 0;
+
+  font-size: 20px;
+
+  font-weight: 600;
+}
+
+
+/* ==========================================================================
+   26. EMPTY PREVIEW RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+  .master-empty-preview {
+    min-height: 360px;
+  }
+
+  .master-empty-preview-container {
+    width: 100%;
+
+    padding:
+      28px 20px;
+
+    border-radius: 16px;
+  }
+
+  .master-empty-preview-image {
+    width: 280px;
+
+    height: 280px;
+  }
+
+  .master-empty-preview-image-admin {
+    width: 320px !important;
+
+    height: 320px !important;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .master-empty-preview {
+    min-height: 300px;
+  }
+
+  .master-empty-preview-container {
+    padding:
+      22px 16px;
+  }
+
+  .master-empty-preview-image {
+    width: 220px;
+
+    height: 220px;
+
+    margin-bottom: 18px;
+  }
+
+  .master-empty-preview-image-admin {
+    width: 240px !important;
+
+    height: 240px !important;
+  }
+
+  .master-empty-preview h2 {
+    font-size: 17px;
+  }
+}
+
+
+/* ==========================================================================
+   27. REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .master-preview-section h2::before {
+    animation: none;
+  }
+
+  .variant-action-btn,
+  .add-product-btn,
+  .back-btn,
+  .navigation a,
+  .master-preview-images img,
+  .add-image-btn,
+  .popup-btn {
+    transition: none;
+  }
 }

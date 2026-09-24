@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/Admin.css";
-import { useNavigate } from "react-router-dom";
-import SideWindow from "../../components/SideBar";
 import { getAllVendors } from "../../api/AdminApi";
 import axios from "axios";
 
 function VendorsDetails() {
-  const navigate = useNavigate();
-
   const [vendors, setVendors] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -38,7 +34,7 @@ function VendorsDetails() {
         `http://localhost:8080/admin/vendor/${selectedVendor.id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+            Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,
           },
         }
       );
@@ -58,23 +54,6 @@ function VendorsDetails() {
 
   return (
     <div className="adminhome-container">
-
-      {/* ---------------- HEADER ---------------- */}
-      <header className="admin-header">
-        <div className="left-section">
-          <SideWindow />
-        </div>
-
-        <div className="logo">
-          <span className="Gold">DEAL</span>
-          <span className="Black">HUNTS</span>
-          <span className="Admin">Admin</span>
-        </div>
-
-        <div className="back-btn" onClick={() => navigate(-1)}>
-          &#8592;
-        </div>
-      </header>
 
       {/* ---------------- TABLE ---------------- */}
       <main className="main">
@@ -128,25 +107,40 @@ function VendorsDetails() {
           <div className="vendor-drawer">
             <h3>Vendor Details</h3>
 
-            <p><b>Name:</b> {selectedVendor.fullName}</p>
-            <p><b>Email:</b> {selectedVendor.email}</p>
-            <p><b>Shop:</b> {selectedVendor.shopName}</p>
-            <p><b>City:</b> {selectedVendor.city}</p>
-            <p><b>State:</b> {selectedVendor.state}</p>
-            
+            <p>
+              <b>Name:</b> {selectedVendor.fullName}
+            </p>
+
+            <p>
+              <b>Email:</b> {selectedVendor.email}
+            </p>
+
+            <p>
+              <b>Shop:</b> {selectedVendor.shopName}
+            </p>
+
+            <p>
+              <b>City:</b> {selectedVendor.city}
+            </p>
+
+            <p>
+              <b>State:</b> {selectedVendor.state}
+            </p>
+
             <div
               className="wrong-btn"
               onClick={() => setSelectedVendor(null)}
-              >
+            >
               X
             </div>
+
             <button
               className="remove-btn"
               onClick={() => setShowConfirm(true)}
             >
               Remove Vendor
             </button>
-            </div>
+          </div>
         </>
       )}
 

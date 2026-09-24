@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { ChevronLeft, ChevronRight } from "../../components/admin/AIcons";
+import {
+  ChevronLeft,
+  ChevronRight,
+} from "../../components/admin/AIcons";
 
 export default function TrendingProducts({ items = [] }) {
 
@@ -11,14 +14,16 @@ export default function TrendingProducts({ items = [] }) {
 
   if (count === 0) {
     return (
-      <div>
-        <h2 className="db-card-title db-trending-heading">
+      <div className="db-admin-trending-card-atp">
+
+        <h2 className="db-admin-trending-heading-atp">
           Trending Deals
         </h2>
 
-        <p className="db-trending-empty">
+        <p className="db-admin-trending-empty-atp">
           No trending deals right now.
         </p>
+
       </div>
     );
   }
@@ -28,16 +33,21 @@ export default function TrendingProducts({ items = [] }) {
   };
 
   return (
-    <div>
+    <div className="db-admin-trending-card-atp">
 
-      <h2 className="db-card-title db-trending-heading">
+      {/* ================= TITLE ================= */}
+
+      <h2 className="db-admin-trending-heading-atp">
         Trending Deals
       </h2>
 
-      <div className="db-trend-viewport">
+
+      {/* ================= CAROUSEL ================= */}
+
+      <div className="db-admin-trending-viewport-atp">
 
         <div
-          className="db-trend-track"
+          className="db-admin-trending-track-atp"
           style={{
             width: `${count * 100}%`,
             transform: `translateX(-${index * (100 / count)}%)`,
@@ -47,26 +57,28 @@ export default function TrendingProducts({ items = [] }) {
           {items.map((item, i) => (
 
             <div
-              className="db-trend-slide"
+              className="db-admin-trending-slide-atp"
               style={{
                 width: `${100 / count}%`,
               }}
               key={item.id ?? i}
             >
 
-              <div className="db-trend-image-box">
+              {/* ================= IMAGE ================= */}
+
+              <div className="db-admin-trending-image-box-atp">
 
                 {item.imageUrl ? (
 
                   <img
                     src={item.imageUrl}
                     alt={item.title || "Trending Deal"}
-                    className="db-trend-image"
+                    className="db-admin-trending-image-atp"
                   />
 
                 ) : (
 
-                  <div className="db-trend-image-fallback">
+                  <div className="db-admin-trending-image-fallback-atp">
                     No Image
                   </div>
 
@@ -74,7 +86,10 @@ export default function TrendingProducts({ items = [] }) {
 
               </div>
 
-              <p className="db-trend-name">
+
+              {/* ================= PRODUCT NAME ================= */}
+
+              <p className="db-admin-trending-name-atp">
                 {item.title || "Trending Deal"}
               </p>
 
@@ -87,17 +102,17 @@ export default function TrendingProducts({ items = [] }) {
       </div>
 
 
-      {/* DOTS */}
+      {/* ================= DOTS ================= */}
 
-      <div className="db-trend-dots">
+      <div className="db-admin-trending-dots-atp">
 
         {items.map((_, i) => (
 
           <span
             key={i}
-            className={`db-trend-dot ${
+            className={`db-admin-trending-dot-atp ${
               i === index
-                ? "db-trend-dot-active"
+                ? "db-admin-trending-dot-active-atp"
                 : ""
             }`}
             onClick={() => goTo(i)}
@@ -108,12 +123,13 @@ export default function TrendingProducts({ items = [] }) {
       </div>
 
 
-      {/* ARROWS */}
+      {/* ================= ARROWS ================= */}
 
-      <div className="db-trend-nav">
+      <div className="db-admin-trending-nav-atp">
 
         <button
-          className="db-trend-arrow"
+          type="button"
+          className="db-admin-trending-arrow-atp"
           onClick={() => goTo(index - 1)}
           aria-label="Previous"
         >
@@ -121,7 +137,8 @@ export default function TrendingProducts({ items = [] }) {
         </button>
 
         <button
-          className="db-trend-arrow"
+          type="button"
+          className="db-admin-trending-arrow-atp"
           onClick={() => goTo(index + 1)}
           aria-label="Next"
         >

@@ -131,7 +131,8 @@ public class Variant {
 
             this.colors.addAll(colors);
 
-            for (Color color : this.colors) {
+            for (Color color :
+                    this.colors) {
 
                 color.setVariant(this);
             }

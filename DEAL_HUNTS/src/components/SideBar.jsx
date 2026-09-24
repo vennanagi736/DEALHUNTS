@@ -1,191 +1,296 @@
-import { useState } from "react";
 import "../styles/SideBar.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useRole } from "../context/UseRole";
-  
+
+/* ============================================================
+   COMMON MENU
+   Available to logged-out users
+============================================================ */
+
 const COMMON_MENU = [
-  { label: "Home", path: "/home" },
-  { label: "Products", path: "/products" }
+  {
+    label: "Home",
+    path: "/home",
+  },
+  {
+    label: "Products",
+    path: "/products",
+  },
 ];
+
+/* ============================================================
+   COMMON ACCOUNT MENU
+   Available to every logged-in role
+============================================================ */
+
+const ACCOUNT_MENU = [
+  {
+    label: "Profile",
+    path: "/profile",
+  },
+  {
+    label: "Settings",
+    path: "/settings",
+  },
+];
+
+/* ============================================================
+   USER MENU
+============================================================ */
 
 const USER_MENU = [
-  { label: "Cart", path: "/cart" },
-  { label: "Wishlist", path: "/wishlist" },
-  { label: "Orders", path: "/orders" }
+  {
+    label: "Home",
+    path: "/home",
+  },
+  {
+    label: "Products",
+    path: "/products",
+  },
+  {
+    label: "Wishlist",
+    path: "/wishlist",
+  },
+  {
+    label: "Cart",
+    path: "/cart",
+  },
 ];
+
+/* ============================================================
+   VENDOR MENU
+============================================================ */
 
 const VENDOR_MENU = [
-  { label: "Dashboard", path: "/vendorHome" },
-  { label: "Add Product", path: "/vendorProductPage" }
+  {
+    label: "Home",
+    path: "/vendorHome",
+  },
+  {
+    label: "Add Product",
+    path: "/vendorProductPage",
+  },
+  {
+    label: "Manage Products",
+    path: "/vendor/manage-products",
+  },
 ];
+
+/* ============================================================
+   ADMIN MENU
+============================================================ */
 
 const ADMIN_MENU = [
-  { label: "Dashboard", path: "/adminDashboard" },
-  { label: "Users", path: "/manage-users" },
-  { label: "Vendors", path: "/manage-vendors" },
-  { label: "Sales", path: "/manage-sales" },
-  { label: "Vendor Requests", path: "/manage-request" },
-  { label: "Payments", path: "/manage-payments" },
-  { label: "Manage Promotions", path: "/admin/manage-promotions" },
-  { label: "Import Products", path: "/admin/import-products" }
+  {
+    label: "Dashboard",
+    path: "/adminDashboard",
+  },
+  {
+    label: "Users",
+    path: "/manage-users",
+  },
+  {
+    label: "Vendors",
+    path: "/manage-vendors",
+  },
+  {
+    label: "Manage Products",
+    path: "/admin/manage-product",
+  },
+  {
+    label: "Master Data",
+    path: "/admin/master-data",
+  },
+  {
+    label: "Sales",
+    path: "/manage-sales",
+  },
+  {
+    label: "Vendor Requests",
+    path: "/manage-request",
+  },
+  {
+    label: "Payments",
+    path: "/manage-payments",
+  },
+  {
+    label: "Manage Promotions",
+    path: "/admin/manage-promotions",
+  },
+  {
+    label: "Import Products",
+    path: "/admin/import-products",
+  },
 ];
 
-function SideWindow() {
-  const [open, setOpen] = useState(false);
+/* ============================================================
+   SIDEBAR
+============================================================ */
 
+function Sidebar({
+  isSidebarOpen,
+  closeSidebar,
+}) {
   const navigate = useNavigate();
 
-  const { role, logout } = useRole();
+  const {
+    role,
+    logout,
+  } = useRole();
 
-  // ============================================================
-  // CLEAN ROLE
-  // ============================================================
+  /* ==========================================================
+     NORMALIZE ROLE
+  ========================================================== */
 
   const cleanRole = role
     ?.replace("ROLE_", "")
     .toLowerCase();
 
-  // ============================================================
-  // LOGIN STATE
-  //
-  // RoleContext is the single source of truth.
-  // If role is null -> guest
-  // If role exists -> logged in
-  // ============================================================
+  /* ==========================================================
+     LOGIN STATUS
+  ========================================================== */
 
   const isLoggedIn =
     cleanRole === "user" ||
     cleanRole === "vendor" ||
     cleanRole === "admin";
 
-  // ============================================================
-  // LOGOUT
-  // ============================================================
+  /* ==========================================================
+     LOGOUT
+  ========================================================== */
 
   const handleLogout = () => {
     const currentRole = cleanRole;
 
-    // Clear RoleContext + authentication data
     logout();
+    closeSidebar();
 
-    // Close sidebar
-    setOpen(false);
-
-    // Navigate according to previous role
     if (currentRole === "user") {
       navigate("/login");
-    } else if (currentRole === "vendor") {
-      navigate("/vendorLogin");
-    } else if (currentRole === "admin") {
-      navigate("/adminLogin");
-    } else {
-      navigate("/home");
+      return;
     }
+
+    if (currentRole === "vendor") {
+      navigate("/vendorLogin");
+      return;
+    }
+
+    if (currentRole === "admin") {
+      navigate("/adminLogin");
+      return;
+    }
+
+    navigate("/home");
   };
 
-  // ============================================================
-  // NAVIGATION HELPER
-  // ============================================================
+  /* ==========================================================
+     NAVIGATION ITEM
+  ========================================================== */
 
-  const handleNavigation = () => {
-    setOpen(false);
+  const renderMenuItem = (item) => {
+    return (
+      <NavLink
+        key={item.path}
+        to={item.path}
+        onClick={closeSidebar}
+        className={({ isActive }) =>
+          `dh-navigation-link ${
+            isActive
+              ? "dh-navigation-link-active"
+              : ""
+          }`
+        }
+      >
+        {item.label}
+      </NavLink>
+    );
   };
 
-  // ============================================================
-  // UI
-  // ============================================================
+  /* ==========================================================
+     UI
+  ========================================================== */
 
   return (
     <>
       {/* ======================================================
-          HAMBURGER
+          BACKDROP
       ====================================================== */}
 
-      <div
-        className="hamburger"
-        onClick={() => setOpen(true)}
-      >
-        ☰
-      </div>
-
-      {/* ======================================================
-          OVERLAY
-      ====================================================== */}
-
-      {open && (
+      {isSidebarOpen && (
         <div
-          className="overlay"
-          onClick={() => setOpen(false)}
+          className="dh-sidebar-backdrop"
+          onClick={closeSidebar}
+          aria-hidden="true"
         />
       )}
 
       {/* ======================================================
-          SIDEBAR
+          SIDEBAR PANEL
       ====================================================== */}
 
-      <div
-        className={`sidebar ${
-          open ? "open" : ""
+      <aside
+        className={`dh-sidebar-panel ${
+          isSidebarOpen
+            ? "dh-sidebar-panel-open"
+            : ""
         }`}
+        aria-hidden={!isSidebarOpen}
       >
 
         {/* ====================================================
-            LOGO
+            BRAND
         ==================================================== */}
 
-        <div className="logo1">
-
-          <span className="Gold">
+        <div className="dh-sidebar-brand">
+          <span className="dh-sidebar-brand-deal">
             DEAL
           </span>
 
-          <span className="Black">
+          <span className="dh-sidebar-brand-hunts">
             HUNTS
           </span>
-
         </div>
 
         {/* ====================================================
-            CLOSE BUTTON
+            CLOSE
         ==================================================== */}
 
         <button
-          className="close-btn"
-          onClick={() => setOpen(false)}
+          type="button"
+          className="dh-sidebar-close"
+          onClick={closeSidebar}
+          aria-label="Close navigation menu"
         >
           ✖
         </button>
 
         {/* ====================================================
-            MENU
+            NAVIGATION
         ==================================================== */}
 
-        <div className="menu-box">
+        <nav
+          className="dh-sidebar-navigation"
+          aria-label="Main navigation"
+        >
 
           {/* ==================================================
-              GUEST
+              LOGGED OUT
               
-              Only COMMON_MENU + Login
+              Home
+              Products
+              Login
           ================================================== */}
 
           {!isLoggedIn && (
             <>
-              {COMMON_MENU.map((item) => (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  onClick={handleNavigation}
-                >
-                  {item.label}
-                </NavLink>
-              ))}
+              {COMMON_MENU.map(renderMenuItem)}
 
               <button
                 type="button"
-                className="sidebar-login-btn"
+                className="dh-sidebar-login"
                 onClick={() => {
-                  setOpen(false);
+                  closeSidebar();
                   navigate("/login");
                 }}
               >
@@ -195,96 +300,91 @@ function SideWindow() {
           )}
 
           {/* ==================================================
-              LOGGED-IN USER
+              USER
+
+              Home
+              Products
+              Wishlist
+              Cart
+              Profile
+              Settings
           ================================================== */}
 
-          {isLoggedIn &&
-            cleanRole === "user" && (
-              <>
-                {COMMON_MENU.map((item) => (
-                  <NavLink
-                    key={item.path}
-                    to={item.path}
-                    onClick={handleNavigation}
-                  >
-                    {item.label}
-                  </NavLink>
-                ))}
+          {isLoggedIn && cleanRole === "user" && (
+            <>
+              {USER_MENU.map(renderMenuItem)}
 
-                {USER_MENU.map((item) => (
-                  <NavLink
-                    key={item.path}
-                    to={item.path}
-                    onClick={handleNavigation}
-                  >
-                    {item.label}
-                  </NavLink>
-                ))}
-              </>
-            )}
+              {ACCOUNT_MENU.map(renderMenuItem)}
+            </>
+          )}
 
           {/* ==================================================
               VENDOR
+
+              Home
+              Add Product
+              Manage Products
+              Profile
+              Settings
           ================================================== */}
 
-          {isLoggedIn &&
-            cleanRole === "vendor" &&
-            VENDOR_MENU.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                onClick={handleNavigation}
-              >
-                {item.label}
-              </NavLink>
-            ))}
+          {isLoggedIn && cleanRole === "vendor" && (
+            <>
+              {VENDOR_MENU.map(renderMenuItem)}
+
+              {ACCOUNT_MENU.map(renderMenuItem)}
+            </>
+          )}
 
           {/* ==================================================
               ADMIN
+
+              Dashboard
+              Users
+              Vendors
+              Manage Products
+              Master Data
+              Sales
+              Vendor Requests
+              Payments
+              Manage Promotions
+              Import Products
+              Profile
+              Settings
           ================================================== */}
 
-          {isLoggedIn &&
-            cleanRole === "admin" &&
-            ADMIN_MENU.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                onClick={handleNavigation}
-              >
-                {item.label}
-              </NavLink>
-            ))}
+          {isLoggedIn && cleanRole === "admin" && (
+            <>
+              {ADMIN_MENU.map(renderMenuItem)}
+
+              {ACCOUNT_MENU.map(renderMenuItem)}
+            </>
+          )}
 
           {/* ==================================================
               LOGOUT
-              
-              ONLY LOGGED-IN USERS SEE THIS
           ================================================== */}
 
           {isLoggedIn && (
             <button
               type="button"
-              className="logout-btn"
+              className="dh-sidebar-logout"
               onClick={handleLogout}
             >
               <FaSignOutAlt
-                style={{ color: "gold" }}
+                className="dh-sidebar-logout-icon"
               />
 
-              <span
-                style={{
-                  marginLeft: "8px"
-                }}
-              >
+              <span className="dh-sidebar-logout-text">
                 Logout
               </span>
             </button>
           )}
 
-        </div>
-      </div>
+        </nav>
+      </aside>
     </>
   );
 }
 
-export default SideWindow;
+export default Sidebar;

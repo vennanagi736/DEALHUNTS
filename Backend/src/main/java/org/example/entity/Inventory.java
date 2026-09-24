@@ -3,6 +3,7 @@ package org.example.entity;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,6 +45,11 @@ public class Inventory {
     )
     private Product product;
 
+    @JsonProperty("productId")
+    public Long getProductId(){
+        return product !=null?product.getId() : null;
+    }
+
     // ============================================================
     // VARIANT
     // ============================================================
@@ -81,30 +87,19 @@ public class Inventory {
         scale = 2
     )
     private BigDecimal discount = BigDecimal.ZERO;
-
     private String warranty;
-
     private String deliveryTime;
-
     private Boolean homeDelivery = false;
-
     private Boolean storePickup = false;
-
     private Boolean cod = false;
-
     private Boolean emi = false;
-
     private Boolean exchange = false;
-
     private String offerTitle;
 
     @Column(length = 1000)
     private String offerDescription;
-
     private String returnPolicy;
-
     private Integer minPurchase;
-
     private Integer maxPurchase;
 
     // ============================================================

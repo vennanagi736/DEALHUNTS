@@ -1,0 +1,1370 @@
+/* =========================================================
+   ADMIN MASTER DATA
+   DEALHUNTS ADMIN THEME
+   WHITE + GOLD + BLACK
+   CLASS SUFFIX: -md
+   ========================================================= */
+
+
+/* =========================================================
+   GLOBAL PAGE
+   ========================================================= */
+
+.adminhome-container-md {
+    width: 100%;
+    min-height: 100vh;
+
+    background: #f7f7f7;
+    color: #171717;
+
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+
+    box-sizing: border-box;
+}
+
+.adminhome-container-md *,
+.adminhome-container-md *::before,
+.adminhome-container-md *::after {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.adminhome-container-md .header {
+    width: 100%;
+    height: 68px;
+
+    padding: 0 22px;
+
+    display: flex;
+    align-items: center;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    position: relative;
+    z-index: 100;
+
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================================
+   LEFT SECTION
+   ========================================================= */
+
+.adminhome-container-md .left-section {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    flex-shrink: 0;
+
+    position: relative;
+    z-index: 5;
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.adminhome-container-md .logo {
+    display: flex;
+    align-items: baseline;
+
+    white-space: nowrap;
+
+    font-size: 24px;
+    font-weight: 800;
+
+    letter-spacing: -0.6px;
+}
+
+.adminhome-container-md .Gold {
+    color: #d4af37;
+}
+
+.adminhome-container-md .Black {
+    color: #111111;
+}
+
+.adminhome-container-md .Admin {
+    margin-left: 7px;
+
+    color: #111111;
+
+    font-size: 11px;
+    font-weight: 900;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.adminhome-container-md .back-btn {
+    width: 38px;
+    height: 38px;
+
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #111111;
+
+    font-size: 21px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.adminhome-container-md .back-btn:hover {
+    background: #d4af37;
+    color: #111111;
+
+    transform: translateX(-2px);
+}
+
+.adminhome-container-md .back-btn:active {
+    transform: translateX(0);
+}
+
+
+/* =========================================================
+   MAIN PAGE
+   ========================================================= */
+
+.adminhome-container-md > main {
+    width: 100%;
+    min-height: calc(100vh - 68px);
+
+    padding: 32px 24px 50px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* =========================================================
+   PAGE TITLE
+   ========================================================= */
+
+.adminhome-container-md .page-title-md {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto 26px;
+
+    text-align: left;
+
+    color: #111111;
+
+    font-size: 26px;
+    font-weight: 750;
+
+    line-height: 1.3;
+}
+
+.adminhome-container-md .page-title-md::after {
+    content: "";
+
+    display: block;
+
+    width: 42px;
+    height: 3px;
+
+    margin-top: 9px;
+
+    background: #d4af37;
+
+    border-radius: 5px;
+}
+
+
+/* =========================================================
+   MASTER LAYOUT
+   ========================================================= */
+
+.adminhome-container-md .master-layout-md {
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   MASTER FORM SECTION
+   ========================================================= */
+
+.adminhome-container-md .master-form-section-md {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   MASTER ACTION BUTTON
+   ========================================================= */
+
+.adminhome-container-md .master-action-btn-md {
+    position: relative;
+
+    width: 100%;
+    height: 66px;
+
+    padding: 0 22px 0 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #dedede;
+    border-radius: 9px;
+
+    color: #222222;
+
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.035);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+
+/* =========================================================
+   GOLD INDICATOR
+   ========================================================= */
+
+.adminhome-container-md .master-action-btn-md::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 4px;
+
+    background: #d4af37;
+}
+
+
+/* =========================================================
+   MASTER BUTTON HOVER
+   ========================================================= */
+
+.adminhome-container-md .master-action-btn-md:hover {
+    background: #fffdf7;
+
+    border-color: #d4af37;
+
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
+
+    transform: translateX(2px);
+}
+
+.adminhome-container-md .master-action-btn-md:active {
+    transform: translateX(0);
+}
+
+
+/* =========================================================
+   =========================================================
+   POPUP OVERLAY
+   TOP-ALIGNED SO A TALL POPUP CAN SCROLL WITHIN THE
+   VIEWPORT INSTEAD OF BEING CLIPPED BY CENTERED FLEX
+   =========================================================
+   ========================================================= */
+
+.popup-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 40px 20px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    z-index: 9999;
+}
+
+
+/* =========================================================
+   POPUP
+   IMPORTANT:
+   THE POPUP ITSELF IS THE SCROLL CONTAINER.
+   display:flex + flex-direction:column + min-height:0 is
+   REQUIRED — without min-height:0 a flex child ignores
+   max-height/overflow and simply grows to fit its content,
+   which is what was clipping "Existing Categories" below.
+   ========================================================= */
+
+.popup {
+    position: relative;
+
+    width: min(560px, calc(100vw - 40px));
+
+    max-width: 560px;
+
+    display: flex;
+    flex-direction: column;
+
+    height: auto;
+
+    max-height: calc(100vh - 80px);
+
+    min-height: 0;
+
+    margin: 0 auto;
+
+    padding: 0;
+
+    background: #ffffff;
+
+    border-radius: 10px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: thin;
+
+    scrollbar-color: #9a9a9a #f0f0f0;
+
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.20);
+}
+
+
+/* =========================================================
+   POPUP SCROLLBAR
+   PROFESSIONAL GRAY — VISIBLE BUT UNOBTRUSIVE
+   ========================================================= */
+
+.popup::-webkit-scrollbar {
+    width: 8px;
+}
+
+.popup::-webkit-scrollbar-track {
+    background: #f0f0f0;
+
+    border-radius: 10px;
+}
+
+.popup::-webkit-scrollbar-thumb {
+    background: #a8a8a8;
+
+    border-radius: 10px;
+
+    border: 2px solid #f0f0f0;
+}
+
+.popup::-webkit-scrollbar-thumb:hover {
+    background: #888888;
+}
+
+
+/* =========================================================
+   POPUP CONTENT
+   IMPORTANT:
+   DO NOT MAKE THIS A SECOND SCROLL AREA.
+   flex-shrink:0 lets it size to its real content height so
+   .popup (the flex parent) is the one that scrolls.
+   ========================================================= */
+
+.popup-content {
+    width: 100%;
+
+    flex-shrink: 0;
+
+    height: auto;
+
+    max-height: none;
+
+    overflow: visible;
+
+    padding: 28px 32px 32px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   POPUP FORM INPUTS
+   ========================================================= */
+
+.adminhome-container-md input[type="text"],
+.adminhome-container-md input[type="number"],
+.adminhome-container-md input[type="file"] {
+    width: 100%;
+    max-width: 100%;
+
+    min-height: 42px;
+
+    margin: 0 0 12px;
+
+    padding: 9px 12px;
+
+    border: 1px solid #d5d5d5;
+    border-radius: 7px;
+
+    background: #ffffff;
+    color: #222222;
+
+    font-family: inherit;
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.adminhome-container-md input[type="text"]:focus,
+.adminhome-container-md input[type="number"]:focus,
+.adminhome-container-md input[type="file"]:focus {
+    border-color: #d4af37;
+
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+}
+
+
+.adminhome-container-md input::placeholder {
+    color: #999999;
+}
+
+
+/* =========================================================
+   FILE INPUT
+   ========================================================= */
+
+.adminhome-container-md input[type="file"] {
+    padding: 7px;
+
+    background: #fafafa;
+
+    cursor: pointer;
+}
+
+.adminhome-container-md input[type="file"]::file-selector-button {
+    margin-right: 9px;
+
+    padding: 7px 11px;
+
+    border: 0;
+    border-radius: 5px;
+
+    background: #d4af37;
+    color: #000000;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.adminhome-container-md input[type="file"]::file-selector-button:hover {
+    background: #c9a62f;
+    color: #111111;
+}
+
+
+/* =========================================================
+   POPUP TEXT
+   ========================================================= */
+
+.adminhome-container-md p {
+    margin: 5px 0 8px;
+
+    color: #666666;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   CURRENT CATEGORY IMAGE
+   ========================================================= */
+
+.adminhome-container-md img[alt="Current category"] {
+    width: 60px !important;
+    height: 60px !important;
+
+    display: block;
+
+    margin: 4px 0 12px;
+
+    object-fit: contain;
+
+    background: #fafafa;
+
+    border: 1px solid #dedede;
+
+    border-radius: 7px;
+}
+
+
+/* =========================================================
+   SAVE / UPDATE BUTTON
+   ========================================================= */
+
+.adminhome-container-md .save-master-btn-md {
+    width: 100%;
+    height: 42px;
+
+    margin-top: 6px;
+
+    border: 1px solid #d4af37;
+    border-radius: 7px;
+
+    background: #d4af37;
+    color: #000000;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.adminhome-container-md .save-master-btn-md:hover {
+    background: #c9a62f;
+    color: #111111;
+
+    transform: translateY(-1px);
+}
+
+.adminhome-container-md .save-master-btn-md:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   SEPARATOR
+   ========================================================= */
+
+.adminhome-container-md hr {
+    margin: 17px 0;
+
+    border: 0;
+
+    border-top: 1px solid #e5e5e5;
+}
+
+
+/* =========================================================
+   EXISTING DATA TITLE
+   ========================================================= */
+
+.adminhome-container-md h3 {
+    margin: 0 0 9px;
+
+    color: #222222;
+
+    font-size: 15px;
+    font-weight: 750;
+}
+
+
+/* =========================================================
+   MASTER LIST
+   ========================================================= */
+
+.adminhome-container-md .master-list-container-md {
+    width: 100%;
+
+    height: 230px;
+    max-height: 230px;
+
+    margin-top: 8px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    border: 1px solid #dedede;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    scrollbar-width: thin;
+
+    scrollbar-color: #9a9a9a #f0f0f0;
+}
+
+
+/* =========================================================
+   MASTER LIST SCROLLBAR
+   PROFESSIONAL GRAY
+   ========================================================= */
+
+.adminhome-container-md .master-list-container-md::-webkit-scrollbar {
+    width: 7px;
+}
+
+.adminhome-container-md .master-list-container-md::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+.adminhome-container-md .master-list-container-md::-webkit-scrollbar-thumb {
+    background: #a8a8a8;
+
+    border-radius: 10px;
+}
+
+.adminhome-container-md .master-list-container-md::-webkit-scrollbar-thumb:hover {
+    background: #888888;
+}
+
+
+/* =========================================================
+   CATEGORY ROW
+   ========================================================= */
+
+.adminhome-container-md .category-row-md {
+    width: 100%;
+
+    min-height: 48px;
+
+    padding: 6px 9px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eeeeee;
+
+    transition: background 0.15s ease;
+}
+
+.adminhome-container-md .category-row-md:last-child {
+    border-bottom: none;
+}
+
+.adminhome-container-md .category-row-md:hover {
+    background: #fffdf7;
+}
+
+
+/* =========================================================
+   CHECKBOX
+   ========================================================= */
+
+.adminhome-container-md .category-checkbox-md {
+    width: 16px;
+    height: 16px;
+
+    margin: 0;
+
+    flex-shrink: 0;
+
+    accent-color: #d4af37;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   SMALL CATEGORY IMAGE
+   ========================================================= */
+
+.adminhome-container-md .master-list-container-md img {
+    width: 36px !important;
+    height: 36px !important;
+
+    min-width: 36px;
+
+    flex-shrink: 0;
+
+    display: block;
+
+    object-fit: contain;
+
+    background: #ffffff;
+
+    border: 1px solid #e6e6e6;
+
+    border-radius: 6px;
+}
+
+
+/* =========================================================
+   CATEGORY NAME
+   ========================================================= */
+
+.adminhome-container-md .category-name-md {
+    flex: 1;
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    color: #242424;
+
+    font-size: 14px;
+    font-weight: 550;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   COUNT
+   ========================================================= */
+
+.adminhome-container-md .count-md {
+    flex-shrink: 0;
+
+    min-width: 52px;
+
+    color: #777777;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.adminhome-container-md .category-actions-md {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   EDIT / DELETE BUTTONS
+   ========================================================= */
+
+.adminhome-container-md .edit-master-btn-md,
+.adminhome-container-md .delete-master-btn-md {
+    width: 30px;
+    height: 30px;
+
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+/* =========================================================
+   EDIT
+   ========================================================= */
+
+.adminhome-container-md .edit-master-btn-md {
+    border: 1px solid #d4af37;
+
+    background: #fffdf5;
+    color: #8a6d12;
+}
+
+.adminhome-container-md .edit-master-btn-md:hover {
+    background: #d4af37;
+    color: #111111;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DELETE
+   ========================================================= */
+
+.adminhome-container-md .delete-master-btn-md {
+    border: 1px solid #e1b5b5;
+
+    background: #fff8f8;
+    color: #b42318;
+}
+
+.adminhome-container-md .delete-master-btn-md:hover {
+    border-color: #b42318;
+
+    background: #b42318;
+    color: #ffffff;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DELETE SELECTED
+   ========================================================= */
+
+.adminhome-container-md .delete-selected-btn-md {
+    width: 100%;
+    height: 40px;
+
+    margin-top: 10px;
+
+    border: 1px solid #c83b32;
+    border-radius: 7px;
+
+    background: #ffffff;
+    color: #b42318;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.adminhome-container-md .delete-selected-btn-md:hover {
+    background: #b42318;
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .adminhome-container-md .header {
+        height: 62px;
+
+        padding: 0 16px;
+    }
+
+
+    .adminhome-container-md .logo {
+        font-size: 21px;
+    }
+
+
+    .adminhome-container-md .Admin {
+        margin-left: 6px;
+
+        font-size: 9px;
+    }
+
+
+    .adminhome-container-md .back-btn {
+        width: 36px;
+        height: 36px;
+
+        font-size: 19px;
+    }
+
+
+    .adminhome-container-md > main {
+        min-height: calc(100vh - 62px);
+
+        padding: 25px 18px 40px;
+    }
+
+
+    .adminhome-container-md .page-title-md {
+        max-width: 100%;
+
+        margin-bottom: 21px;
+
+        font-size: 23px;
+    }
+
+
+    .adminhome-container-md .master-layout-md {
+        max-width: 100%;
+    }
+
+
+    .adminhome-container-md .master-form-section-md {
+        gap: 10px;
+    }
+
+
+    .adminhome-container-md .master-action-btn-md {
+        height: 62px;
+
+        padding-left: 21px;
+
+        font-size: 14px;
+    }
+
+
+    /* POPUP */
+
+    .popup-overlay {
+        padding: 28px 16px;
+
+        align-items: flex-start;
+    }
+
+    .popup {
+        width: min(560px, calc(100vw - 32px));
+
+        max-height: calc(100vh - 56px);
+
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    /* -----------------------------------------------------
+       HEADER
+       ----------------------------------------------------- */
+
+    .adminhome-container-md .header {
+        height: 58px;
+
+        padding: 0 11px;
+    }
+
+
+    .adminhome-container-md .left-section {
+        gap: 4px;
+    }
+
+
+    .adminhome-container-md .logo {
+        font-size: 18px;
+
+        letter-spacing: -0.4px;
+    }
+
+
+    .adminhome-container-md .Admin {
+        margin-left: 4px;
+
+        font-size: 8px;
+
+        letter-spacing: 0.5px;
+    }
+
+
+    .adminhome-container-md .back-btn {
+        width: 34px;
+        height: 34px;
+
+        border-radius: 7px;
+
+        font-size: 18px;
+    }
+
+
+    /* -----------------------------------------------------
+       MAIN
+       ----------------------------------------------------- */
+
+    .adminhome-container-md > main {
+        min-height: calc(100vh - 58px);
+
+        padding: 21px 12px 30px;
+    }
+
+
+    /* -----------------------------------------------------
+       PAGE TITLE
+       ----------------------------------------------------- */
+
+    .adminhome-container-md .page-title-md {
+        margin-bottom: 18px;
+
+        font-size: 20px;
+
+        text-align: left;
+    }
+
+
+    .adminhome-container-md .page-title-md::after {
+        width: 34px;
+        height: 2px;
+
+        margin-top: 7px;
+    }
+
+
+    /* -----------------------------------------------------
+       MASTER BUTTONS
+       ----------------------------------------------------- */
+
+    .adminhome-container-md .master-form-section-md {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 9px;
+    }
+
+
+    .adminhome-container-md .master-action-btn-md {
+        height: 58px;
+
+        padding: 0 15px 0 19px;
+
+        border-radius: 8px;
+
+        font-size: 13px;
+    }
+
+
+    /* -----------------------------------------------------
+       INPUTS
+       ----------------------------------------------------- */
+
+    .adminhome-container-md input[type="text"],
+    .adminhome-container-md input[type="number"],
+    .adminhome-container-md input[type="file"] {
+        min-height: 40px;
+
+        font-size: 13px;
+
+        margin-bottom: 11px;
+    }
+
+
+    /* -----------------------------------------------------
+       CURRENT IMAGE
+       ----------------------------------------------------- */
+
+    .adminhome-container-md img[alt="Current category"] {
+        width: 52px !important;
+        height: 52px !important;
+    }
+
+
+    /* -----------------------------------------------------
+       MASTER LIST
+       ----------------------------------------------------- */
+
+    .adminhome-container-md .master-list-container-md {
+        height: 200px;
+
+        max-height: 200px;
+    }
+
+
+    .adminhome-container-md .category-row-md {
+        min-height: 44px;
+
+        padding: 5px 7px;
+
+        gap: 7px;
+    }
+
+
+    .adminhome-container-md .master-list-container-md img {
+        width: 32px !important;
+        height: 32px !important;
+
+        min-width: 32px;
+    }
+
+
+    .adminhome-container-md .category-name-md {
+        font-size: 13px;
+    }
+
+
+    .adminhome-container-md .count-md {
+        min-width: 45px;
+
+        font-size: 11px;
+    }
+
+
+    .adminhome-container-md .category-actions-md {
+        gap: 4px;
+    }
+
+
+    .adminhome-container-md .edit-master-btn-md,
+    .adminhome-container-md .delete-master-btn-md {
+        width: 27px;
+        height: 27px;
+
+        font-size: 12px;
+    }
+
+
+    .adminhome-container-md .save-master-btn-md {
+        height: 40px;
+
+        font-size: 13px;
+    }
+
+
+    .adminhome-container-md .delete-selected-btn-md {
+        height: 38px;
+
+        font-size: 12px;
+    }
+
+
+    /* -----------------------------------------------------
+       POPUP
+       ----------------------------------------------------- */
+
+    .popup-overlay {
+        padding: 16px 10px;
+
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+
+    .popup {
+        width: calc(100vw - 20px);
+
+        max-width: 560px;
+
+        max-height: calc(100vh - 32px);
+
+        height: auto;
+
+        margin: 0 auto;
+
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        scrollbar-width: thin;
+
+        scrollbar-color: #9a9a9a #f0f0f0;
+    }
+
+
+    .popup::-webkit-scrollbar {
+        width: 7px;
+    }
+
+
+    .popup::-webkit-scrollbar-track {
+        background: #f0f0f0;
+    }
+
+
+    .popup::-webkit-scrollbar-thumb {
+        background: #a8a8a8;
+
+        border-radius: 10px;
+    }
+
+
+    .popup::-webkit-scrollbar-thumb:hover {
+        background: #888888;
+    }
+
+
+    .popup-content {
+        padding: 22px 20px 26px;
+
+        height: auto;
+
+        max-height: none;
+
+        overflow: visible;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .adminhome-container-md .header {
+        padding: 0 8px;
+    }
+
+
+    .adminhome-container-md .left-section {
+        gap: 3px;
+    }
+
+
+    .adminhome-container-md .logo {
+        font-size: 16px;
+    }
+
+
+    .adminhome-container-md .Admin {
+        margin-left: 3px;
+
+        font-size: 7px;
+    }
+
+
+    .adminhome-container-md .back-btn {
+        width: 32px;
+        height: 32px;
+
+        font-size: 17px;
+    }
+
+
+    .adminhome-container-md > main {
+        padding: 19px 9px 28px;
+    }
+
+
+    .adminhome-container-md .page-title-md {
+        font-size: 18px;
+    }
+
+
+    .adminhome-container-md .master-action-btn-md {
+        height: 55px;
+
+        padding-left: 16px;
+
+        font-size: 12px;
+    }
+
+
+    .adminhome-container-md .master-list-container-md {
+        height: 185px;
+
+        max-height: 185px;
+    }
+
+
+    .adminhome-container-md .master-list-container-md img {
+        width: 29px !important;
+        height: 29px !important;
+
+        min-width: 29px;
+    }
+
+
+    .adminhome-container-md .category-row-md {
+        min-height: 40px;
+    }
+
+
+    .adminhome-container-md .category-name-md {
+        font-size: 12px;
+    }
+
+
+    .adminhome-container-md .category-actions-md {
+        gap: 3px;
+    }
+
+
+    .adminhome-container-md .edit-master-btn-md,
+    .adminhome-container-md .delete-master-btn-md {
+        width: 25px;
+        height: 25px;
+    }
+
+
+    /* -----------------------------------------------------
+       VERY SMALL POPUP
+       ----------------------------------------------------- */
+
+    .popup-overlay {
+        padding: 12px 8px;
+    }
+
+
+    .popup {
+        width: calc(100vw - 16px);
+
+        max-height: calc(100vh - 24px);
+
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+
+    .popup::-webkit-scrollbar {
+        width: 6px;
+    }
+}

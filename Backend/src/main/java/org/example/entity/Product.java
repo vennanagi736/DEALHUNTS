@@ -46,8 +46,17 @@ public class Product {
 
     @Column(length = 2000)
     private String description;
+
+    /*
+     * This is NOT stored directly in the product table.
+     * It is used only for receiving/sending specification data
+     * through JSON.
+     *
+     * Actual specification values are stored in:
+     * product_attribute_value
+     */
     @Transient
-private Map<String, String> specifications = new LinkedHashMap<>();
+    private Map<String, String> specifications = new LinkedHashMap<>();
 
     // ============================================================
     // BASE PRICE
@@ -150,13 +159,10 @@ private Map<String, String> specifications = new LinkedHashMap<>();
     public String getDescription() {
         return description;
     }
-    public Map<String, String> getSpecifications() {
-    return specifications;
-}
 
-public void setSpecifications(Map<String, String> specifications) {
-    this.specifications = specifications;
-}
+    public Map<String, String> getSpecifications() {
+        return specifications;
+    }
 
     public BigDecimal getBasePrice() {
         return basePrice;
@@ -204,6 +210,10 @@ public void setSpecifications(Map<String, String> specifications) {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setSpecifications(Map<String, String> specifications) {
+        this.specifications = specifications;
     }
 
     public void setBasePrice(BigDecimal basePrice) {

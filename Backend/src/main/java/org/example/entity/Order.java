@@ -39,6 +39,16 @@ public class Order {
 
 
     /* ============================================================
+       VENDOR
+    ============================================================ */
+
+    @ManyToOne
+    @JoinColumn(name = "vendor_id", nullable = false)
+    @JsonIgnore
+    private Vendor vendor;
+
+
+    /* ============================================================
        ORDER DETAILS
     ============================================================ */
 
@@ -51,7 +61,7 @@ public class Order {
     @Column(nullable = false)
     private BigDecimal deliveryCharge;
 
-    @Column(nullable = false)
+    @Column(name = "total_amount", nullable=false)
     private BigDecimal total;
 
 
@@ -124,6 +134,18 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    /* ============================================================
+       VENDOR GETTER / SETTER
+    ============================================================ */
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
     }
 
     public BigDecimal getSubtotal() {

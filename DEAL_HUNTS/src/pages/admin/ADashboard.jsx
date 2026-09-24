@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import "../../styles/Admin.css";
 import "../../styles/ADashboard.css";
+import "../../styles/AProduct.css";
 
 import {
   getUserCount,
@@ -13,7 +13,6 @@ import {
   getCategoryCount,
 } from "../../api/AdminApi";
 
-import AdminHeader from "../../components/admin/AHeader";
 import AdminOperations from "../../components/admin/AOperations";
 import BusinessAnalytics from "../../components/admin/ABusinessAnalytics";
 import TopProductsChart from "../../components/admin/ATopProductsChart";
@@ -188,32 +187,19 @@ function AdminDashboard() {
   /* =========================================================
      STATES
   ========================================================= */
-  const [query, setQuery] = useState("");
+
   const [trendingItems, setTrendingItems] = useState([]);
+
   const [userCount, setUserCount] = useState(0);
   const [vendorCount, setVendorCount] = useState(0);
   const [productCount, setProductCount] = useState(0);
-  const [orderCount] = useState(0);
   const [categoryCount, setCategoryCount] = useState(0);
-  const [complaintsCount] = useState(4);
-  const [feedbackCount] = useState(0);
-  const [lowStockAlertsCount] =
-    useState(0);
   const [promotionCount, setPromotionCount] = useState(0);
 
-  /* =========================================================
-     LOGOUT
-  ========================================================= */
-
-  const handleLogout = () => {
-
-    localStorage.removeItem("adminJwtToken");
-
-    localStorage.removeItem("role");
-
-    navigate("/adminLogin");
-
-  };
+  const [orderCount] = useState(0);
+  const [complaintsCount] = useState(4);
+  const [feedbackCount] = useState(0);
+  const [lowStockAlertsCount] = useState(0);
 
 
   /* =========================================================
@@ -252,6 +238,10 @@ function AdminDashboard() {
 
         localStorage.removeItem(
           "adminJwtToken"
+        );
+
+        localStorage.removeItem(
+          "role"
         );
 
         navigate("/adminLogin");
@@ -310,76 +300,69 @@ function AdminDashboard() {
      LOAD DASHBOARD COUNTS
   ========================================================= */
 
- useEffect(() => {
+  useEffect(() => {
 
-  const loadDashboardStats = async () => {
+    const loadDashboardStats = async () => {
 
-    try {
+      try {
 
-      const [
-        userResponse,
-        vendorResponse,
-        productResponse,
-        promotionResponse,
-        categoryResponse,
-        // lowStockResponse
-      ] = await Promise.all([
+        const [
+          userResponse,
+          vendorResponse,
+          productResponse,
+          promotionResponse,
+          categoryResponse,
+        ] = await Promise.all([
 
-        getUserCount(),
+          getUserCount(),
 
-        getVendorCount(),
+          getVendorCount(),
 
-        getProductCount(),
+          getProductCount(),
 
-        getPromotionCount(),
+          getPromotionCount(),
 
-        getCategoryCount(),
+          getCategoryCount(),
 
-        // getLowStockAlertsCount(),
-
-      ]);
+        ]);
 
 
-      setUserCount(
-        Number(userResponse.data) || 0
-      );
+        setUserCount(
+          Number(userResponse.data) || 0
+        );
 
-      setVendorCount(
-        Number(vendorResponse.data) || 0
-      );
+        setVendorCount(
+          Number(vendorResponse.data) || 0
+        );
 
-      setProductCount(
-        Number(productResponse.data) || 0
-      );
+        setProductCount(
+          Number(productResponse.data) || 0
+        );
 
-      setPromotionCount(
-        Number(promotionResponse.data) || 0
-      );
+        setPromotionCount(
+          Number(promotionResponse.data) || 0
+        );
 
-      setCategoryCount(
-        Number(categoryResponse.data) || 0
-      );
+        setCategoryCount(
+          Number(categoryResponse.data) || 0
+        );
 
-      // setLowStockAlertsCount(
-      //   Number(lowStockResponse.data) || 0
-      // );
+      } catch (error) {
 
+        console.error(
+          "Failed to load dashboard stats:",
+          error
+        );
 
-    } catch (error) {
+      }
 
-      console.error(
-        "Failed to load dashboard stats:",
-        error
-      );
-
-    }
-
-  };
+    };
 
 
-  loadDashboardStats();
+    loadDashboardStats();
 
-}, []);
+  }, []);
+
 
   /* =========================================================
      SEARCH
@@ -412,18 +395,6 @@ function AdminDashboard() {
   return (
 
     <div className="db-shell">
-
-
-      {/* =====================================================
-          HEADER
-      ===================================================== */}
-
-      <AdminHeader
-        query={query}
-        setQuery={setQuery}
-        onSearch={handleSearch}
-        onLogout={handleLogout}
-      />
 
 
       {/* =====================================================
@@ -482,10 +453,9 @@ function AdminDashboard() {
 
           {/* =================================================
               RIGHT
-              
               1. Trending Carousel
-              2. Trending Deals
-              3. Trending Categories
+              2. Trending Categories
+              3. Trending Deals
               4. Recent Feedback
           ================================================= */}
 
@@ -504,6 +474,7 @@ function AdminDashboard() {
 
             </div>
 
+
             {/* =================================================
                 2. TRENDING CATEGORIES
             ================================================= */}
@@ -513,6 +484,7 @@ function AdminDashboard() {
               <ATrendingCategories />
 
             </div>
+
 
             {/* =================================================
                 3. TRENDING DEALS
@@ -525,7 +497,6 @@ function AdminDashboard() {
               />
 
             </div>
-
 
 
             {/* =================================================
@@ -543,6 +514,7 @@ function AdminDashboard() {
 
           </aside>
 
+
         </div>
 
       </main>
@@ -552,13 +524,13 @@ function AdminDashboard() {
           FOOTER
       ===================================================== */}
 
-      {/* <footer className="db-footer">
-
+      {/*
+      <footer className="db-footer">
         <p>
           © 2026 DealHunts. All rights reserved.
         </p>
-
-      </footer> */}
+      </footer>
+      */}
 
 
     </div>

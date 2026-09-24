@@ -47,24 +47,12 @@ public class ProductController {
             ColorRepository colorRepository,
             VariantRepository variantRepository
     ) {
-
-        this.productService =
-                productService;
-
-        this.productRepository =
-                productRepository;
-
-        this.categoryRepository =
-                categoryRepository;
-
-        this.brandRepository =
-                brandRepository;
-
-        this.colorRepository =
-                colorRepository;
-
-        this.variantRepository =
-                variantRepository;
+        this.productService = productService;
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
+        this.brandRepository = brandRepository;
+        this.colorRepository = colorRepository;
+        this.variantRepository = variantRepository;
     }
 
     // ============================================================
@@ -75,11 +63,8 @@ public class ProductController {
     public ResponseEntity<Product> addProduct(
             @RequestBody Product product
     ) {
-
         return ResponseEntity.ok(
-                productService.saveProduct(
-                        product
-                )
+                productService.saveProduct(product)
         );
     }
 
@@ -115,7 +100,6 @@ public class ProductController {
     public ResponseEntity<List<Product>> searchProduct(
             @RequestParam String name
     ) {
-
         return ResponseEntity.ok(
                 productService.searchProduct(name)
         );
@@ -138,12 +122,12 @@ public class ProductController {
     // ============================================================
 
     @GetMapping("/cards")
-    public ResponseEntity<List<ProductCardDTO>>
-    getProductCards() {
+    public ResponseEntity<List<ProductCardDTO>> getProductCards() {
 
-        return ResponseEntity.ok(
-                productService.getActiveProductCards()
-        );
+        List<ProductCardDTO> products =
+                productService.getActiveProductCards();
+
+        return ResponseEntity.ok(products);
     }
 
     // ============================================================
@@ -154,7 +138,6 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(
             @PathVariable Long id
     ) {
-
         productService.deleteProduct(id);
 
         return ResponseEntity.ok(
@@ -170,7 +153,6 @@ public class ProductController {
     public ResponseEntity<String> restoreProduct(
             @PathVariable Long id
     ) {
-
         productService.restoreProduct(id);
 
         return ResponseEntity.ok(
@@ -189,17 +171,14 @@ public class ProductController {
     ) {
 
         Category existing =
-                categoryRepository
-                        .findById(id)
+                categoryRepository.findById(id)
                         .orElseThrow(() ->
                                 new RuntimeException(
                                         "Category not found"
                                 )
                         );
 
-        existing.setName(
-                category.getName()
-        );
+        existing.setName(category.getName());
 
         categoryRepository.save(existing);
 
@@ -219,17 +198,14 @@ public class ProductController {
     ) {
 
         Brand existing =
-                brandRepository
-                        .findById(id)
+                brandRepository.findById(id)
                         .orElseThrow(() ->
                                 new RuntimeException(
                                         "Brand not found"
                                 )
                         );
 
-        existing.setName(
-                brand.getName()
-        );
+        existing.setName(brand.getName());
 
         brandRepository.save(existing);
 
@@ -249,25 +225,16 @@ public class ProductController {
     ) {
 
         Color existing =
-                colorRepository
-                        .findById(id)
+                colorRepository.findById(id)
                         .orElseThrow(() ->
                                 new RuntimeException(
                                         "Color not found"
                                 )
                         );
 
-        existing.setName(
-                color.getName()
-        );
-
-        existing.setHexCode(
-                color.getHexCode()
-        );
-
-        existing.setPrice(
-                color.getPrice()
-        );
+        existing.setName(color.getName());
+        existing.setHexCode(color.getHexCode());
+        existing.setPrice(color.getPrice());
 
         colorRepository.save(existing);
 
@@ -287,37 +254,25 @@ public class ProductController {
     ) {
 
         Variant existing =
-                variantRepository
-                        .findById(id)
+                variantRepository.findById(id)
                         .orElseThrow(() ->
                                 new RuntimeException(
                                         "Variant not found"
                                 )
                         );
 
-        // --------------------------------------------------------
-        // Variant name
-        // --------------------------------------------------------
-
-        existing.setName(
-                variant.getName()
-        );
-
-        // --------------------------------------------------------
-        // Dynamic attributes
-        // --------------------------------------------------------
+        existing.setName(variant.getName());
 
         existing.setAttributeValues(
                 variant.getAttributeValues()
         );
 
-        variantRepository.save(
-                existing
-        );
+        variantRepository.save(existing);
 
         return ResponseEntity.ok(
                 "Variant updated successfully"
         );
+        
     }
 
     // ============================================================
@@ -397,13 +352,10 @@ public class ProductController {
                 productService.getProductById(id);
 
         if (product == null) {
-            return ResponseEntity.notFound()
-                    .build();
+            return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(
-                product
-        );
+        return ResponseEntity.ok(product);
     }
 
     // ============================================================
@@ -422,9 +374,7 @@ public class ProductController {
                         product
                 );
 
-        return ResponseEntity.ok(
-                updatedProduct
-        );
+        return ResponseEntity.ok(updatedProduct);
     }
 
     // ============================================================
@@ -432,8 +382,7 @@ public class ProductController {
     // ============================================================
 
     @GetMapping("/{id}/details")
-    public ResponseEntity<ProductDetailsDTO>
-    getProductDetails(
+    public ResponseEntity<ProductDetailsDTO> getProductDetails(
             @PathVariable Long id
     ) {
 

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
-import SideWindow from "../../components/SideBar";
 import Popup from "../../components/Popup";
 
 import "../../styles/AManageTrendingDeals.css";
 
-import { getAllProducts,getProductImages } from "../../api/ProductApi";
+import {
+    getAllProducts,
+    getProductImages
+} from "../../api/ProductApi";
 
 import {
     getTrendingDeals,
@@ -17,35 +18,37 @@ import {
 
 function AdminManageTrendingDeals() {
 
-    const navigate = useNavigate();
-
-
     // =====================================================
     // AVAILABLE PRODUCTS
     // =====================================================
 
     const [products, setProducts] = useState([]);
-    const [productImages, setProductImages ] = useState({});
+
+    const [productImages, setProductImages] = useState({});
+
 
     // =====================================================
     // CURRENT TRENDING DEALS
     // =====================================================
 
-    const [selectedProducts, setSelectedProducts] = useState([]);
+    const [selectedProducts, setSelectedProducts] =
+        useState([]);
 
 
     // =====================================================
     // TEMPORARY PRODUCTS SELECTED INSIDE POPUP
     // =====================================================
 
-    const [pendingProducts, setPendingProducts] = useState([]);
+    const [pendingProducts, setPendingProducts] =
+        useState([]);
 
 
     // =====================================================
     // POPUP
     // =====================================================
 
-    const [showPopup, setShowPopup] = useState(false);
+    const [showPopup, setShowPopup] =
+        useState(false);
 
 
     // =====================================================
@@ -81,45 +84,55 @@ function AdminManageTrendingDeals() {
     // FETCH TRENDING DEALS
     // =====================================================
 
-   const fetchTrendingDeals = async () => {
+    const fetchTrendingDeals = async () => {
 
-    try {
+        try {
 
-        const res = await getTrendingDeals();
+            const res = await getTrendingDeals();
 
-        setSelectedProducts(res.data);
+            setSelectedProducts(res.data);
 
-        const imageMap = {};
 
-        for (const deal of res.data) {
+            const imageMap = {};
 
-            const productId = deal.product.id;
 
-            const imageRes =
-                await getProductImages(productId);
+            for (const deal of res.data) {
 
-            console.log(
-                "Images for product",
-                productId,
-                imageRes.data
+                const productId =
+                    deal.product.id;
+
+
+                const imageRes =
+                    await getProductImages(productId);
+
+
+                console.log(
+                    "Images for product",
+                    productId,
+                    imageRes.data
+                );
+
+
+                imageMap[productId] =
+                    imageRes.data?.[0]?.thumbnailUrl ||
+                    null;
+
+            }
+
+
+            setProductImages(imageMap);
+
+        } catch (error) {
+
+            console.error(
+                "Failed to fetch trending deals:",
+                error
             );
 
-            imageMap[productId] =
-                imageRes.data?.[0]?.thumbnailUrl || null;
         }
 
-        setProductImages(imageMap);
+    };
 
-    } catch (error) {
-
-        console.error(
-            "Failed to fetch trending deals:",
-            error
-        );
-
-    }
-
-};
 
     // =====================================================
     // INITIAL LOAD
@@ -144,7 +157,11 @@ function AdminManageTrendingDeals() {
                 deal => deal.product
             );
 
-        setPendingProducts(currentProducts);
+
+        setPendingProducts(
+            currentProducts
+        );
+
 
         setShowPopup(true);
 
@@ -172,7 +189,8 @@ function AdminManageTrendingDeals() {
 
         const alreadyPending =
             pendingProducts.some(
-                item => item.id === product.id
+                item =>
+                    item.id === product.id
             );
 
 
@@ -185,12 +203,15 @@ function AdminManageTrendingDeals() {
             const alreadyTrending =
                 selectedProducts.some(
                     deal =>
-                        deal.product.id === product.id
+                        deal.product.id ===
+                        product.id
                 );
 
 
-            // Existing trending products cannot
-            // be removed from popup.
+            /*
+             * Existing trending products cannot
+             * be removed from popup.
+             */
 
             if (alreadyTrending) {
 
@@ -205,6 +226,7 @@ function AdminManageTrendingDeals() {
                         item.id !== product.id
                 )
             );
+
 
             return;
 
@@ -353,6 +375,7 @@ function AdminManageTrendingDeals() {
                 dealId
             );
 
+
             await fetchTrendingDeals();
 
         } catch (error) {
@@ -379,52 +402,6 @@ function AdminManageTrendingDeals() {
     return (
 
         <div className="adminhome-container">
-
-
-            {/* =================================================
-                HEADER
-            ================================================= */}
-
-            <header className="header">
-
-                <div className="left-section">
-                    <SideWindow />
-                </div>
-
-
-                <div className="logo-container">
-
-                    <div className="logo">
-
-                        <span className="Gold">
-                            DEAL
-                        </span>
-
-                        <span className="Black">
-                            HUNTS
-                        </span>
-
-                        <span className="Admin">
-                            Admin
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <nav className="admin-nav-links">
-
-                    <div
-                        className="back-btn"
-                        onClick={() => navigate(-1)}
-                    >
-                        &#8592;
-                    </div>
-
-                </nav>
-
-            </header>
 
 
             {/* =================================================
@@ -493,9 +470,9 @@ function AdminManageTrendingDeals() {
 
                         {selectedProducts.length === 0 ? (
 
-                            /* =================================================
+                            /* =============================================
                                 EMPTY STATE
-                            ================================================= */
+                            ============================================= */
 
                             <div className="empty-trending-deals">
 
@@ -516,9 +493,9 @@ function AdminManageTrendingDeals() {
 
                         ) : (
 
-                            /* =================================================
+                            /* =============================================
                                 SELECTED PRODUCTS
-                            ================================================= */
+                            ============================================= */
 
                             selectedProducts.map((deal) => (
 
@@ -527,33 +504,42 @@ function AdminManageTrendingDeals() {
                                     className="trending-deal-item"
                                 >
 
-                                    {/* =========================================
+
+                                    {/* =====================================
                                         PRODUCT IMAGE
-                                    ========================================= */}
+                                    ===================================== */}
 
                                     <div className="trending-deal-image">
 
-                                    {productImages[deal.product.id] ? (
+                                        {productImages[
+                                            deal.product.id
+                                        ] ? (
 
-    <img
-        src={productImages[deal.product.id]}
-        alt={deal.product.name}
-    />
+                                            <img
+                                                src={
+                                                    productImages[
+                                                        deal.product.id
+                                                    ]
+                                                }
+                                                alt={
+                                                    deal.product.name
+                                                }
+                                            />
 
-) : (
+                                        ) : (
 
-    <div className="trending-no-image">
-        No Image
-    </div>
+                                            <div className="trending-no-image">
+                                                No Image
+                                            </div>
 
-)}   
+                                        )}
 
-                             </div>
+                                    </div>
 
 
-                                    {/* =========================================
+                                    {/* =====================================
                                         PRODUCT INFORMATION
-                                    ========================================= */}
+                                    ===================================== */}
 
                                     <div className="trending-deal-info">
 
@@ -564,7 +550,7 @@ function AdminManageTrendingDeals() {
 
                                         <p>
                                             Brand:{" "}
-                                            {deal.product.brand}
+                                            {deal.product.brand?.name}
                                         </p>
 
 
@@ -587,6 +573,7 @@ function AdminManageTrendingDeals() {
 
                                     </div>
 
+
                                 </div>
 
                             ))
@@ -595,7 +582,9 @@ function AdminManageTrendingDeals() {
 
                     </div>
 
+
                 </section>
+
 
             </main>
 
@@ -632,18 +621,18 @@ function AdminManageTrendingDeals() {
 
                         ) : (
 
-                            /* =================================================
+                            /* =============================================
                                 PRODUCT GRID
-                            ================================================= */
+                            ============================================= */
 
                             <div className="trending-products-grid">
 
                                 {products.map((product) => {
 
 
-                                    // =========================================
+                                    // =====================================
                                     // CHECK ALREADY TRENDING
-                                    // =========================================
+                                    // =====================================
 
                                     const isAlreadyTrending =
                                         selectedProducts.some(
@@ -653,9 +642,9 @@ function AdminManageTrendingDeals() {
                                         );
 
 
-                                    // =========================================
+                                    // =====================================
                                     // CHECK PENDING
-                                    // =========================================
+                                    // =====================================
 
                                     const isPending =
                                         pendingProducts.some(
@@ -698,9 +687,9 @@ function AdminManageTrendingDeals() {
                                             }}
                                         >
 
+
                                             {/* =================================
                                                 PRODUCT INFORMATION
-                                                NO IMAGE
                                             ================================= */}
 
                                             <div className="trending-product-info">
@@ -711,13 +700,13 @@ function AdminManageTrendingDeals() {
 
 
                                                 <p>
-                                                    {product.brand}
+                                                    {product.brand?.name}
                                                 </p>
 
 
-                                                {/* =================================
+                                                {/* =============================
                                                     SELECT BUTTON
-                                                ================================= */}
+                                                ============================= */}
 
                                                 <button
                                                     type="button"
@@ -751,6 +740,7 @@ function AdminManageTrendingDeals() {
                                                 </button>
 
                                             </div>
+
 
                                         </div>
 
@@ -803,7 +793,9 @@ function AdminManageTrendingDeals() {
 
                         )}
 
+
                     </div>
+
 
                 </div>
 

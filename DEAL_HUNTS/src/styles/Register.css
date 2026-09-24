@@ -1,151 +1,375 @@
-/* Wrapper */
-.form-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  padding: 20px;
-  box-sizing: border-box;
+/* ============================================================
+   DEALHUNTS — USER REGISTER PAGE
+
+   GOLD  : #d4af37
+   BLACK : #000000
+   WHITE : #ffffff
+============================================================ */
+
+/* ============================================================
+   REGISTER PAGE
+============================================================ */
+
+.dh-user-register-page {
+    width: 100%;
+    min-height: calc(100vh - 72px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 30px 20px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
 }
 
-/* Base register box */
-.register-box {
-  max-width: 600px;
-  padding: 40px 30px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  align-items: center;
-  margin-top: 30px;
+
+/* ============================================================
+   REGISTER FORM
+============================================================ */
+
+.dh-user-register-form {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0;
+    padding: 0;
 }
 
-/* Vendor box wider */
-.register-box.vendor-register-box {
-  max-width: 600px;
-  width: 100%;
-  margin-top: 50px;
+
+/* ============================================================
+   REGISTER BOX
+============================================================ */
+
+.dh-user-register-box {
+    width: 100%;
+    max-width: 600px;
+
+    padding: 40px 30px;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 25px;
+    margin-top: -50px;
+
+    box-sizing: border-box;
 }
 
-/* Title */
-.register-box.vendor-register-box .register-title {
-  font-size: 32px;
-  white-space: nowrap;
-  text-align: center;
+
+/* ============================================================
+   TITLE
+============================================================ */
+
+.dh-user-register-title {
+    margin: 0;
+
+    font-size: 30px;
+    font-weight: 700;
+    color: #000000;
+    text-align: center;
+    white-space: nowrap;
 }
 
-/* Inputs */
-.register-box input, .input-field{
-  width: 100%;
-  padding: 14px 12px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-/* Placeholder option (disabled) */
-.input-field option{
-  color: black;     
+
+/* ============================================================
+   REGISTER DETAILS
+============================================================ */
+
+.dh-user-register-details {
+    width: 100%;
 }
 
-/* Details grid layout */
-.vendor-register-box .details-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  width: 100%;
-}
 
-/* Button */
-.register-button {
-  width: 90%;
-  padding: 10px 0;
-  font-size: 1.3rem;
-  border-radius: 10px;
-  border: 2px solid white;
-  background-color: black;
-  color: white;
-  font-family: cursive;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin: 0 auto;
-}
+/* ============================================================
+   INPUTS
+============================================================ */
 
-.register-button:hover {
-  background-color: gold;
-  color: black;
-  border: 2px solid black;
-}
+.dh-user-register-details input,
+.dh-user-register-details .input-field {
+    width: 100%;
 
-/* Messages */
-.error-message,
-.response-message {
-  text-align: center;
-  font-weight: 500;
-}
+    padding: 14px 12px;
 
-/* Login link */
-.login-link-container {
-  text-align: center;
-  font-size: 0.95rem;
-}
+    font-size: 1rem;
 
-.login-link {
-  color: blue;
-  text-decoration: none;
-}
-
-.login-link:hover {
-  text-decoration: underline;
-}
-
-/*Vendor Login*/
-.login-btn button{
-    background-color: gold;
-    color: black;
-    border: none;
-    font-family: cursive;
-    font-size: 20px;
-    padding: 5px 5px;
+    border: 1px solid #cccccc;
     border-radius: 8px;
-}
-/* .login-btn button:hover{
-  color:black;
-  background-color: gold;
-  border: 2px solid black;
-}  */
 
-.location button{
-  color:white;
-  background-color: black;
-  padding: 10px;
-  border-radius:8px;
-  font-family: cursive;
-  cursor: pointer;
+    box-sizing: border-box;
+
+    background: #ffffff;
+    margin-bottom: 8px;
+    color: #000000;
 }
-.location button:hover{
-  color: black;
-  border: 2px solid black;
-  background-color: gold;
+
+
+/* ============================================================
+   INPUT FOCUS
+============================================================ */
+
+.dh-user-register-details input:focus,
+.dh-user-register-details .input-field:focus {
+    outline: none;
+
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 0 2px rgba(212, 175, 55, 0.15);
 }
-.location-wrapper{
-  width: 100%;
+
+
+/* ============================================================
+   SELECT OPTIONS
+============================================================ */
+
+.dh-user-register-details .input-field option {
+    color: #000000;
 }
-.location-wrapper button{
-  border:2px solid white;
-  padding: 8px 10px;
-  border-radius: 8px;
-  margin-left: 350px;
-  margin-top: 15px;
-  background-color: black;
-  color: white;
-  font-family: cursive;
-  cursor: pointer;
+
+
+/* ============================================================
+   ERROR MESSAGE
+============================================================ */
+
+.dh-user-register-error {
+    margin: 0;
+
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    color: #d00000;
 }
-.location-wrapper button:hover{
-  color: black;
-  border: 2px solid black;
-  background-color: gold;
+
+
+/* ============================================================
+   RESPONSE MESSAGE
+============================================================ */
+
+.dh-user-register-response {
+    margin: 0;
+
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+/* ============================================================
+   SUCCESS
+============================================================ */
+
+.dh-user-register-success {
+    color: green;
+}
+
+
+/* ============================================================
+   FAILURE
+============================================================ */
+
+.dh-user-register-failure {
+    color: red;
+}
+
+
+/* ============================================================
+   REGISTER BUTTON
+============================================================ */
+
+.dh-user-register-submit {
+    width: 90%;
+
+    padding: 12px 0;
+
+    font-size: 1.1rem;
+    font-weight: 600;
+
+    border-radius: 10px;
+    border: 2px solid #d4af37;
+
+    background: #d4af37;
+    color: #000000;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+/* ============================================================
+   REGISTER BUTTON HOVER
+============================================================ */
+
+.dh-user-register-submit:hover {
+    background: #d4af37;
+    color: #000000;
+
+    border-color: #000000;
+}
+
+
+/* ============================================================
+   LOGIN LINK CONTAINER
+============================================================ */
+
+.dh-user-register-login {
+    margin: 0;
+
+    text-align: center;
+
+    font-size: 0.95rem;
+
+    color: #333333;
+}
+
+
+/* ============================================================
+   LOGIN LINK
+============================================================ */
+
+.dh-user-register-link {
+    color: #000000;
+
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+
+/* ============================================================
+   LOGIN LINK HOVER
+============================================================ */
+
+.dh-user-register-link:hover {
+    color: #d4af37;
+
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 700px) {
+
+    .dh-user-register-page {
+        min-height: calc(100vh - 64px);
+
+        padding: 24px 16px;
+    }
+
+    .dh-user-register-box {
+        max-width: 550px;
+
+        padding: 35px 24px;
+    }
+
+    .dh-user-register-title {
+        font-size: 28px;
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .dh-user-register-page {
+        min-height: calc(100vh - 60px);
+
+        padding: 20px 12px;
+    }
+
+    .dh-user-register-box {
+        padding: 30px 18px;
+
+        gap: 20px;
+    }
+
+    .dh-user-register-title {
+        font-size: 26px;
+    }
+
+    .dh-user-register-submit {
+        width: 100%;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 360px) {
+
+    .dh-user-register-page {
+        min-height: calc(100vh - 54px);
+
+        padding: 16px 10px;
+    }
+
+    .dh-user-register-box {
+        padding: 25px 14px;
+    }
+
+    .dh-user-register-title {
+        font-size: 24px;
+    }
+}
+
+.dh-user-register-submit:disabled {
+    background: #d4af37;
+    color: #000000;
+    border-color: #d4af37;                     
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+    box-shadow: none;
+}
+
+.dh-user-register-submit:disabled:hover {
+    background: #d4af37;
+    color: #000000;
+    border-color: #d4af37;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }

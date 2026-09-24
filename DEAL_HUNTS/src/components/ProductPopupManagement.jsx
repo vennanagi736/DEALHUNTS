@@ -34,19 +34,19 @@ function ProductManagementPopup({
             width="750px"
         >
 
-            <div className="image-management-popup">
+            <div className="image-management-popup-pp">
 
                 {/* =================================================
                     PRODUCT INFORMATION
                 ================================================= */}
 
-                <div className="popup-product-header">
+                <div className="popup-product-header-pp">
 
                     <h2>
                         {product.name}
                     </h2>
 
-                    <div className="product-info-grid">
+                    <div className="product-info-grid-pp">
 
                         <p>
                             <strong>
@@ -54,7 +54,7 @@ function ProductManagementPopup({
                             </strong>
 
                             <span>
-                                {product.brand}
+                                {product.brand?.name || "N/A"}
                             </span>
                         </p>
 
@@ -64,7 +64,7 @@ function ProductManagementPopup({
                             </strong>
 
                             <span>
-                                {product.category}
+                                {product.category?.name || "N/A"}
                             </span>
                         </p>
 
@@ -86,8 +86,8 @@ function ProductManagementPopup({
                             <span
                                 className={
                                     product.active
-                                        ? "status active"
-                                        : "status inactive"
+                                        ? "status-pp active-pp"
+                                        : "status-pp inactive-pp"
                                 }
                             >
                                 {product.active
@@ -101,7 +101,8 @@ function ProductManagementPopup({
                     {/* EDIT BUTTON */}
 
                     <button
-                        className="edit-product-btn"
+                        type="button"
+                        className="edit-product-btn-pp"
                         onClick={() => {
 
                             onClose();
@@ -122,15 +123,15 @@ function ProductManagementPopup({
                     IMAGES
                 ================================================= */}
 
-                <div className="images-section">
+                <div className="images-section-pp">
 
-                    <div className="image-title">
+                    <div className="image-title-pp">
 
                         <h3>
                             Product Images
                         </h3>
 
-                        <label className="select-all">
+                        <label className="select-all-pp">
 
                             <input
                                 type="checkbox"
@@ -149,16 +150,16 @@ function ProductManagementPopup({
                     </div>
 
 
-                    <div className="images-wrapper">
+                    <div className="images-wrapper-pp">
 
-                        <div className="image-grid">
+                        <div className="image-grid-pp">
 
                             {/* EMPTY STATE */}
 
                             {productImages?.length === 0 &&
                                 selectedFiles?.length === 0 && (
 
-                                <div className="no-images-message">
+                                <div className="no-images-message-pp">
 
                                     <p>
                                         No images added yet
@@ -180,13 +181,13 @@ function ProductManagementPopup({
                                 (img, index) => (
 
                                 <div
-                                    className="image-card"
+                                    className="image-card-pp"
                                     key={`existing-${img.id}`}
                                 >
 
                                     <input
                                         type="checkbox"
-                                        className="image-checkbox"
+                                        className="image-checkbox-pp"
                                         checked={
                                             selectedImages?.includes(
                                                 img.id
@@ -211,7 +212,7 @@ function ProductManagementPopup({
                                         }
                                     />
 
-                                    <div className="image-name">
+                                    <div className="image-name-pp">
                                         Image {index + 1}
                                     </div>
 
@@ -226,7 +227,7 @@ function ProductManagementPopup({
                                 (file, index) => (
 
                                 <div
-                                    className="image-card"
+                                    className="image-card-pp"
                                     key={`new-${index}`}
                                 >
 
@@ -239,13 +240,13 @@ function ProductManagementPopup({
                                         alt="preview"
                                     />
 
-                                    <div className="image-name">
+                                    <div className="image-name-pp">
                                         {file.name}
                                     </div>
 
                                     <button
                                         type="button"
-                                        className="remove-image-btn"
+                                        className="remove-image-btn-pp"
                                         onClick={() =>
                                             setSelectedFiles(
                                                 prev =>
@@ -273,10 +274,10 @@ function ProductManagementPopup({
                             ) < 5 && (
 
                                 <label
-                                    className="add-image-card"
+                                    className="add-image-card-pp"
                                 >
 
-                                    <span className="plus-icon">
+                                    <span className="plus-icon-pp">
                                         +
                                     </span>
 
@@ -305,10 +306,11 @@ function ProductManagementPopup({
                     IMAGE ACTIONS
                 ================================================= */}
 
-                <div className="image-actions">
+                <div className="image-actions-pp">
 
                     <button
-                        className="upload-btn"
+                        type="button"
+                        className="upload-btn-pp"
                         disabled={
                             !selectedFiles ||
                             selectedFiles.length === 0
@@ -322,7 +324,7 @@ function ProductManagementPopup({
 
 
                     <label
-                        className="change-btn"
+                        className="change-btn-pp"
                         style={{
                             opacity:
                                 selectedImages?.length !== 1
@@ -374,7 +376,8 @@ function ProductManagementPopup({
 
 
                     <button
-                        className="delete-btn"
+                        type="button"
+                        className="delete-btn-pp"
                         disabled={
                             !selectedImages ||
                             selectedImages.length === 0

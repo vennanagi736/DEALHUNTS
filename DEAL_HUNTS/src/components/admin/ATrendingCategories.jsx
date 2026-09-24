@@ -71,13 +71,13 @@ function ATrendingCategories() {
     if (categories.length === 0) {
 
         return (
-            <div className="admin-trending-carousel">
+            <div className="admin-trending-carousel-atc">
 
-                <div className="admin-trending-title">
+                <div className="admin-trending-title-atc">
                     <h3>Trending Categories</h3>
                 </div>
 
-                <div className="admin-trending-empty">
+                <div className="admin-trending-empty-atc">
                     No Trending Categories
                 </div>
 
@@ -92,11 +92,11 @@ function ATrendingCategories() {
 
     return (
 
-        <div className="admin-trending-carousel">
+        <div className="admin-trending-carousel-atc">
 
             {/* TITLE */}
 
-            <div className="admin-trending-title">
+            <div className="admin-trending-title-atc">
 
                 <h3>
                     Trending Categories
@@ -107,16 +107,16 @@ function ATrendingCategories() {
 
             {/* CATEGORY CONTENT */}
 
-            <div className="admin-trending-category-content">
+            <div className="admin-trending-category-content-atc">
 
                 {/* CATEGORY IMAGE */}
 
-                <div className="admin-trending-image-wrapper">
+                <div className="admin-trending-image-wrapper-atc">
 
                     <img
                         src={category.imageUrl}
                         alt={category.name}
-                        className="admin-trending-image"
+                        className="admin-trending-image-atc"
                     />
 
                 </div>
@@ -124,7 +124,7 @@ function ATrendingCategories() {
 
                 {/* CATEGORY NAME */}
 
-                <div className="admin-trending-details">
+                <div className="admin-trending-details-atc">
 
                     <h4>
                         {category.name}
@@ -139,7 +139,7 @@ function ATrendingCategories() {
 
             {categories.length > 1 && (
 
-                <div className="admin-trending-dots">
+                <div className="admin-trending-dots-atc">
 
                     {categories.map((_, index) => (
 
@@ -147,7 +147,7 @@ function ATrendingCategories() {
                             key={index}
                             className={
                                 index === currentIndex
-                                    ? "active"
+                                    ? "active-atc"
                                     : ""
                             }
                             onClick={() =>

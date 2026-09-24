@@ -1,0 +1,802 @@
+/* ============================================================
+   DEALHUNTS — ADMIN LOGIN
+   GOLD  : #d4af37
+   BLACK : #000000
+   WHITE : #ffffff
+============================================================ */
+
+
+/* ============================================================
+   PAGE
+============================================================ */
+
+.al-admin-login-page {
+    width: 100%;
+    height: calc(100dvh - 72px);
+    min-height: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   ADMIN HEADER
+============================================================ */
+
+.al-admin-login-header {
+    width: 100%;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 32px;
+    box-sizing: border-box;
+
+    background: #ffffff;
+    border-bottom: 1px solid #eeeeee;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   DEALHUNTS LOGO
+============================================================ */
+
+.al-admin-login-logo {
+    display: flex;
+    align-items: center;
+
+    gap: 1px;
+
+    margin: 0;
+    padding: 0;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    font-size: 21px;
+    font-weight: 800;
+
+    line-height: 1;
+    letter-spacing: -0.7px;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   DEAL
+============================================================ */
+
+.al-admin-login-logo-deal {
+    color: #d4af37;
+}
+
+
+/* ============================================================
+   HUNTS
+============================================================ */
+
+.al-admin-login-logo-hunts {
+    color: #000000;
+}
+
+
+.al-admin-login-logo-admin {
+    font-family: cursive;
+    font-weight: 500;
+
+    margin-top: 25px;
+
+    color: #555555;
+
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    line-height: 1;
+}
+
+
+/* ============================================================
+   ADMIN PORTAL TITLE
+============================================================ */
+
+.al-admin-login-header-title {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    margin: 0;
+    padding: 0;
+
+    color: #000000;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+    line-height: 1;
+
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   ADMIN TITLE — GOLD PART
+============================================================ */
+
+.al-admin-login-header-title span:first-child {
+    color: #d4af37;
+}
+
+
+/* ============================================================
+   FORM
+============================================================ */
+
+.al-admin-login-form {
+    width: 100%;
+    max-width: 450px;
+
+    margin: 0 auto;
+    padding: 0;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   LOGIN BOX
+============================================================ */
+
+.al-admin-login-box {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 32px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.12);
+
+    gap: 18px;
+
+    /* Removed large margin-top that caused scrolling */
+    margin-top: 0;
+}
+
+
+/* ============================================================
+   TITLE
+============================================================ */
+
+.al-admin-login-title {
+    width: 100%;
+
+    margin: 0 0 4px;
+    padding: 0;
+
+    text-align: center;
+
+    color: #000000;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    line-height: 1.2;
+}
+
+
+/* ============================================================
+   LOGIN DETAILS
+============================================================ */
+
+.al-admin-login-details {
+    width: 100%;
+    min-width: 0;
+}
+
+
+/* ============================================================
+   INPUT FIELDS
+============================================================ */
+
+.al-admin-login-details input {
+    width: 100%;
+
+    padding: 12px 13px;
+    margin-top: 10px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #000000;
+
+    font-family: inherit;
+    font-size: 15px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* ============================================================
+   INPUT FOCUS
+============================================================ */
+
+.al-admin-login-details input:focus {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 0 2px rgba(212, 175, 55, 0.18);
+}
+
+
+/* ============================================================
+   ERROR
+============================================================ */
+
+.al-admin-login-error {
+    width: 100%;
+
+    margin: 0;
+
+    text-align: center;
+
+    color: #c62828;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   RESPONSE MESSAGE
+============================================================ */
+
+.al-admin-login-response {
+    width: 100%;
+
+    margin: 0;
+
+    text-align: center;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   SUCCESS
+============================================================ */
+
+.al-admin-login-success {
+    color: #000000;
+}
+
+
+/* ============================================================
+   FAILURE
+============================================================ */
+
+.al-admin-login-failure {
+    color: #c62828;
+}
+
+
+/* ============================================================
+   LOGIN ACTIONS
+============================================================ */
+
+.al-admin-login-actions {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    margin: 2px 0 0;
+}
+
+
+/* ============================================================
+   LOGIN BUTTON
+============================================================ */
+
+.al-admin-login-submit {
+    width: 100%;
+    height: 44px;
+
+    padding: 0 20px;
+
+    border: 2px solid #d4af37;
+    border-radius: 8px;
+
+    background: #d4af37;
+    color: #000000;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* ============================================================
+   LOGIN BUTTON HOVER
+============================================================ */
+
+.al-admin-login-submit:hover:not(:disabled) {
+    background: #000000;
+    color: #d4af37;
+
+    border-color: #000000;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 14px rgba(0, 0, 0, 0.16);
+}
+
+
+/* ============================================================
+   LOGIN BUTTON ACTIVE
+============================================================ */
+
+.al-admin-login-submit:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+
+/* ============================================================
+   LOGIN BUTTON DISABLED
+============================================================ */
+
+.al-admin-login-submit:disabled {
+    background: #d4af37;
+    color: #000000;
+
+    border-color: #d4af37;
+
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   FORGOT PASSWORD
+============================================================ */
+
+.al-admin-login-forgot {
+    width: 100%;
+
+    margin: 0;
+
+    text-align: center;
+
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   REGISTER
+============================================================ */
+
+.al-admin-login-register {
+    width: 100%;
+
+    margin: 0;
+
+    text-align: center;
+
+    color: #555555;
+
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   LOGIN LINK
+============================================================ */
+
+.al-admin-login-link {
+    color: #000000;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+
+/* ============================================================
+   LOGIN LINK HOVER
+============================================================ */
+
+.al-admin-login-link:hover {
+    color: #d4af37;
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   GUEST LOGIN
+============================================================ */
+
+.al-admin-login-guest {
+    width: 100%;
+
+    margin: 0;
+
+    text-align: center;
+
+    color: #555555;
+
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   GUEST LINK
+============================================================ */
+
+.al-admin-login-guest-link {
+    color: #000000;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+
+/* ============================================================
+   GUEST LINK HOVER
+============================================================ */
+
+.al-admin-login-guest-link:hover {
+    color: #d4af37;
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   FOCUS
+============================================================ */
+
+.al-admin-login-submit:focus-visible,
+.al-admin-login-link:focus-visible,
+.al-admin-login-guest-link:focus-visible,
+.al-admin-login-details input:focus-visible {
+    outline: 2px solid #d4af37;
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 700px) {
+
+    .al-admin-login-page {
+        height: calc(100dvh - 60px);
+        min-height: 0;
+
+        padding: 16px;
+
+        overflow: hidden;
+    }
+
+
+    /* ========================================================
+       HEADER
+    ======================================================== */
+
+    .al-admin-login-header {
+        height: 60px;
+        padding: 0 22px;
+    }
+
+
+    .al-admin-login-logo {
+        font-size: 20px;
+        letter-spacing: -0.6px;
+    }
+
+
+    .al-admin-login-header-title {
+        font-size: 10px;
+        letter-spacing: 1.1px;
+    }
+
+
+    /* ========================================================
+       LOGIN BOX
+    ======================================================== */
+
+    .al-admin-login-box {
+        padding: 26px 22px;
+
+        border-radius: 14px;
+
+        gap: 16px;
+
+        margin-top: 0;
+    }
+
+
+    .al-admin-login-title {
+        font-size: 23px;
+    }
+
+
+    .al-admin-login-details input {
+        padding: 11px 12px;
+        font-size: 14px;
+    }
+
+
+    .al-admin-login-submit {
+        height: 42px;
+        font-size: 15px;
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .al-admin-login-page {
+        height: calc(100dvh - 55px);
+        min-height: 0;
+
+        padding: 12px;
+
+        overflow: hidden;
+    }
+
+
+    /* ========================================================
+       HEADER
+    ======================================================== */
+
+    .al-admin-login-header {
+        width: calc(100% + 24px);
+
+        height: 55px;
+
+        margin-left: -12px;
+        margin-right: -12px;
+
+        padding: 0 16px;
+    }
+
+
+    .al-admin-login-logo {
+        font-size: 19px;
+        letter-spacing: -0.5px;
+    }
+
+
+    .al-admin-login-header-title {
+        gap: 4px;
+
+        font-size: 9px;
+        letter-spacing: 0.8px;
+    }
+
+
+    /* ========================================================
+       FORM
+    ======================================================== */
+
+    .al-admin-login-form {
+        max-width: 100%;
+    }
+
+
+    /* ========================================================
+       LOGIN BOX
+    ======================================================== */
+
+    .al-admin-login-box {
+        padding: 24px 18px;
+
+        border-radius: 13px;
+
+        gap: 15px;
+
+        margin-top: 0;
+
+        box-shadow:
+            0 7px 22px rgba(0, 0, 0, 0.10);
+    }
+
+
+    .al-admin-login-title {
+        font-size: 21px;
+    }
+
+
+    .al-admin-login-details input {
+        padding: 10px 11px;
+
+        border-radius: 7px;
+
+        font-size: 14px;
+    }
+
+
+    .al-admin-login-submit {
+        height: 41px;
+
+        border-radius: 7px;
+
+        font-size: 14px;
+    }
+
+
+    .al-admin-login-forgot,
+    .al-admin-login-register,
+    .al-admin-login-guest {
+        font-size: 12px;
+    }
+
+
+    .al-admin-login-error,
+    .al-admin-login-response {
+        font-size: 12px;
+    }
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+============================================================ */
+
+@media (max-width: 360px) {
+
+    .al-admin-login-page {
+        height: calc(100dvh - 52px);
+        min-height: 0;
+
+        padding: 10px;
+
+        overflow: hidden;
+    }
+
+
+    /* ========================================================
+       HEADER
+    ======================================================== */
+
+    .al-admin-login-header {
+        width: calc(100% + 20px);
+
+        height: 52px;
+
+        margin-left: -10px;
+        margin-right: -10px;
+
+        padding: 0 12px;
+    }
+
+
+    .al-admin-login-logo {
+        font-size: 18px;
+        letter-spacing: -0.45px;
+    }
+
+
+    .al-admin-login-header-title {
+        font-size: 8px;
+        letter-spacing: 0.6px;
+
+        gap: 3px;
+    }
+
+
+    /* ========================================================
+       LOGIN BOX
+    ======================================================== */
+
+    .al-admin-login-box {
+        padding: 21px 15px;
+
+        gap: 13px;
+
+        margin-top: 0;
+    }
+
+
+    .al-admin-login-title {
+        font-size: 20px;
+    }
+
+
+    .al-admin-login-details input {
+        font-size: 13px;
+    }
+
+
+    .al-admin-login-submit {
+        height: 40px;
+        font-size: 13px;
+    }
+}
+
+
+/* ============================================================
+   GLOBAL SAFETY
+   Prevent this page from creating its own scrollbars
+============================================================ */
+
+html:has(.al-admin-login-page),
+body:has(.al-admin-login-page) {
+    overflow: hidden;
+}

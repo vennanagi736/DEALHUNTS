@@ -1,7 +1,8 @@
-import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
+
 import {
-  Check,
   Package,
   CalendarClock,
   Store,
@@ -9,333 +10,1072 @@ import {
   IndianRupee,
 } from "lucide-react";
 
-import PageShell from "../../components/user/PageShell";
-import {
-  initialCartItems,
-  buildOrderSummary,
-} from "../../data/mockData";
-
 import "../../styles/OrderSuccess.css";
 
+
+/* ============================================================
+   API
+============================================================ */
+
+const API_BASE = "http://localhost:8080";
+
+
+/* ============================================================
+   ORDER SUCCESS
+============================================================ */
+
 export default function OrderSuccess() {
+
   const navigate = useNavigate();
 
-  /* ============================================================
-     CART ITEMS
-  ============================================================ */
+  const [searchParams] =
+    useSearchParams();
 
-  const items = Array.isArray(initialCartItems)
-    ? initialCartItems
-    : [];
 
-  /* ============================================================
-     ORDER SUMMARY
-  ============================================================ */
+  /* ==========================================================
+     ORDER STATE
+  ========================================================== */
 
-  const { total = 0 } = buildOrderSummary(items);
+  const [orders, setOrders] =
+    useState([]);
 
-  /* ============================================================
-     ORDER DETAILS
-  ============================================================ */
+  const [loading, setLoading] =
+    useState(true);
 
-  const order = useMemo(() => {
-    const today = new Date();
+  const [errorMessage, setErrorMessage] =
+    useState("");
 
-    const delivery = new Date(today);
-    delivery.setDate(delivery.getDate() + 4);
 
-    const formatDate = (date) => {
-      return date.toLocaleDateString("en-IN", {
+  /* ==========================================================
+     FORMAT DATE
+  ========================================================== */
+
+  const formatDate = (dateValue) => {
+
+    if (!dateValue) {
+      return "—";
+    }
+
+    const date =
+      new Date(dateValue);
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+      return "—";
+    }
+
+    return date.toLocaleDateString(
+      "en-IN",
+      {
         day: "numeric",
         month: "short",
         year: "numeric",
-      });
+      }
+    );
+  };
+
+
+  /* ==========================================================
+     FORMAT PRICE
+  ========================================================== */
+
+  const formatPrice = (amount) => {
+
+    const value =
+      Number(amount || 0);
+
+    if (
+      !Number.isFinite(value)
+    ) {
+      return "0";
+    }
+
+    return value.toLocaleString(
+      "en-IN",
+      {
+        maximumFractionDigits: 2,
+      }
+    );
+  };
+
+
+  /* ==========================================================
+     LOAD ORDERS
+  ========================================================== */
+
+  useEffect(() => {
+
+    const loadOrders = async () => {
+
+      try {
+
+        setLoading(true);
+        setErrorMessage("");
+
+
+        /* ----------------------------------------------------
+           GET ORDER IDS
+        ---------------------------------------------------- */
+
+        const orderIdsParam =
+          searchParams.get(
+            "orderIds"
+          );
+
+
+        /*
+         * Backward compatibility:
+         * also support old ?orderId=10
+         */
+
+        const oldOrderId =
+          searchParams.get(
+            "orderId"
+          );
+
+
+        let orderIds = [];
+
+
+        if (orderIdsParam) {
+
+          orderIds =
+            orderIdsParam
+              .split(",")
+              .map(
+                (id) =>
+                  Number(
+                    id.trim()
+                  )
+              )
+              .filter(
+                (id) =>
+                  Number.isInteger(id) &&
+                  id > 0
+              );
+
+        } else if (oldOrderId) {
+
+          const parsedId =
+            Number(
+              oldOrderId
+            );
+
+          if (
+            Number.isInteger(
+              parsedId
+            ) &&
+            parsedId > 0
+          ) {
+
+            orderIds = [
+              parsedId,
+            ];
+
+          }
+
+        }
+
+
+        /* ----------------------------------------------------
+           FIRST TRY SAVED ORDERS
+        ---------------------------------------------------- */
+
+        const savedOrder =
+          localStorage.getItem(
+            "dealhuntsLastOrder"
+          );
+
+
+        if (savedOrder) {
+
+          try {
+
+            const parsed =
+              JSON.parse(
+                savedOrder
+              );
+
+
+            /*
+             * New format:
+             * [
+             *   { orderId: 10 },
+             *   { orderId: 11 }
+             * ]
+             */
+
+            if (
+              Array.isArray(
+                parsed
+              ) &&
+              parsed.length > 0
+            ) {
+
+              const validSavedOrders =
+                parsed.filter(
+                  (order) =>
+                    order &&
+                    order.orderId
+                );
+
+
+              if (
+                validSavedOrders.length > 0
+              ) {
+
+                /*
+                 * If URL contains IDs,
+                 * only use matching orders.
+                 */
+
+                if (
+                  orderIds.length > 0
+                ) {
+
+                  const matchingOrders =
+                    validSavedOrders.filter(
+                      (order) =>
+                        orderIds.includes(
+                          Number(
+                            order.orderId
+                          )
+                        )
+                    );
+
+
+                  if (
+                    matchingOrders.length ===
+                    orderIds.length
+                  ) {
+
+                    setOrders(
+                      matchingOrders
+                    );
+
+                    setLoading(false);
+
+                    return;
+
+                  }
+
+                } else {
+
+                  setOrders(
+                    validSavedOrders
+                  );
+
+                  setLoading(false);
+
+                  return;
+
+                }
+
+              }
+
+            }
+
+
+            /*
+             * Backward compatibility:
+             * old format:
+             * { orderId: 10 }
+             */
+
+            if (
+              parsed &&
+              parsed.orderId
+            ) {
+
+              if (
+                orderIds.length === 0 ||
+                orderIds.includes(
+                  Number(
+                    parsed.orderId
+                  )
+                )
+              ) {
+
+                setOrders([
+                  parsed,
+                ]);
+
+                setLoading(false);
+
+                return;
+
+              }
+
+            }
+
+          } catch (error) {
+
+            console.error(
+              "Invalid saved order:",
+              error
+            );
+
+          }
+
+        }
+
+
+        /* ----------------------------------------------------
+           ORDER IDS REQUIRED
+        ---------------------------------------------------- */
+
+        if (
+          orderIds.length === 0
+        ) {
+
+          throw new Error(
+            "Order information is not available."
+          );
+
+        }
+
+
+        /* ----------------------------------------------------
+           AUTH TOKEN
+        ---------------------------------------------------- */
+
+        const token =
+          localStorage.getItem(
+            "userJwtToken"
+          );
+
+
+        if (!token) {
+
+          throw new Error(
+            "Your login session has expired. Please login again."
+          );
+
+        }
+
+
+        /* ----------------------------------------------------
+           FETCH ALL ORDERS
+        ---------------------------------------------------- */
+
+        const orderResponses =
+          await Promise.all(
+            orderIds.map(
+              async (orderId) => {
+
+                const response =
+                  await axios.get(
+                    `${API_BASE}/order/${orderId}`,
+                    {
+                      headers: {
+                        Authorization:
+                          `Bearer ${token}`,
+                      },
+                    }
+                  );
+
+                return response.data;
+
+              }
+            )
+          );
+
+
+        /* ----------------------------------------------------
+           VALIDATE ORDERS
+        ---------------------------------------------------- */
+
+        const validOrders =
+          orderResponses.filter(
+            (order) =>
+              order &&
+              order.orderId
+          );
+
+
+        if (
+          validOrders.length === 0
+        ) {
+
+          throw new Error(
+            "Invalid order response."
+          );
+
+        }
+
+
+        /* ----------------------------------------------------
+           SAVE ALL ORDERS
+        ---------------------------------------------------- */
+
+        setOrders(
+          validOrders
+        );
+
+
+        localStorage.setItem(
+          "dealhuntsLastOrder",
+          JSON.stringify(
+            validOrders
+          )
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Failed to load order:",
+          error
+        );
+
+
+        const backendMessage =
+          error?.response?.data?.message ||
+          error?.response?.data?.error;
+
+
+        setErrorMessage(
+          backendMessage ||
+          error?.message ||
+          "Unable to load order details."
+        );
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
     };
 
-    return {
-      id: `DH${Math.floor(100000 + Math.random() * 900000)}`,
 
-      date: formatDate(today),
+    loadOrders();
 
-      vendor:
-        items.length > 0 && items[0]?.vendor
-          ? items[0].vendor
-          : "Multiple Vendors",
+  }, [searchParams]);
 
-      payment: "UPI",
 
-      total: Number(total) || 0,
+  /* ==========================================================
+     LOADING
+  ========================================================== */
 
-      eta: formatDate(delivery),
-    };
-  }, [items, total]);
+  if (loading) {
 
-  /* ============================================================
+    return (
+
+      <div className="os-page-user">
+
+        <main className="os-content-user">
+
+          <section className="os-state-user">
+
+            <div className="os-loading-spinner-user" />
+
+            <h1>
+              Loading Order...
+            </h1>
+
+            <p>
+              Fetching your order details.
+            </p>
+
+          </section>
+
+        </main>
+
+      </div>
+
+    );
+
+  }
+
+
+  /* ==========================================================
+     ERROR
+  ========================================================== */
+
+  if (
+    !orders.length ||
+    errorMessage
+  ) {
+
+    return (
+
+      <div className="os-page-user">
+
+        <main className="os-content-user">
+
+          <section className="os-state-user">
+
+            <div className="os-error-icon-user">
+              !
+            </div>
+
+
+            <h1>
+              Order Details Unavailable
+            </h1>
+
+
+            <p>
+              {errorMessage ||
+                "We could not find this order."}
+            </p>
+
+
+            <button
+              type="button"
+              className="os-primary-button-user"
+              onClick={() =>
+                navigate("/products")
+              }
+            >
+              Continue Shopping
+            </button>
+
+          </section>
+
+        </main>
+
+      </div>
+
+    );
+
+  }
+
+
+  /* ==========================================================
+     TOTAL ORDERS
+  ========================================================== */
+
+  const totalOrders =
+    orders.length;
+
+
+  /* ==========================================================
+     TOTAL AMOUNT
+  ========================================================== */
+
+  const totalAmount =
+    orders.reduce(
+      (sum, order) =>
+        sum +
+        Number(
+          order.total || 0
+        ),
+      0
+    );
+
+
+  /* ==========================================================
+     FIRST ORDER
+  ========================================================== */
+
+  const firstOrder =
+    orders[0];
+
+
+  /* ==========================================================
+     PAYMENT
+  ========================================================== */
+
+  const payment =
+    firstOrder?.paymentMethod
+      ? String(
+          firstOrder.paymentMethod
+        ).toUpperCase()
+      : "—";
+
+
+  /* ==========================================================
+     ORDER DATE
+  ========================================================== */
+
+  const orderDate =
+    formatDate(
+      firstOrder?.createdAt
+    );
+
+
+  /* ==========================================================
      UI
-  ============================================================ */
+  ========================================================== */
 
   return (
-    <PageShell active="Cart">
 
-      <div className="order-success">
+    <div className="os-page-user">
 
-        {/* ======================================================
-            SUCCESS ANIMATION
-        ====================================================== */}
+      <main className="os-content-user">
 
-        <div
-          className="order-success__animation"
-          aria-hidden="true"
-        >
+        <section className="os-success-user">
 
-          <span
-            className="
-              order-success__ring
-              order-success__ring--outer
-            "
-          />
 
-          <span
-            className="
-              order-success__ring
-              order-success__ring--mid
-            "
-          />
+          {/* ==================================================
+              GOLD SUCCESS TICK
+          ================================================== */}
 
-          <span className="order-success__circle">
+          <div
+            className="os-success-icon-user"
+            aria-label="Order placed successfully"
+          >
 
-            <Check
-              size={34}
-              strokeWidth={3}
-              className="order-success__check"
+            <svg
+              viewBox="0 0 52 52"
+              className="os-success-check-user"
+              aria-hidden="true"
+            >
+
+              <circle
+                cx="26"
+                cy="26"
+                r="24"
+                className="os-success-circle-user"
+              />
+
+              <path
+                d="M14 27 L22 35 L38 18"
+                className="os-success-tick-user"
+              />
+
+            </svg>
+
+          </div>
+
+
+          {/* ==================================================
+              SUCCESS MESSAGE
+          ================================================== */}
+
+          <h1>
+            Order Placed Successfully!
+          </h1>
+
+
+          <p className="os-subtitle-user">
+
+            Your order has been confirmed and is
+            being prepared by the seller.
+
+          </p>
+
+
+          {/* ==================================================
+              ORDER SUMMARY BUTTON
+          ================================================== */}
+
+          <button
+            type="button"
+            className="os-summary-button-user"
+            onClick={() =>
+              navigate("/orders")
+            }
+          >
+
+            <Package
+              size={17}
+              strokeWidth={1.8}
             />
 
-          </span>
+            <span>
+              Order Summary
+            </span>
 
-          <span className="order-success__particle p1" />
-          <span className="order-success__particle p2" />
-          <span className="order-success__particle p3" />
-          <span className="order-success__particle p4" />
-          <span className="order-success__particle p5" />
-          <span className="order-success__particle p6" />
-
-        </div>
+          </button>
 
 
-        {/* ======================================================
-            SUCCESS MESSAGE
-        ====================================================== */}
+          {/* ==================================================
+              ORDER OVERVIEW
+          ================================================== */}
 
-        <h1>
-          Order Placed Successfully!
-        </h1>
+          <div className="os-overview-user">
 
-        <p className="order-success__subtitle">
-          Your order has been confirmed and is being prepared by
-          the seller.
-        </p>
+            <div className="os-overview-item-user">
 
-
-        {/* ======================================================
-            ORDER DETAILS
-        ====================================================== */}
-
-        <div className="order-success__details">
-
-          <h2>
-            Order Details
-          </h2>
-
-
-          <div className="order-success__grid">
-
-            {/* ORDER ID */}
-
-            <div className="order-success__detail">
-
-              <span className="order-success__detail-icon">
-                <Package
-                  size={16}
-                  strokeWidth={1.8}
-                />
+              <span className="os-overview-label-user">
+                Orders
               </span>
 
-              <div>
-
-                <span className="label">
-                  Order ID
-                </span>
-
-                <span className="value">
-                  {order.id}
-                </span>
-
-              </div>
+              <span className="os-overview-value-user">
+                {totalOrders}
+              </span>
 
             </div>
 
 
-            {/* ORDER DATE */}
+            <div className="os-overview-divider-user" />
 
-            <div className="order-success__detail">
 
-              <span className="order-success__detail-icon">
-                <CalendarClock
-                  size={16}
-                  strokeWidth={1.8}
-                />
+            <div className="os-overview-item-user">
+
+              <span className="os-overview-label-user">
+                Total Amount
               </span>
 
-              <div>
-
-                <span className="label">
-                  Order Date
-                </span>
-
-                <span className="value">
-                  {order.date}
-                </span>
-
-              </div>
-
-            </div>
-
-
-            {/* VENDOR */}
-
-            <div className="order-success__detail">
-
-              <span className="order-success__detail-icon">
-                <Store
-                  size={16}
-                  strokeWidth={1.8}
-                />
+              <span className="os-overview-value-user">
+                ₹{formatPrice(totalAmount)}
               </span>
-
-              <div>
-
-                <span className="label">
-                  Vendor
-                </span>
-
-                <span className="value">
-                  {order.vendor}
-                </span>
-
-              </div>
-
-            </div>
-
-
-            {/* PAYMENT */}
-
-            <div className="order-success__detail">
-
-              <span className="order-success__detail-icon">
-                <Wallet
-                  size={16}
-                  strokeWidth={1.8}
-                />
-              </span>
-
-              <div>
-
-                <span className="label">
-                  Payment Method
-                </span>
-
-                <span className="value">
-                  {order.payment}
-                </span>
-
-              </div>
-
-            </div>
-
-
-            {/* TOTAL */}
-
-            <div className="order-success__detail">
-
-              <span className="order-success__detail-icon">
-                <IndianRupee
-                  size={16}
-                  strokeWidth={1.8}
-                />
-              </span>
-
-              <div>
-
-                <span className="label">
-                  Total Amount
-                </span>
-
-                <span className="value">
-                  ₹{order.total.toLocaleString("en-IN")}
-                </span>
-
-              </div>
-
-            </div>
-
-
-            {/* DELIVERY */}
-
-            <div className="order-success__detail">
-
-              <span className="order-success__detail-icon">
-                <CalendarClock
-                  size={16}
-                  strokeWidth={1.8}
-                />
-              </span>
-
-              <div>
-
-                <span className="label">
-                  Estimated Delivery
-                </span>
-
-                <span className="value">
-                  {order.eta}
-                </span>
-
-              </div>
 
             </div>
 
           </div>
 
-        </div>
+
+          {/* ==================================================
+              ORDER DETAILS
+          ================================================== */}
+
+          <div className="os-details-user">
+
+            <div className="os-details-header-user">
+
+              <h2>
+                Order Details
+              </h2>
 
 
-        {/* ======================================================
-            ACTION BUTTONS
-        ====================================================== */}
+              {totalOrders > 1 && (
 
-        <div className="order-success__actions">
+                <span className="os-vendor-count-user">
+                  {totalOrders} vendor orders
+                </span>
 
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => navigate("/orders")}
-          >
-            View Order
-          </button>
+              )}
+
+            </div>
 
 
-          <button
-            type="button"
-            className="btn-primary"
-            onClick={() => navigate("/products")}
-          >
-            Continue Shopping
-          </button>
+            {/* ==================================================
+                EACH VENDOR ORDER
+            ================================================== */}
 
-        </div>
+            {orders.map(
+              (order) => {
 
-      </div>
+                const items =
+                  Array.isArray(
+                    order.items
+                  )
+                    ? order.items
+                    : [];
 
-    </PageShell>
+
+                const firstItem =
+                  items.length > 0
+                    ? items[0]
+                    : null;
+
+
+                const vendors = [
+                  ...new Set(
+                    items
+                      .map(
+                        (item) =>
+                          item?.vendorName ||
+                          item?.shopName ||
+                          item?.vendor?.name ||
+                          item?.vendor?.shopName
+                      )
+                      .filter(Boolean)
+                  ),
+                ];
+
+
+                const vendor =
+                  vendors.length > 0
+                    ? vendors.join(", ")
+                    : "Vendor";
+
+
+                return (
+
+                  <div
+                    className="os-order-card-user"
+                    key={
+                      order.orderId
+                    }
+                  >
+
+
+                    {/* ==========================================
+                        ORDER ID
+                    ========================================== */}
+
+                    <div className="os-detail-user">
+
+                      <span className="os-detail-icon-user">
+
+                        <Package
+                          size={16}
+                          strokeWidth={1.8}
+                        />
+
+                      </span>
+
+
+                      <div>
+
+                        <span className="os-detail-label-user">
+                          Order ID
+                        </span>
+
+                        <span className="os-detail-value-user">
+                          #{order.orderId}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+
+                    {/* ==========================================
+                        DATE
+                    ========================================== */}
+
+                    <div className="os-detail-user">
+
+                      <span className="os-detail-icon-user">
+
+                        <CalendarClock
+                          size={16}
+                          strokeWidth={1.8}
+                        />
+
+                      </span>
+
+
+                      <div>
+
+                        <span className="os-detail-label-user">
+                          Order Date
+                        </span>
+
+                        <span className="os-detail-value-user">
+                          {formatDate(
+                            order.createdAt
+                          )}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+
+                    {/* ==========================================
+                        VENDOR
+                    ========================================== */}
+
+                    <div className="os-detail-user">
+
+                      <span className="os-detail-icon-user">
+
+                        <Store
+                          size={16}
+                          strokeWidth={1.8}
+                        />
+
+                      </span>
+
+
+                      <div>
+
+                        <span className="os-detail-label-user">
+                          Vendor
+                        </span>
+
+                        <span className="os-detail-value-user">
+                          {vendor}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+
+                    {/* ==========================================
+                        PAYMENT
+                    ========================================== */}
+
+                    <div className="os-detail-user">
+
+                      <span className="os-detail-icon-user">
+
+                        <Wallet
+                          size={16}
+                          strokeWidth={1.8}
+                        />
+
+                      </span>
+
+
+                      <div>
+
+                        <span className="os-detail-label-user">
+                          Payment Method
+                        </span>
+
+                        <span className="os-detail-value-user">
+                          {order.paymentMethod
+                            ? String(
+                                order.paymentMethod
+                              ).toUpperCase()
+                            : payment}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+
+                    {/* ==========================================
+                        TOTAL
+                    ========================================== */}
+
+                    <div className="os-detail-user">
+
+                      <span className="os-detail-icon-user">
+
+                        <IndianRupee
+                          size={16}
+                          strokeWidth={1.8}
+                        />
+
+                      </span>
+
+
+                      <div>
+
+                        <span className="os-detail-label-user">
+                          Total Amount
+                        </span>
+
+                        <span className="os-detail-value-user">
+                          ₹
+                          {formatPrice(
+                            order.total
+                          )}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+
+                    {/* ==========================================
+                        DELIVERY
+                    ========================================== */}
+
+                    <div className="os-detail-user">
+
+                      <span className="os-detail-icon-user">
+
+                        <CalendarClock
+                          size={16}
+                          strokeWidth={1.8}
+                        />
+
+                      </span>
+
+
+                      <div>
+
+                        <span className="os-detail-label-user">
+                          Estimated Delivery
+                        </span>
+
+                        <span className="os-detail-value-user">
+                          Will be updated by the seller
+                        </span>
+
+                      </div>
+
+                    </div>
+
+
+                    {/* ==========================================
+                        PRODUCTS
+                    ========================================== */}
+
+                    {items.length > 0 && (
+
+                      <div className="os-products-user">
+
+                        <span className="os-products-title-user">
+                          Products
+                        </span>
+
+
+                        {items.map(
+                          (item, index) => (
+
+                            <div
+                              className="os-product-user"
+                              key={
+                                item?.orderItemId ||
+                                item?.id ||
+                                index
+                              }
+                            >
+
+                              <span className="os-product-name-user">
+                                {item?.productName ||
+                                  item?.name ||
+                                  firstItem?.productName ||
+                                  "Product"}
+                              </span>
+
+
+                              <span className="os-product-quantity-user">
+                                Qty{" "}
+                                {item?.quantity ||
+                                  1}
+                              </span>
+
+                            </div>
+
+                          )
+                        )}
+
+                      </div>
+
+                    )}
+
+                  </div>
+
+                );
+
+              }
+            )}
+
+          </div>
+
+
+          {/* ==================================================
+              CONTINUE SHOPPING
+          ================================================== */}
+
+          <div className="os-actions-user">
+
+            <button
+              type="button"
+              className="os-primary-button-user"
+              onClick={() =>
+                navigate("/products")
+              }
+            >
+              Continue Shopping
+            </button>
+
+          </div>
+
+
+        </section>
+
+      </main>
+
+    </div>
+
   );
+
 }

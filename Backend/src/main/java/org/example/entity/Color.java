@@ -21,7 +21,6 @@ public class Color {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     // ============================================================
     // COLOR INFORMATION
     // ============================================================
@@ -31,7 +30,6 @@ public class Color {
 
     @Column(name = "hex_code")
     private String hexCode;
-
 
     // ============================================================
     // PRICE
@@ -43,6 +41,15 @@ public class Color {
     )
     private BigDecimal price;
 
+    // ============================================================
+    // DISCOUNT
+    // ============================================================
+
+    @Column(
+        precision = 12,
+        scale = 2
+    )
+    private BigDecimal discount = BigDecimal.ZERO;
 
     // ============================================================
     // PRODUCT
@@ -56,7 +63,6 @@ public class Color {
     )
     private Product product;
 
-
     // ============================================================
     // VARIANT
     // ============================================================
@@ -68,7 +74,6 @@ public class Color {
         nullable = false
     )
     private Variant variant;
-
 
     // ============================================================
     // GETTERS
@@ -90,6 +95,10 @@ public class Color {
         return price;
     }
 
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+
     public Product getProduct() {
         return product;
     }
@@ -97,7 +106,6 @@ public class Color {
     public Variant getVariant() {
         return variant;
     }
-
 
     // ============================================================
     // SETTERS
@@ -117,6 +125,13 @@ public class Color {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public void setDiscount(BigDecimal discount) {
+        this.discount =
+                discount != null
+                        ? discount
+                        : BigDecimal.ZERO;
     }
 
     public void setProduct(Product product) {

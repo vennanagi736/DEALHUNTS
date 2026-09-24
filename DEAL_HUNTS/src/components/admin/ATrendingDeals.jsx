@@ -7,8 +7,8 @@ import { getProductImages } from "../../api/ProductApi";
 function ATrendingDeals() {
 
     const [deals, setDeals] = useState([]);
-
     const [productImages, setProductImages] = useState({});
+    const [currentIndex, setCurrentIndex] = useState(0);
 
 
     // =====================================================
@@ -30,13 +30,13 @@ function ATrendingDeals() {
                 );
 
                 const trendingDeals =
-                    response.data;
+                    response.data || [];
 
                 setDeals(trendingDeals);
 
 
                 // =====================================================
-                // FETCH IMAGES FOR EACH PRODUCT
+                // FETCH IMAGES
                 // =====================================================
 
                 const imageMap = {};
@@ -60,17 +60,20 @@ function ATrendingDeals() {
                             product.id,
                             imageResponse.data
                         );
-                        console.log("Image api response:",imageResponse.data);
 
 
                         if (
                             Array.isArray(imageResponse.data) &&
                             imageResponse.data.length > 0
                         ) {
-                            const firstImage = imageResponse.data[0];
-                            console.log("First image object:",firstImage);
+
+                            const firstImage =
+                                imageResponse.data[0];
+
                             imageMap[product.id] =
-                                firstImage.thumbnailUrl;
+                                firstImage.thumbnailUrl ||
+                                firstImage.imageUrl ||
+                                firstImage.url;
 
                         }
 
@@ -91,9 +94,7 @@ function ATrendingDeals() {
                     imageMap
                 );
 
-
                 setProductImages(imageMap);
-
 
             } catch (error) {
 
@@ -113,16 +114,59 @@ function ATrendingDeals() {
 
 
     // =====================================================
-    // EMPTY
+    // AUTO CAROUSEL — 5 SECONDS
+    // =====================================================
+
+    useEffect(() => {
+
+        if (deals.length <= 1) {
+            return;
+        }
+
+        const interval = setInterval(() => {
+
+            setCurrentIndex((previousIndex) =>
+                (previousIndex + 1) % deals.length
+            );
+
+        }, 5000);
+
+
+        return () => {
+            clearInterval(interval);
+        };
+
+    }, [deals.length]);
+
+
+    // =====================================================
+    // MANUAL NAVIGATION
+    // =====================================================
+
+    const goTo = (index) => {
+
+        if (deals.length === 0) {
+            return;
+        }
+
+        setCurrentIndex(
+            (index + deals.length) % deals.length
+        );
+
+    };
+
+
+    // =====================================================
+    // EMPTY STATE
     // =====================================================
 
     if (deals.length === 0) {
 
         return (
 
-            <div className="admin-trending-products">
+            <div className="admin-trending-products-atd">
 
-                <div className="admin-trending-products-title">
+                <div className="admin-trending-products-title-atd">
 
                     <h3>
                         Trending Products
@@ -130,7 +174,7 @@ function ATrendingDeals() {
 
                 </div>
 
-                <div className="admin-trending-products-empty">
+                <div className="admin-trending-products-empty-atd">
 
                     <p>
                         No trending products right now.
@@ -151,12 +195,14 @@ function ATrendingDeals() {
 
     return (
 
-        <div className="admin-trending-products">
+        <div className="admin-trending-products-atd">
 
 
-            {/* TITLE */}
+            {/* =================================================
+                TITLE
+            ================================================= */}
 
-            <div className="admin-trending-products-title">
+            <div className="admin-trending-products-title-atd">
 
                 <h3>
                     Trending Products
@@ -165,85 +211,168 @@ function ATrendingDeals() {
             </div>
 
 
-            {/* PRODUCT LIST */}
+            {/* =================================================
+                VIEWPORT
+            ================================================= */}
 
-            <div className="admin-trending-products-list">
+            <div className="admin-trending-products-viewport-atd">
 
-                {deals.map((deal) => {
+                {/* =================================================
+                    TRACK
+                ================================================= */}
 
-                    const product =
-                        deal.product;
+                <div
+                    className="admin-trending-products-track-atd"
+                    style={{
+                        width: `${deals.length * 100}%`,
+                        transform:
+                            `translateX(-${currentIndex * (100 / deals.length)}%)`
+                    }}
+                >
+
+                    {deals.map((deal, index) => {
+
+                        const product =
+                            deal.product;
+
+                        const image =
+                            product?.id
+                                ? productImages[product.id]
+                                : null;
 
 
-                    // Get image using product ID
-                    const image =
-                        product?.id
-                            ? productImages[product.id]
-                            : null;
+                        return (
+
+                            <div
+                                key={deal.id ?? index}
+                                className="admin-trending-products-slide-atd"
+                                style={{
+                                    width: `${100 / deals.length}%`
+                                }}
+                            >
 
 
-                    return (
+                                {/* =================================
+                                    IMAGE BOX
+                                ================================= */}
 
-                        <div
-                            key={deal.id}
-                            className="admin-trending-products-item"
-                        >
+                                <div className="admin-trending-products-image-box-atd">
+
+                                    {image ? (
+
+                                        <img
+                                            src={image}
+                                            alt={
+                                                product?.name ||
+                                                "Trending Product"
+                                            }
+                                            className="admin-trending-products-image-atd"
+                                        />
+
+                                    ) : (
+
+                                        <div className="admin-trending-products-no-image-atd">
+
+                                            No Image
+
+                                        </div>
+
+                                    )}
+
+                                </div>
 
 
-                            {/* PRODUCT IMAGE */}
+                                {/* =================================
+                                    PRODUCT DETAILS
+                                ================================= */}
 
-                            <div className="admin-trending-products-image">
+                                <div className="admin-trending-products-details-atd">
 
-                                {image ? (
+                                    <h4>
+                                        {product?.name ||
+                                            "Trending Product"}
+                                    </h4>
 
-                                    <img
-                                        src={image}
-                                        alt={
-                                            product?.name ||
-                                            "Trending Product"
-                                        }
-                                    />
+                                    <p>
+                                        {product?.brand?.name || ""}
+                                    </p>
 
-                                ) : (
+                                    <span>
+                                        Position {deal.position}
+                                    </span>
 
-                                    <div className="admin-trending-products-no-image">
-
-                                        No Image
-
-                                    </div>
-
-                                )}
+                                </div>
 
                             </div>
 
+                        );
 
-                            {/* PRODUCT DETAILS */}
+                    })}
 
-                            <div className="admin-trending-products-details">
-
-                                <h4>
-                                    {product?.name}
-                                </h4>
-
-                                <p>
-                                    {product?.brand}
-                                </p>
-
-                                <span>
-                                    Position {deal.position}
-                                </span>
-
-                            </div>
-
-
-                        </div>
-
-                    );
-
-                })}
+                </div>
 
             </div>
 
+
+            {/* =================================================
+                DOTS
+            ================================================= */}
+
+            {deals.length > 1 && (
+
+                <div className="admin-trending-products-dots-atd">
+
+                    {deals.map((_, index) => (
+
+                        <span
+                            key={index}
+                            className={
+                                index === currentIndex
+                                    ? "active-atd"
+                                    : ""
+                            }
+                            onClick={() => goTo(index)}
+                        />
+
+                    ))}
+
+                </div>
+
+            )}
+
+
+            {/* =================================================
+                NAVIGATION
+            ================================================= */}
+
+            {deals.length > 1 && (
+
+                <div className="admin-trending-products-navigation-atd">
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            goTo(currentIndex - 1)
+                        }
+                        aria-label="Previous product"
+                    >
+                        ‹
+                    </button>
+
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            goTo(currentIndex + 1)
+                        }
+                        aria-label="Next product"
+                    >
+                        ›
+                    </button>
+
+                </div>
+
+            )}
 
         </div>
 

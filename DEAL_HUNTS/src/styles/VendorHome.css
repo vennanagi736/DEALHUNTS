@@ -1,184 +1,1003 @@
-/* ================= RESET ================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-  font-size: 17px;
-}
-body {
-  background-color: lightgray;
+/* ============================================================
+   DEALHUNTS — VENDOR HOME + DASHBOARD
+
+   GOLD  : #d4af37
+   BLACK : #000000
+   WHITE : #ffffff
+============================================================ */
+
+
+/* ============================================================
+   VENDOR HOME CONTAINER
+============================================================ */
+
+.home-container-vendor-vd {
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    color: #111111;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
 }
 
-/* ================= HEADER ================= */
-.header {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 20px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 2px solid #e0e0e0;
-  backdrop-filter: blur(10px);
-}
-.Gold {
-  color: gold;
-  font-size: 24px;
-  font-weight: bold;
-}
-.Black {
-  color: black;
-  font-size: 24px;
-  font-weight: bold;
-}
-.Vendor {
-  display: flex;              
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
 
-  margin-top: 10px;
-  font-size: 16px;
-  font-family: cursive;
-}
-.navigation {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-}
-.navigation a {
-  color: black;
-  text-decoration: none;
-  transition: 0.3s ease;
-}
-.navigation a:hover {
-  color: gold;
-}
-.navigation .home-Login {
-  margin-left: auto; 
-  padding: 8px 20px;
-  background-color: gold;
-  border: 2px solid black;
-  border-radius: 5px;
-  color: black;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-.navigation .home-Login:hover {
-  background-color: black;
-  color: gold;
-  border: 2px solid gold;
+/* ============================================================
+   VENDOR DASHBOARD
+============================================================ */
+
+.vendor-dashboard-vd {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 65% 35%;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-/* ================= MAIN ================= */
- .home-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-} 
-.main {
-  flex: 1;
-  background-color: #FFFFFF;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-  text-align: center;
+.vendor-dashboard-main-vd {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-/* ================= VENDOR REGISTER FORM ================= */
-.vendor-register {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  width: 500px;
-  max-width: 90%;
-  padding: 40px;
-  margin: 80px auto;
-  border-radius: 15px;
-  background-color: white;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-}
-.vendor-register h1 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-.vendor-register input {
-  padding: 12px 15px;
-  font-size: 18px;
-  border-radius: 8px;
-  border: 1px solid #181212;
-  width: 100%;
-}
-.vendor-register button {
-  padding: 12px 30px;
-  font-size: 20px;
-  font-family: sans-serif;
-  border-radius: 8px;  
-  border: 2px solid black;
-  background-color: gold;
-  color: black;
-  cursor: pointer;
-  transition: 0.3s ease;
+.vendor-dashboard-side-vd {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.vendor-register .error-message {
-  color: red;
-}
-.vendor-register .response-message {
-  font-weight: bold;
+
+/* ============================================================
+   DASHBOARD VARIABLES
+============================================================ */
+
+:root {
+    --vd-black: #12100c;
+    --vd-black-soft: #1d1a15;
+    --vd-gold: #c9a227;
+    --vd-gold-bright: #e8c34a;
+    --vd-gold-tint: #fbf3dd;
+    --vd-white: #ffffff;
+    --vd-gray-50: #f7f6f3;
+    --vd-gray-100: #efece5;
+    --vd-gray-300: #cfc9bb;
+    --vd-gray-500: #8a8578;
+    --vd-text: #211d15;
+    --vd-green: #2f7d4f;
+    --vd-orange: #b3760c;
+    --vd-red: #b3261e;
+    --vd-radius: 14px;
+    --vd-shadow: 0 4px 18px rgba(18, 16, 12, 0.08);
 }
 
-/* ================= VENDOR PRODUCT GRID (VENDORHOME) ================= */
-.vendor-product-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 25px;
-  margin-top: 30px;
-  justify-content: center; /* center items in row */
-}
-.vendor-product-card {
-  flex: 0 1 220px;  /* min width 220px, flexible */
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  padding: 15px 20px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: transform 0.2s;
-}
-.vendor-product-card:hover {
-  transform: scale(1.03);
-}
-.vendor-product-card img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
-.vendor-product-card button {
-  align-self: center;
-  padding: 8px 15px;
-  font-size: 14px;
-  border-radius: 8px;
-  border: none;
-  background-color: #5151CD;
-  color: white;
-  cursor: pointer;
-}
-.vendor-product-card button:hover {
-  background-color: #3030E8;
+
+/* ============================================================
+   SHARED CARD
+============================================================ */
+
+.vd-card {
+    background: var(--vd-white);
+    border: 1px solid var(--vd-gray-100);
+    border-radius: var(--vd-radius);
+    box-shadow: var(--vd-shadow);
+    padding: 22px 24px;
 }
 
-/* ================= FOOTER ================= */
-.footer {
-  background-color: white;
-  color: black;
-  text-align: center;
-  padding: 20px;
-  border-top: 2px solid #e0e0e0;
+.vd-section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.vd-section-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--vd-black);
+    letter-spacing: -0.01em;
+}
+
+.vd-section-sub {
+    font-size: 13px;
+    color: var(--vd-gray-500);
+    margin-top: 2px;
+}
+
+.vd-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--vd-gold);
+    font-weight: 600;
+    font-size: 13.5px;
+    cursor: pointer;
+    padding: 4px 2px;
+    transition: color 0.2s ease;
+}
+
+.vd-link-btn:hover {
+    color: var(--vd-black);
+}
+
+
+/* ============================================================
+   GREETING BANNER
+============================================================ */
+
+.vd-greeting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(
+        90deg,
+        var(--vd-gold-tint),
+        #ffffff
+    );
+    border: 1px solid #f0e2b8;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 14.5px;
+    color: var(--vd-black);
+    animation: vd-fade-in 0.25s ease;
+}
+
+.vd-greeting strong {
+    font-weight: 700;
+}
+
+.vd-greeting-close {
+    background: none;
+    border: none;
+    font-size: 16px;
+    line-height: 1;
+    color: var(--vd-gray-500);
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+.vd-greeting-close:hover {
+    color: var(--vd-black);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+@keyframes vd-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ============================================================
+   SALES OVERVIEW / CHART
+============================================================ */
+
+.vd-filters {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.vd-filter-btn {
+    border: 1px solid var(--vd-gray-100);
+    background: var(--vd-gray-50);
+    color: var(--vd-text);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.vd-filter-btn:hover {
+    border-color: var(--vd-gold);
+}
+
+.vd-filter-btn.active {
+    background: var(--vd-black);
+    border-color: var(--vd-black);
+    color: var(--vd-gold-bright);
+}
+
+.vd-chart-wrap {
+    height: 300px;
+    margin-top: 16px;
+}
+
+
+/* ============================================================
+   TOOLTIP
+============================================================ */
+
+.vd-tooltip {
+    background: var(--vd-black);
+    color: var(--vd-white);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    min-width: 130px;
+}
+
+.vd-tooltip-title {
+    color: var(--vd-gold-bright);
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+.vd-tooltip-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    color: var(--vd-gray-300);
+    padding: 1px 0;
+}
+
+.vd-tooltip-row b {
+    color: var(--vd-white);
+}
+
+
+/* ============================================================
+   SALES SUMMARY
+============================================================ */
+
+.vd-summary-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.vd-summary-card {
+    background: var(--vd-gray-50);
+    border: 1px solid var(--vd-gray-100);
+    border-radius: 12px;
+    padding: 14px 16px;
+}
+
+.vd-summary-label {
+    font-size: 12px;
+    color: var(--vd-gray-500);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.vd-summary-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--vd-black);
+    margin-top: 4px;
+}
+
+.vd-summary-delta {
+    font-size: 12.5px;
+    font-weight: 700;
+    margin-top: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.vd-summary-delta.up {
+    color: var(--vd-green);
+}
+
+.vd-summary-delta.down {
+    color: var(--vd-red);
+}
+
+
+/* ============================================================
+   PRODUCT PERFORMANCE TABLE
+============================================================ */
+
+.vd-table-scroll {
+    overflow-x: auto;
+    margin-top: 14px;
+}
+
+.vd-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+    font-size: 13.5px;
+}
+
+.vd-table th {
+    text-align: left;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--vd-gray-500);
+    font-weight: 700;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--vd-gray-100);
+}
+
+.vd-table td {
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--vd-gray-100);
+    color: var(--vd-text);
+}
+
+.vd-table tr:last-child td {
+    border-bottom: none;
+}
+
+.vd-product-name {
+    font-weight: 600;
+    color: var(--vd-black);
+}
+
+.vd-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+.vd-badge.excellent {
+    background: #e7f5eb;
+    color: var(--vd-green);
+}
+
+.vd-badge.good {
+    background: #fbf3dd;
+    color: var(--vd-gold);
+}
+
+.vd-badge.low-stock {
+    background: #fbeceb;
+    color: var(--vd-red);
+}
+
+
+/* ============================================================
+   TOP SELLING PRODUCTS
+============================================================ */
+
+.vd-top-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.vd-top-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.vd-top-rank {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--vd-black);
+    color: var(--vd-gold-bright);
+    font-weight: 700;
+    font-size: 12.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.vd-top-item:first-child .vd-top-rank {
+    background: var(--vd-gold);
+    color: var(--vd-black);
+}
+
+.vd-top-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.vd-top-name {
+    font-weight: 600;
+    font-size: 13.5px;
+    color: var(--vd-black);
+}
+
+.vd-top-orders {
+    font-size: 12px;
+    color: var(--vd-gray-500);
+}
+
+.vd-top-revenue {
+    font-weight: 700;
+    font-size: 13.5px;
+    color: var(--vd-gold);
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   CAROUSEL CARD
+============================================================ */
+
+.vd-carousel-card-vd {
+    background: var(--vd-white);
+    border-radius: var(--vd-radius);
+    padding: 14px;
+    box-shadow: var(--vd-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.vd-carousel-tagline-vd {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--vd-gold-bright);
+    font-family: cursive;
+    font-size: 25px;
+    letter-spacing: 0.02em;
+    text-align: center;
+    padding: 2px 4px 6px;
+}
+
+.vd-carousel-tagline-vd .dot-vd {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--vd-gold);
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   INVENTORY
+============================================================ */
+
+.vd-inv-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.vd-inv-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--vd-gray-50);
+    border: 1px solid var(--vd-gray-100);
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+
+.vd-inv-card.warning {
+    background: #fdf6e9;
+    border-color: #f0dba3;
+}
+
+.vd-inv-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--vd-text);
+}
+
+.vd-inv-sub {
+    font-size: 11px;
+    color: var(--vd-gray-500);
+    margin-top: 1px;
+}
+
+.vd-inv-sub.warn {
+    color: var(--vd-orange);
+    font-weight: 600;
+}
+
+.vd-inv-value {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--vd-black);
+}
+
+
+/* ============================================================
+   BUSINESS OVERVIEW
+============================================================ */
+
+.vd-biz-group {
+    margin-top: 14px;
+}
+
+.vd-biz-group + .vd-biz-group {
+    margin-top: 16px;
+}
+
+.vd-biz-group-title {
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--vd-gray-500);
+    margin-bottom: 8px;
+}
+
+.vd-biz-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 0;
+    font-size: 13.5px;
+    border-bottom: 1px dashed var(--vd-gray-100);
+}
+
+.vd-biz-row:last-child {
+    border-bottom: none;
+}
+
+.vd-biz-row-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--vd-text);
+}
+
+.vd-biz-row-value {
+    font-weight: 700;
+    color: var(--vd-black);
+}
+
+
+/* ============================================================
+   QUICK ACTIONS
+============================================================ */
+
+.vd-quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.vd-quick-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: var(--vd-white);
+    border: 1px solid var(--vd-gray-100);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--vd-black);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-decoration: none;
+}
+
+.vd-quick-btn:hover {
+    border-color: var(--vd-gold);
+    background: var(--vd-gold-tint);
+}
+
+.vd-quick-btn-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vd-quick-btn-arrow {
+    color: var(--vd-gold);
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   TRENDING CAROUSEL
+============================================================ */
+
+.trending-section-vendor-vd {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.carousel-vendor-vd {
+    position: relative;
+    width: 100%;
+    height: 190px;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.carousel-vendor-vd .carousel-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.carousel-vendor-vd .carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.carousel-vendor-vd .dots-container {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.carousel-vendor-vd .nav-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 17px;
+}
+
+
+/* ============================================================
+   MANAGE MAIN
+============================================================ */
+
+.manage-main {
+    flex: 1;
+    padding: 30px 40px 60px;
+    display: flex;
+    justify-content: center;
+}
+
+
+/* ============================================================
+   MINI GRID
+============================================================ */
+
+.vd-mini-grid-vd {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.vd-mini-card {
+    background: var(--vd-white);
+    border: 1px solid var(--vd-gray-100);
+    border-radius: 12px;
+    box-shadow: var(--vd-shadow);
+    padding: 16px;
+    min-width: 0;
+}
+
+.vd-mini-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--vd-gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.vd-mini-product {
+    margin-top: 12px;
+}
+
+.vd-mini-product-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--vd-black);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.vd-mini-product-orders {
+    font-size: 11.5px;
+    color: var(--vd-gray-500);
+    margin-top: 3px;
+}
+
+.vd-mini-value {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--vd-gold);
+}
+
+.vd-mini-sub {
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--vd-gray-500);
+}
+
+.vd-growth-value {
+    margin-top: 14px;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.vd-growth-value.positive {
+    color: var(--vd-green);
+}
+
+.vd-growth-value.negative {
+    color: var(--vd-red);
+}
+
+
+/* ============================================================
+   VENDOR REGISTER
+============================================================ */
+
+.vendor-register-vendor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 500px;
+    max-width: 90%;
+    padding: 40px;
+    margin: 80px auto;
+    border-radius: 15px;
+    background-color: #ffffff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.vendor-register-vendor h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.vendor-register-vendor input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 1px solid #181212;
+    outline: none;
+}
+
+.vendor-register-vendor input:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+.vendor-register-vendor button {
+    padding: 12px 30px;
+    font-size: 20px;
+    font-family: sans-serif;
+    border-radius: 8px;
+    border: 2px solid #111111;
+    background-color: #d4af37;
+    color: #111111;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.vendor-register-vendor button:hover {
+    background-color: #111111;
+    color: #d4af37;
+    border-color: #d4af37;
+}
+
+
+/* ============================================================
+   VENDOR PRODUCT GRID
+============================================================ */
+
+.vendor-product-grid-vendor {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-top: 30px;
+    justify-content: center;
+}
+
+.vendor-product-card-vendor {
+    flex: 0 1 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px 20px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.vendor-product-card-vendor:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.vendor-product-card-vendor img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.vendor-product-card-vendor button {
+    align-self: center;
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    background-color: #5151cd;
+    color: #ffffff;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.vendor-product-card-vendor button:hover {
+    background-color: #3030e8;
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.footer-vendor-vd {
+    width: 100%;
+    padding: 20px;
+    margin-top: 0;
+    background-color: #ffffff;
+    color: #111111;
+    text-align: center;
+    border-top: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.footer-vendor-vd p {
+    font-size: 13px;
+    color: #666666;
+}
+
+
+/* ============================================================
+   RESPONSIVE — 1180px
+============================================================ */
+
+@media (max-width: 1180px) {
+
+    .vendor-dashboard-vd {
+        grid-template-columns: 60% 40%;
+        padding: 24px;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE — 900px
+============================================================ */
+
+@media (max-width: 900px) {
+
+    .vendor-dashboard-vd {
+        grid-template-columns: 1fr;
+        padding: 18px 16px 50px;
+    }
+
+    .vd-summary-row {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .vd-summary-row .vd-summary-card:last-child {
+        grid-column: 1 / -1;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE — 700px
+============================================================ */
+
+@media (max-width: 700px) {
+
+    .vendor-dashboard-vd {
+        padding: 16px 14px 40px;
+        gap: 16px;
+    }
+
+    .vendor-dashboard-main-vd,
+    .vendor-dashboard-side-vd {
+        gap: 16px;
+    }
+}
+
+
+/* ============================================================
+   MOBILE — 600px
+============================================================ */
+
+@media (max-width: 600px) {
+
+    .vendor-dashboard-vd {
+        padding: 14px 12px 35px;
+    }
+
+    .vd-summary-row {
+        grid-template-columns: 1fr;
+    }
+
+    .vd-summary-row .vd-summary-card:last-child {
+        grid-column: auto;
+    }
+}
+
+
+/* ============================================================
+   MOBILE — 480px
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .vendor-dashboard-vd {
+        padding: 12px 10px 30px;
+    }
+
+    .vd-carousel-card-vd {
+        padding: 11px;
+    }
+
+    .vd-carousel-tagline-vd {
+        font-size: 21px;
+    }
+
+    .carousel-vendor-vd {
+        height: 170px;
+    }
+
+    .vd-mini-grid-vd {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE — 400px
+============================================================ */
+
+@media (max-width: 400px) {
+
+    .vendor-dashboard-vd {
+        padding: 10px 8px 25px;
+    }
+
+    .vd-carousel-tagline-vd {
+        font-size: 19px;
+    }
+
+    .carousel-vendor-vd {
+        height: 155px;
+    }
+
+    .footer-vendor-vd {
+        padding: 16px 10px;
+    }
 }
