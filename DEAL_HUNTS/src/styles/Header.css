@@ -5,10 +5,16 @@
    BLACK : #000000
    WHITE : #ffffff
 
-   IMPORTANT:
-   - Navigation is always centered.
-   - Header navigation uses .dh-header-navigation.
-   - Header remains stable across user/admin/vendor pages.
+   DESKTOP:
+   Existing layout preserved.
+
+   LAPTOP / TABLET:
+   Search icon first.
+   Search bar opens inside header.
+
+   MOBILE:
+   Top header = menu + logo + search + cart + profile
+   Bottom navigation = mobile navigation
 ============================================================ */
 
 
@@ -19,12 +25,9 @@
 .dh-header-wrapper {
     width: 100%;
     min-height: 72px;
-
     display: flex;
     align-items: center;
-
     background: #ffffff;
-
     box-sizing: border-box;
 }
 
@@ -35,21 +38,14 @@
 
 .header {
     position: relative;
-
     width: 100%;
     min-height: 72px;
-
     display: flex;
     align-items: center;
-
     padding: 0 28px 0 14px;
-
     background: #ffffff;
-
     box-sizing: border-box;
-
     z-index: 1000;
-
     border-bottom: 1px solid #eeeeee;
 }
 
@@ -62,12 +58,9 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-
     flex-shrink: 0;
     min-width: max-content;
-
     gap: 8px;
-
     z-index: 3;
 }
 
@@ -79,7 +72,6 @@
 .logo {
     display: flex;
     align-items: center;
-
     font-family:
         Inter,
         system-ui,
@@ -89,14 +81,10 @@
         Roboto,
         Arial,
         sans-serif;
-
     font-size: 28px;
     font-weight: 800;
-
     line-height: 1;
-
     letter-spacing: -0.6px;
-
     white-space: nowrap;
 }
 
@@ -125,7 +113,6 @@
 
 .Admin {
     color: #555555;
-
     font-family:
         Inter,
         system-ui,
@@ -135,51 +122,31 @@
         Roboto,
         Arial,
         sans-serif;
-
     font-size: 14px;
     font-weight: 600;
-
     white-space: nowrap;
-
     margin-left: 4px;
 }
 
 
 /* ============================================================
    CENTER NAVIGATION
-
-   The navigation is positioned relative to .header.
-
-   left: 50%
-   top: 50%
-   transform: translate(-50%, -50%)
-
-   This guarantees that the navigation itself is centered
-   in the header.
+   DESKTOP — PRESERVED
 ============================================================ */
 
 .dh-header-navigation {
     position: absolute;
-
     left: 50%;
     top: 50%;
-
     transform: translate(-50%, -50%);
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     gap: 32px;
-
     width: max-content;
-
     max-width: calc(100% - 420px);
-
     white-space: nowrap;
-
     z-index: 2;
-
     box-sizing: border-box;
 }
 
@@ -190,15 +157,11 @@
 
 .header-nav-link {
     position: relative;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     color: #111111;
-
     text-decoration: none;
-
     font-family:
         Inter,
         system-ui,
@@ -208,18 +171,13 @@
         Roboto,
         Arial,
         sans-serif;
-
     font-size: 15px;
     font-weight: 600;
-
     line-height: 1;
-
     padding: 10px 0;
-
     white-space: nowrap;
-
     flex-shrink: 0;
-
+    -webkit-tap-highlight-color: transparent;
     transition:
         color 0.2s ease,
         transform 0.2s ease;
@@ -232,35 +190,51 @@
 
 .header-nav-link:hover {
     color: #111111;
-
     transform: translateY(-1px);
 }
 
 
 /* ============================================================
-   NAVIGATION UNDERLINE
+   NAVIGATION FOCUS
 ============================================================ */
 
-.header-nav-link::after {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    bottom: 2px;
-
-    width: 0;
-    height: 2px;
-
-    background: #d4af37;
-
-    transition: width 0.25s ease;
+.header-nav-link:focus,
+.header-nav-link:focus-visible {
+    color: #111111;
+    outline: none;
 }
 
 
 /* ============================================================
-   NAVIGATION HOVER UNDERLINE
+   NAVIGATION VISITED
 ============================================================ */
+
+.header-nav-link:visited {
+    color: #111111;
+}
+
+
+/* ============================================================
+   GOLD UNDERLINE
+   HOVER ONLY
+   IMPORTANT:
+   Active/current page DOES NOT get underline.
+============================================================ */
+
+.header-nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 2px;
+    width: 0;
+    height: 2px;
+    background: #d4af37;
+    border-radius: 2px;
+    transition: width 0.25s ease;
+}
+
+
+/* Gold underline ONLY while hovering */
 
 .header-nav-link:hover::after {
     width: 100%;
@@ -268,7 +242,8 @@
 
 
 /* ============================================================
-   ACTIVE NAVIGATION
+   ACTIVE PAGE
+   NO GOLD UNDERLINE
 ============================================================ */
 
 .header-nav-link.active {
@@ -276,8 +251,10 @@
 }
 
 
+/* Explicitly prevent active page from showing underline */
+
 .header-nav-link.active::after {
-    width: 100%;
+    width: 0;
 }
 
 
@@ -287,16 +264,12 @@
 
 .header-actions {
     margin-left: auto;
-
     display: flex;
     align-items: center;
     justify-content: flex-end;
-
     gap: 20px;
-
     flex-shrink: 0;
     min-width: max-content;
-
     z-index: 3;
 }
 
@@ -308,49 +281,37 @@
 .header-icon {
     width: 26px;
     height: 26px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 0;
-
     border: none;
-
     background: transparent;
-
     color: #111111;
-
     text-decoration: none;
-
     font-size: 20px;
     line-height: 1;
-
     flex-shrink: 0;
-
     cursor: pointer;
-
     transition:
         color 0.2s ease,
         transform 0.2s ease,
         background 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
 
-/* ============================================================
-   HEADER ICON HOVER
-============================================================ */
-
 .header-icon:hover {
     color: #111111;
-
     transform: translateY(-1px);
 }
 
 
-/* ============================================================
-   HEADER ICON ACTIVE
-============================================================ */
+.header-icon:focus,
+.header-icon:focus-visible {
+    outline: none;
+}
+
 
 .header-icon.active {
     color: #d4af37;
@@ -363,14 +324,10 @@
 
 .header-login {
     position: relative;
-
     display: inline-flex;
     align-items: center;
-
     color: #111111;
-
     text-decoration: none;
-
     font-family:
         Inter,
         system-ui,
@@ -380,46 +337,45 @@
         Roboto,
         Arial,
         sans-serif;
-
     font-size: 15px;
     font-weight: 600;
-
     line-height: 1;
-
     padding: 9px 0;
-
     white-space: nowrap;
-
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
-
-/* ============================================================
-   LOGIN HOVER
-============================================================ */
 
 .header-login:hover {
     color: #111111;
 }
 
 
+.header-login:focus,
+.header-login:focus-visible {
+    color: #111111;
+    outline: none;
+}
+
+
+.header-login:visited {
+    color: #111111;
+}
+
+
 /* ============================================================
-   LOGIN UNDERLINE
+   LOGIN UNDERLINE — HOVER ONLY
 ============================================================ */
 
 .header-login::after {
     content: "";
-
     position: absolute;
-
     left: 0;
     bottom: 1px;
-
     width: 0;
     height: 2px;
-
     background: #d4af37;
-
     transition: width 0.25s ease;
 }
 
@@ -429,45 +385,33 @@
 }
 
 
+/* Login active state does not force underline */
+
 .header-login.active::after {
-    width: 100%;
+    width: 0;
 }
 
 
 /* ============================================================
    SEARCH
-   Used by USER HEADER
+   DESKTOP VERSION
 ============================================================ */
 
 .header-search {
     position: absolute;
-
-    right: 105px;
+    right: 150px !important;
     top: 50%;
-
     transform: translateY(-50%);
-
     width: 250px;
     height: 38px;
-
     display: flex;
     align-items: center;
-
     background: #ffffff;
-
     border: 1px solid #dcdcdc;
-
     border-radius: 6px;
-
     overflow: hidden;
-
     box-sizing: border-box;
-
     z-index: 2;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
 }
 
 
@@ -477,22 +421,17 @@
 
 .header-search input {
     flex: 1;
-
     min-width: 0;
-
     width: 100%;
     height: 100%;
-
     padding: 0 12px;
-
-    border: none;
-
-    outline: none;
-
+    margin: 0;
+    border: none !important;
+    border-right: none !important;
+    outline: none !important;
+    box-shadow: none !important;
     background: transparent;
-
     color: #111111;
-
     font-family:
         Inter,
         system-ui,
@@ -502,16 +441,10 @@
         Roboto,
         Arial,
         sans-serif;
-
     font-size: 14px;
-
     box-sizing: border-box;
 }
 
-
-/* ============================================================
-   SEARCH PLACEHOLDER
-============================================================ */
 
 .header-search input::placeholder {
     color: #888888;
@@ -520,52 +453,126 @@
 
 /* ============================================================
    SEARCH BUTTON
+   Used for the search icon when the input is empty.
 ============================================================ */
 
 .header-search button {
     width: 42px;
     height: 100%;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     flex-shrink: 0;
-
     padding: 0;
-
-    border: none;
-
-    background: transparent;
-
+    margin: 0;
+    border: none !important;
+    border-left: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
     color: #111111;
-
     font-size: 18px;
-
     cursor: pointer;
-
     transition: color 0.2s ease;
 }
 
 
-/* ============================================================
-   SEARCH BUTTON HOVER
-============================================================ */
-
 .header-search button:hover {
-    color: #d4af37;
+    color: #111111 !important;
+}
+
+
+.header-search button:focus,
+.header-search button:focus-visible,
+.header-search button:active {
+    border: none !important;
+    border-left: none !important;
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 
 /* ============================================================
    SEARCH FOCUS
+   NO GOLD EFFECT
 ============================================================ */
 
 .header-search:focus-within {
-    border-color: #d4af37;
+    border-color: #dcdcdc !important;
+    box-shadow: none !important;
+}
 
-    box-shadow:
-        0 0 0 2px rgba(212, 175, 55, 0.08);
+
+/* ============================================================
+   SEARCH CLEAR X
+   Appears ONLY after typing.
+   
+   Result:
+   [ iphone                         × ]
+   
+   No divider line between text and X.
+============================================================ */
+
+.header-search-clear {
+    width: 32px !important;
+    height: 100%;
+    flex: 0 0 32px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    border: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    color: #777777;
+    font-size: 15px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+
+.header-search-clear:hover {
+    color: #111111 !important;
+}
+
+
+.header-search-clear:focus,
+.header-search-clear:focus-visible,
+.header-search-clear:active {
+    border: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+.header-search-clear svg {
+    width: 15px;
+    height: 15px;
+    display: block;
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   MOBILE SEARCH BUTTON
+   Hidden on desktop.
+============================================================ */
+
+.mobile-search-button {
+    display: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+.mobile-search-button:focus,
+.mobile-search-button:focus-visible {
+    outline: none;
 }
 
 
@@ -576,89 +583,58 @@
 .dh-header-menu-button {
     width: 40px;
     height: 40px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     margin: 0 12px 0 0;
-
     padding: 0;
-
     border: none;
-
     border-radius: 6px;
-
     background: transparent;
-
     color: #000000;
-
     font-family:
         Arial,
         Helvetica,
         sans-serif;
-
     font-size: 26px;
     font-weight: 500;
-
     line-height: 1;
-
     cursor: pointer;
-
     flex-shrink: 0;
-
     transition:
         background 0.2s ease,
         color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
-
-/* ============================================================
-   MENU BUTTON HOVER
-============================================================ */
 
 .dh-header-menu-button:hover {
     background: #f1f1f1;
-
     color: #000000;
 }
 
-
-/* ============================================================
-   MENU BUTTON ACTIVE
-============================================================ */
 
 .dh-header-menu-button:active {
     background: #e5e5e5;
 }
 
 
-/* ============================================================
-   MENU BUTTON FOCUS
-============================================================ */
-
 .dh-header-menu-button:focus-visible {
     outline: 2px solid #d4af37;
-
     outline-offset: 2px;
 }
 
 
 /* ============================================================
    PAGE HEADER TITLE
-   Used by Orders
 ============================================================ */
 
 .page-header-title {
     position: absolute;
-
     left: 50%;
     top: 50%;
-
     transform: translate(-50%, -50%);
-
     color: #111111;
-
     font-family:
         Inter,
         system-ui,
@@ -668,14 +644,10 @@
         Roboto,
         Arial,
         sans-serif;
-
     font-size: 18px;
     font-weight: 700;
-
     line-height: 1;
-
     white-space: nowrap;
-
     z-index: 2;
 }
 
@@ -687,42 +659,34 @@
 .header-back-button {
     width: 34px;
     height: 34px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 0;
-
     border: none;
-
     background: transparent;
-
     color: #111111;
-
     font-size: 20px;
-
     cursor: pointer;
-
     border-radius: 5px;
-
     transition:
         background 0.2s ease,
         color 0.2s ease,
         transform 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
 
-/* ============================================================
-   BACK BUTTON HOVER
-============================================================ */
-
 .header-back-button:hover {
     background: #f1f1f1;
-
     color: #d4af37;
-
     transform: translateX(-1px);
+}
+
+
+.header-back-button:focus,
+.header-back-button:focus-visible {
+    outline: none;
 }
 
 
@@ -737,74 +701,281 @@
 
 /* ============================================================
    LARGE TABLET / SMALL DESKTOP
+   1200px — 1001px
+   SEARCH ICON FIRST
 ============================================================ */
 
-@media (max-width: 1200px) {
+@media (max-width: 1200px) and (min-width: 1001px) {
 
     .header {
         padding-right: 22px;
     }
 
+
     .dh-header-navigation {
         gap: 24px;
-
         max-width: calc(100% - 360px);
     }
 
-    .header-search {
-        width: 220px;
 
-        right: 100px;
+    /* --------------------------------------------------------
+       SEARCH ICON
+    -------------------------------------------------------- */
+
+    .mobile-search-button {
+        width: 36px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 6px 0 0;
+        padding: 0;
+        border: none;
+        border-radius: 7px;
+        background: transparent;
+        color: #111111;
+        font-size: 20px;
+        cursor: pointer;
+        flex-shrink: 0;
+        z-index: 30;
+        box-sizing: border-box;
     }
+
+
+    .mobile-search-button:hover {
+        color: #111111;
+        background: #fafafa;
+    }
+
+
+    .mobile-search-button svg {
+        width: 21px;
+        height: 21px;
+        flex-shrink: 0;
+    }
+
+
+    /* --------------------------------------------------------
+       SEARCH CLOSED
+    -------------------------------------------------------- */
+
+    .header > .header-search {
+        display: none;
+        position: absolute;
+        width: 220px;
+        height: 40px;
+        top: 50%;
+        right: 146px;
+        left: auto;
+        transform: translateY(-50%);
+        z-index: 50;
+    }
+
+
+    /* --------------------------------------------------------
+       SEARCH OPEN
+    -------------------------------------------------------- */
+
+    .header.mobile-search-open > .header-search {
+        display: flex;
+        width: 220px;
+        height: 40px;
+        top: 50%;
+        right: 146px;
+        left: auto;
+        transform: translateY(-50%);
+        z-index: 100;
+    }
+
+
+    /* --------------------------------------------------------
+       X / CLOSE BUTTON
+    -------------------------------------------------------- */
+
+    .header.mobile-search-open > .mobile-search-button {
+        position: absolute;
+        right: 100px;
+        left: auto;
+        top: 50%;
+        width: 40px;
+        height: 40px;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 120;
+        background: #ffffff;
+        border-radius: 7px;
+        box-sizing: border-box;
+    }
+
+
+    .header.mobile-search-open > .mobile-search-button svg {
+        width: 21px;
+        height: 21px;
+        flex-shrink: 0;
+    }
+
+
+    /* --------------------------------------------------------
+       ACTIONS
+    -------------------------------------------------------- */
 
     .header-actions {
         gap: 16px;
+        z-index: 30;
     }
 }
 
 
 /* ============================================================
    TABLET / SMALL LAPTOP
+   1000px — 769px
+   SEARCH ICON FIRST
 ============================================================ */
 
-@media (max-width: 1000px) {
+@media (max-width: 1000px) and (min-width: 769px) {
 
     .header {
         padding: 0 18px 0 12px;
     }
 
+
     .logo {
         font-size: 25px;
     }
+
 
     .Admin {
         font-size: 13px;
     }
 
+
     .dh-header-navigation {
         gap: 18px;
-
         max-width: calc(100% - 300px);
     }
+
 
     .header-nav-link {
         font-size: 14px;
     }
 
-    .header-search {
-        width: 190px;
 
-        right: 92px;
+    /* --------------------------------------------------------
+       SEARCH ICON
+    -------------------------------------------------------- */
+
+    .mobile-search-button {
+        width: 34px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 5px 0 0;
+        padding: 0;
+        border: none;
+        border-radius: 7px;
+        background: transparent;
+        color: #111111;
+        font-size: 19px;
+        cursor: pointer;
+        flex-shrink: 0;
+        z-index: 30;
+        box-sizing: border-box;
     }
+
+
+    .mobile-search-button:hover {
+        color: #111111;
+        background: #fafafa;
+    }
+
+
+    .mobile-search-button svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+
+
+    /* --------------------------------------------------------
+       SEARCH CLOSED
+    -------------------------------------------------------- */
+
+    .header > .header-search {
+        display: none;
+        position: absolute;
+        width: 190px;
+        height: 38px;
+        top: 50%;
+        right: 126px;
+        left: auto;
+        transform: translateY(-50%);
+        z-index: 50;
+    }
+
+
+    /* --------------------------------------------------------
+       SEARCH OPEN
+    -------------------------------------------------------- */
+
+    .header.mobile-search-open > .header-search {
+        display: flex;
+        width: 190px;
+        height: 38px;
+        top: 50%;
+        right: 126px;
+        left: auto;
+        transform: translateY(-50%);
+        z-index: 100;
+    }
+
+
+    /* --------------------------------------------------------
+       X / CLOSE BUTTON
+    -------------------------------------------------------- */
+
+    .header.mobile-search-open > .mobile-search-button {
+        position: absolute;
+        right: 80px;
+        left: auto;
+        top: 50%;
+        width: 38px;
+        height: 38px;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 120;
+        background: #ffffff;
+        border-radius: 7px;
+        box-sizing: border-box;
+    }
+
+
+    .header.mobile-search-open > .mobile-search-button svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+
+
+    /* --------------------------------------------------------
+       ACTIONS
+    -------------------------------------------------------- */
 
     .header-actions {
         gap: 14px;
+        z-index: 30;
     }
+
 
     .header-icon {
         width: 24px;
         height: 24px;
-
         font-size: 19px;
     }
 }
@@ -816,368 +987,941 @@
 
 @media (max-width: 768px) {
 
-    .dh-header-wrapper {
-        min-height: 64px;
-    }
+    /* ========================================================
+       HEADER
+    ======================================================== */
 
     .header {
-        min-height: 64px;
-
-        padding: 0 14px 0 10px;
-
-        overflow: hidden;
+        position: relative;
+        width: 100%;
+        min-height: 54px;
+        height: 54px;
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        align-items: center;
+        padding: 0 9px;
+        background: #ffffff;
+        box-sizing: border-box;
+        overflow: visible;
+        z-index: 1000;
     }
 
-    .logo {
-        font-size: 23px;
 
-        letter-spacing: -0.5px;
+    .header:has(.dh-header-menu-button) {
+        min-height: 54px;
+        height: 54px;
     }
 
-    .Admin {
-        font-size: 12px;
-    }
 
-    .dh-header-navigation {
-        position: absolute;
+    /* ========================================================
+       MENU BUTTON
+    ======================================================== */
 
-        left: 50%;
-        top: 50%;
-
-        transform: translate(-50%, -50%);
-
+    .header > .dh-header-menu-button {
+        position: relative;
+        flex: 0 0 34px;
+        width: 34px;
+        height: 38px;
+        margin: 0 3px 0 0;
+        padding: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        border: none;
+        border-radius: 7px;
+        background: transparent;
+        color: #111111;
+        font-size: 20px;
+        line-height: 1;
+        z-index: 20;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
 
-        gap: 16px;
 
-        width: max-content;
+    .header > .dh-header-menu-button:hover {
+        background: #f7f7f7;
+        color: #111111;
+    }
 
-        max-width: calc(100% - 270px);
 
+    /* ========================================================
+       LOGO / LEFT SECTION
+    ======================================================== */
+
+    .header > .left-section {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: auto;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0;
         margin: 0;
+        gap: 5px;
+        overflow: hidden;
+        z-index: 5;
+    }
 
+
+    .header > .left-section .logo {
+        min-width: 0;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        font-size: 21px;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+
+    .header > .left-section .Admin {
+        flex-shrink: 0;
+        margin-left: 1px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+
+    /* ========================================================
+       MOBILE SEARCH BUTTON
+    ======================================================== */
+
+    .mobile-search-button {
+        position: relative;
+        flex: 0 0 34px;
+        width: 34px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 2px 0 0;
+        padding: 0;
+        border: none;
+        border-radius: 7px;
+        background: transparent;
+        color: #111111;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 30;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+
+    .mobile-search-button:hover {
+        color: #111111;
+        background: #fafafa;
+    }
+
+
+    .mobile-search-button:active {
+        background: #f6f6f6;
+    }
+
+
+    .mobile-search-button svg {
+        width: 21px;
+        height: 21px;
         flex-shrink: 0;
     }
 
-    .header-nav-link {
-        font-size: 13px;
 
-        padding: 8px 0;
+    /* ========================================================
+       HEADER ACTIONS
+       CART + PROFILE / LOGIN
+    ======================================================== */
+
+    .header > .header-actions {
+        position: relative;
+        flex: 0 0 auto;
+        width: auto;
+        height: 54px;
+        min-width: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 7px;
+        z-index: 20;
     }
 
-    .header-search {
-        position: static;
 
-        transform: none;
-
-        width: 180px;
-        height: 36px;
-
-        margin-left: auto;
-
-        flex-shrink: 1;
-    }
-
-    .header-search input {
-        font-size: 13px;
-
-        padding: 0 10px;
-    }
-
-    .header-search button {
-        width: 38px;
-
-        font-size: 17px;
-    }
-
-    .header-actions {
-        gap: 12px;
-
-        margin-left: 12px;
-    }
-
-    .header-icon {
-        width: 23px;
-        height: 23px;
-
-        font-size: 18px;
-    }
-
-    .header-login {
-        font-size: 13px;
-    }
-
-    .dh-header-menu-button {
-        width: 36px;
-        height: 36px;
-
-        margin-right: 7px;
-
-        font-size: 24px;
-    }
-
-    .page-header-title {
-        font-size: 17px;
-    }
-}
-
-
-/* ============================================================
-   MOBILE — 650px
-============================================================ */
-
-@media (max-width: 650px) {
-
-    .header {
-        padding: 0 10px;
-    }
-
-    .logo {
-        font-size: 21px;
-    }
-
-    .Admin {
-        font-size: 11px;
-    }
-
-    .dh-header-navigation {
-        gap: 11px;
-
-        max-width: calc(100% - 240px);
-    }
-
-    .header-nav-link {
-        font-size: 12px;
-    }
-
-    .header-search {
-        width: 150px;
-    }
-
-    .header-actions {
-        gap: 9px;
-
-        margin-left: 8px;
-    }
-}
-
-
-/* ============================================================
-   SMALL MOBILE — 550px
-============================================================ */
-
-@media (max-width: 550px) {
-
-    .header {
-        padding: 0 8px;
-    }
-
-    .logo {
+    .header > .header-actions .header-icon {
+        width: 29px;
+        height: 38px;
+        min-width: 29px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
         font-size: 20px;
     }
 
-    .dh-header-navigation {
-        gap: 9px;
 
-        max-width: calc(100% - 210px);
-    }
-
-    .header-nav-link {
-        font-size: 11px;
-    }
-
-    .header-search {
-        width: 125px;
-
-        height: 34px;
-    }
-
-    .header-search input {
-        font-size: 11px;
-
-        padding: 0 7px;
-    }
-
-    .header-search button {
-        width: 32px;
-
-        font-size: 15px;
-    }
-
-    .header-actions {
-        gap: 7px;
-
-        margin-left: 6px;
-    }
-
-    .header-icon {
+    .header > .header-actions .header-icon svg {
         width: 21px;
         height: 21px;
+    }
 
+
+    .header > .header-actions .header-login {
+        display: inline-flex;
+        align-items: center;
+        height: 38px;
+        padding: 0;
+        font-size: 13px;
+    }
+
+
+    /* ========================================================
+       MOBILE SEARCH FORM
+       CLOSED
+    ======================================================== */
+
+    .header > .header-search {
+        display: none;
+        position: absolute;
+        right: 104px !important;
+        left: auto;
+        top: 8px;
+        width: 280px !important;
+        max-width: 300px !important;
+        height: 38px;
+        margin: 0;
+        transform: none;
+        align-items: center;
+        background: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-sizing: border-box;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        z-index: 100;
+    }
+
+
+    /* ========================================================
+       MOBILE SEARCH OPEN
+    ======================================================== */
+
+    .header.mobile-search-open > .header-search {
+        display: flex;
+        right: 116px;
+        left: auto;
+        width: 280px;
+        max-width: calc(100vw - 140px);
+        height: 38px;
+        top: 8px;
+        transform: none;
+        z-index: 100;
+    }
+
+
+    /* ========================================================
+       HIDE LOGO WHEN SEARCH IS OPEN
+    ======================================================== */
+
+    .header.mobile-search-open > .left-section .logo,
+    .header.mobile-search-open > .left-section .Admin {
+        visibility: hidden;
+    }
+
+
+    /* ========================================================
+       SEARCH CLOSE BUTTON
+       X sits immediately after search field.
+       Cart/profile remain untouched.
+    ======================================================== */
+
+    .header.mobile-search-open > .mobile-search-button {
+        position: absolute;
+        right: 72px;
+        left: auto;
+        top: 8px;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        border-radius: 7px;
+        z-index: 120;
+        box-sizing: border-box;
+    }
+
+
+    .header.mobile-search-open > .mobile-search-button svg {
+        width: 20px;
+        height: 20px;
+    }
+
+
+    /* ========================================================
+       SEARCH INPUT
+    ======================================================== */
+
+    .header.mobile-search-open > .header-search input {
+        flex: 1;
+        min-width: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0 10px;
+        margin: 0;
+        border: none !important;
+        border-right: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        background: transparent;
+        color: #111111;
+        font-family:
+            Inter,
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            Arial,
+            sans-serif;
+        font-size: 13px;
+        box-sizing: border-box;
+    }
+
+
+    .header.mobile-search-open > .header-search input::placeholder {
+        color: #999999;
+    }
+
+
+    /* ========================================================
+       MOBILE SEARCH BUTTONS
+       No divider line.
+    ======================================================== */
+
+    .header.mobile-search-open > .header-search button {
+        width: 40px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 40px;
+        margin: 0;
+        padding: 0;
+        border: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        color: #111111;
         font-size: 17px;
+        cursor: pointer;
     }
 
-    .header-login {
-        font-size: 12px;
+
+    .header.mobile-search-open > .header-search button:hover {
+        color: #111111 !important;
     }
 
-    .dh-header-menu-button {
-        width: 34px;
-        height: 34px;
 
-        margin-right: 5px;
-
-        font-size: 22px;
-    }
-}
-
-
-/* ============================================================
-   VERY SMALL MOBILE — 450px
-============================================================ */
-
-@media (max-width: 450px) {
-
-    .header {
-        min-height: 60px;
-
-        padding: 0 7px;
+    .header.mobile-search-open > .header-search button:focus,
+    .header.mobile-search-open > .header-search button:focus-visible,
+    .header.mobile-search-open > .header-search button:active {
+        border: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        outline: none !important;
+        box-shadow: none !important;
     }
 
-    .logo {
-        font-size: 18px;
+
+    /* --------------------------------------------------------
+       MOBILE CLEAR X
+       No vertical separator.
+    -------------------------------------------------------- */
+
+    .header.mobile-search-open > .header-search .header-search-clear {
+        width: 32px !important;
+        flex: 0 0 32px !important;
+        border: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        color: #777777;
     }
 
-    .Admin {
+
+    .header.mobile-search-open > .header-search .header-search-clear:hover {
+        color: #111111 !important;
+    }
+
+
+    .header.mobile-search-open > .header-search .header-search-clear svg {
+        width: 15px;
+        height: 15px;
+    }
+
+
+    /* ========================================================
+       MOBILE BOTTOM NAVIGATION
+    ======================================================== */
+
+    .header > .dh-header-navigation {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: auto;
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        height: 54px;
+        margin: 0;
+        padding: 0 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 34px;
+        background: #ffffff;
+        border-top: 1px solid #e5e5e5;
+        border-bottom: none;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.07);
+        box-sizing: border-box;
+        white-space: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        transform: translateY(0);
+        opacity: 1;
+        transition:
+            transform 0.22s ease,
+            opacity 0.22s ease;
+        z-index: 9999;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    /* ========================================================
+       MOBILE NAV — VISIBLE
+    ======================================================== */
+
+    .header > .dh-header-navigation.mobile-nav-visible {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+
+    /* ========================================================
+       MOBILE NAV — HIDDEN WHEN SCROLLING
+    ======================================================== */
+
+    .header > .dh-header-navigation.mobile-nav-hidden {
+        transform: translateY(110%);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+
+    /* ========================================================
+       HIDE MOBILE NAV SCROLLBAR
+    ======================================================== */
+
+    .header > .dh-header-navigation::-webkit-scrollbar {
         display: none;
     }
 
-    .dh-header-navigation {
-        gap: 7px;
 
-        max-width: calc(100% - 150px);
-    }
+    /* ========================================================
+       MOBILE NAV LINKS
+    ======================================================== */
 
-    .header-nav-link {
-        font-size: 10px;
-
-        padding: 7px 0;
-    }
-
-    .header-search {
-        width: 105px;
-
-        height: 32px;
-    }
-
-    .header-search input {
-        font-size: 10px;
-
-        padding: 0 6px;
-    }
-
-    .header-search button {
-        width: 29px;
-
+    .header > .dh-header-navigation .header-nav-link {
+        position: relative;
+        flex: 0 0 auto;
+        width: auto;
+        min-width: max-content;
+        height: 54px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0 3px;
+        color: #555555;
         font-size: 14px;
+        font-weight: 600;
+        line-height: 1;
+        white-space: nowrap;
+        text-decoration: none;
+        transform: none;
+        -webkit-tap-highlight-color: transparent;
     }
 
-    .header-actions {
-        gap: 5px;
 
-        margin-left: 5px;
+    .header > .dh-header-navigation .header-nav-link:hover {
+        color: #111111;
+        transform: none;
     }
 
-    .header-icon {
-        width: 20px;
-        height: 20px;
 
+    .header > .dh-header-navigation .header-nav-link:focus,
+    .header > .dh-header-navigation .header-nav-link:focus-visible {
+        color: #555555;
+        outline: none;
+    }
+
+
+    .header > .dh-header-navigation .header-nav-link:visited {
+        color: #555555;
+    }
+
+
+    /* ========================================================
+       MOBILE NAV UNDERLINE
+       HOVER ONLY
+    ======================================================== */
+
+    .header > .dh-header-navigation .header-nav-link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 7px;
+        width: 0;
+        height: 2px;
+        background: #d4af37;
+        border-radius: 2px;
+        transition: width 0.2s ease;
+    }
+
+
+    /* Gold underline ONLY on hover */
+
+    .header > .dh-header-navigation .header-nav-link:hover::after {
+        width: 100%;
+    }
+
+
+    /* ========================================================
+       MOBILE ACTIVE PAGE
+       NO GOLD UNDERLINE
+    ======================================================== */
+
+    .header > .dh-header-navigation .header-nav-link.active {
+        color: #111111;
+        font-weight: 650;
+    }
+
+
+    .header > .dh-header-navigation .header-nav-link.active::after {
+        width: 0;
+    }
+
+
+    /* ========================================================
+       PAGE HEADER TITLE
+    ======================================================== */
+
+    .page-header-title {
+        top: 27px;
         font-size: 16px;
     }
 
-    .header-login {
-        font-size: 11px;
+
+    /* ========================================================
+       HEADERS WITHOUT MENU BUTTONS
+    ======================================================== */
+
+    .header:not(:has(.dh-header-menu-button)) > .left-section {
+        padding-left: 0;
+        padding-right: 0;
     }
 
-    .dh-header-menu-button {
-        width: 32px;
-        height: 32px;
 
-        margin-right: 3px;
-
-        font-size: 21px;
+    .header:not(:has(.dh-header-menu-button)) > .header-actions {
+        margin-left: auto;
     }
 }
 
 
 /* ============================================================
-   EXTRA SMALL MOBILE — 360px
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .header {
+        height: 52px;
+        min-height: 52px;
+        padding: 0 7px;
+    }
+
+
+    .header:has(.dh-header-menu-button) {
+        height: 52px;
+        min-height: 52px;
+    }
+
+
+    /* --------------------------------------------------------
+       MENU
+    -------------------------------------------------------- */
+
+    .header > .dh-header-menu-button {
+        flex-basis: 34px;
+        width: 34px;
+        height: 34px;
+        margin-right: 1px;
+        font-size: 21px;
+    }
+
+
+    /* --------------------------------------------------------
+       LEFT SECTION
+    -------------------------------------------------------- */
+
+    .header > .left-section {
+        height: 52px;
+        min-width: 0;
+        padding: 0;
+        gap: 4px;
+    }
+
+
+    /* --------------------------------------------------------
+       LOGO
+    -------------------------------------------------------- */
+
+    .header > .left-section .logo {
+        font-size: 20px;
+        letter-spacing: -0.5px;
+    }
+
+
+    .header > .left-section .Admin {
+        font-size: 10px;
+    }
+
+
+    /* --------------------------------------------------------
+       SEARCH BUTTON
+    -------------------------------------------------------- */
+
+    .mobile-search-button {
+        flex-basis: 33px;
+        width: 33px;
+        height: 36px;
+        margin-right: 1px;
+        font-size: 18px;
+    }
+
+
+    .mobile-search-button svg {
+        width: 20px;
+        height: 20px;
+    }
+
+
+    /* --------------------------------------------------------
+       ACTIONS
+    -------------------------------------------------------- */
+
+    .header > .header-actions {
+        height: 52px;
+        gap: 5px;
+    }
+
+
+    .header > .header-actions .header-icon {
+        width: 27px;
+        height: 36px;
+        min-width: 27px;
+        font-size: 18px;
+    }
+
+
+    .header > .header-actions .header-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+
+    .header > .header-actions .header-login {
+        height: 36px;
+        font-size: 12px;
+    }
+
+
+    /* --------------------------------------------------------
+       SEARCH OPEN
+    -------------------------------------------------------- */
+
+    .header > .header-search {
+        right: 110px;
+        left: auto;
+        top: 7px;
+        width: 270px;
+        max-width: calc(100vw - 135px);
+        height: 38px;
+    }
+
+
+    .header.mobile-search-open > .header-search {
+        right: 110px;
+        left: auto;
+        top: 7px;
+        width: 270px;
+        max-width: calc(100vw - 135px);
+        height: 38px;
+        transform: none;
+    }
+
+
+    .header.mobile-search-open > .mobile-search-button {
+        right: 66px;
+        left: auto;
+        top: 7px;
+        width: 38px;
+        height: 38px;
+    }
+
+
+    /* --------------------------------------------------------
+       BOTTOM NAV
+    -------------------------------------------------------- */
+
+    .header > .dh-header-navigation {
+        height: 52px;
+        padding: 0 14px;
+        gap: 27px;
+    }
+
+
+    .header > .dh-header-navigation .header-nav-link {
+        height: 52px;
+        font-size: 13px;
+    }
+
+
+    .header > .dh-header-navigation .header-nav-link::after {
+        bottom: 7px;
+    }
+
+
+    /* --------------------------------------------------------
+       NO-MENU HEADERS
+    -------------------------------------------------------- */
+
+    .header:not(:has(.dh-header-menu-button)) > .left-section {
+        padding-left: 3px;
+        padding-right: 0;
+    }
+
+
+    /* --------------------------------------------------------
+       SMALL MOBILE CLEAR X
+       Keep X inside the same search box with no divider.
+    -------------------------------------------------------- */
+
+    .header.mobile-search-open > .header-search .header-search-clear {
+        width: 32px !important;
+        flex: 0 0 32px !important;
+        border: none !important;
+        border-left: none !important;
+        border-right: none !important;
+    }
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
 ============================================================ */
 
 @media (max-width: 360px) {
 
     .header {
-        min-height: 58px;
-
-        padding: 0 5px;
+        height: 50px;
+        min-height: 50px;
+        padding: 0 6px;
     }
 
-    .logo {
+
+    .header:has(.dh-header-menu-button) {
+        height: 50px;
+        min-height: 50px;
+    }
+
+
+    /* --------------------------------------------------------
+       MENU
+    -------------------------------------------------------- */
+
+    .header > .dh-header-menu-button {
+        flex-basis: 33px;
+        width: 33px;
+        height: 33px;
+        margin-right: 0;
+        font-size: 20px;
+    }
+
+
+    /* --------------------------------------------------------
+       LEFT SECTION
+    -------------------------------------------------------- */
+
+    .header > .left-section {
+        height: 50px;
+        gap: 3px;
+    }
+
+
+    /* --------------------------------------------------------
+       LOGO
+    -------------------------------------------------------- */
+
+    .header > .left-section .logo {
+        font-size: 19px;
+        letter-spacing: -0.6px;
+    }
+
+
+    .header > .left-section .Admin {
+        font-size: 9px;
+    }
+
+
+    /* --------------------------------------------------------
+       SEARCH BUTTON
+    -------------------------------------------------------- */
+
+    .mobile-search-button {
+        flex-basis: 32px;
+        width: 32px;
+        height: 34px;
+        margin-right: 0;
         font-size: 17px;
     }
 
-    .dh-header-navigation {
-        gap: 5px;
 
-        max-width: calc(100% - 120px);
-    }
-
-    .header-nav-link {
-        font-size: 9px;
-
-        padding: 6px 0;
-    }
-
-    .header-search {
-        width: 90px;
-
-        height: 30px;
-    }
-
-    .header-search input {
-        font-size: 9px;
-    }
-
-    .header-search button {
-        width: 27px;
-
-        font-size: 13px;
-    }
-
-    .header-actions {
-        gap: 4px;
-
-        margin-left: 4px;
-    }
-
-    .header-icon {
+    .mobile-search-button svg {
         width: 19px;
         height: 19px;
-
-        font-size: 15px;
     }
 
-    .header-login {
-        font-size: 10px;
+
+    /* --------------------------------------------------------
+       ACTIONS
+    -------------------------------------------------------- */
+
+    .header > .header-actions {
+        height: 50px;
+        gap: 3px;
     }
 
-    .dh-header-menu-button {
-        width: 30px;
-        height: 30px;
 
-        font-size: 20px;
+    .header > .header-actions .header-icon {
+        width: 25px;
+        height: 34px;
+        min-width: 25px;
+        font-size: 17px;
+    }
+
+
+    .header > .header-actions .header-icon svg {
+        width: 19px;
+        height: 19px;
+    }
+
+
+    .header > .header-actions .header-login {
+        height: 34px;
+        font-size: 11px;
+    }
+
+
+    /* --------------------------------------------------------
+       SEARCH OPEN
+    -------------------------------------------------------- */
+
+    .header > .header-search {
+        right: 100px;
+        left: auto;
+        top: 6px;
+        width: 220px;
+        max-width: calc(100vw - 120px);
+        height: 37px;
+    }
+
+
+    .header.mobile-search-open > .header-search {
+        right: 100px;
+        left: auto;
+        top: 6px;
+        width: 220px;
+        max-width: calc(100vw - 120px);
+        height: 37px;
+        transform: none;
+    }
+
+
+    .header.mobile-search-open > .mobile-search-button {
+        right: 60px;
+        left: auto;
+        top: 6px;
+        width: 34px;
+        height: 37px;
+    }
+
+
+    .header.mobile-search-open > .header-search input {
+        font-size: 12px;
+        padding-left: 9px;
+    }
+
+
+    /* --------------------------------------------------------
+       BOTTOM NAV
+    -------------------------------------------------------- */
+
+    .header > .dh-header-navigation {
+        height: 50px;
+        padding: 0 11px;
+        gap: 22px;
+    }
+
+
+    .header > .dh-header-navigation .header-nav-link {
+        height: 50px;
+        font-size: 12px;
+    }
+
+
+    .header > .dh-header-navigation .header-nav-link::after {
+        bottom: 7px;
+    }
+
+
+    /* --------------------------------------------------------
+       VERY SMALL MOBILE CLEAR X
+    -------------------------------------------------------- */
+
+    .header.mobile-search-open > .header-search .header-search-clear {
+        width: 32px !important;
+        flex: 0 0 32px !important;
+        border: none !important;
+        border-left: none !important;
+        border-right: none !important;
     }
 }
 
@@ -1188,12 +1932,11 @@
 
 .header-icon svg,
 .header-search button svg,
+.mobile-search-button svg,
 .header-back-button svg {
     display: block;
-
     width: 1em;
     height: 1em;
-
     flex-shrink: 0;
 }
 
@@ -1211,64 +1954,51 @@
 /* =========================================================
    DEALHUNTS POPUP - PROFESSIONAL WHITE & GOLD
 ========================================================= */
+
 .popup-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-
     width: 100vw;
     height: 100vh;
     height: 100dvh;
-
     z-index: 99999;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 20px;
-
     box-sizing: border-box;
-
     background: rgba(20, 20, 20, 0.52);
-
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
 }
+
+
 /* =========================================================
    MAIN POPUP
 ========================================================= */
+
 .popup-container {
     position: relative;
-
     width: 400px;
     max-width: calc(100vw - 40px);
-
     margin: 0 auto;
-
     background: #ffffff;
-
     border: 1px solid rgba(212, 175, 55, 0.65);
     border-radius: 12px;
-
     overflow: hidden;
-
     box-sizing: border-box;
-
     box-shadow:
         0 18px 45px rgba(0, 0, 0, 0.20),
         0 4px 16px rgba(0, 0, 0, 0.08);
-
     animation: popupOpen 0.2s ease-out;
 }
 
-/* =========================================================
-   POPUP ENTRANCE
-========================================================= */
 
 @keyframes popupOpen {
+
     from {
         opacity: 0;
         transform: translateY(8px) scale(0.98);
@@ -1280,38 +2010,33 @@
     }
 }
 
+
 /* =========================================================
-   HEADER
+   POPUP HEADER
 ========================================================= */
 
 .popup-header {
     width: 100%;
     min-height: 64px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     padding: 0 20px;
-
     background: #ffffff;
-
     border-bottom: 1px solid #eadfbf;
-
     box-sizing: border-box;
 }
 
+
 .popup-header h2 {
     margin: 0;
-
     color: #171717;
-
     font-size: 20px;
     font-weight: 700;
-
     line-height: 1.2;
     letter-spacing: -0.2px;
 }
+
 
 /* =========================================================
    CLOSE BUTTON
@@ -1320,36 +2045,30 @@
 .popup-close {
     width: 34px;
     height: 34px;
-
     flex: 0 0 34px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 0;
-
     border: none;
     border-radius: 50%;
-
     background: transparent;
     color: #777777;
-
     font-size: 22px;
     font-weight: 300;
     line-height: 1;
-
     cursor: pointer;
-
     transition:
         background 0.18s ease,
         color 0.18s ease;
 }
 
+
 .popup-close:hover {
     background: #f7f2e4;
     color: #b08a1a;
 }
+
 
 /* =========================================================
    BODY
@@ -1357,16 +2076,13 @@
 
 .popup-body {
     width: 100%;
-
     height: auto;
     min-height: 0;
-
     padding: 24px 24px 22px;
-
     background: #ffffff;
-
     box-sizing: border-box;
 }
+
 
 /* =========================================================
    WISHLIST LOGIN POPUP
@@ -1377,14 +2093,14 @@
     min-height: 0 !important;
 }
 
+
 .wishlist-login-popup .popup-body {
     height: auto !important;
     min-height: 0 !important;
-
     padding: 24px 28px 20px;
-
     text-align: center;
 }
+
 
 /* =========================================================
    MESSAGE
@@ -1392,14 +2108,12 @@
 
 .wishlist-login-popup .popup-body p {
     margin: 0 0 22px;
-
     color: #5f5f5f;
-
     font-size: 14px;
     font-weight: 400;
-
     line-height: 1.5;
 }
+
 
 /* =========================================================
    ACTIONS
@@ -1407,15 +2121,13 @@
 
 .wishlist-popup-actions {
     width: 100%;
-
     display: flex;
     flex-direction: column;
-
     gap: 9px;
-
     margin: 0;
     padding: 0;
 }
+
 
 /* =========================================================
    PROCEED TO LOGIN
@@ -1424,29 +2136,20 @@
 .wishlist-proceed-login {
     width: 100%;
     height: 44px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     margin: 0;
     padding: 0 16px;
-
     box-sizing: border-box;
-
     border: 1px solid #d4af37;
     border-radius: 7px;
-
     background: #d4af37;
     color: #111111;
-
     font-size: 14px;
     font-weight: 700;
-
     text-decoration: none;
-
     cursor: pointer;
-
     transition:
         background 0.18s ease,
         border-color 0.18s ease,
@@ -1454,15 +2157,15 @@
         box-shadow 0.18s ease;
 }
 
+
 .wishlist-proceed-login:hover {
     background: #e1bd4e;
     border-color: #e1bd4e;
-
     transform: translateY(-1px);
-
     box-shadow:
         0 4px 10px rgba(212, 175, 55, 0.20);
 }
+
 
 /* =========================================================
    NO THANKS
@@ -1471,43 +2174,35 @@
 .wishlist-no-thanks {
     width: 100%;
     height: 42px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     margin: 0;
     padding: 0 16px;
-
     box-sizing: border-box;
-
     border: 1px solid #dedede;
     border-radius: 7px;
-
     background: #ffffff;
     color: #555555;
-
     font-size: 14px;
     font-weight: 600;
-
     cursor: pointer;
-
     transition:
         background 0.18s ease,
         color 0.18s ease,
         border-color 0.18s ease;
 }
 
+
 .wishlist-no-thanks:hover {
     background: #faf8f1;
-
     border-color: #d4af37;
-
     color: #a68119;
 }
 
+
 /* =========================================================
-   MOBILE
+   POPUP MOBILE
 ========================================================= */
 
 @media (max-width: 480px) {
@@ -1516,44 +2211,143 @@
         padding: 16px;
     }
 
+
     .popup-container {
         width: 100%;
         max-width: calc(100vw - 32px);
-
         border-radius: 10px;
     }
 
+
     .popup-header {
         min-height: 58px;
-
         padding: 0 16px;
     }
+
 
     .popup-header h2 {
         font-size: 18px;
     }
 
+
     .popup-body {
         padding: 20px 18px 18px;
     }
+
 
     .wishlist-login-popup .popup-body {
         padding: 20px 18px 18px;
     }
 
+
     .wishlist-login-popup .popup-body p {
         margin-bottom: 18px;
-
         font-size: 13px;
     }
+
 
     .wishlist-proceed-login {
         height: 42px;
         font-size: 13px;
     }
 
+
     .wishlist-no-thanks {
         height: 40px;
         font-size: 13px;
+    }
+}
+
+
+/* ============================================================
+   FINAL SEARCH CLEANUP
+   Ensures absolutely no divider between input and X.
+============================================================ */
+
+.header-search,
+.header-search:focus-within {
+    box-shadow: none;
+}
+
+
+.header-search input,
+.header-search input:focus {
+    border: none !important;
+    border-right: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+.header-search button,
+.header-search button:hover,
+.header-search button:focus,
+.header-search button:focus-visible,
+.header-search button:active {
+    border: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+.header-search-clear,
+.header-search-clear:hover,
+.header-search-clear:focus,
+.header-search-clear:focus-visible,
+.header-search-clear:active {
+    border: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+/* ============================================================
+   FINAL MOBILE SEARCH CLEANUP
+============================================================ */
+
+@media (max-width: 768px) {
+
+    .header.mobile-search-open > .header-search,
+    .header.mobile-search-open > .header-search:focus-within {
+        box-shadow: none !important;
+    }
+
+
+    .header.mobile-search-open > .header-search input,
+    .header.mobile-search-open > .header-search input:focus {
+        border: none !important;
+        border-right: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+
+    .header.mobile-search-open > .header-search button,
+    .header.mobile-search-open > .header-search button:hover,
+    .header.mobile-search-open > .header-search button:focus,
+    .header.mobile-search-open > .header-search button:focus-visible,
+    .header.mobile-search-open > .header-search button:active {
+        border: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+
+    .header.mobile-search-open > .header-search .header-search-clear,
+    .header.mobile-search-open > .header-search .header-search-clear:hover,
+    .header.mobile-search-open > .header-search .header-search-clear:focus,
+    .header.mobile-search-open > .header-search .header-search-clear:focus-visible,
+    .header.mobile-search-open > .header-search .header-search-clear:active {
+        border: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        outline: none !important;
+        box-shadow: none !important;
     }
 }

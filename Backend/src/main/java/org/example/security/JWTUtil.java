@@ -20,45 +20,97 @@ public class JWTUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
+    // =============================================================
+    // SIGNING KEY
+    // =============================================================
     private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes());
+
+        return Keys.hmacShaKeyFor(
+                secret.getBytes()
+        );
     }
 
-    public String generateToken(String email, String role) {
+    // =============================================================
+    // GENERATE TOKEN
+    // =============================================================
+    public String generateToken(
+            String email,
+            String role
+    ) {
+
         return Jwts.builder()
                 .setSubject(email)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .setExpiration(
+                        new Date(
+                                System.currentTimeMillis()
+                                        + expiration
+                        )
+                )
+                .signWith(
+                        getSigningKey(),
+                        SignatureAlgorithm.HS256
+                )
                 .compact();
     }
 
-    public String extractEmail(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+    // =============================================================
+    // EXTRACT EMAIL
+    // =============================================================
+    public String extractEmail(
+            String token
+    ) {
+
+        Claims claims =
+                Jwts.parserBuilder()
+                        .setSigningKey(
+                                getSigningKey()
+                        )
+                        .build()
+                        .parseClaimsJws(token)
+                        .getBody();
 
         return claims.getSubject();
     }
 
-    public String extractRole(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+    // =============================================================
+    // EXTRACT ROLE
+    // =============================================================
+    public String extractRole(
+            String token
+    ) {
 
-        return claims.get("role", String.class);
+        Claims claims =
+                Jwts.parserBuilder()
+                        .setSigningKey(
+                                getSigningKey()
+                        )
+                        .build()
+                        .parseClaimsJws(token)
+                        .getBody();
+
+        return claims.get(
+                "role",
+                String.class
+        );
     }
 
-    public boolean validateToken(String token) {
+    // =============================================================
+    // VALIDATE TOKEN
+    // =============================================================
+    public boolean validateToken(
+            String token
+    ) {
+
         try {
+
             extractEmail(token);
+
             return true;
+
         } catch (Exception e) {
+
             return false;
         }
     }

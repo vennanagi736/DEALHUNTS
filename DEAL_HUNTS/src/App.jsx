@@ -2,10 +2,18 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Settings from "./components/Settings";
+import Layout from "./components/Layout";
 
-// ============================================================
-// USER
-// ============================================================
+/* ============================================================
+   COMMON / PROFILE
+============================================================ */
+
+import Profile from "./components/Profile";
+
+
+/* ============================================================
+   USER
+============================================================ */
 
 import Home from "./pages/user/Home";
 import Login from "./pages/user/Login";
@@ -20,11 +28,13 @@ import Cart from "./pages/user/Cart";
 import PlaceOrder from "./pages/user/PlaceOrder";
 import OrderSuccess from "./pages/user/OrderSuccess";
 import UserOrders from "./pages/user/Orders";
-import Layout from "./components/Layout";
+import BookVisit from "./pages/user/BookVisit";
+import UserVisitRequests from "./pages/user/UVisitRequests";
 
-// ============================================================
-// VENDOR
-// ============================================================
+
+/* ============================================================
+   VENDOR
+============================================================ */
 
 import VendorLogin from "./pages/vendor/VLogin";
 import VendorRegister from "./pages/vendor/VRegister";
@@ -32,11 +42,12 @@ import VendorHome from "./pages/vendor/VHome";
 import VendorProductPage from "./pages/vendor/VProduct";
 import VendorProductManage from "./pages/vendor/VProductManage";
 import RequestStatus from "./pages/vendor/VRequest";
+import VendorVisitRequests from "./pages/vendor/VVisitRequests";
 
 
-// ============================================================
-// ADMIN
-// ============================================================
+/* ============================================================
+   ADMIN
+============================================================ */
 
 import AdminHome from "./pages/admin/AHome";
 import AdminDashboard from "./pages/admin/ADashboard";
@@ -51,11 +62,12 @@ import AdminVendorRequest from "./pages/admin/ARequest";
 import AdminAddProduct from "./pages/admin/AAddProduct";
 import AdminMasterData from "./pages/admin/AMasterData";
 import AdminImportProducts from "./pages/admin/AImportProducts";
+import AdminVisitRequests from "./pages/admin/AVisitRequests";
 
 
-// ============================================================
-// ADMIN MANAGEMENT
-// ============================================================
+/* ============================================================
+   ADMIN MANAGEMENT
+============================================================ */
 
 import AdminManageProduct from "./pages/admin/AManageProduct";
 import AdminManagePromotions from "./pages/admin/AManagePromotions";
@@ -72,10 +84,14 @@ function App() {
 
             <Routes>
 
-
                 {/* ====================================================
                     USER PUBLIC ROUTES
                 ==================================================== */}
+
+
+                {/* ----------------------------------------------------
+                    HOME
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/"
@@ -85,6 +101,7 @@ function App() {
                         </Layout>
                     }
                 />
+
 
                 <Route
                     path="/home"
@@ -96,7 +113,9 @@ function App() {
                 />
 
 
-                {/* USER LOGIN */}
+                {/* ----------------------------------------------------
+                    USER LOGIN
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/login"
@@ -108,7 +127,9 @@ function App() {
                 />
 
 
-                {/* USER REGISTER */}
+                {/* ----------------------------------------------------
+                    USER REGISTER
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/register"
@@ -120,7 +141,9 @@ function App() {
                 />
 
 
-                {/* PRODUCTS */}
+                {/* ----------------------------------------------------
+                    PRODUCTS
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/products"
@@ -163,16 +186,42 @@ function App() {
 
 
                 {/* ====================================================
+                    COMMON PROFILE
+                    USER + VENDOR + ADMIN
+                ==================================================== */}
+
+                <Route
+                    path="/profile"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={[
+                                "ROLE_USER",
+                                "ROLE_VENDOR",
+                                "ROLE_ADMIN"
+                            ]}
+                        >
+                            <Profile />
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* ====================================================
                     USER PROTECTED ROUTES
                 ==================================================== */}
 
-                {/* CART */}
+
+                {/* ----------------------------------------------------
+                    CART
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/cart"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_USER"]}
+                            allowedRoles={[
+                                "ROLE_USER"
+                            ]}
                         >
                             <Layout>
                                 <Cart />
@@ -181,36 +230,61 @@ function App() {
                     }
                 />
 
-                {/* ====================================================
-    COMMON SETTINGS
-    USER + VENDOR + ADMIN
-==================================================== */}
 
-<Route
-    path="/settings"
-    element={
-        <ProtectedRoute
-            allowedRoles={[
-                "ROLE_USER",
-                "ROLE_VENDOR",
-                "ROLE_ADMIN",
-            ]}
-        >
-            <Layout>
-                <Settings />
-            </Layout>
-        </ProtectedRoute>
-    }
-/>
+                {/* ----------------------------------------------------
+                    COMMON SETTINGS
+                    USER + VENDOR + ADMIN
+                ---------------------------------------------------- */}
+
+                <Route
+                    path="/settings"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={[
+                                "ROLE_USER",
+                                "ROLE_VENDOR",
+                                "ROLE_ADMIN"
+                            ]}
+                        >
+                            <Layout>
+                                <Settings />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
 
 
-                {/* WISHLIST */}
+                {/* ----------------------------------------------------
+                    USER SETTINGS
+                ---------------------------------------------------- */}
+
+                <Route
+                    path="/user/settings"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={[
+                                "ROLE_USER"
+                            ]}
+                        >
+                            <Layout>
+                                <USettings />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* ----------------------------------------------------
+                    WISHLIST
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/wishlist"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_USER"]}
+                            allowedRoles={[
+                                "ROLE_USER"
+                            ]}
                         >
                             <Layout>
                                 <Wishlist />
@@ -220,13 +294,17 @@ function App() {
                 />
 
 
-                {/* USER ORDERS */}
+                {/* ----------------------------------------------------
+                    USER ORDERS
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/orders"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_USER"]}
+                            allowedRoles={[
+                                "ROLE_USER"
+                            ]}
                         >
                             <Layout>
                                 <UserOrders />
@@ -236,13 +314,17 @@ function App() {
                 />
 
 
-                {/* PLACE ORDER */}
+                {/* ----------------------------------------------------
+                    PLACE ORDER
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/place-order"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_USER"]}
+                            allowedRoles={[
+                                "ROLE_USER"
+                            ]}
                         >
                             <Layout>
                                 <PlaceOrder />
@@ -252,13 +334,17 @@ function App() {
                 />
 
 
-                {/* ORDER SUCCESS */}
+                {/* ----------------------------------------------------
+                    ORDER SUCCESS
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/order-success"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_USER"]}
+                            allowedRoles={[
+                                "ROLE_USER"
+                            ]}
                         >
                             <Layout>
                                 <OrderSuccess />
@@ -269,8 +355,49 @@ function App() {
 
 
                 {/* ====================================================
+                    BOOK A VISIT
+                ==================================================== */}
+
+                <Route
+                    path="/book-visit"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={[
+                                "ROLE_USER"
+                            ]}
+                        >
+                            <BookVisit />
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* ====================================================
+                    USER VISIT REQUESTS
+                ==================================================== */}
+
+                <Route
+                    path="/user/visit-requests"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={[
+                                "ROLE_USER"
+                            ]}
+                        >
+                            <UserVisitRequests />
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* ====================================================
                     VENDOR PUBLIC ROUTES
                 ==================================================== */}
+
+
+                {/* ----------------------------------------------------
+                    VENDOR LOGIN
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/vendorLogin"
@@ -282,6 +409,10 @@ function App() {
                 />
 
 
+                {/* ----------------------------------------------------
+                    VENDOR REGISTER
+                ---------------------------------------------------- */}
+
                 <Route
                     path="/vendorRegister"
                     element={
@@ -291,6 +422,10 @@ function App() {
                     }
                 />
 
+
+                {/* ----------------------------------------------------
+                    VENDOR REQUEST STATUS
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/request-status/:email"
@@ -306,13 +441,18 @@ function App() {
                     VENDOR PROTECTED ROUTES
                 ==================================================== */}
 
-                {/* VENDOR HOME */}
+
+                {/* ----------------------------------------------------
+                    VENDOR HOME
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/vendorHome"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_VENDOR"]}
+                            allowedRoles={[
+                                "ROLE_VENDOR"
+                            ]}
                         >
                             <Layout>
                                 <VendorHome />
@@ -322,13 +462,17 @@ function App() {
                 />
 
 
-                {/* VENDOR PRODUCT PAGE */}
+                {/* ----------------------------------------------------
+                    VENDOR PRODUCT PAGE
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/vendorProductPage"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_VENDOR"]}
+                            allowedRoles={[
+                                "ROLE_VENDOR"
+                            ]}
                         >
                             <Layout>
                                 <VendorProductPage />
@@ -338,13 +482,17 @@ function App() {
                 />
 
 
-                {/* VENDOR EDIT PRODUCT */}
+                {/* ----------------------------------------------------
+                    VENDOR EDIT PRODUCT
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/vendor/edit-product/:inventoryId"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_VENDOR"]}
+                            allowedRoles={[
+                                "ROLE_VENDOR"
+                            ]}
                         >
                             <Layout>
                                 <VendorProductPage />
@@ -354,13 +502,17 @@ function App() {
                 />
 
 
-                {/* VENDOR MANAGE PRODUCTS */}
+                {/* ----------------------------------------------------
+                    VENDOR MANAGE PRODUCTS
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/vendor/manage-products"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_VENDOR"]}
+                            allowedRoles={[
+                                "ROLE_VENDOR"
+                            ]}
                         >
                             <Layout>
                                 <VendorProductManage />
@@ -371,8 +523,51 @@ function App() {
 
 
                 {/* ====================================================
+                    VENDOR VISIT REQUESTS
+                ==================================================== */}
+
+                <Route
+                    path="/vendor/visit-requests"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={[
+                                "ROLE_VENDOR"
+                            ]}
+                        >
+                            <VendorVisitRequests />
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* ----------------------------------------------------
+                    VENDOR VISITS - COMPATIBILITY
+                ---------------------------------------------------- */}
+
+                <Route
+                    path="/vendor/visits"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={[
+                                "ROLE_VENDOR"
+                            ]}
+                        >
+                            <Layout>
+                                <VendorVisitRequests />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* ====================================================
                     ADMIN PUBLIC ROUTE
                 ==================================================== */}
+
+
+                {/* ----------------------------------------------------
+                    ADMIN LOGIN
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/adminLogin"
@@ -388,13 +583,18 @@ function App() {
                     ADMIN PROTECTED ROUTES
                 ==================================================== */}
 
-                {/* ADMIN HOME */}
+
+                {/* ----------------------------------------------------
+                    ADMIN HOME
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/adminHome"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminHome />
@@ -404,13 +604,17 @@ function App() {
                 />
 
 
-                {/* ADMIN DASHBOARD */}
+                {/* ----------------------------------------------------
+                    ADMIN DASHBOARD
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/adminDashboard"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminDashboard />
@@ -420,13 +624,17 @@ function App() {
                 />
 
 
-                {/* ADMIN PRODUCTS */}
+                {/* ----------------------------------------------------
+                    ADMIN PRODUCTS
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/adminProducts"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminProducts />
@@ -436,13 +644,17 @@ function App() {
                 />
 
 
-                {/* MANAGE USERS */}
+                {/* ----------------------------------------------------
+                    MANAGE USERS
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/manage-users"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <UsersDetails />
@@ -452,13 +664,17 @@ function App() {
                 />
 
 
-                {/* MANAGE VENDORS */}
+                {/* ----------------------------------------------------
+                    MANAGE VENDORS
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/manage-vendors"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <VendorsDetails />
@@ -468,13 +684,17 @@ function App() {
                 />
 
 
-                {/* MANAGE ORDERS */}
+                {/* ----------------------------------------------------
+                    MANAGE ORDERS
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/manage-orders"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminOrders />
@@ -484,13 +704,17 @@ function App() {
                 />
 
 
-                {/* MANAGE PAYMENTS */}
+                {/* ----------------------------------------------------
+                    MANAGE PAYMENTS
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/manage-payments"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <Payments />
@@ -500,13 +724,17 @@ function App() {
                 />
 
 
-                {/* MANAGE SALES */}
+                {/* ----------------------------------------------------
+                    MANAGE SALES
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/manage-sales"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <Sales />
@@ -516,13 +744,17 @@ function App() {
                 />
 
 
-                {/* MANAGE VENDOR REQUEST */}
+                {/* ----------------------------------------------------
+                    MANAGE VENDOR REQUEST
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/manage-request"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminVendorRequest />
@@ -532,16 +764,60 @@ function App() {
                 />
 
 
-                {/* ADMIN VENDOR REQUEST */}
+                {/* ----------------------------------------------------
+                    ADMIN VENDOR REQUEST
+                ---------------------------------------------------- */}
 
                 <Route
                     path="/admin/vendor-requests"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminVendorRequest />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* ====================================================
+                    ADMIN VISIT REQUESTS
+                ==================================================== */}
+
+                <Route
+                    path="/admin/visit-requests"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
+                        >
+                            <Layout>
+                                <AdminVisitRequests />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+
+
+                {/* ----------------------------------------------------
+                    ADMIN VISITS - COMPATIBILITY
+                ---------------------------------------------------- */}
+
+                <Route
+                    path="/admin/visits"
+                    element={
+                        <ProtectedRoute
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
+                        >
+                            <Layout>
+                                <AdminVisitRequests />
                             </Layout>
                         </ProtectedRoute>
                     }
@@ -556,7 +832,9 @@ function App() {
                     path="/adminAddProduct"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminAddProduct />
@@ -570,7 +848,9 @@ function App() {
                     path="/admin/add-product"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminAddProduct />
@@ -588,7 +868,9 @@ function App() {
                     path="/admin/master-data"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminMasterData />
@@ -606,7 +888,9 @@ function App() {
                     path="/admin/import-products"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminImportProducts />
@@ -624,7 +908,9 @@ function App() {
                     path="/admin/manage-product"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminManageProduct />
@@ -642,7 +928,9 @@ function App() {
                     path="/admin/manage-promotions"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminManagePromotions />
@@ -660,7 +948,9 @@ function App() {
                     path="/admin/manage-carousel"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminManageCarousel />
@@ -678,7 +968,9 @@ function App() {
                     path="/admin/manage-trending-deals"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminManageTrendingDeals />
@@ -696,7 +988,9 @@ function App() {
                     path="/admin/manage-trending-categories"
                     element={
                         <ProtectedRoute
-                            allowedRoles={["ROLE_ADMIN"]}
+                            allowedRoles={[
+                                "ROLE_ADMIN"
+                            ]}
                         >
                             <Layout>
                                 <AdminManageTrendingCategories />
@@ -710,5 +1004,6 @@ function App() {
         </BrowserRouter>
     );
 }
+
 
 export default App;

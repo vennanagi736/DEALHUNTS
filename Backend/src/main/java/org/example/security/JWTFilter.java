@@ -22,7 +22,9 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
+    protected boolean shouldNotFilter(
+            HttpServletRequest request
+    ) {
 
         String path = request.getRequestURI();
 
@@ -35,41 +37,94 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
-        String header = request.getHeader("Authorization");
+        String header =
+                request.getHeader("Authorization");
 
         System.out.println("========================================");
-        System.out.println("Request URI: " + request.getRequestURI());
-        System.out.println("Authorization Header: " + header);
+        System.out.println(
+                "Request URI: "
+                + request.getRequestURI()
+        );
 
+        System.out.println(
+                "Authorization Header: "
+                + header
+        );
+
+        // =========================================================
+        // CHECK BEARER TOKEN
+        // =========================================================
         if (header != null && header.startsWith("Bearer ")) {
 
             String token = header.substring(7);
 
             try {
 
-                boolean valid = jwtUtil.validateToken(token);
-                System.out.println("Token Valid: " + valid);
+                // =================================================
+                // VALIDATE TOKEN
+                // =================================================
+                boolean valid =
+                        jwtUtil.validateToken(token);
+
+                System.out.println(
+                        "Token Valid: " + valid
+                );
 
                 if (valid) {
 
-                    String email = jwtUtil.extractEmail(token);
-                    String role = jwtUtil.extractRole(token);
+                    // =============================================
+                    // EXTRACT EMAIL
+                    // =============================================
+                    String email =
+                            jwtUtil.extractEmail(token);
 
-                    System.out.println("Email: " + email);
-                    System.out.println("Role From Token: " + role);
+                    // =============================================
+                    // EXTRACT ROLE
+                    // =============================================
+                    String role =
+                            jwtUtil.extractRole(token);
 
-                    if (role == null) {
+                    System.out.println(
+                            "Email: " + email
+                    );
+
+                    System.out.println(
+                            "Role From Token: " + role
+                    );
+
+                    // =============================================
+                    // NORMALIZE ROLE
+                    // =============================================
+                    if (
+                        role == null
+                        || role.trim().isEmpty()
+                    ) {
+
                         role = "ROLE_USER";
-                    } else if (!role.startsWith("ROLE_")) {
-                        role = "ROLE_" + role;
+
+                    } else {
+
+                        role = role.trim();
+
+                        if (!role.startsWith("ROLE_")) {
+                            role = "ROLE_" + role;
+                        }
                     }
 
-                    if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                    // =============================================
+                    // SET AUTHENTICATION
+                    // =============================================
+                    if (
+                        SecurityContextHolder
+                            .getContext()
+                            .getAuthentication() == null
+                    ) {
 
                         SimpleGrantedAuthority authority =
                                 new SimpleGrantedAuthority(role);
@@ -78,35 +133,71 @@ public class JWTFilter extends OncePerRequestFilter {
                                 new UsernamePasswordAuthenticationToken(
                                         email,
                                         null,
-                                        Collections.singletonList(authority)
+                                        Collections.singletonList(
+                                                authority
+                                        )
                                 );
 
-                        SecurityContextHolder.getContext().setAuthentication(auth);
+                        SecurityContextHolder
+                                .getContext()
+                                .setAuthentication(auth);
 
-                        System.out.println("Authentication Set Successfully");
-                        System.out.println("Authorities: " + auth.getAuthorities());
+                        System.out.println(
+                                "Authentication Set Successfully"
+                        );
+
+                        System.out.println(
+                                "Authenticated Email: "
+                                + auth.getName()
+                        );
+
+                        System.out.println(
+                                "Authorities: "
+                                + auth.getAuthorities()
+                        );
                     }
 
                 } else {
-                    System.out.println("Invalid JWT Token");
+
+                    System.out.println(
+                            "Invalid JWT Token"
+                    );
                 }
 
             } catch (Exception e) {
-                System.out.println("JWT ERROR: " + e.getMessage());
+
+                System.out.println(
+                        "JWT ERROR: "
+                        + e.getMessage()
+                );
+
                 e.printStackTrace();
             }
+
         } else {
-            System.out.println("No Bearer Token Found");
+
+            System.out.println(
+                    "No Bearer Token Found"
+            );
         }
 
-        System.out.println("Current Authentication: "
-                + SecurityContextHolder.getContext().getAuthentication());
+        // =========================================================
+        // SHOW CURRENT AUTHENTICATION
+        // =========================================================
+        System.out.println(
+                "Current Authentication: "
+                + SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+        );
 
-        System.out.println("========================================");
+        System.out.println(
+                "========================================"
+        );
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(
+                request,
+                response
+        );
     }
 }
-
-
-

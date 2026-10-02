@@ -1,5 +1,9 @@
-import React, { useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  NavLink,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import Popup from "./Popup";
 
 import {
@@ -7,25 +11,271 @@ import {
   FiUser,
   FiSearch,
   FiBell,
+  FiX,
 } from "react-icons/fi";
 
 import "../styles/Header.css";
 
 
-function Header({ onMenuClick, showMenu = true }) {
+/* ============================================================
+   COMMON LOGO
+============================================================ */
+
+function Logo({ admin = false }) {
+
+  return (
+    <div className="left-section">
+
+      <div className="logo">
+
+        <span className="Gold">
+          DEAL
+        </span>
+
+        <span className="Black">
+          HUNTS
+        </span>
+
+      </div>
+
+      {admin && (
+        <span className="Admin">
+          Admin
+        </span>
+      )}
+
+    </div>
+  );
+}
+
+
+/* ============================================================
+   ROLE NORMALIZER
+============================================================ */
+
+function normalizeHeaderRole(role) {
+
+  if (!role) {
+    return null;
+  }
+
+  const normalized = String(role)
+    .replace(/^ROLE_/i, "")
+    .trim()
+    .toUpperCase();
+
+  if (
+    normalized === "USER" ||
+    normalized === "VENDOR" ||
+    normalized === "ADMIN"
+  ) {
+    return normalized;
+  }
+
+  return null;
+}
+
+
+/* ============================================================
+   GET CURRENT LOGGED-IN ROLE
+============================================================ */
+
+function getCurrentStoredRole() {
+
+  /* ----------------------------------------------------------
+     TOKEN FIRST
+     
+     Token is the actual login/session indicator.
+     This prevents stale role values from localStorage
+     incorrectly changing the current role.
+  ---------------------------------------------------------- */
+
+  if (
+    localStorage.getItem("adminJwtToken") ||
+    localStorage.getItem("adminToken")
+  ) {
+    return "ADMIN";
+  }
+
+
+  if (
+    localStorage.getItem("vendorJwtToken") ||
+    localStorage.getItem("vendorToken")
+  ) {
+    return "VENDOR";
+  }
+
+
+  if (
+    localStorage.getItem("userJwtToken") ||
+    localStorage.getItem("jwtToken")
+  ) {
+    return "USER";
+  }
+
+
+  /* ----------------------------------------------------------
+     FALLBACK: EXPLICIT ROLE VALUES
+  ---------------------------------------------------------- */
+
+  const roleKeys = [
+    "adminRole",
+    "vendorRole",
+    "userRole",
+    "role",
+    "admin_role",
+    "vendor_role",
+    "user_role",
+  ];
+
+  for (const key of roleKeys) {
+
+    const storedRole =
+      localStorage.getItem(key);
+
+    const normalizedRole =
+      normalizeHeaderRole(storedRole);
+
+    if (normalizedRole) {
+      return normalizedRole;
+    }
+  }
+
+
+  return null;
+}
+
+
+/* ============================================================
+   ACCOUNT ACTIONS
+   Used by ADMIN and VENDOR headers
+============================================================ */
+
+function AccountActions() {
+
+  const navigate = useNavigate();
+
+  return (
+    <div className="header-actions">
+
+      {/* ------------------------------------------------------
+          NOTIFICATIONS
+      ------------------------------------------------------ */}
+
+      <button
+        type="button"
+        className="header-icon"
+        onClick={() => {
+          console.log("Notifications clicked");
+        }}
+        aria-label="Notifications"
+        title="Notifications"
+      >
+        <FiBell />
+      </button>
+
+
+      {/* ------------------------------------------------------
+          PROFILE
+      ------------------------------------------------------ */}
+
+      <button
+        type="button"
+        className="header-icon"
+        onClick={() => navigate("/profile")}
+        aria-label="Profile"
+        title="Profile"
+      >
+        <FiUser />
+      </button>
+
+    </div>
+  );
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+function Header({
+  onMenuClick,
+  showMenu = true,
+}) {
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showWishlistPopup, setShowWishlistPopup] = useState(false);
 
-  const currentPath = location.pathname.toLowerCase();
+  /* ==========================================================
+     STATE
+  ========================================================== */
+
+  const [searchQuery, setSearchQuery] =
+    useState("");
+
+  const [showWishlistPopup, setShowWishlistPopup] =
+    useState(false);
+
+  const [loginPopupMessage, setLoginPopupMessage] =
+    useState(
+      "Please login to access your wishlist."
+    );
+
+  const [searchOpen, setSearchOpen] =
+    useState(false);
+
+  const [mobileNavVisible, setMobileNavVisible] =
+    useState(true);
 
 
-  /* ============================================================
-     PAGE TYPE
-  ============================================================ */
+  /* ==========================================================
+     CURRENT PATH
+  ========================================================== */
+
+  const currentPath =
+    location.pathname.toLowerCase();
+
+
+  /* ==========================================================
+     MOBILE NAVIGATION VISIBILITY
+  ========================================================== */
+
+  useEffect(() => {
+
+    const handleScroll = () => {
+
+      if (window.scrollY <= 8) {
+        setMobileNavVisible(true);
+      } else {
+        setMobileNavVisible(false);
+      }
+
+    };
+
+    window.addEventListener(
+      "scroll",
+      handleScroll,
+      { passive: true }
+    );
+
+    handleScroll();
+
+    return () => {
+
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
+
+    };
+
+  }, []);
+
+
+  /* ==========================================================
+     LOGIN PAGES
+  ========================================================== */
 
   const isLoginPage =
     currentPath === "/login" ||
@@ -35,98 +285,101 @@ function Header({ onMenuClick, showMenu = true }) {
     currentPath === "/vendorregister";
 
 
-  const isVendorPage =
-    currentPath.startsWith("/vendor");
+  /* ==========================================================
+     PROFILE PAGE
 
+     IMPORTANT:
+     /profile is shared by USER / VENDOR / ADMIN.
+  ========================================================== */
+
+  const isProfilePage =
+    currentPath === "/profile";
+
+
+  /* ==========================================================
+     PROFILE ROLE
+
+     Only relevant when current page is /profile.
+  ========================================================== */
+
+  const profileRole =
+    isProfilePage
+      ? getCurrentStoredRole()
+      : null;
+
+
+  /* ==========================================================
+     VENDOR PAGE
+
+     Normal vendor pages:
+       /vendorHome
+       /vendorProductPage
+       /vendor/manage-products
+       /vendor/...
+
+     Also:
+       /profile when logged-in role = VENDOR
+  ========================================================== */
+
+  const isVendorPage =
+    !isLoginPage &&
+    (
+      currentPath.startsWith("/vendor") ||
+      (
+        isProfilePage &&
+        profileRole === "VENDOR"
+      )
+    );
+
+
+  /* ==========================================================
+     ADMIN PAGE
+
+     Normal admin pages:
+       /admin...
+       /manage-...
+
+     Also:
+       /profile when logged-in role = ADMIN
+  ========================================================== */
 
   const isAdminPage =
-    currentPath.startsWith("/admin") ||
-    currentPath.startsWith("/manage-");
+    !isLoginPage &&
+    (
+      currentPath.startsWith("/admin") ||
+      currentPath.startsWith("/manage-") ||
+      (
+        isProfilePage &&
+        profileRole === "ADMIN"
+      )
+    );
 
 
-  /* ============================================================
-     ADMIN PRODUCTS
-  ============================================================ */
+  /* ==========================================================
+     USER LOGIN STATUS
 
-  const isAdminProductsPage =
-    currentPath === "/adminproducts";
-
-
-  const isAdminImportPage =
-    currentPath === "/admin/import-products";
-
-
-  const isAdminMasterDataPage =
-    currentPath === "/admin/master-data";
-
-
-  /* ============================================================
-     ADMIN VENDORS
-  ============================================================ */
-
-  const isAdminVendorsSection =
-    currentPath === "/manage-vendors" ||
-    currentPath.startsWith("/admin/vendors");
-
-
-  /* ============================================================
-     ADMIN PROMOTIONS
-  ============================================================ */
-
-  const isAdminPromotionsPage =
-    currentPath === "/admin/manage-promotions";
-
-
-  /* ============================================================
-     ADMIN TRENDING CAROUSEL
-  ============================================================ */
-
-  const isAdminTrendingCarouselPage =
-    currentPath === "/admin/manage-carousel";
-
-
-  /* ============================================================
-     ADMIN TRENDING DEALS
-  ============================================================ */
-
-  const isAdminTrendingDealsPage =
-    currentPath === "/admin/manage-trending-deals";
-
-
-  /* ============================================================
-     ADMIN TRENDING CATEGORIES
-  ============================================================ */
-
-  const isAdminTrendingCategoriesPage =
-    currentPath === "/admin/manage-trending-categories";
-
-
-  /* ============================================================
-     ADMIN ORDERS
-  ============================================================ */
-
-  const isAdminOrdersPage =
-    currentPath === "/admin/orders" ||
-    currentPath === "/manage-orders";
-
-
-  /* ============================================================
-     USER LOGIN
-  ============================================================ */
+     USER HEADER is shown only for a logged-in USER.
+  ========================================================== */
 
   const isUserLoggedIn =
-    !!localStorage.getItem("userJwtToken");
+    !!(
+      localStorage.getItem("userJwtToken") ||
+      localStorage.getItem("jwtToken")
+    );
 
 
-  /* ============================================================
+  /* ==========================================================
      SEARCH
-  ============================================================ */
+  ========================================================== */
 
   const handleSearch = (event) => {
 
     event.preventDefault();
 
-    const search = searchQuery.trim();
+    const search =
+      searchQuery.trim();
+
+    setSearchOpen(false);
 
     if (!search) {
 
@@ -138,17 +391,60 @@ function Header({ onMenuClick, showMenu = true }) {
     navigate(
       `/products?search=${encodeURIComponent(search)}`
     );
+
   };
 
 
-  /* ============================================================
+  /* ==========================================================
+     MOBILE SEARCH
+  ========================================================== */
+
+  const toggleMobileSearch = () => {
+
+    setSearchOpen(
+      previous => !previous
+    );
+
+  };
+
+
+  /* ==========================================================
+     WISHLIST LOGIN POPUP
+  ========================================================== */
+
+  const openWishlistLoginPopup = () => {
+
+    setLoginPopupMessage(
+      "Please login to access your wishlist."
+    );
+
+    setShowWishlistPopup(true);
+
+  };
+
+
+  /* ==========================================================
+     CART LOGIN POPUP
+  ========================================================== */
+
+  const openCartLoginPopup = () => {
+
+    setLoginPopupMessage(
+      "Please login to continue first."
+    );
+
+    setShowWishlistPopup(true);
+
+  };
+
+
+  /* ==========================================================
      LOGIN / REGISTER HEADER
-  ============================================================ */
+  ========================================================== */
 
   if (isLoginPage) {
 
     return (
-
       <header className="header">
 
         {showMenu && (
@@ -165,41 +461,25 @@ function Header({ onMenuClick, showMenu = true }) {
 
         )}
 
-
-        <div className="left-section">
-
-          <div className="logo">
-
-            <span className="Gold">
-              DEAL
-            </span>
-
-            <span className="Black">
-              HUNTS
-            </span>
-
-          </div>
-
-        </div>
+        <Logo />
 
       </header>
     );
+
   }
 
 
-  /* ============================================================
+  /* ==========================================================
      ADMIN PRODUCTS
+  ========================================================== */
 
-     /adminProducts
+  const isAdminProductsPage =
+    currentPath === "/adminproducts";
 
-     NAVIGATION:
-     Import CSV | Master Data
-  ============================================================ */
 
   if (isAdminProductsPage) {
 
     return (
-
       <header className="header">
 
         {showMenu && (
@@ -216,40 +496,9 @@ function Header({ onMenuClick, showMenu = true }) {
 
         )}
 
-
-        <div className="left-section">
-
-          <div className="logo">
-
-            <span className="Gold">
-              DEAL
-            </span>
-
-            <span className="Black">
-              HUNTS
-            </span>
-
-          </div>
-
-          <span className="Admin">
-            Admin
-          </span>
-
-        </div>
-
+        <Logo admin />
 
         <nav className="dh-header-navigation">
-
-          <NavLink
-            to="/adminAddProduct"
-            className={({ isActive }) =>
-              isActive
-                ? "header-nav-link active"
-                : "header-nav-link"
-            }
-          >
-            Add Product
-          </NavLink>
 
           <NavLink
             to="/admin/import-products"
@@ -261,7 +510,6 @@ function Header({ onMenuClick, showMenu = true }) {
           >
             Import CSV
           </NavLink>
-
 
           <NavLink
             to="/admin/master-data"
@@ -276,55 +524,25 @@ function Header({ onMenuClick, showMenu = true }) {
 
         </nav>
 
-
-        <div className="header-actions">
-
-          <button
-            type="button"
-            className="header-icon"
-            onClick={() => {
-              console.log("Notifications clicked");
-            }}
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <FiBell />
-          </button>
-
-
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "header-icon active"
-                : "header-icon"
-            }
-            aria-label="Profile"
-            title="Profile"
-          >
-            <FiUser />
-          </NavLink>
-
-        </div>
+        <AccountActions />
 
       </header>
     );
+
   }
 
 
   /* ============================================================
      ADMIN IMPORT PRODUCTS
-
-     /admin/import-products
-
-     NAVIGATION:
-     Master Data
   ============================================================ */
+
+  const isAdminImportPage =
+    currentPath === "/admin/import-products";
+
 
   if (isAdminImportPage) {
 
     return (
-
       <header className="header">
 
         {showMenu && (
@@ -341,27 +559,7 @@ function Header({ onMenuClick, showMenu = true }) {
 
         )}
 
-
-        <div className="left-section">
-
-          <div className="logo">
-
-            <span className="Gold">
-              DEAL
-            </span>
-
-            <span className="Black">
-              HUNTS
-            </span>
-
-          </div>
-
-          <span className="Admin">
-            Admin
-          </span>
-
-        </div>
-
+        <Logo admin />
 
         <nav className="dh-header-navigation">
 
@@ -378,55 +576,25 @@ function Header({ onMenuClick, showMenu = true }) {
 
         </nav>
 
-
-        <div className="header-actions">
-
-          <button
-            type="button"
-            className="header-icon"
-            onClick={() => {
-              console.log("Notifications clicked");
-            }}
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <FiBell />
-          </button>
-
-
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "header-icon active"
-                : "header-icon"
-            }
-            aria-label="Profile"
-            title="Profile"
-          >
-            <FiUser />
-          </NavLink>
-
-        </div>
+        <AccountActions />
 
       </header>
     );
+
   }
 
 
   /* ============================================================
      ADMIN MASTER DATA
-
-     /admin/master-data
-
-     NAVIGATION:
-     Import CSV
   ============================================================ */
+
+  const isAdminMasterDataPage =
+    currentPath === "/admin/master-data";
+
 
   if (isAdminMasterDataPage) {
 
     return (
-
       <header className="header">
 
         {showMenu && (
@@ -443,27 +611,7 @@ function Header({ onMenuClick, showMenu = true }) {
 
         )}
 
-
-        <div className="left-section">
-
-          <div className="logo">
-
-            <span className="Gold">
-              DEAL
-            </span>
-
-            <span className="Black">
-              HUNTS
-            </span>
-
-          </div>
-
-          <span className="Admin">
-            Admin
-          </span>
-
-        </div>
-
+        <Logo admin />
 
         <nav className="dh-header-navigation">
 
@@ -480,54 +628,26 @@ function Header({ onMenuClick, showMenu = true }) {
 
         </nav>
 
-
-        <div className="header-actions">
-
-          <button
-            type="button"
-            className="header-icon"
-            onClick={() => {
-              console.log("Notifications clicked");
-            }}
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <FiBell />
-          </button>
-
-
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "header-icon active"
-                : "header-icon"
-            }
-            aria-label="Profile"
-            title="Profile"
-          >
-            <FiUser />
-          </NavLink>
-
-        </div>
+        <AccountActions />
 
       </header>
     );
+
   }
 
 
   /* ============================================================
      ADMIN VENDORS
-
-     /manage-vendors
-
-     NO NAVIGATION
   ============================================================ */
+
+  const isAdminVendorsSection =
+    currentPath === "/manage-vendors" ||
+    currentPath.startsWith("/admin/vendors");
+
 
   if (isAdminVendorsSection) {
 
     return (
-
       <header className="header">
 
         {showMenu && (
@@ -544,75 +664,27 @@ function Header({ onMenuClick, showMenu = true }) {
 
         )}
 
+        <Logo admin />
 
-        <div className="left-section">
-
-          <div className="logo">
-
-            <span className="Gold">
-              DEAL
-            </span>
-
-            <span className="Black">
-              HUNTS
-            </span>
-
-          </div>
-
-          <span className="Admin">
-            Admin
-          </span>
-
-        </div>
-
-
-        <div className="header-actions">
-
-          <button
-            type="button"
-            className="header-icon"
-            onClick={() => {
-              console.log("Notifications clicked");
-            }}
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <FiBell />
-          </button>
-
-
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "header-icon active"
-                : "header-icon"
-            }
-            aria-label="Profile"
-            title="Profile"
-          >
-            <FiUser />
-          </NavLink>
-
-        </div>
+        <AccountActions />
 
       </header>
     );
+
   }
 
 
   /* ============================================================
      ADMIN PROMOTIONS
-
-     /admin/manage-promotions
-
-     NO NAVIGATION
   ============================================================ */
+
+  const isAdminPromotionsPage =
+    currentPath === "/admin/manage-promotions";
+
 
   if (isAdminPromotionsPage) {
 
     return (
-
       <header className="header">
 
         {showMenu && (
@@ -629,76 +701,27 @@ function Header({ onMenuClick, showMenu = true }) {
 
         )}
 
+        <Logo admin />
 
-        <div className="left-section">
-
-          <div className="logo">
-
-            <span className="Gold">
-              DEAL
-            </span>
-
-            <span className="Black">
-              HUNTS
-            </span>
-
-          </div>
-
-          <span className="Admin">
-            Admin
-          </span>
-
-        </div>
-
-
-        <div className="header-actions">
-
-          <button
-            type="button"
-            className="header-icon"
-            onClick={() => {
-              console.log("Notifications clicked");
-            }}
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <FiBell />
-          </button>
-
-
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "header-icon active"
-                : "header-icon"
-            }
-            aria-label="Profile"
-            title="Profile"
-          >
-            <FiUser />
-          </NavLink>
-
-        </div>
+        <AccountActions />
 
       </header>
     );
+
   }
 
 
   /* ============================================================
      ADMIN TRENDING CAROUSEL
-
-     /admin/manage-carousel
-
-     NAVIGATION:
-     Trending Deals | Trending Categories
   ============================================================ */
+
+  const isAdminTrendingCarouselPage =
+    currentPath === "/admin/manage-carousel";
+
 
   if (isAdminTrendingCarouselPage) {
 
     return (
-
       <header className="header">
 
         {showMenu && (
@@ -715,27 +738,7 @@ function Header({ onMenuClick, showMenu = true }) {
 
         )}
 
-
-        <div className="left-section">
-
-          <div className="logo">
-
-            <span className="Gold">
-              DEAL
-            </span>
-
-            <span className="Black">
-              HUNTS
-            </span>
-
-          </div>
-
-          <span className="Admin">
-            Admin
-          </span>
-
-        </div>
-
+        <Logo admin />
 
         <nav className="dh-header-navigation">
 
@@ -750,7 +753,6 @@ function Header({ onMenuClick, showMenu = true }) {
             Trending Deals
           </NavLink>
 
-
           <NavLink
             to="/admin/manage-trending-categories"
             className={({ isActive }) =>
@@ -764,55 +766,25 @@ function Header({ onMenuClick, showMenu = true }) {
 
         </nav>
 
-
-        <div className="header-actions">
-
-          <button
-            type="button"
-            className="header-icon"
-            onClick={() => {
-              console.log("Notifications clicked");
-            }}
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <FiBell />
-          </button>
-
-
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "header-icon active"
-                : "header-icon"
-            }
-            aria-label="Profile"
-            title="Profile"
-          >
-            <FiUser />
-          </NavLink>
-
-        </div>
+        <AccountActions />
 
       </header>
     );
+
   }
 
 
   /* ============================================================
      ADMIN TRENDING DEALS
-
-     /admin/manage-trending-deals
-
-     NAVIGATION:
-     Trending Categories | Trending Carousel
   ============================================================ */
+
+  const isAdminTrendingDealsPage =
+    currentPath === "/admin/manage-trending-deals";
+
 
   if (isAdminTrendingDealsPage) {
 
     return (
-
       <header className="header">
 
         {showMenu && (
@@ -829,27 +801,7 @@ function Header({ onMenuClick, showMenu = true }) {
 
         )}
 
-
-        <div className="left-section">
-
-          <div className="logo">
-
-            <span className="Gold">
-              DEAL
-            </span>
-
-            <span className="Black">
-              HUNTS
-            </span>
-
-          </div>
-
-          <span className="Admin">
-            Admin
-          </span>
-
-        </div>
-
+        <Logo admin />
 
         <nav className="dh-header-navigation">
 
@@ -864,7 +816,6 @@ function Header({ onMenuClick, showMenu = true }) {
             Trending Categories
           </NavLink>
 
-
           <NavLink
             to="/admin/manage-carousel"
             className={({ isActive }) =>
@@ -878,55 +829,25 @@ function Header({ onMenuClick, showMenu = true }) {
 
         </nav>
 
-
-        <div className="header-actions">
-
-          <button
-            type="button"
-            className="header-icon"
-            onClick={() => {
-              console.log("Notifications clicked");
-            }}
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <FiBell />
-          </button>
-
-
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "header-icon active"
-                : "header-icon"
-            }
-            aria-label="Profile"
-            title="Profile"
-          >
-            <FiUser />
-          </NavLink>
-
-        </div>
+        <AccountActions />
 
       </header>
     );
+
   }
 
 
   /* ============================================================
      ADMIN TRENDING CATEGORIES
-
-     /admin/manage-trending-categories
-
-     NAVIGATION:
-     Trending Deals | Trending Carousel
   ============================================================ */
+
+  const isAdminTrendingCategoriesPage =
+    currentPath === "/admin/manage-trending-categories";
+
 
   if (isAdminTrendingCategoriesPage) {
 
     return (
-
       <header className="header">
 
         {showMenu && (
@@ -943,27 +864,7 @@ function Header({ onMenuClick, showMenu = true }) {
 
         )}
 
-
-        <div className="left-section">
-
-          <div className="logo">
-
-            <span className="Gold">
-              DEAL
-            </span>
-
-            <span className="Black">
-              HUNTS
-            </span>
-
-          </div>
-
-          <span className="Admin">
-            Admin
-          </span>
-
-        </div>
-
+        <Logo admin />
 
         <nav className="dh-header-navigation">
 
@@ -978,7 +879,6 @@ function Header({ onMenuClick, showMenu = true }) {
             Trending Deals
           </NavLink>
 
-
           <NavLink
             to="/admin/manage-carousel"
             className={({ isActive }) =>
@@ -992,54 +892,26 @@ function Header({ onMenuClick, showMenu = true }) {
 
         </nav>
 
-
-        <div className="header-actions">
-
-          <button
-            type="button"
-            className="header-icon"
-            onClick={() => {
-              console.log("Notifications clicked");
-            }}
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <FiBell />
-          </button>
-
-
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "header-icon active"
-                : "header-icon"
-            }
-            aria-label="Profile"
-            title="Profile"
-          >
-            <FiUser />
-          </NavLink>
-
-        </div>
+        <AccountActions />
 
       </header>
     );
+
   }
 
 
   /* ============================================================
      ADMIN ORDERS
-
-     /manage-orders
-
-     NO BACK BUTTON
   ============================================================ */
+
+  const isAdminOrdersPage =
+    currentPath === "/manage-orders" ||
+    currentPath === "/admin/orders";
+
 
   if (isAdminOrdersPage) {
 
     return (
-
       <header className="header">
 
         {showMenu && (
@@ -1056,96 +928,27 @@ function Header({ onMenuClick, showMenu = true }) {
 
         )}
 
-
-        <div className="left-section">
-
-          <div className="logo">
-
-            <span className="Gold">
-              DEAL
-            </span>
-
-            <span className="Black">
-              HUNTS
-            </span>
-
-          </div>
-
-          <span className="Admin">
-            Admin
-          </span>
-
-        </div>
-
+        <Logo admin />
 
         <div className="page-header-title">
           Orders
         </div>
 
-
-        <div className="header-actions">
-
-          <button
-            type="button"
-            className="header-icon"
-            onClick={() => {
-              console.log("Notifications clicked");
-            }}
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <FiBell />
-          </button>
-
-
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "header-icon active"
-                : "header-icon"
-            }
-            aria-label="Profile"
-            title="Profile"
-          >
-            <FiUser />
-          </NavLink>
-
-        </div>
+        <AccountActions />
 
       </header>
     );
+
   }
 
 
   /* ============================================================
      VENDOR HEADER
-
-     ALL VENDOR PAGES SHOW:
-
-     Home | Add Products | Manage Products
-
-     VENDOR HOME:
-     /vendorHome
-
-     ADD PRODUCTS:
-     /vendorProductPage
-
-     EDIT PRODUCT:
-     /vendor/edit-product/:inventoryId
-
-     MANAGE PRODUCTS:
-     /vendor/manage-products
-
-     NO DASHBOARD
-     NO VENDOR REQUESTS
-     NO BACK BUTTON
   ============================================================ */
 
   if (isVendorPage) {
 
     return (
-
       <header className="header">
 
         {showMenu && (
@@ -1162,29 +965,9 @@ function Header({ onMenuClick, showMenu = true }) {
 
         )}
 
-
-        <div className="left-section">
-
-          <div className="logo">
-
-            <span className="Gold">
-              DEAL
-            </span>
-
-            <span className="Black">
-              HUNTS
-            </span>
-
-          </div>
-
-        </div>
-
+        <Logo />
 
         <nav className="dh-header-navigation">
-
-          {/* ==================================================
-              HOME
-          ================================================== */}
 
           <NavLink
             to="/vendorHome"
@@ -1198,11 +981,6 @@ function Header({ onMenuClick, showMenu = true }) {
             Home
           </NavLink>
 
-
-          {/* ==================================================
-              ADD PRODUCTS
-          ================================================== */}
-
           <NavLink
             to="/vendorProductPage"
             className={({ isActive }) =>
@@ -1213,11 +991,6 @@ function Header({ onMenuClick, showMenu = true }) {
           >
             Add Products
           </NavLink>
-
-
-          {/* ==================================================
-              MANAGE PRODUCTS
-          ================================================== */}
 
           <NavLink
             to="/vendor/manage-products"
@@ -1232,55 +1005,21 @@ function Header({ onMenuClick, showMenu = true }) {
 
         </nav>
 
-
-        <div className="header-actions">
-
-          <button
-            type="button"
-            className="header-icon"
-            onClick={() => {
-              console.log("Notifications clicked");
-            }}
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <FiBell />
-          </button>
-
-
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "header-icon active"
-                : "header-icon"
-            }
-            aria-label="Profile"
-            title="Profile"
-          >
-            <FiUser />
-          </NavLink>
-
-        </div>
+        <AccountActions />
 
       </header>
     );
+
   }
 
 
   /* ============================================================
-     ADMIN DASHBOARD
-
-     /adminDashboard
-
-     NAVIGATION:
-     Products | Vendors | Promotions
+     ADMIN GENERAL HEADER
   ============================================================ */
 
   if (isAdminPage) {
 
     return (
-
       <header className="header">
 
         {showMenu && (
@@ -1297,27 +1036,7 @@ function Header({ onMenuClick, showMenu = true }) {
 
         )}
 
-
-        <div className="left-section">
-
-          <div className="logo">
-
-            <span className="Gold">
-              DEAL
-            </span>
-
-            <span className="Black">
-              HUNTS
-            </span>
-
-          </div>
-
-          <span className="Admin">
-            Admin
-          </span>
-
-        </div>
-
+        <Logo admin />
 
         <nav className="dh-header-navigation">
 
@@ -1332,7 +1051,6 @@ function Header({ onMenuClick, showMenu = true }) {
             Products
           </NavLink>
 
-
           <NavLink
             to="/manage-vendors"
             className={({ isActive }) =>
@@ -1343,7 +1061,6 @@ function Header({ onMenuClick, showMenu = true }) {
           >
             Vendors
           </NavLink>
-
 
           <NavLink
             to="/admin/manage-promotions"
@@ -1358,39 +1075,11 @@ function Header({ onMenuClick, showMenu = true }) {
 
         </nav>
 
-
-        <div className="header-actions">
-
-          <button
-            type="button"
-            className="header-icon"
-            onClick={() => {
-              console.log("Notifications clicked");
-            }}
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <FiBell />
-          </button>
-
-
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "header-icon active"
-                : "header-icon"
-            }
-            aria-label="Profile"
-            title="Profile"
-          >
-            <FiUser />
-          </NavLink>
-
-        </div>
+        <AccountActions />
 
       </header>
     );
+
   }
 
 
@@ -1399,8 +1088,19 @@ function Header({ onMenuClick, showMenu = true }) {
   ============================================================ */
 
   return (
+    <header
+      className={
+        `header ${
+          searchOpen
+            ? "mobile-search-open"
+            : ""
+        }`
+      }
+    >
 
-    <header className="header">
+      {/* --------------------------------------------------------
+          MENU
+      -------------------------------------------------------- */}
 
       {showMenu && (
 
@@ -1417,24 +1117,62 @@ function Header({ onMenuClick, showMenu = true }) {
       )}
 
 
-      <div className="left-section">
+      {/* --------------------------------------------------------
+          LOGO
+      -------------------------------------------------------- */}
 
-        <div className="logo">
-
-          <span className="Gold">
-            DEAL
-          </span>
-
-          <span className="Black">
-            HUNTS
-          </span>
-
-        </div>
-
-      </div>
+      <Logo />
 
 
-      <nav className="dh-header-navigation">
+      {/* --------------------------------------------------------
+          MOBILE SEARCH BUTTON
+          
+          Hidden on USER HOME page.
+      -------------------------------------------------------- */}
+
+      {currentPath !== "/home" && (
+
+        <button
+          type="button"
+          className="mobile-search-button"
+          onClick={toggleMobileSearch}
+          aria-label={
+            searchOpen
+              ? "Close search"
+              : "Open search"
+          }
+          aria-expanded={searchOpen}
+          title={
+            searchOpen
+              ? "Close search"
+              : "Search"
+          }
+        >
+
+          {searchOpen ? (
+            <FiX />
+          ) : (
+            <FiSearch />
+          )}
+
+        </button>
+
+      )}
+
+
+      {/* --------------------------------------------------------
+          USER NAVIGATION
+      -------------------------------------------------------- */}
+
+      <nav
+        className={
+          `dh-header-navigation ${
+            mobileNavVisible
+              ? "mobile-nav-visible"
+              : "mobile-nav-hidden"
+          }`
+        }
+      >
 
         <NavLink
           to="/home"
@@ -1447,7 +1185,6 @@ function Header({ onMenuClick, showMenu = true }) {
           Home
         </NavLink>
 
-
         <NavLink
           to="/products"
           className={({ isActive }) =>
@@ -1458,7 +1195,6 @@ function Header({ onMenuClick, showMenu = true }) {
         >
           Products
         </NavLink>
-
 
         <NavLink
           to="/wishlist"
@@ -1473,8 +1209,10 @@ function Header({ onMenuClick, showMenu = true }) {
 
               event.preventDefault();
 
-              setShowWishlistPopup(true);
+              openWishlistLoginPopup();
+
             }
+
           }}
         >
           Wishlist
@@ -1483,34 +1221,46 @@ function Header({ onMenuClick, showMenu = true }) {
       </nav>
 
 
+      {/* --------------------------------------------------------
+          LOGIN POPUP
+          
+          Used by both:
+          - Wishlist
+          - Cart
+      -------------------------------------------------------- */}
+
       <Popup
         open={showWishlistPopup}
         title="Please login first"
-        onClose={() => setShowWishlistPopup(false)}
+        onClose={() =>
+          setShowWishlistPopup(false)
+        }
         width="400px"
         className="wishlist-login-popup"
       >
 
         <p>
-          Please login to access your wishlist.
+          {loginPopupMessage}
         </p>
-
 
         <div className="wishlist-popup-actions">
 
           <NavLink
             to="/login"
             className="wishlist-proceed-login"
-            onClick={() => setShowWishlistPopup(false)}
+            onClick={() =>
+              setShowWishlistPopup(false)
+            }
           >
             Proceed to Login
           </NavLink>
 
-
           <button
             type="button"
             className="wishlist-no-thanks"
-            onClick={() => setShowWishlistPopup(false)}
+            onClick={() =>
+              setShowWishlistPopup(false)
+            }
           >
             No Thanks
           </button>
@@ -1520,34 +1270,56 @@ function Header({ onMenuClick, showMenu = true }) {
       </Popup>
 
 
-      <form
-        className="header-search"
-        onSubmit={handleSearch}
-      >
+      {/* --------------------------------------------------------
+          SEARCH FORM
+          
+          Hidden on USER HOME page.
+      -------------------------------------------------------- */}
 
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={searchQuery}
-          onChange={(event) =>
-            setSearchQuery(event.target.value)
-          }
-          aria-label="Search products"
-        />
+      {currentPath !== "/home" && (
+
+        <form className="header-search" onSubmit={handleSearch}>
+  <input
+    type="text"
+    placeholder="Search products..."
+    value={searchQuery}
+    onChange={(event) => setSearchQuery(event.target.value)}
+    aria-label="Search products"
+  />
+
+  {searchQuery ? (
+    <button
+      type="button"
+      className="header-search-clear"
+      onClick={() => setSearchQuery("")}
+      aria-label="Clear search"
+      title="Clear search"
+    >
+      <FiX />
+    </button>
+  ) : (
+    <button
+      type="submit"
+      aria-label="Search"
+      title="Search"
+    >
+      <FiSearch />
+    </button>
+  )}
+</form>
+
+      )}
 
 
-        <button
-          type="submit"
-          aria-label="Search"
-          title="Search"
-        >
-          <FiSearch />
-        </button>
-
-      </form>
-
+      {/* --------------------------------------------------------
+          USER ACTIONS
+      -------------------------------------------------------- */}
 
       <div className="header-actions">
+
+        {/* ------------------------------------------------------
+            CART
+        ------------------------------------------------------ */}
 
         <NavLink
           to="/cart"
@@ -1558,25 +1330,45 @@ function Header({ onMenuClick, showMenu = true }) {
           }
           aria-label="Cart"
           title="Cart"
+          onClick={(event) => {
+
+            if (!isUserLoggedIn) {
+
+              event.preventDefault();
+
+              openCartLoginPopup();
+
+            }
+
+          }}
         >
           <FiShoppingCart />
         </NavLink>
 
 
+        {/* ------------------------------------------------------
+            PROFILE / LOGIN
+        ------------------------------------------------------ */}
+
         {isUserLoggedIn ? (
 
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive
-                ? "header-icon active"
-                : "header-icon"
+          <button
+            type="button"
+            className={
+              `header-icon ${
+                currentPath === "/profile"
+                  ? "active"
+                  : ""
+              }`
+            }
+            onClick={() =>
+              navigate("/profile")
             }
             aria-label="Profile"
             title="Profile"
           >
             <FiUser />
-          </NavLink>
+          </button>
 
         ) : (
 

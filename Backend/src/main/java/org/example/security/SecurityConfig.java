@@ -32,56 +32,104 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception {
 
         System.out.println("=== MY SECURITY CONFIG IS LOADED ===");
 
         http
+            // =====================================================
+            // CORS
+            // =====================================================
             .cors(cors ->
                 cors.configurationSource(corsConfigurationSource)
             )
 
+            // =====================================================
+            // CSRF
+            // =====================================================
             .csrf(csrf ->
                 csrf.disable()
             )
 
+            // =====================================================
+            // STATELESS JWT SESSION
+            // =====================================================
             .sessionManagement(session ->
                 session.sessionCreationPolicy(
                     SessionCreationPolicy.STATELESS
                 )
             )
 
+            // =====================================================
+            // AUTHORIZATION
+            // =====================================================
             .authorizeHttpRequests(auth -> auth
 
-                // CORS preflight
+                // -------------------------------------------------
+                // CORS PREFLIGHT
+                // -------------------------------------------------
                 .requestMatchers(
                     HttpMethod.OPTIONS,
                     "/**"
                 ).permitAll()
 
-                // Public authentication endpoints
+                // -------------------------------------------------
+                // PUBLIC LOGIN / REGISTER / STATUS
+                // -------------------------------------------------
                 .requestMatchers(
+                    "/user/login",
+                    "/user/register",
+
                     "/vendor/login",
                     "/vendor/register",
                     "/vendor/status",
-                    "/admin/login",
-                    "/user/login",
-                    "/user/register"
+
+                    "/admin/login"
                 ).permitAll()
 
-                // Vendor endpoints
-                .requestMatchers("/vendor/**").permitAll()
+                // -------------------------------------------------
+                // PROFILE / CURRENT ACCOUNT
+                // -------------------------------------------------
+                .requestMatchers(
+                    "/user/me",
+                    "/vendor/me",
+                    "/admin/me"
+                ).authenticated()
 
-                // CART REQUIRES LOGIN
-                .requestMatchers("/cart/**").authenticated()
+                // -------------------------------------------------
+                // CART
+                // -------------------------------------------------
+                .requestMatchers(
+                    "/cart/**"
+                ).authenticated()
 
-                //Wishlist Requires Login  
-                .requestMatchers("/wishlist/**").authenticated()
+                // -------------------------------------------------
+                // WISHLIST
+                // -------------------------------------------------
+                .requestMatchers(
+                    "/wishlist/**"
+                ).authenticated()
 
-                // Keep everything else public for now
+                // -------------------------------------------------
+                // OTHER VENDOR APIs
+                // -------------------------------------------------
+                // Keep existing vendor APIs accessible for now.
+                // /vendor/me above is explicitly protected.
+                .requestMatchers(
+                    "/vendor/**"
+                ).permitAll()
+
+                // -------------------------------------------------
+                // EVERYTHING ELSE
+                // -------------------------------------------------
                 .anyRequest().permitAll()
             )
 
+            // =====================================================
+            // JWT FILTER
+            // =====================================================
             .addFilterBefore(
                 new JWTFilter(jwtUtil),
                 UsernamePasswordAuthenticationFilter.class
@@ -90,6 +138,9 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // =============================================================
+    // PASSWORD ENCODER
+    // =============================================================
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

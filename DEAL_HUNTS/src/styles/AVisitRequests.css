@@ -1,0 +1,2887 @@
+/* =========================================================
+   ADMIN VISIT REQUESTS
+   DEALHUNTS
+========================================================= */
+
+/* =========================================================
+   DESIGN TOKENS
+========================================================= */
+
+:root {
+  --dh-gold: #d4af37;
+  --dh-gold-dark: #a68118;
+  --dh-gold-deep: #8f6e17;
+  --dh-gold-soft: #fffdf5;
+  --dh-gold-pale: #faf7e9;
+
+  --dh-black: #111111;
+  --dh-text: #222222;
+  --dh-text-soft: #555555;
+  --dh-text-muted: #777777;
+  --dh-text-light: #999999;
+
+  --dh-border: #e5e5e5;
+  --dh-border-light: #eeeeee;
+  --dh-border-dark: #d8d8d8;
+
+  --dh-white: #ffffff;
+  --dh-surface: #fcfcfc;
+  --dh-surface-2: #f8f8f8;
+
+  --dh-success: #278148;
+  --dh-success-bg: #eef9f1;
+
+  --dh-danger: #c33b32;
+  --dh-danger-bg: #fff0ef;
+
+  --dh-warning: #9b7815;
+  --dh-warning-bg: #fff7db;
+
+  --dh-shadow-sm:
+    0 2px 10px rgba(0, 0, 0, 0.035);
+
+  --dh-shadow-md:
+    0 5px 18px rgba(0, 0, 0, 0.06);
+
+  --dh-shadow-modal:
+    0 24px 70px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================================
+   GLOBAL PAGE
+========================================================= */
+
+.dh-admin-visit-page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  background: var(--dh-white);
+  color: var(--dh-black);
+
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  box-sizing: border-box;
+}
+
+.dh-admin-visit-page *,
+.dh-admin-visit-page *::before,
+.dh-admin-visit-page *::after {
+  box-sizing: border-box;
+}
+
+.dh-admin-visit-page button,
+.dh-admin-visit-page input,
+.dh-admin-visit-page select,
+.dh-admin-visit-page textarea {
+  font-family: inherit;
+}
+
+.dh-admin-visit-page button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.dh-admin-visit-main {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 34px 34px 70px;
+}
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.dh-admin-visit-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  margin-bottom: 28px;
+}
+
+.dh-admin-visit-eyebrow {
+  margin-bottom: 7px;
+  color: var(--dh-gold-dark);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.dh-admin-visit-header h1 {
+  margin: 0;
+  color: var(--dh-black);
+  font-size: 32px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.dh-admin-visit-header p {
+  margin: 9px 0 0;
+  color: var(--dh-text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+.dh-admin-visit-refresh {
+  min-width: 120px;
+  height: 44px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 0 16px;
+
+  border: 1px solid #dddddd;
+  border-radius: 9px;
+
+  background: var(--dh-white);
+  color: var(--dh-text);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.dh-admin-visit-refresh svg {
+  width: 16px;
+  height: 16px;
+}
+
+.dh-admin-visit-refresh:hover {
+  border-color: var(--dh-gold);
+  color: #9a7718;
+  background: var(--dh-gold-soft);
+}
+
+.dh-admin-visit-refresh:active {
+  transform: translateY(1px);
+}
+
+.dh-admin-visit-refresh:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.dh-admin-visit-spin {
+  animation: dh-admin-visit-spin 0.9s linear infinite;
+}
+
+@keyframes dh-admin-visit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.dh-admin-visit-stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.dh-admin-visit-stat-card {
+  min-height: 102px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 17px 18px;
+
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+
+  background: var(--dh-white);
+  box-shadow: var(--dh-shadow-sm);
+}
+
+.dh-admin-visit-stat-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: var(--dh-gold-pale);
+  color: #a27f1d;
+}
+
+.dh-admin-visit-stat-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.dh-admin-visit-stat-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dh-admin-visit-stat-label {
+  color: #7a7a7a;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.055em;
+}
+
+.dh-admin-visit-stat-value {
+  color: var(--dh-black);
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.dh-admin-stat-pending .dh-admin-visit-stat-icon {
+  background: #fff8df;
+  color: #9c7711;
+}
+
+.dh-admin-stat-accepted .dh-admin-visit-stat-icon {
+  background: #eef9f1;
+  color: #238344;
+}
+
+.dh-admin-stat-rejected .dh-admin-visit-stat-icon {
+  background: #fff0ef;
+  color: #c33b31;
+}
+
+.dh-admin-stat-cancelled .dh-admin-visit-stat-icon {
+  background: #f4f4f4;
+  color: #777777;
+}
+
+.dh-admin-stat-completed {
+  border-color: #d9e6d9;
+}
+
+.dh-admin-stat-completed .dh-admin-visit-stat-icon {
+  background: #eef9f1;
+  color: #356b3a;
+}
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.dh-admin-visit-toolbar {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 12px;
+}
+
+.dh-admin-visit-search {
+  height: 46px;
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 0 13px;
+
+  border: 1px solid #dddddd;
+  border-radius: 9px;
+
+  background: var(--dh-white);
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.dh-admin-visit-search:focus-within {
+  border-color: var(--dh-gold);
+  box-shadow:
+    0 0 0 3px rgba(212, 175, 55, 0.09);
+}
+
+.dh-admin-visit-search > svg {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  color: #999999;
+}
+
+.dh-admin-visit-search input {
+  width: 100%;
+  min-width: 0;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+  color: var(--dh-black);
+
+  font-size: 13px;
+}
+
+.dh-admin-visit-search input::placeholder {
+  color: #aaaaaa;
+}
+
+.dh-admin-visit-search button {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 6px;
+
+  background: #f4f4f4;
+  color: #777777;
+
+  cursor: pointer;
+}
+
+.dh-admin-visit-search button:hover {
+  background: #eeeeee;
+  color: #222222;
+}
+
+/* =========================================================
+   FILTER TOGGLE
+========================================================= */
+
+.dh-admin-filter-toggle {
+  height: 46px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 0 15px;
+
+  border: 1px solid #dddddd;
+  border-radius: 9px;
+
+  background: var(--dh-white);
+  color: #333333;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.dh-admin-filter-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.dh-admin-filter-toggle svg:last-child {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.18s ease;
+}
+
+.dh-admin-filter-toggle:hover,
+.dh-admin-filter-toggle-active {
+  border-color: var(--dh-gold);
+  background: var(--dh-gold-soft);
+  color: #987515;
+}
+
+.dh-admin-chevron-open {
+  transform: rotate(180deg);
+}
+
+/* =========================================================
+   STATUS TABS
+========================================================= */
+
+.dh-admin-visit-status-tabs {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  padding: 5px;
+  margin-bottom: 12px;
+
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+
+  background: #f8f8f8;
+
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.dh-admin-visit-status-tabs button {
+  min-height: 38px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 0 13px;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: transparent;
+  color: #777777;
+
+  white-space: nowrap;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.dh-admin-visit-status-tabs button:hover {
+  color: #222222;
+}
+
+.dh-admin-visit-status-tabs button span {
+  min-width: 20px;
+  height: 20px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 5px;
+
+  border-radius: 20px;
+
+  background: #e9e9e9;
+  color: #666666;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.dh-admin-visit-status-tabs .dh-admin-status-tab-active {
+  background: var(--dh-white);
+  color: var(--dh-black);
+
+  box-shadow:
+    0 2px 7px rgba(0, 0, 0, 0.08);
+}
+
+.dh-admin-visit-status-tabs
+  .dh-admin-status-tab-active
+  span {
+  background: #f6edc8;
+  color: #8e6e13;
+}
+
+/* =========================================================
+   FILTER PANEL
+========================================================= */
+
+.dh-admin-visit-filter-panel {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 1fr)
+    minmax(180px, 1fr)
+    minmax(180px, 1fr)
+    auto;
+
+  align-items: end;
+  gap: 12px;
+
+  padding: 17px;
+  margin-bottom: 20px;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+
+  background: #fcfcfc;
+}
+
+.dh-admin-filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dh-admin-filter-field label {
+  color: #666666;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dh-admin-filter-field select,
+.dh-admin-filter-field input {
+  width: 100%;
+  height: 40px;
+
+  padding: 0 11px;
+
+  border: 1px solid #dddddd;
+  border-radius: 7px;
+
+  outline: none;
+
+  background: var(--dh-white);
+  color: #222222;
+
+  font-size: 12px;
+}
+
+.dh-admin-filter-field select:focus,
+.dh-admin-filter-field input:focus {
+  border-color: var(--dh-gold);
+}
+
+.dh-admin-clear-filters {
+  height: 40px;
+
+  padding: 0 15px;
+
+  border: 1px solid #dddddd;
+  border-radius: 7px;
+
+  background: var(--dh-white);
+  color: #666666;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.dh-admin-clear-filters:hover {
+  border-color: var(--dh-gold);
+  color: #8d6d15;
+  background: var(--dh-gold-soft);
+}
+
+/* =========================================================
+   RESULTS HEADER
+========================================================= */
+
+.dh-admin-visit-results-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+
+  margin: 27px 0 14px;
+}
+
+.dh-admin-visit-results-header h2 {
+  margin: 0 0 5px;
+
+  color: #151515;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.dh-admin-visit-results-header > div:first-child > span {
+  color: #888888;
+  font-size: 12px;
+}
+
+.dh-admin-visit-results-header
+  > div:first-child
+  > span
+  strong {
+  color: #333333;
+}
+
+.dh-admin-visit-live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #777777;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.dh-admin-visit-live-indicator span {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #31a354;
+
+  box-shadow:
+    0 0 0 3px rgba(49, 163, 84, 0.1);
+}
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.dh-admin-visit-error {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  padding: 16px;
+
+  border: 1px solid #f0d0cd;
+  border-radius: 10px;
+
+  background: #fff7f6;
+}
+
+.dh-admin-visit-error > svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+
+  color: #c23d35;
+}
+
+.dh-admin-visit-error > div {
+  min-width: 0;
+  flex: 1;
+}
+
+.dh-admin-visit-error strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #a42e27;
+
+  font-size: 13px;
+}
+
+.dh-admin-visit-error p {
+  margin: 0;
+
+  color: #777777;
+
+  font-size: 12px;
+}
+
+.dh-admin-visit-error button {
+  height: 34px;
+
+  padding: 0 12px;
+
+  border: 1px solid #e4b8b4;
+  border-radius: 7px;
+
+  background: var(--dh-white);
+  color: #a42e27;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   REQUEST LIST
+========================================================= */
+
+.dh-admin-visit-request-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* =========================================================
+   REQUEST CARD
+========================================================= */
+
+.dh-admin-visit-request-card {
+  overflow: hidden;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+
+  background: var(--dh-white);
+
+  box-shadow: var(--dh-shadow-sm);
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.dh-admin-visit-request-card:hover {
+  border-color: #d8c889;
+  box-shadow: var(--dh-shadow-md);
+}
+
+.dh-admin-visit-request-card-pending {
+  border-color: #e7d9ad;
+}
+
+/* =========================================================
+   REQUEST MAIN
+========================================================= */
+
+.dh-admin-visit-request-main {
+  padding: 18px;
+}
+
+/* =========================================================
+   PRODUCT BLOCK
+========================================================= */
+
+.dh-admin-visit-product-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+
+  margin-bottom: 18px;
+}
+
+/* =========================================================
+   PRODUCT IMAGE
+   MATCHES AdminVisitRequests.jsx
+========================================================= */
+
+.dh-admin-visit-clickable-product-image {
+  width: 78px;
+  height: 78px;
+  flex: 0 0 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid #eeeeee;
+  border-radius: 9px;
+
+  background: #fafafa;
+  color: #aaaaaa;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+.dh-admin-visit-clickable-product-image:hover {
+  border-color: var(--dh-gold);
+
+  background: #fffdf8;
+
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.08);
+
+  transform: translateY(-1px);
+}
+
+.dh-admin-visit-clickable-product-image:focus-visible {
+  outline: 2px solid var(--dh-gold);
+  outline-offset: 2px;
+}
+
+.dh-admin-visit-clickable-product-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+
+  background: var(--dh-white);
+}
+
+.dh-admin-visit-clickable-product-image svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* =========================================================
+   PRODUCT IMAGE PLACEHOLDER
+========================================================= */
+
+.dh-admin-visit-product-image {
+  width: 78px;
+  height: 78px;
+  flex: 0 0 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border: 1px solid #eeeeee;
+  border-radius: 9px;
+
+  background: #fafafa;
+  color: #aaaaaa;
+}
+
+.dh-admin-visit-product-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+}
+
+.dh-admin-visit-product-image svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* =========================================================
+   PRODUCT IMAGE PLACEHOLDER CONTENT
+========================================================= */
+
+.dh-admin-visit-product-image-placeholder {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  background: #fafafa;
+  color: #aaaaaa;
+}
+
+.dh-admin-visit-product-image-placeholder svg {
+  width: 23px;
+  height: 23px;
+}
+
+.dh-admin-visit-product-image-placeholder span {
+  color: #aaaaaa;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* =========================================================
+   LARGE CLICKABLE PRODUCT IMAGE
+   MODAL
+========================================================= */
+
+.dh-admin-visit-clickable-product-image-large {
+  width: 88px;
+  height: 88px;
+  flex-basis: 88px;
+
+  border-color: #e7e7e7;
+  border-radius: 8px;
+
+  background: var(--dh-white);
+}
+
+.dh-admin-visit-clickable-product-image-large:hover {
+  border-color: var(--dh-gold);
+
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.dh-admin-visit-clickable-product-image-large img {
+  background: var(--dh-white);
+}
+
+.dh-admin-visit-clickable-product-image-large svg {
+  width: 25px;
+  height: 25px;
+}
+
+/* =========================================================
+   MODAL IMAGE PLACEHOLDER
+========================================================= */
+
+.dh-admin-visit-modal-product-image {
+  width: 88px;
+  height: 88px;
+  flex: 0 0 88px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border: 1px solid #e7e7e7;
+  border-radius: 8px;
+
+  background: var(--dh-white);
+  color: #aaaaaa;
+}
+
+.dh-admin-visit-modal-product-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+}
+
+.dh-admin-visit-modal-product-image svg {
+  width: 25px;
+  height: 25px;
+}
+
+/* =========================================================
+   PRODUCT INFO
+========================================================= */
+
+.dh-admin-visit-product-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.dh-admin-visit-product-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.dh-admin-visit-request-label {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #a17d18;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.dh-admin-visit-product-heading h3 {
+  margin: 0;
+
+  color: #171717;
+
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+.dh-admin-visit-product-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+
+  margin-top: 8px;
+
+  color: #858585;
+
+  font-size: 11px;
+}
+
+.dh-admin-visit-product-meta strong {
+  color: #444444;
+  font-weight: 700;
+}
+
+/* =========================================================
+   PRODUCT OPEN HINT
+========================================================= */
+
+.dh-admin-product-image-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  margin-top: 7px;
+
+  color: #a17d18;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.dh-admin-product-image-hint svg {
+  width: 11px;
+  height: 11px;
+}
+
+/* =========================================================
+   STATUS BADGE
+========================================================= */
+
+.dh-admin-visit-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  min-height: 26px;
+
+  padding: 0 9px;
+
+  border-radius: 20px;
+
+  white-space: nowrap;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+}
+
+.dh-admin-visit-status-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+}
+
+.dh-admin-visit-status-pending {
+  background: var(--dh-warning-bg);
+  color: var(--dh-warning);
+}
+
+.dh-admin-visit-status-accepted {
+  background: var(--dh-success-bg);
+  color: var(--dh-success);
+}
+
+.dh-admin-visit-status-rejected {
+  background: var(--dh-danger-bg);
+  color: var(--dh-danger);
+}
+
+.dh-admin-visit-status-cancelled {
+  background: #f1f1f1;
+  color: #777777;
+}
+
+.dh-admin-visit-status-completed {
+  background: #eef9f1;
+  color: #356b3a;
+}
+
+/* =========================================================
+   REQUEST SUMMARY
+========================================================= */
+
+.dh-admin-visit-request-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.dh-admin-visit-summary-box {
+  min-width: 0;
+
+  padding: 12px;
+
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+
+  background: #fcfcfc;
+}
+
+.dh-admin-visit-summary-box > span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #969696;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.dh-admin-visit-summary-box > strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #333333;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.dh-admin-visit-summary-box > small {
+  display: block;
+
+  margin-top: 4px;
+
+  overflow: hidden;
+
+  color: #888888;
+
+  font-size: 10px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   REQUEST FOOTER
+========================================================= */
+
+.dh-admin-visit-request-footer {
+  min-height: 49px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding: 9px 18px;
+
+  border-top: 1px solid #eeeeee;
+
+  background: #fdfdfd;
+}
+
+.dh-admin-visit-footer-left {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 7px 17px;
+}
+
+.dh-admin-visit-footer-left span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #888888;
+
+  font-size: 10px;
+}
+
+.dh-admin-visit-footer-left svg {
+  width: 12px;
+  height: 12px;
+
+  color: #b08b24;
+}
+
+.dh-admin-visit-view-button {
+  height: 32px;
+  flex: 0 0 auto;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 0 11px;
+
+  border: 1px solid #dedede;
+  border-radius: 7px;
+
+  background: var(--dh-white);
+  color: #333333;
+
+  font-size: 11px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.dh-admin-visit-view-button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.dh-admin-visit-view-button:hover {
+  border-color: var(--dh-gold);
+  background: var(--dh-gold-soft);
+  color: #8f6e17;
+}
+
+/* =========================================================
+   CARD CONTACT ACTIONS
+========================================================= */
+
+.dh-admin-visit-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.dh-admin-card-contact {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  border: 1px solid #dedede;
+  border-radius: 9px;
+
+  background: var(--dh-white);
+  color: #333333;
+
+  text-decoration: none;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.dh-admin-card-contact:hover {
+  background: #fafafa;
+  border-color: #c7a42b;
+  color: #8b6b08;
+
+  transform: translateY(-1px);
+}
+
+.dh-admin-card-contact svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.dh-admin-visit-loading {
+  min-height: 360px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border: 1px solid #eeeeee;
+  border-radius: 12px;
+
+  background: var(--dh-white);
+}
+
+.dh-admin-loader {
+  width: 34px;
+  height: 34px;
+
+  margin-bottom: 16px;
+
+  border: 3px solid #eeeeee;
+  border-top-color: var(--dh-gold);
+
+  border-radius: 50%;
+
+  animation:
+    dh-admin-visit-spin 0.8s linear infinite;
+}
+
+.dh-admin-visit-loading h3 {
+  margin: 0 0 5px;
+
+  color: #333333;
+
+  font-size: 14px;
+}
+
+.dh-admin-visit-loading p {
+  margin: 0;
+
+  color: #999999;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.dh-admin-visit-empty {
+  min-height: 360px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px;
+
+  border: 1px dashed #dddddd;
+  border-radius: 12px;
+
+  background: var(--dh-white);
+
+  text-align: center;
+}
+
+.dh-admin-empty-icon {
+  width: 54px;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 15px;
+
+  border-radius: 50%;
+
+  background: var(--dh-gold-pale);
+  color: #b08b24;
+}
+
+.dh-admin-empty-icon svg {
+  width: 23px;
+  height: 23px;
+}
+
+.dh-admin-visit-empty h3 {
+  margin: 0 0 6px;
+
+  color: #333333;
+
+  font-size: 15px;
+}
+
+.dh-admin-visit-empty p {
+  max-width: 380px;
+
+  margin: 0 0 15px;
+
+  color: #999999;
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.dh-admin-visit-empty > button {
+  height: 34px;
+
+  padding: 0 14px;
+
+  border: 1px solid var(--dh-gold);
+  border-radius: 7px;
+
+  background: var(--dh-gold-soft);
+  color: #8d6d15;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   MODAL OVERLAY
+========================================================= */
+
+.dh-admin-visit-modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 28px;
+
+  background: rgba(0, 0, 0, 0.42);
+
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.dh-admin-visit-modal {
+  width: min(900px, 100%);
+
+  max-height: calc(100vh - 56px);
+  max-height: calc(100dvh - 56px);
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border-radius: 14px;
+
+  background: var(--dh-white);
+
+  box-shadow: var(--dh-shadow-modal);
+}
+
+/* =========================================================
+   MODAL HEADER
+   DEALHUNTS
+   Visit Request : 1
+========================================================= */
+
+.dh-admin-visit-modal-header {
+  min-height: 82px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 15px 20px;
+
+  border-bottom: 1px solid #eeeeee;
+
+  background: var(--dh-white);
+}
+
+.dh-admin-visit-modal-header-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dh-admin-visit-modal-brand {
+  margin: 0;
+
+  color: var(--dh-black);
+
+  font-size: 20px;
+  line-height: 1.05;
+  font-weight: 900;
+
+  letter-spacing: -0.035em;
+}
+
+.dh-admin-visit-modal-request-title {
+  margin: 0;
+
+  color: #777777;
+
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.dh-admin-visit-modal-request-title strong {
+  color: var(--dh-black);
+  font-weight: 800;
+}
+
+.dh-admin-visit-modal-kicker {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #a17d18;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 0.14em;
+}
+
+.dh-admin-visit-modal-header h2 {
+  margin: 0;
+
+  color: #171717;
+
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.dh-admin-visit-modal-close {
+  width: 35px;
+  height: 35px;
+  flex: 0 0 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: #f4f4f4;
+  color: #666666;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.dh-admin-visit-modal-close:hover {
+  background: #eeeeee;
+  color: #222222;
+}
+
+.dh-admin-visit-modal-close svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* =========================================================
+   MODAL STATUS ROW
+========================================================= */
+
+.dh-admin-visit-modal-status-row {
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 10px 20px;
+
+  border-bottom: 1px solid #f0f0f0;
+
+  background: #fcfcfc;
+}
+
+.dh-admin-visit-created {
+  color: #999999;
+  font-size: 10px;
+}
+
+/* =========================================================
+   MODAL BODY
+========================================================= */
+
+.dh-admin-visit-modal-body {
+  flex: 1;
+  min-height: 0;
+
+  overflow-y: auto;
+
+  padding: 20px;
+}
+
+/* =========================================================
+   MODAL SECTION
+========================================================= */
+
+.dh-admin-visit-modal-section {
+  margin-bottom: 24px;
+}
+
+.dh-admin-visit-modal-section:last-child {
+  margin-bottom: 0;
+}
+
+.dh-admin-visit-modal-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 11px;
+}
+
+.dh-admin-visit-modal-section-title svg {
+  width: 16px;
+  height: 16px;
+
+  color: #b08a23;
+}
+
+.dh-admin-visit-modal-section-title h3 {
+  margin: 0;
+
+  color: #222222;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   MODAL PRODUCT
+========================================================= */
+
+.dh-admin-visit-product-detail-card {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 13px;
+
+  border: 1px solid #eeeeee;
+  border-radius: 9px;
+
+  background: #fcfcfc;
+}
+
+/* =========================================================
+   MODAL PRODUCT INFO
+========================================================= */
+
+.dh-admin-visit-modal-product-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.dh-admin-visit-modal-product-info h4 {
+  margin: 0 0 5px;
+
+  color: #222222;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  line-height: 1.4;
+}
+
+.dh-admin-visit-modal-product-info p {
+  margin: 0;
+
+  color: #888888;
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.dh-admin-visit-modal-product-info p strong {
+  color: #444444;
+}
+
+.dh-admin-visit-product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+
+  margin-top: 9px;
+}
+
+.dh-admin-visit-product-tags span {
+  padding: 5px 8px;
+
+  border: 1px solid #e7e7e7;
+  border-radius: 5px;
+
+  background: var(--dh-white);
+  color: #666666;
+
+  font-size: 10px;
+}
+
+.dh-admin-visit-product-id {
+  display: block;
+
+  margin-top: 8px;
+
+  color: #aaaaaa;
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   MODAL DETAILS
+========================================================= */
+
+.dh-admin-visit-details-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 9px;
+}
+
+.dh-admin-visit-detail-item {
+  min-width: 0;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 10px;
+
+  padding: 11px;
+
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+
+  background: var(--dh-white);
+}
+
+.dh-admin-visit-detail-item-full {
+  grid-column: 1 / -1;
+}
+
+.dh-admin-visit-detail-icon {
+  width: 29px;
+  height: 29px;
+  flex: 0 0 29px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+
+  background: var(--dh-gold-pale);
+  color: #a37f1d;
+}
+
+.dh-admin-visit-detail-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.dh-admin-visit-detail-content {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dh-admin-visit-detail-label {
+  color: #999999;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dh-admin-visit-detail-value {
+  overflow: hidden;
+
+  color: #333333;
+
+  font-size: 11px;
+  line-height: 1.45;
+  font-weight: 700;
+
+  word-break: break-word;
+}
+
+.dh-admin-visit-detail-value a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dh-admin-visit-detail-value a:hover {
+  color: var(--dh-gold-deep);
+  text-decoration: underline;
+}
+
+/* =========================================================
+   ADDRESS
+========================================================= */
+
+.dh-admin-visit-address-value {
+  white-space: normal;
+  line-height: 1.55;
+}
+
+.dh-admin-visit-map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  margin-top: 5px;
+
+  color: #a17d18;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.dh-admin-visit-map-link:hover {
+  color: #7f6110;
+  text-decoration: underline;
+}
+
+.dh-admin-visit-map-link svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* =========================================================
+   SCHEDULE
+========================================================= */
+
+.dh-admin-visit-schedule-card {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 10px;
+
+  padding: 13px;
+
+  border: 1px solid #eee6c9;
+  border-radius: 9px;
+
+  background: var(--dh-gold-soft);
+}
+
+.dh-admin-visit-schedule-card > div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dh-admin-visit-schedule-card
+  span:not(.dh-admin-visit-status) {
+  color: #9b9b9b;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dh-admin-visit-schedule-card strong {
+  color: #333333;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   CONTACT PANEL
+========================================================= */
+
+.dh-admin-contact-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-top: 18px;
+  padding: 16px 18px;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+
+  background: var(--dh-white);
+}
+
+.dh-admin-contact-panel > div:first-child {
+  min-width: 0;
+  flex: 1;
+}
+
+.dh-admin-contact-panel strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #171717;
+
+  font-size: 14px;
+}
+
+.dh-admin-contact-panel span {
+  display: block;
+
+  color: #777777;
+
+  font-size: 12px;
+  line-height: 1.5;
+
+  word-break: break-word;
+}
+
+.dh-admin-contact-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  flex: 0 0 auto;
+}
+
+.dh-admin-contact-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 38px;
+
+  padding: 0 13px;
+
+  border-radius: 9px;
+
+  text-decoration: none;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.dh-admin-contact-button:hover {
+  transform: translateY(-1px);
+}
+
+.dh-admin-contact-phone {
+  border: 1px solid #111111;
+
+  background: #111111;
+  color: var(--dh-white);
+}
+
+.dh-admin-contact-phone:hover {
+  background: #242424;
+  color: var(--dh-white);
+
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.12);
+}
+
+.dh-admin-contact-email {
+  border: 1px solid #d8d8d8;
+
+  background: var(--dh-white);
+  color: #222222;
+}
+
+.dh-admin-contact-email:hover {
+  border-color: #c5a027;
+  color: #8b6b08;
+
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.06);
+}
+
+/* =========================================================
+   INVESTIGATION ALERT
+========================================================= */
+
+.dh-admin-pending-alert {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 16px;
+  margin-bottom: 0;
+
+  background: #fffaf0;
+
+  border-bottom: 1px solid #ead9a4;
+
+  color: #7a5a00;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dh-admin-pending-alert svg {
+  flex: 0 0 auto;
+
+  width: 16px;
+  height: 16px;
+}
+
+.dh-admin-investigation-alert {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 14px;
+
+  margin: 0 24px 20px;
+
+  padding: 16px 18px;
+
+  border: 1px solid #ead9a4;
+  border-radius: 12px;
+
+  background: #fffaf0;
+}
+
+.dh-admin-investigation-alert-icon {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: var(--dh-white);
+  color: #9a7410;
+
+  border: 1px solid #ead9a4;
+}
+
+.dh-admin-investigation-alert-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.dh-admin-investigation-alert strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #4a3900;
+
+  font-size: 14px;
+}
+
+.dh-admin-investigation-alert p {
+  margin: 0;
+
+  color: #6d6247;
+
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* =========================================================
+   TIMELINE
+========================================================= */
+
+.dh-admin-visit-timeline {
+  position: relative;
+
+  padding-left: 7px;
+}
+
+.dh-admin-visit-timeline::before {
+  content: "";
+
+  position: absolute;
+
+  left: 14px;
+  top: 14px;
+  bottom: 14px;
+
+  width: 1px;
+
+  background: #e4e4e4;
+}
+
+.dh-admin-visit-timeline-item {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 11px;
+
+  padding: 5px 0 13px;
+}
+
+.dh-admin-visit-timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.dh-admin-visit-timeline-dot {
+  position: relative;
+  z-index: 1;
+
+  width: 29px;
+  height: 29px;
+  flex: 0 0 29px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e4e4e4;
+  border-radius: 50%;
+
+  background: var(--dh-white);
+  color: #9b9b9b;
+}
+
+.dh-admin-visit-timeline-dot svg {
+  width: 13px;
+  height: 13px;
+}
+
+.dh-admin-visit-timeline-success {
+  border-color: #b9dfc4;
+
+  background: #eef9f1;
+  color: #278148;
+}
+
+.dh-admin-visit-timeline-danger {
+  border-color: #ecc3c0;
+
+  background: #fff0ef;
+  color: #c43b32;
+}
+
+.dh-admin-visit-timeline-item > div:last-child {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+
+  padding-top: 3px;
+}
+
+.dh-admin-visit-timeline-item strong {
+  color: #333333;
+
+  font-size: 11px;
+}
+
+.dh-admin-visit-timeline-item span {
+  color: #999999;
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   MODAL FOOTER
+========================================================= */
+
+.dh-admin-visit-modal-footer {
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 8px;
+
+  padding: 11px 20px;
+
+  border-top: 1px solid #eeeeee;
+
+  background: #fcfcfc;
+}
+
+.dh-admin-visit-modal-done {
+  height: 35px;
+
+  padding: 0 17px;
+
+  border: 1px solid var(--dh-gold);
+  border-radius: 7px;
+
+  background: var(--dh-gold-soft);
+  color: #8e6d15;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.dh-admin-visit-modal-done:hover {
+  background: #fdf6dc;
+}
+
+/* =========================================================
+   MODAL FOOTER CONTACT
+========================================================= */
+
+.dh-admin-modal-footer-contact {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-right: auto;
+}
+
+.dh-admin-footer-call,
+.dh-admin-footer-email {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  min-height: 38px;
+
+  padding: 0 13px;
+
+  border-radius: 9px;
+
+  text-decoration: none;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dh-admin-footer-call {
+  border: 1px solid #111111;
+
+  background: #111111;
+  color: var(--dh-white);
+}
+
+.dh-admin-footer-call:hover {
+  background: #252525;
+  color: var(--dh-white);
+}
+
+.dh-admin-footer-email {
+  border: 1px solid #d7d7d7;
+
+  background: var(--dh-white);
+  color: #222222;
+}
+
+.dh-admin-footer-email:hover {
+  border-color: #c5a027;
+  color: #8b6b08;
+}
+
+/* =========================================================
+   SCROLLBARS
+========================================================= */
+
+.dh-admin-visit-modal-body::-webkit-scrollbar,
+.dh-admin-visit-status-tabs::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.dh-admin-visit-modal-body::-webkit-scrollbar-track,
+.dh-admin-visit-status-tabs::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+.dh-admin-visit-modal-body::-webkit-scrollbar-thumb,
+.dh-admin-visit-status-tabs::-webkit-scrollbar-thumb {
+  background: #d5d5d5;
+  border-radius: 10px;
+}
+
+.dh-admin-visit-modal-body::-webkit-scrollbar-thumb:hover,
+.dh-admin-visit-status-tabs::-webkit-scrollbar-thumb:hover {
+  background: #bdbdbd;
+}
+
+/* =========================================================
+   RESPONSIVE — 1200px
+========================================================= */
+
+@media (max-width: 1200px) {
+  .dh-admin-visit-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .dh-admin-visit-filter-panel {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — 900px
+========================================================= */
+
+@media (max-width: 900px) {
+  .dh-admin-visit-main {
+    padding: 28px 24px 60px;
+  }
+
+  .dh-admin-visit-stats {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .dh-admin-visit-request-summary {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .dh-admin-visit-summary-box:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — 760px
+========================================================= */
+
+@media (max-width: 760px) {
+  .dh-admin-visit-main {
+    padding: 24px 18px 55px;
+  }
+
+  .dh-admin-visit-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .dh-admin-visit-refresh {
+    align-self: flex-start;
+  }
+
+  .dh-admin-visit-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dh-admin-filter-toggle {
+    width: 100%;
+  }
+
+  .dh-admin-visit-request-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .dh-admin-visit-summary-box:last-child {
+    grid-column: auto;
+  }
+
+  .dh-admin-contact-panel {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dh-admin-contact-actions {
+    width: 100%;
+  }
+
+  .dh-admin-contact-button {
+    flex: 1;
+  }
+
+  .dh-admin-visit-card-actions {
+    width: 100%;
+
+    justify-content: flex-start;
+
+    flex-wrap: wrap;
+  }
+
+  .dh-admin-modal-footer-contact {
+    width: 100%;
+
+    margin-right: 0;
+
+    flex-wrap: wrap;
+  }
+
+  .dh-admin-footer-call,
+  .dh-admin-footer-email {
+    flex: 1;
+  }
+
+  .dh-admin-investigation-alert {
+    margin-left: 14px;
+    margin-right: 14px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — 650px
+========================================================= */
+
+@media (max-width: 650px) {
+  .dh-admin-visit-main {
+    padding: 20px 13px 45px;
+  }
+
+  .dh-admin-visit-header h1 {
+    font-size: 25px;
+  }
+
+  .dh-admin-visit-header p {
+    font-size: 12px;
+  }
+
+  .dh-admin-visit-stats {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 9px;
+  }
+
+  .dh-admin-visit-stat-card {
+    min-height: 82px;
+
+    padding: 12px;
+
+    gap: 10px;
+  }
+
+  .dh-admin-visit-stat-icon {
+    width: 35px;
+    height: 35px;
+    flex-basis: 35px;
+  }
+
+  .dh-admin-visit-stat-value {
+    font-size: 20px;
+  }
+
+  .dh-admin-visit-filter-panel {
+    grid-template-columns: 1fr;
+
+    padding: 13px;
+  }
+
+  .dh-admin-visit-results-header {
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-top: 20px;
+  }
+
+  .dh-admin-visit-request-main {
+    padding: 13px;
+  }
+
+  .dh-admin-visit-product-block {
+    gap: 10px;
+  }
+
+  .dh-admin-visit-clickable-product-image,
+  .dh-admin-visit-product-image {
+    width: 62px;
+    height: 62px;
+    flex-basis: 62px;
+  }
+
+  .dh-admin-visit-product-heading {
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .dh-admin-visit-product-heading h3 {
+    font-size: 14px;
+  }
+
+  .dh-admin-visit-product-meta {
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .dh-admin-visit-request-footer {
+    align-items: flex-start;
+    flex-direction: column;
+
+    padding: 10px 13px;
+  }
+
+  .dh-admin-visit-view-button {
+    width: 100%;
+  }
+
+  /* -------------------------------------------------------
+     MODAL
+  ------------------------------------------------------- */
+
+  .dh-admin-visit-modal-overlay {
+    align-items: flex-end;
+
+    padding: 0;
+  }
+
+  .dh-admin-visit-modal {
+    width: 100%;
+
+    max-height: 94vh;
+    max-height: 94dvh;
+
+    border-radius: 14px 14px 0 0;
+  }
+
+  .dh-admin-visit-modal-header {
+    min-height: 76px;
+
+    padding: 13px 15px;
+  }
+
+  .dh-admin-visit-modal-brand {
+    font-size: 18px;
+  }
+
+  .dh-admin-visit-modal-request-title {
+    font-size: 11px;
+  }
+
+  .dh-admin-visit-modal-status-row {
+    padding: 9px 15px;
+  }
+
+  .dh-admin-visit-modal-body {
+    padding: 15px;
+  }
+
+  .dh-admin-visit-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dh-admin-visit-detail-item-full {
+    grid-column: auto;
+  }
+
+  .dh-admin-visit-schedule-card {
+    grid-template-columns: 1fr;
+  }
+
+  .dh-admin-visit-modal-footer {
+    padding: 10px 15px;
+
+    flex-wrap: wrap;
+  }
+
+  .dh-admin-visit-modal-done {
+    width: 100%;
+  }
+
+  .dh-admin-modal-footer-contact {
+    width: 100%;
+  }
+
+  .dh-admin-footer-call,
+  .dh-admin-footer-email {
+    width: 100%;
+    flex: none;
+  }
+
+  .dh-admin-visit-product-detail-card {
+    align-items: flex-start;
+  }
+
+  .dh-admin-visit-clickable-product-image-large,
+  .dh-admin-visit-modal-product-image {
+    width: 72px;
+    height: 72px;
+    flex-basis: 72px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — 480px
+========================================================= */
+
+@media (max-width: 480px) {
+  .dh-admin-visit-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dh-admin-visit-status-tabs button {
+    padding: 0 10px;
+  }
+
+  .dh-admin-pending-alert {
+    align-items: flex-start;
+
+    font-size: 12px;
+  }
+
+  .dh-admin-investigation-alert {
+    padding: 13px;
+    gap: 10px;
+  }
+
+  .dh-admin-contact-actions {
+    flex-direction: column;
+  }
+
+  .dh-admin-contact-button {
+    width: 100%;
+  }
+
+  .dh-admin-footer-call,
+  .dh-admin-footer-email {
+    width: 100%;
+    flex: none;
+  }
+
+  .dh-admin-visit-product-block {
+    align-items: flex-start;
+  }
+
+  .dh-admin-visit-clickable-product-image,
+  .dh-admin-visit-product-image {
+    width: 55px;
+    height: 55px;
+    flex-basis: 55px;
+  }
+
+  .dh-admin-visit-product-heading h3 {
+    font-size: 13px;
+  }
+
+  .dh-admin-visit-product-meta {
+    font-size: 10px;
+  }
+
+  .dh-admin-visit-modal-header {
+    gap: 10px;
+  }
+
+  .dh-admin-visit-modal-brand {
+    font-size: 17px;
+  }
+
+  .dh-admin-visit-modal-request-title {
+    font-size: 10px;
+  }
+
+  .dh-admin-visit-modal-close {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  .dh-admin-visit-product-detail-card {
+    gap: 11px;
+
+    padding: 10px;
+  }
+
+  .dh-admin-visit-clickable-product-image-large,
+  .dh-admin-visit-modal-product-image {
+    width: 64px;
+    height: 64px;
+    flex-basis: 64px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — 360px
+========================================================= */
+
+@media (max-width: 360px) {
+  .dh-admin-visit-main {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .dh-admin-visit-stat-card {
+    padding: 11px;
+  }
+
+  .dh-admin-visit-stat-label {
+    font-size: 10px;
+  }
+
+  .dh-admin-visit-stat-value {
+    font-size: 18px;
+  }
+
+  .dh-admin-visit-request-main {
+    padding: 11px;
+  }
+
+  .dh-admin-visit-clickable-product-image,
+  .dh-admin-visit-product-image {
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
+  }
+
+  .dh-admin-visit-request-footer {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+
+  .dh-admin-visit-modal-body {
+    padding: 13px;
+  }
+
+  .dh-admin-visit-modal-header {
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+
+  .dh-admin-visit-clickable-product-image-large,
+  .dh-admin-visit-modal-product-image {
+    width: 58px;
+    height: 58px;
+    flex-basis: 58px;
+  }
+}
+
+/* =========================================================
+   VERY SMALL SCREENS — 320px
+========================================================= */
+
+@media (max-width: 320px) {
+  .dh-admin-visit-main {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .dh-admin-visit-header h1 {
+    font-size: 22px;
+  }
+
+  .dh-admin-visit-stat-card {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .dh-admin-visit-stat-icon {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  .dh-admin-visit-stat-value {
+    font-size: 17px;
+  }
+
+  .dh-admin-visit-product-block {
+    gap: 8px;
+  }
+
+  .dh-admin-visit-clickable-product-image,
+  .dh-admin-visit-product-image {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+  }
+
+  .dh-admin-visit-product-heading h3 {
+    font-size: 12px;
+  }
+
+  .dh-admin-visit-product-meta {
+    font-size: 9px;
+  }
+
+  .dh-admin-visit-modal-body {
+    padding: 11px;
+  }
+
+  .dh-admin-visit-product-detail-card {
+    gap: 9px;
+    padding: 9px;
+  }
+
+  .dh-admin-visit-clickable-product-image-large,
+  .dh-admin-visit-modal-product-image {
+    width: 54px;
+    height: 54px;
+    flex-basis: 54px;
+  }
+
+  .dh-admin-visit-modal-product-info h4 {
+    font-size: 12px;
+  }
+
+  .dh-admin-visit-modal-product-info p {
+    font-size: 10px;
+  }
+}

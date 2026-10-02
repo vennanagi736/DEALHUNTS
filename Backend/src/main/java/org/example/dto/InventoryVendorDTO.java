@@ -10,11 +10,32 @@ public class InventoryVendorDTO {
 
     private String shopName;
 
+    // ============================================================
+    // VENDOR CONTACT / LOCATION
+    // ============================================================
+
+    private String phoneNo;
+
+    private String address;
+
+    private String city;
+
+    private String state;
+
+    private Integer pincode;
+
+    private Double latitude;
+
+    private Double longitude;
+
+    // ============================================================
+    // PRODUCT / INVENTORY
+    // ============================================================
+
     // Admin-defined product base price
     private BigDecimal basePrice;
 
     // Calculated price after vendor discount
-    // NOT stored in inventory table
     private BigDecimal finalPrice;
 
     private String condition;
@@ -57,6 +78,15 @@ public class InventoryVendorDTO {
             Long inventoryId,
             Integer vendorId,
             String shopName,
+
+            String phoneNo,
+            String address,
+            String city,
+            String state,
+            Integer pincode,
+            Double latitude,
+            Double longitude,
+
             BigDecimal basePrice,
             BigDecimal finalPrice,
             String condition,
@@ -80,6 +110,23 @@ public class InventoryVendorDTO {
         this.vendorId = vendorId;
         this.shopName = shopName;
 
+        // ========================================================
+        // VENDOR CONTACT / LOCATION
+        // ========================================================
+
+        this.phoneNo = phoneNo;
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.pincode = pincode;
+
+        this.latitude = latitude;
+        this.longitude = longitude;
+
+        // ========================================================
+        // INVENTORY
+        // ========================================================
+
         this.basePrice = basePrice;
 
         this.condition = condition;
@@ -89,10 +136,12 @@ public class InventoryVendorDTO {
                 ? discount
                 : BigDecimal.ZERO;
 
-// ========================================================
-// FINAL PRICE CALCULATED BY REPOSITORY
-// ========================================================
+        // ========================================================
+        // FINAL PRICE
+        // ========================================================
+
         this.finalPrice = finalPrice;
+
         this.warranty = warranty;
         this.deliveryTime = deliveryTime;
 
@@ -127,6 +176,34 @@ public class InventoryVendorDTO {
 
     public String getShopName() {
         return shopName;
+    }
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public Integer getPincode() {
+        return pincode;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
     }
 
     public BigDecimal getBasePrice() {

@@ -20,16 +20,21 @@ import {
 
 import "../../styles/Cart.css";
 
+
 export default function Cart() {
 
   const navigate = useNavigate();
+
 
   // ============================================================
   // LOGIN STATUS
   // ============================================================
 
   const isLoggedIn =
-    !!localStorage.getItem("userJwtToken");
+    !!(
+      localStorage.getItem("userJwtToken") ||
+      localStorage.getItem("jwtToken")
+    );
 
 
   // ============================================================
@@ -46,9 +51,31 @@ export default function Cart() {
     items: [],
   });
 
-  const [loading, setLoading] = useState(true);
-  const [updatingItem, setUpdatingItem] = useState(null);
-  const [error, setError] = useState("");
+
+  const [loading, setLoading] =
+    useState(true);
+
+
+  const [updatingItem, setUpdatingItem] =
+    useState(null);
+
+
+  const [error, setError] =
+    useState("");
+
+
+  // ============================================================
+  // GET USER TOKEN
+  // ============================================================
+
+  const getUserToken = () => {
+
+    return (
+      localStorage.getItem("userJwtToken") ||
+      localStorage.getItem("jwtToken")
+    );
+
+  };
 
 
   // ============================================================
@@ -57,7 +84,15 @@ export default function Cart() {
 
   const loadCart = async () => {
 
-    if (!localStorage.getItem("userJwtToken")) {
+    const token =
+      getUserToken();
+
+
+    /* ----------------------------------------------------------
+       USER NOT LOGGED IN
+    ---------------------------------------------------------- */
+
+    if (!token) {
 
       setLoading(false);
 
@@ -68,32 +103,47 @@ export default function Cart() {
       return;
     }
 
+
     try {
 
       setLoading(true);
+
       setError("");
 
-      const response = await getCart();
+
+      const response =
+        await getCart();
+
 
       console.log(
         "CART RESPONSE:",
         response.data
       );
 
+
       setCart({
-        cartId: response.data.cartId,
+
+        cartId:
+          response.data.cartId,
+
         itemCount:
           response.data.itemCount ?? 0,
+
         subtotal:
           response.data.subtotal ?? 0,
+
         discount:
           response.data.discount ?? 0,
+
         delivery:
           response.data.delivery ?? 0,
+
         total:
           response.data.total ?? 0,
+
         items:
           response.data.items ?? [],
+
       });
 
     } catch (err) {
@@ -102,6 +152,7 @@ export default function Cart() {
         "GET CART ERROR:",
         err
       );
+
 
       if (
         err.response?.status === 401 ||
@@ -125,6 +176,7 @@ export default function Cart() {
       setLoading(false);
 
     }
+
   };
 
 
@@ -153,9 +205,11 @@ export default function Cart() {
     const newQuantity =
       currentQuantity + delta;
 
+
     if (newQuantity < 1) {
       return;
     }
+
 
     if (
       stock &&
@@ -164,9 +218,13 @@ export default function Cart() {
       return;
     }
 
+
     try {
 
-      setUpdatingItem(cartItemId);
+      setUpdatingItem(
+        cartItemId
+      );
+
 
       const response =
         await updateCartQuantity(
@@ -174,12 +232,15 @@ export default function Cart() {
           newQuantity
         );
 
+
       console.log(
         "UPDATED CART:",
         response.data
       );
 
+
       setCart({
+
         cartId:
           response.data.cartId,
 
@@ -200,6 +261,7 @@ export default function Cart() {
 
         items:
           response.data.items ?? [],
+
       });
 
     } catch (err) {
@@ -208,6 +270,7 @@ export default function Cart() {
         "UPDATE CART ERROR:",
         err
       );
+
 
       alert(
         err.response?.data?.message ||
@@ -219,6 +282,7 @@ export default function Cart() {
       setUpdatingItem(null);
 
     }
+
   };
 
 
@@ -232,19 +296,25 @@ export default function Cart() {
 
     try {
 
-      setUpdatingItem(cartItemId);
+      setUpdatingItem(
+        cartItemId
+      );
+
 
       const response =
         await removeCartItem(
           cartItemId
         );
 
+
       console.log(
         "CART AFTER REMOVE:",
         response.data
       );
 
+
       setCart({
+
         cartId:
           response.data.cartId,
 
@@ -265,6 +335,7 @@ export default function Cart() {
 
         items:
           response.data.items ?? [],
+
       });
 
     } catch (err) {
@@ -273,6 +344,7 @@ export default function Cart() {
         "REMOVE CART ITEM ERROR:",
         err
       );
+
 
       alert(
         err.response?.data?.message ||
@@ -284,6 +356,7 @@ export default function Cart() {
       setUpdatingItem(null);
 
     }
+
   };
 
 
@@ -298,7 +371,9 @@ export default function Cart() {
     // Wishlist API can be connected later.
     // Currently removing the item from cart.
 
-    await removeItem(cartItemId);
+    await removeItem(
+      cartItemId
+    );
 
   };
 
@@ -318,6 +393,7 @@ export default function Cart() {
   return (
 
     <div className="uc-page">
+
 
       {/* ======================================================
           LOADING
@@ -526,6 +602,7 @@ export default function Cart() {
 
             <div className="uc-cart-layout">
 
+
               {/* ==================================================
                   CART ITEMS
               ================================================== */}
@@ -563,6 +640,7 @@ export default function Cart() {
                       key={item.cartItemId}
                     >
 
+
                       {/* PRODUCT IMAGE */}
 
                       <img
@@ -589,32 +667,42 @@ export default function Cart() {
                         <div className="uc-cart-item__meta">
 
                           {item.vendorName && (
+
                             <span>
                               Sold by {item.vendorName}
                             </span>
+
                           )}
 
+
                           {item.variant && (
+
                             <span>
                               &middot; {item.variant}
                             </span>
+
                           )}
 
+
                           {item.color && (
+
                             <span>
                               &middot; {item.color}
                             </span>
+
                           )}
 
                         </div>
 
 
                         <span
-                          className={`uc-cart-item__stock ${
-                            item.stock > 0
-                              ? "uc-cart-item__stock--in"
-                              : "uc-cart-item__stock--out"
-                          }`}
+                          className={
+                            `uc-cart-item__stock ${
+                              item.stock > 0
+                                ? "uc-cart-item__stock--in"
+                                : "uc-cart-item__stock--out"
+                            }`
+                          }
                         >
 
                           {item.stock > 0

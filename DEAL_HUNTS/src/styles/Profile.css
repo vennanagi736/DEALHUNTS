@@ -1,0 +1,1503 @@
+/* ================================================================
+   DEALHUNTS PROFILE
+   Professional Black / Gold / White Theme
+   Matched exactly with Profile.jsx
+================================================================ */
+
+
+/* ================================================================
+   PAGE
+================================================================ */
+
+.dh-profile-page {
+    width: 100%;
+    min-height: calc(100vh - 70px);
+
+    box-sizing: border-box;
+
+    background: #f7f7f7;
+
+    color: #171717;
+}
+
+
+/* ================================================================
+   PROFILE HEADER CARD
+================================================================ */
+
+.dh-profile-header-card {
+    width: calc(100% - 80px);
+    max-width: 1400px;
+
+    min-height: 145px;
+
+    margin: 35px auto 0;
+
+    padding: 28px 32px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+
+    gap: 25px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 14px;
+
+    box-shadow:
+        0 4px 18px rgba(0, 0, 0, 0.05);
+}
+
+
+/* ================================================================
+   AVATAR
+================================================================ */
+
+.dh-profile-avatar {
+    width: 92px;
+    height: 92px;
+
+    flex: 0 0 92px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        145deg,
+        #171717,
+        #292929
+    );
+
+    border: 3px solid #d4af37;
+
+    color: #d4af37;
+
+    font-size: 27px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    user-select: none;
+}
+
+
+/* ================================================================
+   HEADER INFORMATION
+================================================================ */
+
+.dh-profile-header-info {
+    flex: 1 1 auto;
+
+    min-width: 0;
+}
+
+
+.dh-profile-name-row {
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    min-width: 0;
+}
+
+
+.dh-profile-name-row h1 {
+    margin: 0;
+
+    color: #171717;
+
+    font-size: 29px;
+
+    line-height: 1.2;
+
+    font-weight: 750;
+
+    word-break: break-word;
+}
+
+
+.dh-profile-email {
+    margin: 8px 0 5px;
+
+    color: #626262;
+
+    font-size: 15px;
+
+    line-height: 1.5;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+}
+
+
+.dh-profile-account-text {
+    margin: 4px 0 0;
+
+    color: #8a8a8a;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.1px;
+}
+
+
+/* ================================================================
+   ROLE BADGE
+================================================================ */
+
+.dh-profile-role-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 70px;
+
+    padding: 6px 11px;
+
+    box-sizing: border-box;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
+}
+
+
+/* USER */
+
+.dh-profile-role-user {
+    background: #f4f4f4;
+
+    color: #333333;
+
+    border: 1px solid #dddddd;
+}
+
+
+/* VENDOR */
+
+.dh-profile-role-vendor {
+    background: #fff8df;
+
+    color: #8b6b00;
+
+    border: 1px solid #d4af37;
+}
+
+
+/* ADMIN */
+
+.dh-profile-role-admin {
+    background: #191919;
+
+    color: #d4af37;
+
+    border: 1px solid #333333;
+}
+
+
+/* ================================================================
+   LOGOUT BUTTON
+================================================================ */
+
+.dh-profile-logout-btn {
+    flex: 0 0 auto;
+
+    min-width: 105px;
+
+    height: 42px;
+
+    padding: 0 18px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d9d9d9;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #252525;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.dh-profile-logout-btn:hover {
+    background: #171717;
+
+    border-color: #171717;
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+}
+
+
+.dh-profile-logout-btn:active {
+    transform: translateY(0);
+}
+
+
+/* ================================================================
+   ERROR
+================================================================ */
+
+.dh-profile-error {
+    width: calc(100% - 80px);
+    max-width: 1400px;
+
+    margin: 20px auto 0;
+
+    padding: 15px 18px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    background: #fff8f8;
+
+    border: 1px solid #ead4d4;
+
+    border-radius: 9px;
+}
+
+
+.dh-profile-error > div {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.dh-profile-error strong {
+    color: #8b3333;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+
+.dh-profile-error span {
+    color: #777777;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+}
+
+
+.dh-profile-error button {
+    flex: 0 0 auto;
+
+    height: 36px;
+
+    padding: 0 15px;
+
+    border: 1px solid #d5b0b0;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #7b3333;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.dh-profile-error button:hover {
+    background: #fff1f1;
+
+    border-color: #c89999;
+}
+
+
+/* ================================================================
+   PROFILE CONTENT
+================================================================ */
+
+.dh-profile-content {
+    width: calc(100% - 80px);
+    max-width: 1400px;
+
+    margin: 25px auto 60px;
+
+    display: grid;
+
+    grid-template-columns:
+        245px minmax(0, 1fr);
+
+    gap: 25px;
+
+    align-items: start;
+
+    box-sizing: border-box;
+}
+
+
+/* ================================================================
+   LEFT PROFILE MENU
+================================================================ */
+
+.dh-profile-menu {
+    width: 100%;
+
+    padding: 15px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 3px 14px rgba(0, 0, 0, 0.035);
+}
+
+
+/* ================================================================
+   MENU BUTTONS
+================================================================ */
+
+.dh-profile-menu button {
+    width: 100%;
+
+    min-height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 13px;
+
+    margin-bottom: 4px;
+
+    box-sizing: border-box;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #555555;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.dh-profile-menu button:last-child {
+    margin-bottom: 0;
+}
+
+
+.dh-profile-menu button span {
+    width: 22px;
+
+    flex: 0 0 22px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #999999;
+
+    font-size: 15px;
+
+    line-height: 1;
+}
+
+
+.dh-profile-menu button:hover {
+    background: #f5f5f5;
+
+    color: #171717;
+}
+
+
+.dh-profile-menu button.active {
+    background: #171717;
+
+    color: #ffffff;
+}
+
+
+.dh-profile-menu button.active span {
+    color: #d4af37;
+}
+
+
+/* ================================================================
+   RIGHT DETAILS AREA
+================================================================ */
+
+.dh-profile-details {
+    min-width: 0;
+
+    width: 100%;
+}
+
+
+/* ================================================================
+   COMMON SECTION
+================================================================ */
+
+.dh-profile-section {
+    width: 100%;
+
+    padding: 32px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 3px 14px rgba(0, 0, 0, 0.035);
+}
+
+
+/* ================================================================
+   SECTION HEADING
+================================================================ */
+
+.dh-profile-section-heading {
+    padding-bottom: 25px;
+
+    margin-bottom: 25px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+.dh-profile-section-heading h2 {
+    margin: 0;
+
+    color: #171717;
+
+    font-size: 24px;
+
+    line-height: 1.3;
+
+    font-weight: 750;
+}
+
+
+.dh-profile-section-heading p {
+    max-width: 760px;
+
+    margin: 7px 0 0;
+
+    color: #777777;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* ================================================================
+   OVERVIEW GRID
+================================================================ */
+
+.dh-profile-overview-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+
+/* ================================================================
+   OVERVIEW INFORMATION CARD
+================================================================ */
+
+.dh-profile-info-card {
+    min-height: 105px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background: #fafafa;
+
+    border: 1px solid #e9e9e9;
+
+    border-radius: 9px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.dh-profile-info-card:hover {
+    border-color: #dfc76d;
+
+    background: #fffdf6;
+}
+
+
+.dh-profile-card-label {
+    margin-bottom: 10px;
+
+    color: #999999;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+
+    text-transform: uppercase;
+}
+
+
+.dh-profile-info-card strong {
+    color: #222222;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    line-height: 1.45;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ================================================================
+   DETAILS GRID
+================================================================ */
+
+.dh-profile-details-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+
+/* ================================================================
+   DETAIL ITEM
+================================================================ */
+
+.dh-profile-detail-item {
+    min-height: 78px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 16px 18px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e8e8e8;
+
+    border-radius: 8px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.dh-profile-detail-item:hover {
+    border-color: #ded0a0;
+
+    background: #fffefa;
+}
+
+
+.dh-profile-detail-item label {
+    color: #999999;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    line-height: 1.3;
+
+    text-transform: uppercase;
+}
+
+
+.dh-profile-detail-item > div {
+    color: #262626;
+
+    font-size: 14px;
+
+    font-weight: 650;
+
+    line-height: 1.45;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ================================================================
+   FULL WIDTH DETAIL
+================================================================ */
+
+.dh-profile-detail-full {
+    grid-column: 1 / -1;
+}
+
+
+.dh-profile-detail-full > div {
+    line-height: 1.6;
+}
+
+
+/* ================================================================
+   LOCATION LINK
+================================================================ */
+
+.dh-profile-detail-item a {
+    display: inline-flex;
+
+    align-items: center;
+
+    color: #9a7610;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease;
+}
+
+
+.dh-profile-detail-item a:hover {
+    color: #d4af37;
+
+    text-decoration: underline;
+}
+
+
+/* ================================================================
+   STATUS VALUES
+================================================================ */
+
+.dh-profile-detail-item .status,
+.dh-status-value {
+    color: #9a7610 !important;
+}
+
+
+/* ================================================================
+   LOADING
+================================================================ */
+
+.dh-profile-loading {
+    min-height: calc(100vh - 70px);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+}
+
+
+.dh-profile-loading p {
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 13px;
+}
+
+
+.dh-profile-spinner {
+    width: 34px;
+    height: 34px;
+
+    border: 3px solid #e8e8e8;
+
+    border-top-color: #d4af37;
+
+    border-radius: 50%;
+
+    animation:
+        dh-profile-spin 0.8s linear infinite;
+}
+
+
+@keyframes dh-profile-spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ================================================================
+   EMPTY STATE
+================================================================ */
+
+.dh-profile-empty {
+    width: min(450px, calc(100% - 30px));
+
+    margin: 100px auto;
+
+    padding: 45px 35px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+
+    border-radius: 13px;
+
+    text-align: center;
+
+    box-shadow:
+        0 5px 25px rgba(0, 0, 0, 0.05);
+}
+
+
+.dh-profile-empty-icon {
+    width: 65px;
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background: #171717;
+
+    color: #d4af37;
+
+    font-size: 25px;
+}
+
+
+.dh-profile-empty h2 {
+    margin: 0 0 8px;
+
+    color: #222222;
+
+    font-size: 22px;
+
+    line-height: 1.3;
+}
+
+
+.dh-profile-empty p {
+    margin: 0 0 25px;
+
+    color: #777777;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+.dh-profile-primary-btn {
+    height: 43px;
+
+    padding: 0 25px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #171717;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.dh-profile-primary-btn:hover {
+    background: #d4af37;
+
+    color: #171717;
+
+    transform: translateY(-1px);
+}
+
+
+.dh-profile-primary-btn:active {
+    transform: translateY(0);
+}
+
+
+/* ================================================================
+   FOCUS
+================================================================ */
+
+.dh-profile-menu button:focus-visible,
+.dh-profile-logout-btn:focus-visible,
+.dh-profile-error button:focus-visible,
+.dh-profile-primary-btn:focus-visible {
+    outline: 2px solid #d4af37;
+
+    outline-offset: 2px;
+}
+
+
+/* ================================================================
+   TABLET
+================================================================ */
+
+@media (max-width: 1100px) {
+
+    .dh-profile-header-card,
+    .dh-profile-error,
+    .dh-profile-content {
+        width: calc(100% - 50px);
+    }
+
+
+    .dh-profile-header-card {
+        padding: 26px 28px;
+    }
+
+
+    .dh-profile-content {
+        grid-template-columns:
+            220px minmax(0, 1fr);
+
+        gap: 20px;
+    }
+
+
+    .dh-profile-section {
+        padding: 28px;
+    }
+}
+
+
+/* ================================================================
+   SMALL TABLET
+================================================================ */
+
+@media (max-width: 900px) {
+
+    .dh-profile-header-card {
+        min-height: 130px;
+
+        gap: 20px;
+
+        padding: 24px;
+    }
+
+
+    .dh-profile-avatar {
+        width: 78px;
+        height: 78px;
+
+        flex-basis: 78px;
+
+        font-size: 23px;
+    }
+
+
+    .dh-profile-name-row h1 {
+        font-size: 25px;
+    }
+
+
+    .dh-profile-content {
+        grid-template-columns:
+            190px minmax(0, 1fr);
+
+        gap: 18px;
+    }
+
+
+    .dh-profile-menu {
+        padding: 12px;
+    }
+
+
+    .dh-profile-section {
+        padding: 24px;
+    }
+}
+
+
+/* ================================================================
+   MOBILE
+================================================================ */
+
+@media (max-width: 760px) {
+
+    .dh-profile-page {
+        min-height: calc(100vh - 60px);
+    }
+
+
+    .dh-profile-header-card,
+    .dh-profile-error,
+    .dh-profile-content {
+        width: calc(100% - 30px);
+    }
+
+
+    /* ------------------------------------------------------------
+       HEADER
+    ------------------------------------------------------------ */
+
+    .dh-profile-header-card {
+        min-height: 0;
+
+        margin-top: 20px;
+
+        padding: 22px;
+
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+
+        gap: 15px;
+
+        border-radius: 11px;
+    }
+
+
+    .dh-profile-avatar {
+        width: 72px;
+        height: 72px;
+
+        flex: 0 0 72px;
+
+        font-size: 21px;
+    }
+
+
+    .dh-profile-header-info {
+        flex: 1 1 0;
+
+        min-width: 0;
+    }
+
+
+    .dh-profile-name-row {
+        gap: 7px;
+    }
+
+
+    .dh-profile-name-row h1 {
+        font-size: 22px;
+    }
+
+
+    .dh-profile-email {
+        font-size: 13px;
+    }
+
+
+    .dh-profile-account-text {
+        font-size: 10px;
+    }
+
+
+    .dh-profile-role-badge {
+        padding: 5px 9px;
+
+        font-size: 9px;
+    }
+
+
+    .dh-profile-logout-btn {
+        width: 100%;
+
+        height: 42px;
+
+        margin-top: 3px;
+    }
+
+
+    /* ------------------------------------------------------------
+       ERROR
+    ------------------------------------------------------------ */
+
+    .dh-profile-error {
+        margin-top: 15px;
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+
+    .dh-profile-error button {
+        width: 100%;
+    }
+
+
+    /* ------------------------------------------------------------
+       MAIN CONTENT
+    ------------------------------------------------------------ */
+
+    .dh-profile-content {
+        display: block;
+
+        margin-top: 18px;
+
+        margin-bottom: 40px;
+    }
+
+
+    /* ------------------------------------------------------------
+       MENU
+    ------------------------------------------------------------ */
+
+    .dh-profile-menu {
+        width: 100%;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 5px;
+
+        overflow-x: auto;
+
+        padding: 8px;
+
+        margin-bottom: 18px;
+
+        border-radius: 10px;
+
+        scrollbar-width: thin;
+    }
+
+
+    .dh-profile-menu button {
+        width: auto;
+
+        min-width: max-content;
+
+        min-height: 40px;
+
+        flex: 0 0 auto;
+
+        padding: 0 13px;
+
+        margin: 0;
+
+        white-space: nowrap;
+    }
+
+
+    /* ------------------------------------------------------------
+       SECTION
+    ------------------------------------------------------------ */
+
+    .dh-profile-section {
+        padding: 22px 18px;
+
+        border-radius: 10px;
+    }
+
+
+    .dh-profile-section-heading {
+        padding-bottom: 20px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .dh-profile-section-heading h2 {
+        font-size: 22px;
+    }
+
+
+    .dh-profile-section-heading p {
+        font-size: 12px;
+    }
+
+
+    /* ------------------------------------------------------------
+       OVERVIEW
+    ------------------------------------------------------------ */
+
+    .dh-profile-overview-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* ------------------------------------------------------------
+       DETAILS
+    ------------------------------------------------------------ */
+
+    .dh-profile-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .dh-profile-detail-full {
+        grid-column: auto;
+    }
+}
+
+
+/* ================================================================
+   SMALL MOBILE
+================================================================ */
+
+@media (max-width: 480px) {
+
+    .dh-profile-header-card,
+    .dh-profile-error,
+    .dh-profile-content {
+        width: calc(100% - 20px);
+    }
+
+
+    .dh-profile-header-card {
+        margin-top: 15px;
+
+        padding: 18px;
+
+        gap: 12px;
+    }
+
+
+    .dh-profile-avatar {
+        width: 60px;
+        height: 60px;
+
+        flex-basis: 60px;
+
+        border-width: 2px;
+
+        font-size: 18px;
+    }
+
+
+    .dh-profile-header-info {
+        flex-basis: calc(100% - 72px);
+    }
+
+
+    .dh-profile-name-row {
+        gap: 6px;
+    }
+
+
+    .dh-profile-name-row h1 {
+        font-size: 19px;
+    }
+
+
+    .dh-profile-role-badge {
+        min-width: auto;
+
+        padding: 4px 7px;
+
+        font-size: 8px;
+    }
+
+
+    .dh-profile-email {
+        margin-top: 6px;
+
+        font-size: 12px;
+    }
+
+
+    .dh-profile-account-text {
+        font-size: 9px;
+    }
+
+
+    .dh-profile-content {
+        margin-top: 15px;
+    }
+
+
+    .dh-profile-menu {
+        padding: 7px;
+
+        margin-bottom: 15px;
+    }
+
+
+    .dh-profile-menu button {
+        min-height: 38px;
+
+        padding: 0 11px;
+
+        font-size: 12px;
+    }
+
+
+    .dh-profile-menu button span {
+        width: 18px;
+
+        flex-basis: 18px;
+
+        font-size: 13px;
+    }
+
+
+    .dh-profile-section {
+        padding: 20px 15px;
+    }
+
+
+    .dh-profile-section-heading {
+        padding-bottom: 17px;
+
+        margin-bottom: 17px;
+    }
+
+
+    .dh-profile-section-heading h2 {
+        font-size: 20px;
+    }
+
+
+    .dh-profile-info-card {
+        min-height: 90px;
+
+        padding: 16px;
+    }
+
+
+    .dh-profile-card-label {
+        font-size: 9px;
+    }
+
+
+    .dh-profile-info-card strong {
+        font-size: 14px;
+    }
+
+
+    .dh-profile-detail-item {
+        min-height: 72px;
+
+        padding: 14px;
+    }
+
+
+    .dh-profile-detail-item label {
+        font-size: 9px;
+    }
+
+
+    .dh-profile-detail-item > div {
+        font-size: 13px;
+    }
+
+
+    .dh-profile-empty {
+        margin: 60px auto;
+
+        padding: 35px 22px;
+    }
+
+
+    .dh-profile-empty h2 {
+        font-size: 20px;
+    }
+}
+
+
+/* ================================================================
+   VERY SMALL DEVICES
+================================================================ */
+
+@media (max-width: 360px) {
+
+    .dh-profile-header-card,
+    .dh-profile-error,
+    .dh-profile-content {
+        width: calc(100% - 16px);
+    }
+
+
+    .dh-profile-header-card {
+        padding: 15px;
+    }
+
+
+    .dh-profile-avatar {
+        width: 54px;
+        height: 54px;
+
+        flex-basis: 54px;
+
+        font-size: 16px;
+    }
+
+
+    .dh-profile-name-row h1 {
+        font-size: 17px;
+    }
+
+
+    .dh-profile-role-badge {
+        font-size: 8px;
+    }
+
+
+    .dh-profile-email {
+        font-size: 11px;
+    }
+
+
+    .dh-profile-section {
+        padding: 18px 13px;
+    }
+
+
+    .dh-profile-menu button {
+        padding-left: 9px;
+        padding-right: 9px;
+
+        font-size: 11px;
+    }
+}

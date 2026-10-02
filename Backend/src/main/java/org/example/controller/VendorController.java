@@ -39,6 +39,40 @@ public class VendorController {
     private final BCryptPasswordEncoder passwordEncoder =
             new BCryptPasswordEncoder();
 
+            @GetMapping("/me")
+public ResponseEntity<?> getMyProfile(
+        Authentication authentication) {
+
+    String email = authentication.getName();
+
+    Vendor vendor =
+            vendorRepository.findByEmail(email);
+
+    if (vendor == null) {
+        return ResponseEntity.notFound().build();
+    }
+
+    VendorDetailsDTO dto =
+            new VendorDetailsDTO(
+                    vendor.getId(),
+                    vendor.getFullName(),
+                    vendor.getShopName(),
+                    vendor.getPhoneNo(),
+                    vendor.getState(),
+                    vendor.getCity(),
+                    vendor.getPincode(),
+                    vendor.getLatitude(),
+                    vendor.getLongitude(),
+                    vendor.getAddress(),
+                    vendor.getEmail(),
+                    vendor.getRole(),
+                    vendor.getStatus(),
+                    vendor.getLocationLink()
+            );
+
+    return ResponseEntity.ok(dto);
+}
+
     // ============================================================
     // REGISTER
     // ============================================================

@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.example.dto.LoginRequest;
 import org.example.dto.LoginResponse;
@@ -12,6 +13,7 @@ import org.example.security.JWTUtil;
 import org.example.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -107,6 +109,27 @@ public ResponseEntity<?> deleteVendor(@PathVariable Integer id) {
 
     return ResponseEntity.ok(
             "Vendor deleted successfully"
+    );
+}
+@GetMapping("/me")
+public ResponseEntity<?> getMyProfile(
+        Authentication authentication) {
+
+    String email = authentication.getName();
+
+    Admin admin =
+            adminRepository.findByEmail(email);
+
+    if (admin == null) {
+        return ResponseEntity.notFound().build();
+    }
+
+    return ResponseEntity.ok(
+            Map.of(
+                    "id", admin.getId(),
+                    "email", admin.getEmail(),
+                    "role", admin.getRole()
+            )
     );
 }
 }

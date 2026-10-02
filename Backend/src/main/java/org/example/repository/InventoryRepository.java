@@ -26,6 +26,7 @@ public interface InventoryRepository
     // ============================================================
 
     List<Inventory> findByProduct_Id(Long productId);
+
     boolean existsByColor_Id(Long colorId);
 
     // ============================================================
@@ -40,6 +41,14 @@ public interface InventoryRepository
             i.vendor.id,
 
             i.vendor.shopName,
+
+            i.vendor.phoneNo,
+            i.vendor.address,
+            i.vendor.city,
+            i.vendor.state,
+            i.vendor.pincode,
+            i.vendor.latitude,
+            i.vendor.longitude,
 
             i.product.basePrice,
 
@@ -105,40 +114,56 @@ public interface InventoryRepository
     // ACTIVE PRODUCTS FOR VENDOR
     // ============================================================
 
-   @Query("""
-    SELECT new org.example.dto.VendorProductDTO(
-        i.id,
-        i.product.id,
-        i.product.name,
-        i.product.description,
-        i.product.brand.name,
-        i.product.category.name,
-        i.variant.id,
-        i.color.id,
-        i.product.basePrice,
-        COALESCE(i.discount, 0),
-        (
-            i.product.basePrice -
+    @Query("""
+        SELECT new org.example.dto.VendorProductDTO(
+
+            i.id,
+
+            i.product.id,
+
+            i.product.name,
+
+            i.product.description,
+
+            i.product.brand.name,
+
+            i.product.category.name,
+
+            i.variant.id,
+
+            i.color.id,
+
+            i.product.basePrice,
+
+            COALESCE(i.discount, 0),
+
             (
-                i.product.basePrice *
-                COALESCE(i.discount, 0) / 100
+                i.product.basePrice -
+                (
+                    i.product.basePrice *
+                    COALESCE(i.discount, 0) / 100
+                )
+            ),
+
+            i.stock,
+
+            (
+                SELECT MIN(img.thumbnailUrl)
+                FROM Image img
+                WHERE img.product.id = i.product.id
             )
-        ),
-        i.stock,
-        (
-            SELECT MIN(img.thumbnailUrl)
-            FROM Image img
-            WHERE img.product.id = i.product.id
         )
-    )
-    FROM Inventory i
-    WHERE i.vendor.id = :vendorId
-      AND i.product.active = true
-    ORDER BY i.product.name ASC
-""")
-List<VendorProductDTO> findActiveProductsByVendorId(
-        @Param("vendorId") Long vendorId
-);
+
+        FROM Inventory i
+
+        WHERE i.vendor.id = :vendorId
+          AND i.product.active = true
+
+        ORDER BY i.product.name ASC
+    """)
+    List<VendorProductDTO> findActiveProductsByVendorId(
+            @Param("vendorId") Long vendorId
+    );
 
     // ============================================================
     // USER PRODUCT CARDS
@@ -148,8 +173,11 @@ List<VendorProductDTO> findActiveProductsByVendorId(
         SELECT new org.example.dto.ProductCardDTO(
 
             p.id,
+
             p.name,
+
             p.brand.name,
+
             p.category.name,
 
             MIN(img.thumbnailUrl),

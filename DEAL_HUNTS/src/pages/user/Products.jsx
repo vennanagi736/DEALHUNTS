@@ -998,7 +998,7 @@ function Products() {
 
         {/* BACK */}
 
-        <button
+        {/* <button
           type="button"
           className="dh-products-back-home-user"
           onClick={() =>
@@ -1007,7 +1007,7 @@ function Products() {
         >
           <FiArrowLeft />
           Back to Home
-        </button>
+        </button> */}
 
         {/* ====================================================
             TITLE

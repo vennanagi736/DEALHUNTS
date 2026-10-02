@@ -674,7 +674,7 @@ export default function Wishlist() {
                             }
                           >
 
-                            <ShoppingCart
+                            <ShoppingCart className="dh-cart-icon"
                               size={14}
                               strokeWidth={2}
                             />

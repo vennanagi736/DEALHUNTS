@@ -51,6 +51,11 @@ function Login() {
         password
       );
 
+      console.log(
+        "USER LOGIN RESPONSE:",
+        response.data
+      );
+
       if (response.data.success) {
         setError("");
 
@@ -70,6 +75,42 @@ function Login() {
         localStorage.setItem(
           "userEmail",
           response.data.email
+        );
+
+        // ======================================================
+        // STORE USER ID
+        // Backend LoginResponse field is "id"
+        // ======================================================
+
+        localStorage.setItem(
+          "userId",
+          String(response.data.id)
+        );
+
+        // ======================================================
+        // VERIFY STORED USER ID
+        // ======================================================
+
+        console.log(
+          "Logged-in User ID:",
+          response.data.id
+        );
+
+        console.log(
+          "Stored userId:",
+          localStorage.getItem("userId")
+        );
+
+        console.log(
+          "Stored userEmail:",
+          localStorage.getItem("userEmail")
+        );
+
+        console.log(
+          "Stored userJwtToken:",
+          localStorage.getItem("userJwtToken")
+            ? "TOKEN PRESENT"
+            : "TOKEN MISSING"
         );
 
         // ======================================================
@@ -99,7 +140,10 @@ function Login() {
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "USER LOGIN ERROR:",
+        error
+      );
 
       setSuccess(false);
       setMessage("Server Error");
@@ -136,6 +180,7 @@ function Login() {
     localStorage.removeItem("userJwtToken");
     localStorage.removeItem("jwtToken");
     localStorage.removeItem("userEmail");
+    localStorage.removeItem("userId");
     localStorage.removeItem("role");
 
     // ==========================================================

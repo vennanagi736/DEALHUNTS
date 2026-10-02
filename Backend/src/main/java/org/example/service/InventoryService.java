@@ -337,284 +337,297 @@ public class InventoryService {
     // ============================================================
     // GET AVAILABLE VENDORS
     // ============================================================
+public List<InventoryVendorDTO> getAvailableVendorsByProductId(Long productId) {
 
-    public List<InventoryVendorDTO>
-    getAvailableVendorsByProductId(
-            Long productId
+    System.out.println("========================================");
+    System.out.println("Searching vendors for product ID: " + productId);
+
+    List<InventoryVendorDTO> vendors =
+            inventoryRepository.findAvailableVendorsByProductId(productId);
+
+    System.out.println("Vendors found: " + vendors.size());
+
+    for (InventoryVendorDTO vendor : vendors) {
+        System.out.println("Inventory ID : " + vendor.getInventoryId());
+        System.out.println("Vendor ID    : " + vendor.getVendorId());
+        System.out.println("Shop Name    : " + vendor.getShopName());
+        System.out.println("Base Price   : " + vendor.getBasePrice());
+        System.out.println("Final Price  : " + vendor.getFinalPrice());
+        System.out.println("Stock        : " + vendor.getStock());
+        System.out.println("Discount     : " + vendor.getDiscount());
+    }
+
+    System.out.println("========================================");
+
+    return vendors;
+}
+    
+    // ============================================================
+    // UPDATE INVENTORY
+    // ============================================================
+
+    @Transactional
+    public Inventory updateInventory(
+            Long inventoryId,
+            InventoryTable dto,
+            String email
     ) {
 
-        return inventoryRepository
-                .findAvailableVendorsByProductId(
-                        productId
-                );
-    }
+        // ========================================================
+        // VENDOR
+        // ========================================================
 
-    // ============================================================
-// UPDATE INVENTORY
-// ============================================================
+        Vendor vendor =
+                vendorRepository.findByEmail(email);
 
-@Transactional
-public Inventory updateInventory(
-        Long inventoryId,
-        InventoryTable dto,
-        String email
-) {
+        if (vendor == null) {
+            throw new RuntimeException(
+                    "Vendor not found for email: " + email
+            );
+        }
 
-    // ========================================================
-    // VENDOR
-    // ========================================================
+        // ========================================================
+        // FIND EXISTING INVENTORY
+        // ========================================================
 
-    Vendor vendor =
-            vendorRepository.findByEmail(email);
+        Inventory inventory =
+                inventoryRepository
+                        .findById(inventoryId)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Inventory not found: "
+                                                + inventoryId
+                                )
+                        );
 
-    if (vendor == null) {
-        throw new RuntimeException(
-                "Vendor not found for email: " + email
-        );
-    }
+        // ========================================================
+// VERIFY INVENTORY BELONGS TO LOGGED-IN VENDOR
+// ========================================================
 
-    // ========================================================
-    // FIND EXISTING INVENTORY
-    // ========================================================
+if (inventory.getVendor() == null ||
+        inventory.getVendor().getId() != vendor.getId()) {
 
-    Inventory inventory =
-            inventoryRepository.findById(inventoryId)
-                    .orElseThrow(() ->
-                            new RuntimeException(
-                                    "Inventory not found: "
-                                            + inventoryId
-                            )
-                    );
-
-    // ========================================================
-    // VERIFY INVENTORY BELONGS TO LOGGED-IN VENDOR
-    // ========================================================
-
-    if (inventory.getVendor() == null ||
-            inventory.getVendor()
-                    .getId()!= 
-                    vendor.getId()) {
-
-        throw new RuntimeException(
-                "You are not authorized to update this inventory"
-        );
-    }
-
-    // ========================================================
-    // PRODUCT
-    // ========================================================
-
-    if (dto.getProductId() == null) {
-        throw new RuntimeException(
-                "Product is required"
-        );
-    }
-
-    Product product =
-            productRepository
-                    .findById(dto.getProductId())
-                    .orElseThrow(() ->
-                            new RuntimeException(
-                                    "Product not found: "
-                                            + dto.getProductId()
-                            )
-                    );
-
-    if (!product.isActive()) {
-        throw new RuntimeException(
-                "Product is not active"
-        );
-    }
-
-    if (product.getBasePrice() == null ||
-            product.getBasePrice()
-                    .compareTo(BigDecimal.ZERO) <= 0) {
-
-        throw new RuntimeException(
-                "Base price is not configured for this product"
-        );
-    }
-
-    // ========================================================
-    // VARIANT
-    // ========================================================
-
-    if (dto.getVariantId() == null) {
-        throw new RuntimeException(
-                "Variant is required"
-        );
-    }
-
-    Variant variant =
-            variantRepository
-                    .findById(dto.getVariantId())
-                    .orElseThrow(() ->
-                            new RuntimeException(
-                                    "Variant not found: "
-                                            + dto.getVariantId()
-                            )
-                    );
-
-    // ========================================================
-    // COLOR
-    // ========================================================
-
-    if (dto.getColorId() == null) {
-        throw new RuntimeException(
-                "Color is required"
-        );
-    }
-
-    Color color =
-            colorRepository
-                    .findById(dto.getColorId())
-                    .orElseThrow(() ->
-                            new RuntimeException(
-                                    "Color not found: "
-                                            + dto.getColorId()
-                            )
-                    );
-
-    // ========================================================
-    // VERIFY VARIANT BELONGS TO PRODUCT
-    // ========================================================
-
-    if (variant.getProduct() == null ||
-            !variant.getProduct()
-                    .getId()
-                    .equals(product.getId())) {
-
-        throw new RuntimeException(
-                "Variant does not belong to selected product"
-        );
-    }
-
-    // ========================================================
-    // VERIFY COLOR BELONGS TO PRODUCT
-    // ========================================================
-
-    if (color.getProduct() == null ||
-            !color.getProduct()
-                    .getId()
-                    .equals(product.getId())) {
-
-        throw new RuntimeException(
-                "Color does not belong to selected product"
-        );
-    }
-
-    // ========================================================
-    // VERIFY COLOR BELONGS TO VARIANT
-    // ========================================================
-
-    if (color.getVariant() == null ||
-            !color.getVariant()
-                    .getId()
-                    .equals(variant.getId())) {
-
-        throw new RuntimeException(
-                "Color does not belong to selected variant"
-        );
-    }
-
-    // ========================================================
-    // STOCK
-    // ========================================================
-
-    if (dto.getStock() == null ||
-            dto.getStock() < 0) {
-
-        throw new RuntimeException(
-                "Stock is required and cannot be negative"
-        );
-    }
-
-    // ========================================================
-    // DISCOUNT
-    // ========================================================
-
-    if (dto.getDiscount() == null ||
-            dto.getDiscount()
-                    .compareTo(BigDecimal.ZERO) < 0 ||
-            dto.getDiscount()
-                    .compareTo(BigDecimal.valueOf(100)) > 0) {
-
-        throw new RuntimeException(
-                "Discount must be between 0 and 100"
-        );
-    }
-
-    // ========================================================
-    // UPDATE EXISTING INVENTORY
-    // ========================================================
-
-    inventory.setVendor(vendor);
-    inventory.setProduct(product);
-    inventory.setVariant(variant);
-    inventory.setColor(color);
-
-    inventory.setStock(
-            dto.getStock()
-    );
-
-    inventory.setDiscount(
-            dto.getDiscount()
-    );
-
-    inventory.setCondition(
-            dto.getCondition()
-    );
-
-    inventory.setWarranty(
-            dto.getWarranty()
-    );
-
-    inventory.setDeliveryTime(
-            dto.getDeliveryTime()
-    );
-
-    inventory.setHomeDelivery(
-            dto.getHomeDelivery()
-    );
-
-    inventory.setStorePickup(
-            dto.getStorePickup()
-    );
-
-    inventory.setCod(
-            dto.getCod()
-    );
-
-    inventory.setEmi(
-            dto.getEmi()
-    );
-
-    inventory.setExchange(
-            dto.getExchange()
-    );
-
-    inventory.setOfferTitle(
-            dto.getOfferTitle()
-    );
-
-    inventory.setOfferDescription(
-            dto.getOfferDescription()
-    );
-
-    inventory.setReturnPolicy(
-            dto.getReturnPolicy()
-    );
-
-    inventory.setMinPurchase(
-            dto.getMinPurchase()
-    );
-
-    inventory.setMaxPurchase(
-            dto.getMaxPurchase()
-    );
-
-    return inventoryRepository.save(
-            inventory
+    throw new RuntimeException(
+            "You are not authorized to update this inventory"
     );
 }
+       
+
+        // ========================================================
+        // PRODUCT
+        // ========================================================
+
+        if (dto.getProductId() == null) {
+            throw new RuntimeException(
+                    "Product is required"
+            );
+        }
+
+        Product product =
+                productRepository
+                        .findById(dto.getProductId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Product not found: "
+                                                + dto.getProductId()
+                                )
+                        );
+
+        if (!product.isActive()) {
+            throw new RuntimeException(
+                    "Product is not active"
+            );
+        }
+
+        if (product.getBasePrice() == null ||
+                product.getBasePrice()
+                        .compareTo(BigDecimal.ZERO) <= 0) {
+
+            throw new RuntimeException(
+                    "Base price is not configured for this product"
+            );
+        }
+
+        // ========================================================
+        // VARIANT
+        // ========================================================
+
+        if (dto.getVariantId() == null) {
+            throw new RuntimeException(
+                    "Variant is required"
+            );
+        }
+
+        Variant variant =
+                variantRepository
+                        .findById(dto.getVariantId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Variant not found: "
+                                                + dto.getVariantId()
+                                )
+                        );
+
+        // ========================================================
+        // COLOR
+        // ========================================================
+
+        if (dto.getColorId() == null) {
+            throw new RuntimeException(
+                    "Color is required"
+            );
+        }
+
+        Color color =
+                colorRepository
+                        .findById(dto.getColorId())
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Color not found: "
+                                                + dto.getColorId()
+                                )
+                        );
+
+        // ========================================================
+        // VERIFY VARIANT BELONGS TO PRODUCT
+        // ========================================================
+
+        if (variant.getProduct() == null ||
+                !variant.getProduct()
+                        .getId()
+                        .equals(product.getId())) {
+
+            throw new RuntimeException(
+                    "Variant does not belong to selected product"
+            );
+        }
+
+        // ========================================================
+        // VERIFY COLOR BELONGS TO PRODUCT
+        // ========================================================
+
+        if (color.getProduct() == null ||
+                !color.getProduct()
+                        .getId()
+                        .equals(product.getId())) {
+
+            throw new RuntimeException(
+                    "Color does not belong to selected product"
+            );
+        }
+
+        // ========================================================
+        // VERIFY COLOR BELONGS TO VARIANT
+        // ========================================================
+
+        if (color.getVariant() == null ||
+                !color.getVariant()
+                        .getId()
+                        .equals(variant.getId())) {
+
+            throw new RuntimeException(
+                    "Color does not belong to selected variant"
+            );
+        }
+
+        // ========================================================
+        // STOCK
+        // ========================================================
+
+        if (dto.getStock() == null ||
+                dto.getStock() < 0) {
+
+            throw new RuntimeException(
+                    "Stock is required and cannot be negative"
+            );
+        }
+
+        // ========================================================
+        // DISCOUNT
+        // ========================================================
+
+        if (dto.getDiscount() == null ||
+                dto.getDiscount()
+                        .compareTo(BigDecimal.ZERO) < 0 ||
+                dto.getDiscount()
+                        .compareTo(BigDecimal.valueOf(100)) > 0) {
+
+            throw new RuntimeException(
+                    "Discount must be between 0 and 100"
+            );
+        }
+
+        // ========================================================
+        // UPDATE EXISTING INVENTORY
+        // ========================================================
+
+        inventory.setVendor(vendor);
+        inventory.setProduct(product);
+        inventory.setVariant(variant);
+        inventory.setColor(color);
+
+        inventory.setStock(
+                dto.getStock()
+        );
+
+        inventory.setDiscount(
+                dto.getDiscount()
+        );
+
+        inventory.setCondition(
+                dto.getCondition()
+        );
+
+        inventory.setWarranty(
+                dto.getWarranty()
+        );
+
+        inventory.setDeliveryTime(
+                dto.getDeliveryTime()
+        );
+
+        inventory.setHomeDelivery(
+                dto.getHomeDelivery()
+        );
+
+        inventory.setStorePickup(
+                dto.getStorePickup()
+        );
+
+        inventory.setCod(
+                dto.getCod()
+        );
+
+        inventory.setEmi(
+                dto.getEmi()
+        );
+
+        inventory.setExchange(
+                dto.getExchange()
+        );
+
+        inventory.setOfferTitle(
+                dto.getOfferTitle()
+        );
+
+        inventory.setOfferDescription(
+                dto.getOfferDescription()
+        );
+
+        inventory.setReturnPolicy(
+                dto.getReturnPolicy()
+        );
+
+        inventory.setMinPurchase(
+                dto.getMinPurchase()
+        );
+
+        inventory.setMaxPurchase(
+                dto.getMaxPurchase()
+        );
+
+        return inventoryRepository.save(
+                inventory
+        );
+    }
 }

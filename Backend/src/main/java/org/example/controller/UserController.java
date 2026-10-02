@@ -1,5 +1,7 @@
 package org.example.controller;
 
+import java.util.Map;
+
 import org.example.dto.ApiResponse;
 import org.example.dto.LoginRequest;
 import org.example.dto.LoginResponse;
@@ -8,6 +10,7 @@ import org.example.repository.UserRepository;
 import org.example.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -93,5 +96,26 @@ public ApiResponse register(@RequestBody User user) {
     public ResponseEntity<Long> getUserCount(){
         return ResponseEntity.ok(userRepository.count());
     }
+    @GetMapping("/me")
+public ResponseEntity<?> getMyProfile(
+        Authentication authentication) {
+
+    String email = authentication.getName();
+
+    User user =
+            userRepository.findByEmail(email);
+
+    if (user == null) {
+        return ResponseEntity.notFound().build();
+    }
+
+    return ResponseEntity.ok(
+            Map.of(
+                    "id", user.getId(),
+                    "email", user.getEmail(),
+                    "role", user.getRole()
+            )
+    );
+}
 }
 

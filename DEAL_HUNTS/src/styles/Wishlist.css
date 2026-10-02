@@ -1168,6 +1168,8 @@
     border: 1px solid #dedede;
 
     background: #ffffff;
+    padding: 5px !important;
+    border-radius: 8px !important;
 
     color: #444444;
 
@@ -1197,11 +1199,29 @@
 
     color: #111111;
     padding: 5px;
-    font:;
+    font-weight: 300;
+    font-size: 18px;
     border: 2px solid #d4af37;
     border-radius: 8px;
 
 
+}
+
+.btn-primary-user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.dh-cart-icon {
+    position: relative;
+    margin: 0;
+    height: 20px !important;
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
