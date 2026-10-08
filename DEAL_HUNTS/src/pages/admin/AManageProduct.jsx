@@ -66,7 +66,11 @@ function AdminManageProduct() {
 
                 console.log("PRODUCTS:", res.data);
 
-                setProducts(res.data);
+                setProducts(
+                    Array.isArray(res.data)
+                        ? res.data
+                        : []
+                );
 
             } catch (error) {
 
@@ -162,7 +166,11 @@ function AdminManageProduct() {
 
             const res = await getAllProducts();
 
-            setProducts(res.data);
+            setProducts(
+                Array.isArray(res.data)
+                    ? res.data
+                    : []
+            );
 
         } catch (error) {
 
@@ -222,7 +230,11 @@ function AdminManageProduct() {
 
             const res = await getAllProducts();
 
-            setProducts(res.data);
+            setProducts(
+                Array.isArray(res.data)
+                    ? res.data
+                    : []
+            );
 
 
         } catch (error) {
@@ -287,7 +299,11 @@ function AdminManageProduct() {
 
             const res = await getAllProducts();
 
-            setProducts(res.data);
+            setProducts(
+                Array.isArray(res.data)
+                    ? res.data
+                    : []
+            );
 
 
         } catch (error) {
@@ -307,6 +323,173 @@ function AdminManageProduct() {
 
 
     // =========================================================
+    // GET BRAND NAME SAFELY
+    // =========================================================
+
+    const getBrandName = (brand) => {
+
+        if (!brand) {
+            return "-";
+        }
+
+        if (typeof brand === "object") {
+            return brand.name || "-";
+        }
+
+        return String(brand);
+
+    };
+
+
+    // =========================================================
+    // GET CATEGORY NAME SAFELY
+    // =========================================================
+
+    const getCategoryName = (category) => {
+
+        if (!category) {
+            return "-";
+        }
+
+        if (typeof category === "object") {
+            return category.name || "-";
+        }
+
+        return String(category);
+
+    };
+
+
+    // =========================================================
+    // GET VARIANT DISPLAY
+    // =========================================================
+
+    const getVariantDisplay = (variant) => {
+
+        if (!variant) {
+            return "No Variants";
+        }
+
+
+        // ---------------------------------------------------------
+        // Direct RAM / STORAGE fields
+        // ---------------------------------------------------------
+
+        if (
+            variant.ram ||
+            variant.storage
+        ) {
+
+            const ram =
+                variant.ram
+                    ? String(variant.ram)
+                    : "";
+
+            const storage =
+                variant.storage
+                    ? String(variant.storage)
+                    : "";
+
+            const result = [
+                ram,
+                storage
+            ]
+                .filter(Boolean)
+                .join(", ");
+
+            return result || "Variant";
+
+        }
+
+
+        // ---------------------------------------------------------
+        // Attribute values
+        // ---------------------------------------------------------
+
+        if (
+            Array.isArray(
+                variant.attributeValues
+            )
+        ) {
+
+            const values =
+                variant.attributeValues
+                    .map(attributeValue => {
+
+                        if (!attributeValue) {
+                            return null;
+                        }
+
+
+                        const attribute =
+                            attributeValue.attribute;
+
+
+                        const value =
+                            attributeValue.value;
+
+
+                        if (
+                            value !== null &&
+                            value !== undefined &&
+                            String(value).trim() !== ""
+                        ) {
+
+                            return String(value);
+
+                        }
+
+
+                        if (
+                            attribute &&
+                            attribute.name
+                        ) {
+
+                            return String(
+                                attribute.name
+                            );
+
+                        }
+
+
+                        return null;
+
+                    })
+                    .filter(Boolean);
+
+
+            if (values.length > 0) {
+
+                return values.join(", ");
+
+            }
+
+        }
+
+
+        // ---------------------------------------------------------
+        // Variant name fallback
+        // ---------------------------------------------------------
+
+        if (
+            variant.name !== null &&
+            variant.name !== undefined &&
+            String(variant.name).trim() !== ""
+        ) {
+
+            return String(
+                variant.name
+            );
+
+        }
+
+
+        return "Variant";
+
+    };
+
+
+    // =========================================================
     // RENDER
     // =========================================================
 
@@ -317,7 +500,7 @@ function AdminManageProduct() {
 
             {/* =================================================
                 MAIN
-               
+
                 IMPORTANT:
                 Common Header.jsx is provided by Layout.jsx.
                 No page-level header is used here.
@@ -346,14 +529,17 @@ function AdminManageProduct() {
                                 const checked =
                                     e.target.checked;
 
-                                setSelectionMode(checked);
+                                setSelectionMode(
+                                    checked
+                                );
 
 
                                 if (checked) {
 
                                     setSelectedProducts(
                                         displayedProducts.map(
-                                            product => product.id
+                                            product =>
+                                                product.id
                                         )
                                     );
 
@@ -375,7 +561,9 @@ function AdminManageProduct() {
 
                         <span
                             className="clear-selection"
-                            onClick={handleClearSelection}
+                            onClick={
+                                handleClearSelection
+                            }
                         >
                             × Clear
                         </span>
@@ -399,7 +587,9 @@ function AdminManageProduct() {
                         }
                         onClick={() => {
 
-                            setProductView("available");
+                            setProductView(
+                                "available"
+                            );
 
                             setSelectedProducts([]);
 
@@ -419,7 +609,9 @@ function AdminManageProduct() {
                         }
                         onClick={() => {
 
-                            setProductView("unavailable");
+                            setProductView(
+                                "unavailable"
+                            );
 
                             setSelectedProducts([]);
 
@@ -501,116 +693,179 @@ function AdminManageProduct() {
 
                         ) : (
 
-                            displayedProducts.map(product => (
+                            displayedProducts.map(
+                                product => (
 
-                                <tr
-                                    key={product.id}
-                                    onClick={() =>
-                                        handleProductClick(product)
-                                    }
-                                    className="product-row"
-                                >
-
-                                    <td>
-                                        {product.id}
-                                    </td>
-
-
-                                    <td>
-                                        {product.name}
-                                    </td>
-
-
-                                    <td>
-                                        {product.brand}
-                                    </td>
-
-
-                                    <td>
-                                        {product.category}
-                                    </td>
-
-
-                                    <td>
-
-                                        {
-                                            product.variants &&
-                                            product.variants.length > 0
-                                                ? (
-
-                                                    product.variants.map(
-                                                        (variant, index) => (
-
-                                                            <div
-                                                                key={
-                                                                    variant.id ||
-                                                                    index
-                                                                }
-                                                            >
-                                                                {variant.ram},{" "}
-                                                                {variant.storage}
-                                                            </div>
-
-                                                        )
-                                                    )
-
-                                                )
-                                                : (
-                                                    "No Variants"
-                                                )
+                                    <tr
+                                        key={product.id}
+                                        onClick={() =>
+                                            handleProductClick(
+                                                product
+                                            )
                                         }
+                                        className="product-row"
+                                    >
 
-                                    </td>
+                                        {/* =================================================
+                                            ID
+                                        ================================================= */}
+
+                                        <td>
+                                            {product.id}
+                                        </td>
 
 
-                                    <td>
+                                        {/* =================================================
+                                            NAME
+                                        ================================================= */}
 
-                                        <span
-                                            className={
-                                                product.active
-                                                    ? "status active"
-                                                    : "status inactive"
-                                            }
-                                        >
+                                        <td>
+                                            {product.name || "-"}
+                                        </td>
+
+
+                                        {/* =================================================
+                                            BRAND
+
+                                            FIX:
+                                            Backend returns brand as object:
                                             {
-                                                product.active
-                                                    ? "Available"
-                                                    : "Unavailable"
+                                                id,
+                                                name,
+                                                active
                                             }
-                                        </span>
 
-                                    </td>
+                                            So render brand.name.
+                                        ================================================= */}
+
+                                        <td>
+                                            {getBrandName(
+                                                product.brand
+                                            )}
+                                        </td>
 
 
-                                    {selectionMode && (
+                                        {/* =================================================
+                                            CATEGORY
+
+                                            FIX:
+                                            Backend returns category as object:
+                                            {
+                                                id,
+                                                name,
+                                                active
+                                            }
+
+                                            So render category.name.
+                                        ================================================= */}
+
+                                        <td>
+                                            {getCategoryName(
+                                                product.category
+                                            )}
+                                        </td>
+
+
+                                        {/* =================================================
+                                            VARIANTS
+                                        ================================================= */}
 
                                         <td>
 
-                                            <input
-                                                type="checkbox"
-                                                checked={
-                                                    selectedProducts.includes(
-                                                        product.id
+                                            {
+                                                product.variants &&
+                                                product.variants.length > 0
+                                                    ? (
+
+                                                        product.variants.map(
+                                                            (
+                                                                variant,
+                                                                index
+                                                            ) => (
+
+                                                                <div
+                                                                    key={
+                                                                        variant.id ||
+                                                                        index
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        getVariantDisplay(
+                                                                            variant
+                                                                        )
+                                                                    }
+                                                                </div>
+
+                                                            )
+                                                        )
+
                                                     )
-                                                }
-                                                onChange={(e) => {
-
-                                                    e.stopPropagation();
-
-                                                    handleProductCheck(
-                                                        product.id
-                                                    );
-
-                                                }}
-                                            />
+                                                    : (
+                                                        "No Variants"
+                                                    )
+                                            }
 
                                         </td>
 
-                                    )}
 
-                                </tr>
+                                        {/* =================================================
+                                            STATUS
+                                        ================================================= */}
 
-                            ))
+                                        <td>
+
+                                            <span
+                                                className={
+                                                    product.active
+                                                        ? "status active"
+                                                        : "status inactive"
+                                                }
+                                            >
+                                                {
+                                                    product.active
+                                                        ? "Available"
+                                                        : "Unavailable"
+                                                }
+                                            </span>
+
+                                        </td>
+
+
+                                        {/* =================================================
+                                            SELECT
+                                        ================================================= */}
+
+                                        {selectionMode && (
+
+                                            <td>
+
+                                                <input
+                                                    type="checkbox"
+                                                    checked={
+                                                        selectedProducts.includes(
+                                                            product.id
+                                                        )
+                                                    }
+                                                    onChange={(e) => {
+
+                                                        e.stopPropagation();
+
+                                                        handleProductCheck(
+                                                            product.id
+                                                        );
+
+                                                    }}
+                                                />
+
+                                            </td>
+
+                                        )}
+
+                                    </tr>
+
+                                )
+
+                            )
 
                         )}
 

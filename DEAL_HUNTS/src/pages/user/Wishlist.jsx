@@ -444,75 +444,64 @@ export default function Wishlist() {
                       {/* ==========================================
                           PRODUCT IMAGE
                       ========================================== */}
+<div
+  className="wishlist-card__image-wrap-user"
+  onClick={() =>
+    navigate(`/products/${item.productId}`)
+  }
+  role="button"
+  tabIndex={0}
+  onKeyDown={(event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      navigate(`/compare/${item.productId}`);
+    }
+  }}
+>
+  <img
+    src={
+      item.thumbnailUrl ||
+      item.imageUrl ||
+      "/placeholder-product.png"
+    }
+    alt={item.name || "Product"}
+    onError={(event) => {
+      event.currentTarget.src =
+        "/placeholder-product.png";
+    }}
+  />
 
-                      <div className="wishlist-card__image-wrap-user">
+  {/* REMOVE FROM WISHLIST */}
+  <button
+    type="button"
+    className="wishlist-card__remove-user"
+    onDoubleClick={(event) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-                        <img
-                          src={
-                            item.thumbnailUrl ||
-                            item.imageUrl ||
-                            "/placeholder-product.png"
-                          }
-                          alt={
-                            item.name ||
-                            "Product"
-                          }
-                          onError={(
-                            event
-                          ) => {
-                            event.currentTarget.src =
-                              "/placeholder-product.png";
-                          }}
-                        />
+      if (removingId === item.productId) {
+        return;
+      }
 
+      handleRemove(item.productId);
+    }}
+    onClick={(event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    }}
+    disabled={removingId === item.productId}
+    aria-label="Remove from wishlist"
+    title="Double-click to remove from wishlist"
+  >
+    <Heart
+      size={16}
+      strokeWidth={2}
+      fill="currentColor"
+    />
+  </button>
+</div>
+                    
 
-                        {/* ========================================
-                            REMOVE FROM WISHLIST
-                        ======================================== */}
-
-                        <button
-                          type="button"
-                          className="wishlist-card__remove-user"
-                          onDoubleClick={(
-                            event
-                          ) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-
-                            if (
-                              removingId ===
-                              item.productId
-                            ) {
-                              return;
-                            }
-
-                            handleRemove(
-                              item.productId
-                            );
-                          }}
-                          onClick={(
-                            event
-                          ) => {
-                            event.preventDefault();
-                            event.stopPropagation();
-                          }}
-                          disabled={
-                            removingId ===
-                            item.productId
-                          }
-                          aria-label="Remove from wishlist"
-                          title="Double-click to remove from wishlist"
-                        >
-
-                          <Heart
-                            size={16}
-                            strokeWidth={2}
-                            fill="currentColor"
-                          />
-
-                        </button>
-
-                      </div>
+                      
 
 
                       {/* ==========================================

@@ -103,13 +103,13 @@ function VendorHome() {
 
       {/* ================= FOOTER ================= */}
 
-      <footer className="footer-vendor-vd">
+      {/* <footer className="footer-vendor-vd">
 
         <p>
           © 2026 Website. All rights reserved.
         </p>
 
-      </footer>
+      </footer> */}
 
     </div>
   );

@@ -30,9 +30,21 @@ public class JWTFilter extends OncePerRequestFilter {
 
         return path.equals("/user/login")
                 || path.equals("/user/register")
+
+                // =================================================
+                // VENDOR PUBLIC APIs
+                // =================================================
                 || path.equals("/vendor/login")
                 || path.equals("/vendor/register")
                 || path.equals("/vendor/status")
+
+                // Google Maps location resolver
+                // Used before vendor authentication
+                || path.equals("/vendor/resolve-location")
+
+                // =================================================
+                // ADMIN LOGIN
+                // =================================================
                 || path.equals("/admin/login");
     }
 

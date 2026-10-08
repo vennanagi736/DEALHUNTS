@@ -70,15 +70,11 @@
 
     border-radius: 50%;
 
-    background: linear-gradient(
-        145deg,
-        #171717,
-        #292929
-    );
+    background: #d4af37;
 
     border: 3px solid #d4af37;
 
-    color: #d4af37;
+    color: #000000;
 
     font-size: 27px;
     font-weight: 800;
@@ -261,11 +257,11 @@
 
 
 .dh-profile-logout-btn:hover {
-    background: #171717;
+    background: #d4af37;
 
-    border-color: #171717;
+    border-color: #d4af37;
 
-    color: #ffffff;
+    color: #111111;
 
     transform: translateY(-1px);
 }
@@ -481,7 +477,7 @@
 
     justify-content: center;
 
-    color: #999999;
+    color: #888888;
 
     font-size: 15px;
 
@@ -497,14 +493,15 @@
 
 
 .dh-profile-menu button.active {
-    background: #171717;
+    background: #d4af37;
+    border: 2px solid #d4af37;
 
-    color: #ffffff;
+    color: black;
 }
 
 
 .dh-profile-menu button.active span {
-    color: #d4af37;
+    color: #000000;
 }
 
 
@@ -898,7 +895,7 @@
 
     background: #171717;
 
-    color: #d4af37;
+    color: #d4af37; 
 
     font-size: 25px;
 }

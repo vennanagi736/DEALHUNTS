@@ -12,6 +12,8 @@
 
     background: #F5F6F8;
 
+    box-sizing: border-box;
+
 }
 
 
@@ -23,9 +25,9 @@
 
     width: 100%;
 
-    max-width: 850px;
+    max-width: 1000px;
 
-    margin: 0 0 35px 0;
+    margin: 0 0 35px;
 
     padding: 0;
 
@@ -74,13 +76,13 @@
 
     width: 100%;
 
-    max-width: 850px;
+    max-width: 1000px;
 
     display: flex;
 
     flex-direction: column;
 
-    gap: 18px;
+    gap: 16px;
 
     margin: 0;
 
@@ -97,7 +99,7 @@
 
     width: 100%;
 
-    min-height: 125px;
+    min-height: 118px;
 
     display: flex;
 
@@ -105,7 +107,7 @@
 
     gap: 22px;
 
-    padding: 25px 28px;
+    padding: 23px 26px;
 
     border: 1px solid #E2E5EA;
 
@@ -117,10 +119,17 @@
 
     text-align: left;
 
+    box-sizing: border-box;
+
+    appearance: none;
+
+    font-family: inherit;
+
     transition:
         transform 0.2s ease,
         box-shadow 0.2s ease,
-        border-color 0.2s ease;
+        border-color 0.2s ease,
+        background-color 0.2s ease;
 
 }
 
@@ -131,8 +140,19 @@
 
     border-color: #D4A017;
 
+    background: #FFFFFF;
+
     box-shadow:
         0 8px 22px rgba(0, 0, 0, 0.08);
+
+}
+
+
+.promotion-option:focus-visible {
+
+    outline: 2px solid #D4A017;
+
+    outline-offset: 3px;
 
 }
 
@@ -160,6 +180,23 @@
     background: #F5F6F8;
 
     font-size: 26px;
+
+    line-height: 1;
+
+    flex-shrink: 0;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.promotion-option:hover .promotion-option-icon {
+
+    background: #FFF8E1;
+
+    transform: scale(1.03);
 
 }
 
@@ -196,7 +233,7 @@
 
     margin: 0;
 
-    max-width: 620px;
+    max-width: 700px;
 
     font-size: 14px;
 
@@ -214,6 +251,16 @@
 .promotion-option-arrow {
 
     flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 28px;
+
+    height: 28px;
 
     font-size: 25px;
 
@@ -238,7 +285,40 @@
 
 
 /* ============================================================
-   RESPONSIVE
+   ACTIVE PRESS
+============================================================ */
+
+.promotion-option:active {
+
+    transform: translateY(0);
+
+}
+
+
+/* ============================================================
+   LARGE TABLET
+============================================================ */
+
+@media (max-width: 1100px) {
+
+    .manage-promotions-main {
+
+        padding: 40px 50px;
+
+    }
+
+
+    .promotion-options {
+
+        max-width: 900px;
+
+    }
+
+}
+
+
+/* ============================================================
+   TABLET
 ============================================================ */
 
 @media (max-width: 900px) {
@@ -249,14 +329,48 @@
 
     }
 
+
+    .manage-promotions-heading {
+
+        margin-bottom: 30px;
+
+    }
+
+
+    .promotion-options {
+
+        gap: 15px;
+
+    }
+
+
+    .promotion-option {
+
+        min-height: 112px;
+
+        padding: 21px 23px;
+
+    }
+
 }
 
+
+/* ============================================================
+   MOBILE
+============================================================ */
 
 @media (max-width: 650px) {
 
     .manage-promotions-main {
 
         padding: 30px 20px;
+
+    }
+
+
+    .manage-promotions-heading {
+
+        margin-bottom: 25px;
 
     }
 
@@ -268,13 +382,29 @@
     }
 
 
+    .manage-promotions-heading p {
+
+        font-size: 14px;
+
+    }
+
+
+    .promotion-options {
+
+        gap: 13px;
+
+    }
+
+
     .promotion-option {
 
-        min-height: 110px;
+        min-height: 105px;
 
-        padding: 20px;
+        padding: 19px;
 
         gap: 16px;
+
+        border-radius: 11px;
 
     }
 
@@ -289,10 +419,14 @@
 
         font-size: 22px;
 
+        border-radius: 10px;
+
     }
 
 
     .promotion-option-content h2 {
+
+        margin-bottom: 5px;
 
         font-size: 17px;
 
@@ -303,10 +437,27 @@
 
         font-size: 13px;
 
+        line-height: 1.45;
+
+    }
+
+
+    .promotion-option-arrow {
+
+        width: 24px;
+
+        height: 24px;
+
+        font-size: 21px;
+
     }
 
 }
 
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
 
 @media (max-width: 480px) {
 
@@ -317,11 +468,47 @@
     }
 
 
+    .manage-promotions-heading {
+
+        margin-bottom: 22px;
+
+    }
+
+
+    .manage-promotions-heading h1 {
+
+        font-size: 23px;
+
+    }
+
+
+    .manage-promotions-heading p {
+
+        margin-top: 7px;
+
+        font-size: 12px;
+
+        line-height: 1.45;
+
+    }
+
+
+    .promotion-options {
+
+        gap: 11px;
+
+    }
+
+
     .promotion-option {
 
-        padding: 18px;
+        min-height: 96px;
 
-        gap: 13px;
+        padding: 17px;
+
+        gap: 12px;
+
+        border-radius: 10px;
 
     }
 
@@ -336,26 +523,96 @@
 
         font-size: 19px;
 
+        border-radius: 9px;
+
     }
 
 
     .promotion-option-content h2 {
 
-        font-size: 16px;
+        margin-bottom: 4px;
+
+        font-size: 15px;
+
+        line-height: 1.25;
 
     }
 
 
     .promotion-option-content p {
 
-        font-size: 12px;
+        font-size: 11px;
+
+        line-height: 1.4;
 
     }
 
 
     .promotion-option-arrow {
 
-        font-size: 21px;
+        width: 20px;
+
+        height: 20px;
+
+        font-size: 19px;
+
+    }
+
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+============================================================ */
+
+@media (max-width: 360px) {
+
+    .manage-promotions-main {
+
+        padding: 22px 12px;
+
+    }
+
+
+    .promotion-option {
+
+        padding: 15px;
+
+        gap: 10px;
+
+    }
+
+
+    .promotion-option-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+        min-width: 40px;
+
+        font-size: 17px;
+
+    }
+
+
+    .promotion-option-content h2 {
+
+        font-size: 14px;
+
+    }
+
+
+    .promotion-option-content p {
+
+        font-size: 10px;
+
+    }
+
+
+    .promotion-option-arrow {
+
+        font-size: 17px;
 
     }
 

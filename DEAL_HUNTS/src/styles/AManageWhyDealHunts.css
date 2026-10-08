@@ -1,0 +1,1394 @@
+/* ============================================================
+   GLOBAL
+============================================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ============================================================
+   PAGE
+============================================================ */
+
+.adminhome-container-wd {
+    width: 100%;
+    min-height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #f7f7f7;
+}
+
+
+/* ============================================================
+   MAIN
+============================================================ */
+
+.manage-why-dealhunts-main-wd {
+    width: 100%;
+    max-width: 1250px;
+
+    flex: 1;
+
+    margin: 0 auto;
+
+    padding: 45px 30px 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+
+/* ============================================================
+   PAGE HEADING
+============================================================ */
+
+.manage-why-dealhunts-main-wd > h2 {
+    width: 100%;
+
+    margin: 0 0 7px 30px;
+
+    font-size: 27px;
+    font-weight: 750;
+
+    line-height: 1.2;
+
+    color: #172033;
+}
+
+
+.manage-why-dealhunts-main-wd > p {
+    width: 100%;
+
+    margin: 0 0 28px 30px;
+
+    font-size: 14px;
+    line-height: 1.5;
+
+    color: #6b7280;
+}
+
+
+/* ============================================================
+   MAIN SECTION CARD
+============================================================ */
+
+.why-dealhunts-section-wd {
+    position: relative;
+
+    width: 100%;
+    max-width: 1150px;
+
+    margin: 0 auto 24px;
+
+    padding: 28px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e2e2;
+    border-radius: 14px;
+
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.04);
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ============================================================
+   SECTION HEADER
+============================================================ */
+
+.why-dealhunts-header-wd {
+    width: 100%;
+
+    min-height: 42px;
+
+    margin-bottom: 22px;
+
+    display: flex;
+    align-items: center;
+}
+
+
+.why-dealhunts-header-wd > div {
+    min-width: 0;
+}
+
+
+.why-dealhunts-header-wd h2 {
+    margin: 0;
+
+    font-size: 21px;
+    font-weight: 750;
+
+    line-height: 1.3;
+
+    color: #172033;
+}
+
+
+.why-dealhunts-header-wd p {
+    margin: 5px 0 0;
+
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: #858585;
+}
+
+
+/* ============================================================
+   ADD BUTTON
+   DESKTOP / LAPTOP
+============================================================ */
+
+.add-why-dealhunts-btn-wd {
+    position: absolute;
+
+    top: 28px;
+    right: 28px;
+
+    min-width: 145px;
+    height: 38px;
+
+    padding: 0 18px;
+
+    border: 1px solid #d4af37;
+    border-radius: 7px;
+
+    background: #d4af37;
+
+    color: #111111;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.add-why-dealhunts-btn-wd:hover:not(:disabled) {
+    background: #bd9828;
+
+    border-color: #bd9828;
+
+    box-shadow:
+        0 4px 10px rgba(212, 175, 55, 0.20);
+}
+
+
+.add-why-dealhunts-btn-wd:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+
+.add-why-dealhunts-btn-wd:disabled {
+    background: #e1e1e1;
+
+    border-color: #e1e1e1;
+
+    color: #888888;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   BENEFITS GRID
+============================================================ */
+
+.why-dealhunts-container-wd {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+
+/* ============================================================
+   BENEFIT ITEM
+============================================================ */
+
+.why-dealhunts-item-wd {
+    min-width: 0;
+    min-height: 190px;
+
+    padding: 22px 18px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e4e4;
+    border-radius: 11px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    text-align: center;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.why-dealhunts-item-wd:hover {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 5px 14px rgba(0, 0, 0, 0.06);
+
+    transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   BENEFIT ICON
+============================================================ */
+
+.why-dealhunts-icon-wd {
+    width: 52px;
+    height: 52px;
+
+    margin-bottom: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #fff8df;
+
+    font-size: 25px;
+
+    line-height: 1;
+}
+
+
+/* ============================================================
+   BENEFIT INFORMATION
+============================================================ */
+
+.why-dealhunts-info-wd {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.why-dealhunts-info-wd h3 {
+    width: 100%;
+
+    margin: 0 0 8px;
+
+    font-size: 15px;
+    font-weight: 750;
+
+    line-height: 1.35;
+
+    color: #172033;
+}
+
+
+.why-dealhunts-info-wd p {
+    width: 100%;
+
+    min-height: 38px;
+
+    margin: 0 0 14px;
+
+    font-size: 12px;
+    line-height: 1.5;
+
+    color: #777777;
+}
+
+
+/* ============================================================
+   REMOVE BUTTON
+============================================================ */
+
+.why-dealhunts-info-wd > button {
+    min-width: 82px;
+    height: 31px;
+
+    padding: 0 14px;
+
+    border: 1px solid #dedede;
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #b42318;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.why-dealhunts-info-wd > button:hover {
+    background: #fff5f4;
+
+    border-color: #e0aaa5;
+
+    color: #9f1d14;
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.empty-why-dealhunts-wd {
+    grid-column: 1 / -1;
+
+    min-height: 220px;
+
+    padding: 35px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    border: 1px dashed #d9d9d9;
+    border-radius: 11px;
+
+    background: #fafafa;
+}
+
+
+.empty-icon-wd {
+    width: 52px;
+    height: 52px;
+
+    margin-bottom: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #fff8df;
+
+    font-size: 25px;
+}
+
+
+.empty-why-dealhunts-wd h3 {
+    margin: 0 0 7px;
+
+    font-size: 17px;
+    font-weight: 750;
+
+    color: #172033;
+}
+
+
+.empty-why-dealhunts-wd p {
+    max-width: 420px;
+
+    margin: 0;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    color: #777777;
+}
+
+
+/* ============================================================
+   RECOMMENDED BENEFITS SECTION
+============================================================ */
+
+.why-dealhunts-available-wd {
+    width: 100%;
+    max-width: 1150px;
+
+    margin: 0 auto 28px;
+
+    padding: 24px 28px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e2e2;
+    border-radius: 14px;
+
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+
+/* ============================================================
+   RECOMMENDED HEADER
+============================================================ */
+
+.why-dealhunts-available-header-wd {
+    width: 100%;
+
+    margin-bottom: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+
+.why-dealhunts-available-header-wd > div {
+    min-width: 0;
+}
+
+
+.why-dealhunts-available-header-wd h3 {
+    margin: 0;
+
+    font-size: 17px;
+    font-weight: 750;
+
+    color: #172033;
+}
+
+
+.why-dealhunts-available-header-wd p {
+    margin: 5px 0 0;
+
+    font-size: 11px;
+    line-height: 1.5;
+
+    color: #858585;
+}
+
+
+.why-dealhunts-available-header-wd span {
+    flex-shrink: 0;
+
+    padding: 5px 10px;
+
+    border: 1px solid #ead89c;
+    border-radius: 20px;
+
+    background: #fffaf0;
+
+    color: #8a6812;
+
+    font-size: 11px;
+    font-weight: 750;
+}
+
+
+/* ============================================================
+   RECOMMENDED BENEFITS GRID
+============================================================ */
+
+.why-dealhunts-available-grid-wd {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+
+/* ============================================================
+   RECOMMENDED BENEFIT CARD
+============================================================ */
+
+.why-dealhunts-available-card-wd {
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 16px;
+
+    display: grid;
+
+    grid-template-columns:
+        38px minmax(0, 1fr);
+
+    column-gap: 12px;
+
+    align-items: start;
+
+    text-align: left;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: inherit;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.why-dealhunts-available-card-wd:hover:not(:disabled) {
+    border-color: #d4af37;
+
+    background: #fffdf7;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.05);
+
+    transform: translateY(-1px);
+}
+
+
+.why-dealhunts-available-card-wd:focus-visible {
+    outline: none;
+
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+
+/* ============================================================
+   ADDED RECOMMENDED CARD
+============================================================ */
+
+.why-dealhunts-available-card-wd.added {
+    border-color: #d8c27a;
+
+    background: #fffdf5;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+.why-dealhunts-available-card-wd.added
+.why-dealhunts-available-icon-wd {
+    background: #fff2c4;
+}
+
+
+/* ============================================================
+   RECOMMENDED ICON
+============================================================ */
+
+.why-dealhunts-available-icon-wd {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #f7f7f7;
+
+    font-size: 18px;
+
+    line-height: 1;
+}
+
+
+/* ============================================================
+   RECOMMENDED TEXT
+============================================================ */
+
+.why-dealhunts-available-card-wd > div:not(
+    .why-dealhunts-available-icon-wd
+) {
+    min-width: 0;
+}
+
+
+.why-dealhunts-available-card-wd h4 {
+    margin: 0 0 5px;
+
+    font-size: 13px;
+    font-weight: 750;
+
+    line-height: 1.35;
+
+    color: #172033;
+}
+
+
+.why-dealhunts-available-card-wd p {
+    margin: 0;
+
+    font-size: 11px;
+    line-height: 1.5;
+
+    color: #777777;
+}
+
+
+/* ============================================================
+   RECOMMENDED STATUS
+============================================================ */
+
+.why-dealhunts-available-status-wd {
+    grid-column: 1 / -1;
+
+    margin-top: 12px;
+
+    justify-self: start;
+
+    padding: 4px 10px;
+
+    border-radius: 5px;
+
+    background: #f4f4f4;
+
+    color: #777777;
+
+    font-size: 10px;
+    font-weight: 750;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.35px;
+}
+
+
+.why-dealhunts-available-card-wd:hover:not(:disabled)
+.why-dealhunts-available-status-wd {
+    background: #fff0bd;
+
+    color: #8a6812;
+}
+
+
+.why-dealhunts-available-card-wd.added
+.why-dealhunts-available-status-wd {
+    background: #fff0bd;
+
+    color: #8a6812;
+}
+
+
+/* ============================================================
+   POPUP
+============================================================ */
+
+.popup-container:has(
+    .why-dealhunts-popup-wrapper-wd
+) {
+    width: 520px;
+
+    max-width: calc(100vw - 30px);
+}
+
+
+/* ============================================================
+   POPUP WRAPPER
+============================================================ */
+
+.why-dealhunts-popup-wrapper-wd {
+    width: 100%;
+
+    padding: 5px 0 0;
+}
+
+
+/* ============================================================
+   FORM GROUP
+============================================================ */
+
+.why-dealhunts-form-group-wd {
+    width: 100%;
+
+    margin-bottom: 18px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.why-dealhunts-form-group-wd label {
+    margin-bottom: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    color: #172033;
+}
+
+
+/* ============================================================
+   FORM CONTROLS
+============================================================ */
+
+.why-dealhunts-form-group-wd input,
+.why-dealhunts-form-group-wd select,
+.why-dealhunts-form-group-wd textarea {
+    width: 100%;
+
+    border: 1px solid #d8d8d8;
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #172033;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* ============================================================
+   INPUT
+============================================================ */
+
+.why-dealhunts-form-group-wd input {
+    height: 42px;
+
+    padding: 0 12px;
+}
+
+
+/* ============================================================
+   SELECT
+============================================================ */
+
+.why-dealhunts-form-group-wd select {
+    height: 42px;
+
+    padding: 0 12px;
+
+    cursor: pointer;
+
+    appearance: auto;
+}
+
+
+/* ============================================================
+   TEXTAREA
+============================================================ */
+
+.why-dealhunts-form-group-wd textarea {
+    min-height: 100px;
+
+    padding: 11px 12px;
+
+    resize: vertical;
+
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   FORM FOCUS
+============================================================ */
+
+.why-dealhunts-form-group-wd input:focus,
+.why-dealhunts-form-group-wd select:focus,
+.why-dealhunts-form-group-wd textarea:focus {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 0 3px rgba(212, 175, 55, 0.12);
+}
+
+
+/* ============================================================
+   PLACEHOLDERS
+============================================================ */
+
+.why-dealhunts-form-group-wd input::placeholder,
+.why-dealhunts-form-group-wd textarea::placeholder {
+    color: #aaaaaa;
+}
+
+
+/* ============================================================
+   ICON INPUT
+============================================================ */
+
+.why-dealhunts-form-group-wd:nth-child(2) {
+    width: 100px;
+}
+
+
+.why-dealhunts-form-group-wd:nth-child(2) input {
+    text-align: center;
+
+    font-size: 20px;
+}
+
+
+/* ============================================================
+   POPUP ACTIONS
+============================================================ */
+
+.why-dealhunts-popup-content-wd {
+    margin-top: 7px;
+
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 10px;
+}
+
+
+.why-dealhunts-popup-content-wd button {
+    min-width: 100px;
+    height: 37px;
+
+    padding: 0 16px;
+
+    border-radius: 7px;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+/* ============================================================
+   CANCEL BUTTON
+============================================================ */
+
+.why-dealhunts-popup-content-wd button:first-child {
+    border: 1px solid #d7d7d7;
+
+    background: #ffffff;
+
+    color: #555555;
+}
+
+
+.why-dealhunts-popup-content-wd button:first-child:hover {
+    background: #f5f5f5;
+
+    border-color: #cfcfcf;
+}
+
+
+/* ============================================================
+   ADD BENEFIT POPUP BUTTON
+============================================================ */
+
+.why-dealhunts-popup-content-wd button:last-child {
+    border: 1px solid #d4af37;
+
+    background: #d4af37;
+
+    color: #111111;
+}
+
+
+.why-dealhunts-popup-content-wd button:last-child:hover:not(:disabled) {
+    background: #bd9828;
+
+    border-color: #bd9828;
+}
+
+
+.why-dealhunts-popup-content-wd button:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.footer-wd {
+    width: 100%;
+
+    flex-shrink: 0;
+
+    padding: 10px 20px;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border-top: 1px solid #e7e7e7;
+}
+
+
+.footer-wd p {
+    margin: 0;
+
+    font-size: 11px;
+
+    color: #888888;
+}
+
+
+/* ============================================================
+   RESPONSIVE — 1100px
+   TABLET / SMALL LAPTOP
+============================================================ */
+
+@media (max-width: 1100px) {
+
+    .why-dealhunts-container-wd {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .why-dealhunts-available-grid-wd {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE — 900px
+============================================================ */
+
+@media (max-width: 900px) {
+
+    .manage-why-dealhunts-main-wd {
+        padding: 35px 25px 30px;
+    }
+
+    .manage-why-dealhunts-main-wd > h2,
+    .manage-why-dealhunts-main-wd > p {
+        margin-left: 10px;
+    }
+
+    .why-dealhunts-section-wd {
+        padding: 24px;
+    }
+
+    .why-dealhunts-available-wd {
+        padding: 22px 24px;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE — 768px
+   MOBILE / TABLET
+============================================================ */
+
+@media (max-width: 768px) {
+
+    .manage-why-dealhunts-main-wd {
+        padding: 30px 20px 25px;
+    }
+
+
+    .manage-why-dealhunts-main-wd > h2 {
+        font-size: 24px;
+    }
+
+
+    .why-dealhunts-section-wd {
+        padding: 20px;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    /* --------------------------------------------------------
+       HEADER
+       -------------------------------------------------------- */
+
+    .why-dealhunts-header-wd {
+        position: static;
+
+        width: 100%;
+
+        min-height: auto;
+
+        margin-bottom: 20px;
+
+        display: flex;
+
+        align-items: flex-start;
+    }
+
+
+    .why-dealhunts-header-wd > div {
+        width: 100%;
+
+        min-width: 0;
+    }
+
+
+    .why-dealhunts-header-wd h2 {
+        font-size: 19px;
+    }
+
+
+    /* --------------------------------------------------------
+       BENEFITS
+       -------------------------------------------------------- */
+
+    .why-dealhunts-container-wd {
+        width: 100%;
+
+        grid-template-columns: 1fr;
+
+        gap: 13px;
+    }
+
+
+    /* --------------------------------------------------------
+       ADD BUTTON
+       ALWAYS AFTER BENEFIT CARDS
+       -------------------------------------------------------- */
+
+    .add-why-dealhunts-btn-wd {
+        position: static;
+
+        align-self: flex-start;
+
+        width: auto;
+
+        min-width: 130px;
+
+        height: 35px;
+
+        margin-top: 18px;
+
+        padding: 0 15px;
+    }
+
+
+    .add-why-dealhunts-btn-wd:active:not(:disabled) {
+        transform: scale(0.98);
+    }
+
+
+    /* --------------------------------------------------------
+       RECOMMENDED BENEFITS
+       -------------------------------------------------------- */
+
+    .why-dealhunts-available-wd {
+        padding: 20px;
+    }
+
+
+    .why-dealhunts-available-grid-wd {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — 600px
+============================================================ */
+
+@media (max-width: 600px) {
+
+    .manage-why-dealhunts-main-wd {
+        padding: 25px 15px 20px;
+    }
+
+
+    .manage-why-dealhunts-main-wd > h2,
+    .manage-why-dealhunts-main-wd > p {
+        margin-left: 0;
+    }
+
+
+    .manage-why-dealhunts-main-wd > h2 {
+        font-size: 22px;
+    }
+
+
+    .manage-why-dealhunts-main-wd > p {
+        font-size: 13px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .why-dealhunts-section-wd {
+        padding: 18px;
+
+        margin-bottom: 18px;
+    }
+
+
+    /* --------------------------------------------------------
+       HEADER TEXT
+       -------------------------------------------------------- */
+
+    .why-dealhunts-header-wd h2 {
+        font-size: 19px;
+    }
+
+
+    .why-dealhunts-header-wd p {
+        font-size: 11px;
+    }
+
+
+    /* --------------------------------------------------------
+       BENEFIT CARDS
+       -------------------------------------------------------- */
+
+    .why-dealhunts-container-wd {
+        grid-template-columns: 1fr;
+
+        gap: 13px;
+    }
+
+
+    .why-dealhunts-item-wd {
+        min-height: 180px;
+
+        padding: 20px 16px;
+    }
+
+
+    /* --------------------------------------------------------
+       ADD BUTTON — LAST
+       -------------------------------------------------------- */
+
+    .add-why-dealhunts-btn-wd {
+        position: static;
+
+        align-self: flex-start;
+
+        width: auto;
+
+        min-width: 130px;
+
+        height: 35px;
+
+        margin-top: 18px;
+
+        transform: none;
+    }
+
+
+    /* --------------------------------------------------------
+       RECOMMENDED BENEFITS
+       -------------------------------------------------------- */
+
+    .why-dealhunts-available-wd {
+        padding: 18px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .why-dealhunts-available-header-wd {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 9px;
+    }
+
+
+    .why-dealhunts-available-header-wd h3 {
+        font-size: 16px;
+    }
+
+
+    .why-dealhunts-available-grid-wd {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+
+    .why-dealhunts-available-card-wd {
+        padding: 14px;
+    }
+
+
+    /* --------------------------------------------------------
+       POPUP
+       -------------------------------------------------------- */
+
+    .popup-container:has(
+        .why-dealhunts-popup-wrapper-wd
+    ) {
+        width: calc(100vw - 24px);
+
+        max-width: calc(100vw - 24px);
+    }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE — 400px
+============================================================ */
+
+@media (max-width: 400px) {
+
+    .manage-why-dealhunts-main-wd {
+        padding: 20px 12px;
+    }
+
+
+    .why-dealhunts-section-wd {
+        padding: 15px;
+    }
+
+
+    .why-dealhunts-item-wd {
+        min-height: 180px;
+
+        padding: 18px 14px;
+    }
+
+
+    .why-dealhunts-icon-wd {
+        width: 48px;
+        height: 48px;
+
+        font-size: 23px;
+    }
+
+
+    .why-dealhunts-info-wd h3 {
+        font-size: 14px;
+    }
+
+
+    .why-dealhunts-info-wd p {
+        font-size: 11px;
+    }
+
+
+    /* --------------------------------------------------------
+       ADD BUTTON
+       -------------------------------------------------------- */
+
+    .add-why-dealhunts-btn-wd {
+        width: 100%;
+
+        min-width: 0;
+
+        height: 36px;
+
+        margin-top: 18px;
+    }
+
+
+    /* --------------------------------------------------------
+       RECOMMENDED BENEFITS
+       -------------------------------------------------------- */
+
+    .why-dealhunts-available-wd {
+        padding: 15px;
+    }
+
+
+    .why-dealhunts-available-card-wd {
+        grid-template-columns:
+            34px minmax(0, 1fr);
+
+        column-gap: 10px;
+
+        padding: 13px;
+    }
+
+
+    .why-dealhunts-available-icon-wd {
+        width: 34px;
+        height: 34px;
+
+        font-size: 16px;
+    }
+
+
+    .why-dealhunts-available-card-wd h4 {
+        font-size: 12px;
+    }
+
+
+    .why-dealhunts-available-card-wd p {
+        font-size: 10.5px;
+    }
+
+
+    /* --------------------------------------------------------
+       POPUP BUTTONS
+       -------------------------------------------------------- */
+
+    .why-dealhunts-popup-content-wd {
+        flex-direction: column;
+    }
+
+
+    .why-dealhunts-popup-content-wd button {
+        width: 100%;
+    }
+
+}

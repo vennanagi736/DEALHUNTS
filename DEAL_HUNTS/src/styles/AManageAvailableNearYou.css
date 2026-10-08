@@ -1,0 +1,1859 @@
+/* ============================================================
+   1. GLOBAL RESET
+============================================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+
+/* ============================================================
+   2. PAGE LAYOUT
+============================================================ */
+
+.adminhome-container-any {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    background: #f7f7f7;
+    color: #111111;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: visible;
+}
+
+
+/* ============================================================
+   3. MAIN CONTENT
+============================================================ */
+
+.manage-available-near-you-main-any {
+    width: 100%;
+    max-width: 1250px;
+
+    margin: 0 auto;
+    padding: 45px 30px 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    overflow: visible;
+}
+
+
+/* ============================================================
+   4. PAGE TITLE
+============================================================ */
+
+.manage-available-near-you-main-any > h2 {
+    width: 100%;
+
+    margin: 0 0 10px;
+    padding-left: 25px;
+
+    color: #111111;
+
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.25;
+
+    letter-spacing: -0.3px;
+
+    text-align: left;
+
+    flex-shrink: 0;
+}
+
+
+.manage-available-near-you-main-any > p {
+    width: 100%;
+    max-width: 720px;
+
+    margin: 0 0 35px;
+    padding-left: 25px;
+
+    color: #555555;
+
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+
+    text-align: left;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   5. AVAILABLE NEAR YOU SECTION
+============================================================ */
+
+.available-near-you-section-any {
+    width: 100%;
+    max-width: 1150px;
+
+    margin: 0 auto;
+    padding: 28px;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e2e2;
+    border-radius: 14px;
+
+    box-shadow:
+        0 4px 18px rgba(0, 0, 0, 0.05);
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    /*
+       No fixed height.
+       No internal scrolling.
+       The section grows naturally with products.
+    */
+    max-height: none;
+
+    flex: 0 1 auto;
+    min-height: 0;
+
+    overflow: visible;
+
+    overscroll-behavior: auto;
+    scrollbar-gutter: auto;
+}
+
+
+/* ============================================================
+   6. SECTION HEADER
+============================================================ */
+
+.available-near-you-header-any {
+    width: 100%;
+
+    margin-bottom: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    position: relative;
+
+    text-align: left;
+
+    flex-shrink: 0;
+}
+
+
+.available-near-you-header-content-any {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    text-align: left;
+}
+
+
+.available-near-you-header-content-any h2 {
+    margin: 0 0 5px;
+
+    color: #111111;
+
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.3;
+
+    text-align: left;
+}
+
+
+.available-near-you-header-content-any p {
+    margin: 0;
+
+    color: #666666;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    text-align: left;
+}
+
+
+/* ============================================================
+   7. ADD PRODUCT BUTTON
+============================================================ */
+
+.add-available-near-you-btn-any {
+    flex-shrink: 0;
+
+    min-width: 145px;
+    height: 40px;
+
+    padding: 0 18px;
+
+    border: 1px solid #d4af37;
+    border-radius: 7px;
+
+    background: #d4af37;
+    color: #111111;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.add-available-near-you-btn-any:hover:not(:disabled) {
+    background: #c29f2f;
+    border-color: #c29f2f;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 12px rgba(212, 175, 55, 0.25);
+}
+
+
+.add-available-near-you-btn-any:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+
+.add-available-near-you-btn-any:disabled {
+    background: #d8d8d8;
+    border-color: #d8d8d8;
+
+    color: #777777;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+
+    transform: none;
+}
+
+
+/* ============================================================
+   8. PRODUCT GRID
+============================================================ */
+
+.available-near-you-container-any {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    align-items: stretch;
+    justify-content: start;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   9. PRODUCT CARD
+============================================================ */
+
+.available-near-you-item-any {
+    width: 100%;
+    min-width: 0;
+
+    min-height: 235px;
+
+    padding: 20px;
+
+    background: #fafafa;
+
+    border: 1px solid #e2e2e2;
+    border-radius: 11px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    text-align: center;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.available-near-you-item-any:hover {
+    border-color: #d4af37;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.07);
+}
+
+
+/* ============================================================
+   10. PRODUCT IMAGE
+============================================================ */
+
+.available-near-you-image-wrapper-any {
+    width: 100%;
+    height: 95px;
+
+    margin-bottom: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+}
+
+
+.available-near-you-image-any {
+    width: 100%;
+    height: 95px;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+
+.available-near-you-image-placeholder-any {
+    width: 72px;
+    height: 72px;
+
+    border-radius: 10px;
+
+    background: #f5edcf;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #111111;
+
+    font-size: 28px;
+}
+
+
+/* ============================================================
+   11. PRODUCT INFORMATION
+============================================================ */
+
+.available-near-you-info-any {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    min-width: 0;
+}
+
+
+/* ============================================================
+   12. PRODUCT STATUS
+============================================================ */
+
+.available-near-you-status-any {
+    width: 100%;
+    min-height: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    margin: 0 0 4px;
+
+    color: #8a6812;
+
+    font-size: 11.5px;
+    font-weight: 700;
+    line-height: 1.3;
+
+    text-align: center;
+
+    white-space: normal;
+}
+
+
+.available-near-you-status-any span {
+    flex-shrink: 0;
+
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   13. PRODUCT NAME
+============================================================ */
+
+.available-near-you-info-any h3 {
+    width: 100%;
+
+    min-height: 46px;
+
+    margin: 0 0 5px;
+
+    padding: 0;
+
+    color: #111111;
+
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.35;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   14. PRODUCT ID
+============================================================ */
+
+.available-near-you-info-any > p:not(.availability-note-any) {
+    width: 100%;
+
+    min-height: 18px;
+
+    margin: 0 0 7px;
+
+    color: #666666;
+
+    font-size: 12.5px;
+    line-height: 1.45;
+
+    text-align: center;
+}
+
+
+/* ============================================================
+   15. AVAILABILITY NOTE
+============================================================ */
+
+.available-near-you-info-any .availability-note-any {
+    width: 100%;
+    max-width: 230px;
+
+    min-height: 52px;
+
+    margin: 0 auto 15px;
+
+    color: #777777;
+
+    font-size: 11.5px;
+    line-height: 1.5;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+/* ============================================================
+   16. REMOVE BUTTON
+============================================================ */
+
+.available-near-you-info-any button {
+    min-width: 95px;
+    height: 34px;
+
+    padding: 0 15px;
+
+    margin-top: auto;
+
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+
+    background: #ffffff;
+    color: #222222;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.available-near-you-info-any button:hover {
+    color: #b42318;
+
+    border-color: #e0aaa5;
+
+    background: #fff7f6;
+}
+
+
+/* ============================================================
+   17. PRODUCT COUNT
+============================================================ */
+
+.available-near-you-count-any {
+    width: 100%;
+
+    margin-top: 20px;
+    padding-top: 15px;
+
+    border-top: 1px solid #eeeeee;
+
+    color: #555555;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-align: right;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   18. EMPTY STATE
+============================================================ */
+
+.empty-available-near-you-any {
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    min-height: 240px;
+
+    padding: 35px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    border: 1px dashed #d5d5d5;
+    border-radius: 10px;
+
+    background: #fafafa;
+
+    flex-shrink: 0;
+}
+
+
+.empty-icon-any {
+    width: 58px;
+    height: 58px;
+
+    margin-bottom: 15px;
+
+    border-radius: 50%;
+
+    background: #f5edcf;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
+}
+
+
+.empty-available-near-you-any h3 {
+    margin: 0 0 8px;
+
+    color: #222222;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+.empty-available-near-you-any p {
+    max-width: 500px;
+
+    margin: 0;
+
+    color: #666666;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* ============================================================
+   19. POPUP
+============================================================ */
+
+.available-near-you-popup-any {
+    width: auto !important;
+    height: auto;
+
+    margin: 0 auto;
+    padding: 0;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    text-align: left;
+}
+
+
+/* ============================================================
+   20. POPUP OUTER CONTAINER
+============================================================ */
+
+.popup-container:has(.available-near-you-popup-wrapper-any) {
+    width: 520px !important;
+
+    max-width: calc(100vw - 40px);
+    max-height: 90vh;
+
+    position: fixed;
+
+    top: 50% !important;
+    left: 50% !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    margin: 0 !important;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.20);
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   21. POPUP HEADER
+============================================================ */
+
+.popup-container:has(.available-near-you-popup-wrapper-any)
+.popup-header {
+    padding: 22px 28px 18px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+
+.popup-container:has(.available-near-you-popup-wrapper-any)
+.popup-header h2 {
+    margin: 0;
+
+    color: #111111;
+
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+
+/* ============================================================
+   22. POPUP CLOSE BUTTON
+============================================================ */
+
+.popup-container:has(.available-near-you-popup-wrapper-any)
+.popup-close {
+    color: #111111;
+
+    background: transparent;
+    border: none;
+
+    font-size: 25px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.popup-container:has(.available-near-you-popup-wrapper-any)
+.popup-close:hover {
+    color: #d4af37;
+
+    transform: rotate(90deg);
+}
+
+
+/* ============================================================
+   23. POPUP BODY
+============================================================ */
+
+.popup-container:has(.available-near-you-popup-wrapper-any)
+.popup-body {
+    width: 100%;
+
+    padding: 28px 32px 30px;
+
+    background: #ffffff;
+}
+
+
+/* ============================================================
+   24. POPUP WRAPPER
+============================================================ */
+
+.available-near-you-popup-wrapper-any {
+    width: 100%;
+    max-width: none;
+
+    min-width: 0;
+
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    text-align: left;
+}
+
+
+/* ============================================================
+   25. POPUP DESCRIPTION
+============================================================ */
+
+.available-near-you-popup-description-any {
+    width: 100%;
+
+    margin: 0 0 20px;
+
+    color: #555555;
+
+    font-size: 13px;
+    line-height: 1.6;
+
+    text-align: left;
+}
+
+
+/* ============================================================
+   26. PRODUCT SELECT
+============================================================ */
+
+.available-near-you-select-box-any {
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+
+.available-near-you-select-box-any label {
+    margin: 0 0 8px;
+
+    color: #222222;
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+
+    text-align: left;
+}
+
+
+.available-near-you-select-box-any select {
+    width: 100%;
+    height: 46px;
+
+    padding: 0 14px;
+
+    border: 1px solid #d3d3d3;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #111111;
+
+    font-size: 14px;
+
+    outline: none;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.available-near-you-select-box-any select:hover {
+    border-color: #b9b9b9;
+}
+
+
+.available-near-you-select-box-any select:focus {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 0 3px rgba(212, 175, 55, 0.16);
+}
+
+
+/* ============================================================
+   27. SELECTED PRODUCT PREVIEW
+============================================================ */
+
+.available-near-you-selected-preview-any {
+    width: 100%;
+
+    margin-top: 18px;
+    padding: 12px;
+
+    border: 1px solid #e3e3e3;
+    border-radius: 9px;
+
+    background: #fafafa;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.available-near-you-preview-image-any {
+    width: 58px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+
+.available-near-you-preview-image-any img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+}
+
+
+.available-near-you-preview-image-any span {
+    font-size: 24px;
+}
+
+
+.available-near-you-selected-preview-any > div:last-child {
+    min-width: 0;
+
+    text-align: left;
+}
+
+
+.available-near-you-selected-preview-any strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #111111;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+
+    text-align: left;
+}
+
+
+.available-near-you-selected-preview-any p {
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 12px;
+
+    text-align: left;
+}
+
+
+/* ============================================================
+   28. POPUP ACTIONS
+============================================================ */
+
+.available-near-you-popup-content-any {
+    width: 100%;
+
+    margin: 22px 0 0;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+}
+
+
+.available-near-you-popup-content-any button {
+    height: 42px;
+
+    padding: 0 18px;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* ============================================================
+   29. CANCEL BUTTON
+============================================================ */
+
+.available-near-you-popup-content-any button:first-child {
+    min-width: 90px;
+
+    background: #111111;
+    color: #ffffff;
+
+    border: 1px solid #111111;
+}
+
+
+.available-near-you-popup-content-any button:first-child:hover {
+    background: #000000;
+    border-color: #000000;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ============================================================
+   30. POPUP ADD PRODUCT BUTTON
+============================================================ */
+
+.available-near-you-popup-content-any button:last-child {
+    min-width: 150px;
+
+    background: #d4af37;
+    color: #111111;
+
+    border: 1px solid #d4af37;
+}
+
+
+.available-near-you-popup-content-any button:last-child:hover:not(:disabled) {
+    background: #c29f2f;
+    border-color: #c29f2f;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 12px rgba(212, 175, 55, 0.28);
+}
+
+
+.available-near-you-popup-content-any button:last-child:disabled {
+    background: #dddddd;
+
+    color: #888888;
+
+    border-color: #dddddd;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+
+    transform: none;
+}
+
+
+/* ============================================================
+   31. LARGE DESKTOP
+============================================================ */
+
+@media (max-width: 1100px) {
+
+    .manage-available-near-you-main-any {
+        max-width: 1050px;
+
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+
+    .available-near-you-section-any {
+        max-width: 1000px;
+    }
+
+
+    .available-near-you-container-any {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 15px;
+    }
+
+
+    .available-near-you-item-any {
+        padding: 18px;
+    }
+
+}
+
+
+/* ============================================================
+   32. TABLET
+============================================================ */
+
+@media (max-width: 900px) {
+
+    .manage-available-near-you-main-any {
+        padding-top: 35px;
+    }
+
+
+    .available-near-you-container-any {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 15px;
+    }
+
+}
+
+
+/* ============================================================
+   33. SMALL TABLET
+============================================================ */
+
+@media (max-width: 768px) {
+
+    .manage-available-near-you-main-any {
+        padding: 30px 20px 30px;
+    }
+
+
+    .manage-available-near-you-main-any > h2 {
+        padding-left: 0;
+
+        font-size: 26px;
+    }
+
+
+    .manage-available-near-you-main-any > p {
+        padding-left: 0;
+
+        font-size: 14px;
+    }
+
+
+    /* ========================================================
+       SECTION
+    ======================================================== */
+
+    .available-near-you-section-any {
+        padding: 22px 18px;
+
+        border-radius: 12px;
+
+        max-height: none;
+
+        overflow: visible;
+    }
+
+
+    /* ========================================================
+       HEADER
+    ======================================================== */
+
+    .available-near-you-header-any {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        margin-bottom: 22px;
+
+        gap: 12px;
+    }
+
+
+    .available-near-you-header-content-any h2 {
+        font-size: 20px;
+    }
+
+
+    .available-near-you-header-content-any p {
+        font-size: 12.5px;
+    }
+
+
+    /* ========================================================
+       ADD BUTTON
+    ======================================================== */
+
+    .add-available-near-you-btn-any {
+        width: auto;
+
+        min-width: 0;
+
+        height: 38px;
+
+        padding: 0 12px;
+    }
+
+
+    /* ========================================================
+       GRID
+    ======================================================== */
+
+    .available-near-you-container-any {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 15px;
+    }
+
+
+    .available-near-you-item-any {
+        min-height: 225px;
+
+        padding: 18px;
+    }
+
+
+    /* ========================================================
+       TEXT ALIGNMENT
+    ======================================================== */
+
+    .available-near-you-info-any h3 {
+        min-height: 44px;
+    }
+
+
+    .available-near-you-info-any .availability-note-any {
+        min-height: 50px;
+    }
+
+
+    /* ========================================================
+       POPUP
+    ======================================================== */
+
+    .popup-container:has(.available-near-you-popup-wrapper-any) {
+        width: calc(100vw - 32px) !important;
+
+        max-width: 520px;
+
+        max-height: calc(100vh - 32px);
+        max-height: calc(100dvh - 32px);
+    }
+
+
+    .popup-container:has(.available-near-you-popup-wrapper-any)
+    .popup-header {
+        padding: 20px 22px 16px;
+    }
+
+
+    .popup-container:has(.available-near-you-popup-wrapper-any)
+    .popup-header h2 {
+        font-size: 21px;
+    }
+
+
+    .popup-container:has(.available-near-you-popup-wrapper-any)
+    .popup-body {
+        padding: 24px 22px 26px;
+    }
+
+}
+
+
+/* ============================================================
+   34. MOBILE
+============================================================ */
+
+@media (max-width: 600px) {
+
+    .manage-available-near-you-main-any {
+        width: 100%;
+
+        padding: 22px 12px 22px;
+    }
+
+
+    /* ========================================================
+       PAGE TITLE
+    ======================================================== */
+
+    .manage-available-near-you-main-any > h2 {
+        padding-left: 0;
+
+        font-size: 22px;
+        line-height: 1.25;
+    }
+
+
+    .manage-available-near-you-main-any > p {
+        padding-left: 0;
+
+        font-size: 13px;
+        line-height: 1.5;
+
+        margin-bottom: 20px;
+    }
+
+
+    /* ========================================================
+       SECTION
+    ======================================================== */
+
+    .available-near-you-section-any {
+        width: 100%;
+
+        padding: 18px 12px;
+
+        border-radius: 10px;
+
+        max-height: none;
+
+        overflow: visible;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    /* ========================================================
+       MOBILE HEADER
+
+       display: contents allows the header children
+       to participate directly in the section layout.
+    ======================================================== */
+
+    .available-near-you-header-any {
+        width: 100%;
+
+        margin-bottom: 18px;
+
+        gap: 10px;
+
+        display: contents;
+    }
+
+
+    /* ========================================================
+       HEADER CONTENT
+    ======================================================== */
+
+    .available-near-you-header-content-any {
+        width: 100%;
+
+        min-width: 0;
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        text-align: left;
+
+        order: 1;
+    }
+
+
+    .available-near-you-header-content-any h2 {
+        margin: 0 0 5px;
+
+        font-size: 19px;
+
+        text-align: left;
+    }
+
+
+    .available-near-you-header-content-any p {
+        margin: 0;
+
+        font-size: 12px;
+        line-height: 1.5;
+
+        text-align: left;
+    }
+
+
+    /* ========================================================
+       PRODUCT GRID
+
+       Products appear after the heading/description.
+    ======================================================== */
+
+    .available-near-you-container-any {
+        width: 100%;
+        max-width: 100%;
+
+        margin: 18px 0 0;
+
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+
+        order: 2;
+    }
+
+
+    /* ========================================================
+       ADD PRODUCT BUTTON
+
+       Appears after the product count on mobile.
+    ======================================================== */
+
+    .add-available-near-you-btn-any {
+        width: auto;
+
+        min-width: 0;
+
+        height: 36px;
+
+        margin: 18px auto 0;
+
+        padding: 0 16px;
+
+        border-radius: 6px;
+
+        font-size: 12px;
+
+        white-space: nowrap;
+
+        order: 4;
+    }
+
+
+    /* ========================================================
+       PRODUCT CARD
+    ======================================================== */
+
+    .available-near-you-item-any {
+        width: 100%;
+
+        min-height: 205px;
+
+        padding: 16px;
+    }
+
+
+    .available-near-you-image-wrapper-any {
+        height: 85px;
+
+        margin-bottom: 12px;
+    }
+
+
+    .available-near-you-image-any {
+        height: 85px;
+    }
+
+
+    /* ========================================================
+       PRODUCT TEXT
+    ======================================================== */
+
+    .available-near-you-status-any {
+        justify-content: center;
+
+        text-align: center;
+    }
+
+
+    .available-near-you-info-any h3 {
+        min-height: 44px;
+
+        font-size: 17px;
+
+        text-align: center;
+    }
+
+
+    .available-near-you-info-any > p:not(.availability-note-any) {
+        min-height: 18px;
+
+        font-size: 12.5px;
+
+        text-align: center;
+    }
+
+
+    .available-near-you-info-any
+    .availability-note-any {
+        min-height: 50px;
+
+        font-size: 11.5px;
+
+        text-align: center;
+    }
+
+
+    /* ========================================================
+       COUNT
+    ======================================================== */
+
+    .available-near-you-count-any {
+        margin-top: 16px;
+
+        padding-top: 12px;
+
+        font-size: 11.5px;
+
+        text-align: right;
+
+        order: 3;
+    }
+
+
+    /* ========================================================
+       EMPTY STATE
+    ======================================================== */
+
+    .empty-available-near-you-any {
+        width: 100%;
+
+        min-height: 210px;
+
+        padding: 28px 14px;
+    }
+
+
+    /* ========================================================
+       POPUP
+    ======================================================== */
+
+    .popup-container:has(.available-near-you-popup-wrapper-any) {
+        width: calc(100vw - 24px) !important;
+
+        max-width: none;
+
+        max-height: calc(100vh - 24px);
+        max-height: calc(100dvh - 24px);
+
+        border-radius: 13px;
+    }
+
+
+    .popup-container:has(.available-near-you-popup-wrapper-any)
+    .popup-header {
+        padding: 18px 18px 14px;
+    }
+
+
+    .popup-container:has(.available-near-you-popup-wrapper-any)
+    .popup-header h2 {
+        font-size: 19px;
+    }
+
+
+    .popup-container:has(.available-near-you-popup-wrapper-any)
+    .popup-body {
+        padding: 20px 18px 22px;
+    }
+
+
+    /* ========================================================
+       SELECT
+    ======================================================== */
+
+    .available-near-you-select-box-any label {
+        font-size: 13px;
+    }
+
+
+    .available-near-you-select-box-any select {
+        height: 43px;
+
+        padding: 0 11px;
+
+        font-size: 13px;
+    }
+
+
+    /* ========================================================
+       PREVIEW
+    ======================================================== */
+
+    .available-near-you-selected-preview-any {
+        padding: 10px;
+
+        gap: 10px;
+    }
+
+
+    .available-near-you-preview-image-any {
+        width: 52px;
+        height: 52px;
+    }
+
+
+    /* ========================================================
+       POPUP BUTTONS
+    ======================================================== */
+
+    .available-near-you-popup-content-any {
+        width: 100%;
+
+        margin-top: 18px;
+
+        gap: 8px;
+    }
+
+
+    .available-near-you-popup-content-any button {
+        height: 40px;
+
+        padding: 0 12px;
+
+        font-size: 13px;
+    }
+
+
+    .available-near-you-popup-content-any button:first-child {
+        min-width: 78px;
+    }
+
+
+    .available-near-you-popup-content-any button:last-child {
+        min-width: 0;
+
+        flex: 1;
+    }
+
+}
+
+
+/* ============================================================
+   35. VERY SMALL MOBILE
+============================================================ */
+
+@media (max-width: 400px) {
+
+    .manage-available-near-you-main-any {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+
+    .manage-available-near-you-main-any > h2 {
+        padding-left: 0;
+
+        font-size: 20px;
+    }
+
+
+    .manage-available-near-you-main-any > p {
+        padding-left: 0;
+
+        font-size: 12px;
+    }
+
+
+    /* ========================================================
+       SECTION
+    ======================================================== */
+
+    .available-near-you-section-any {
+        padding: 16px 9px;
+
+        max-height: none;
+
+        overflow: visible;
+    }
+
+
+    /* ========================================================
+       HEADER
+    ======================================================== */
+
+    .available-near-you-header-any {
+        margin-bottom: 17px;
+    }
+
+
+    .available-near-you-header-content-any h2 {
+        font-size: 18px;
+    }
+
+
+    .available-near-you-header-content-any p {
+        font-size: 11.5px;
+    }
+
+
+    /* ========================================================
+       ADD BUTTON
+    ======================================================== */
+
+    .add-available-near-you-btn-any {
+        height: 34px;
+
+        margin-top: 10px;
+
+        padding: 0 7px;
+
+        font-size: 11.5px;
+    }
+
+
+    /* ========================================================
+       GRID
+    ======================================================== */
+
+    .available-near-you-container-any {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+
+    .available-near-you-item-any {
+        min-height: 195px;
+
+        padding: 15px;
+    }
+
+
+    .available-near-you-image-wrapper-any {
+        height: 78px;
+    }
+
+
+    .available-near-you-image-any {
+        height: 78px;
+    }
+
+
+    /* ========================================================
+       TEXT
+    ======================================================== */
+
+    .available-near-you-info-any h3 {
+        min-height: 42px;
+
+        font-size: 16px;
+    }
+
+
+    .available-near-you-info-any > p:not(.availability-note-any) {
+        min-height: 17px;
+
+        font-size: 12px;
+    }
+
+
+    .available-near-you-info-any
+    .availability-note-any {
+        min-height: 48px;
+
+        font-size: 11.5px;
+    }
+
+
+    /* ========================================================
+       EMPTY
+    ======================================================== */
+
+    .empty-available-near-you-any {
+        min-height: 200px;
+
+        padding: 25px 12px;
+    }
+
+
+    /* ========================================================
+       POPUP
+    ======================================================== */
+
+    .popup-container:has(.available-near-you-popup-wrapper-any) {
+        width: calc(100vw - 18px) !important;
+
+        max-height: calc(100vh - 18px);
+        max-height: calc(100dvh - 18px);
+
+        border-radius: 12px;
+    }
+
+
+    .popup-container:has(.available-near-you-popup-wrapper-any)
+    .popup-header {
+        padding: 17px 16px 13px;
+    }
+
+
+    .popup-container:has(.available-near-you-popup-wrapper-any)
+    .popup-header h2 {
+        font-size: 18px;
+    }
+
+
+    .popup-container:has(.available-near-you-popup-wrapper-any)
+    .popup-body {
+        padding: 18px 15px 20px;
+    }
+
+
+    .available-near-you-popup-content-any {
+        gap: 7px;
+    }
+
+
+    .available-near-you-popup-content-any button {
+        font-size: 12.5px;
+    }
+
+}
+
+
+/* ============================================================
+   36. EXTRA SMALL DEVICES
+============================================================ */
+
+@media (max-width: 340px) {
+
+    .manage-available-near-you-main-any {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+
+    .manage-available-near-you-main-any > h2,
+    .manage-available-near-you-main-any > p {
+        padding-left: 0;
+    }
+
+
+    .available-near-you-section-any {
+        padding-left: 8px;
+        padding-right: 8px;
+
+        max-height: none;
+
+        overflow: visible;
+    }
+
+
+    .add-available-near-you-btn-any {
+        height: 33px;
+
+        margin-top: 9px;
+
+        padding-left: 5px;
+        padding-right: 5px;
+
+        font-size: 11px;
+    }
+
+
+    .available-near-you-item-any {
+        padding: 13px;
+    }
+
+
+    .available-near-you-info-any h3 {
+        min-height: 40px;
+    }
+
+
+    .available-near-you-info-any
+    .availability-note-any {
+        min-height: 46px;
+    }
+
+
+    .popup-container:has(.available-near-you-popup-wrapper-any) {
+        width: calc(100vw - 12px) !important;
+    }
+
+
+    .popup-container:has(.available-near-you-popup-wrapper-any)
+    .popup-body {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+}

@@ -16,7 +16,6 @@
     margin: 0;
     padding: 24px 20px;
     box-sizing: border-box;
-    background: #ffffff;
 
     /* Prevent this page from creating its own scrolling */
     overflow: hidden;
@@ -208,9 +207,9 @@
 ============================================================ */
 
 .dh-user-login-submit:hover:not(:disabled) {
-    background: #000000;
-    color: #d4af37;
-    border-color: #000000;
+    background: #d4af37;
+    color: #000000;
+    border-color: #d4af37;
     transform: translateY(-1px);
     box-shadow: 0 5px 14px rgba(0, 0, 0, 0.16);
 }

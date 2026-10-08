@@ -207,6 +207,7 @@ function VendorLogin() {
 
               <Link
                 to="/VendorForgotPassword"
+                state={{accountType: "vendor"}}
                 className="dh-vendor-login-link"
               >
                 Forgot Password?

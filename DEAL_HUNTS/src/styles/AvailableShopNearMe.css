@@ -1,0 +1,3357 @@
+/* ============================================================
+   DEAL HUNTS — AVAILABLE SHOP NEAR YOU
+   ------------------------------------------------------------
+   CLEAN / FREE-FLOW / EQUAL-SPACING VERSION
+
+   DESKTOP  : MAP | SHOPS | DETAILS
+   TABLET   : MAP | SHOPS
+              MAP | DETAILS
+   MOBILE   : MAP
+              SHOPS
+              DETAILS
+
+   Design:
+   - Clean white cards
+   - Soft grey page background
+   - Gold DealHunts accents
+   - Equal spacing rhythm
+   - No cramped sections
+   - Map has visible outer spacing
+   - Book Visit / Open Maps stacked
+   - Internal scrolling only where required
+   ============================================================ */
+
+
+/* ============================================================
+   01. DESIGN TOKENS
+   ============================================================ */
+
+:root {
+    --dhav-bg: #f4f4f5;
+    --dhav-card: #ffffff;
+    --dhav-soft: #fafafa;
+    --dhav-soft-2: #f7f7f7;
+
+    --dhav-text: #141414;
+    --dhav-text-2: #3d3d3d;
+    --dhav-muted: #6f6f6f;
+    --dhav-muted-2: #909090;
+
+    --dhav-line: #e6e6e6;
+    --dhav-line-2: #d6d6d6;
+
+    --dhav-gold: #d4af37;
+    --dhav-gold-dark: #b8941f;
+    --dhav-gold-text: #8a6d0b;
+    --dhav-gold-soft: #fbf6e3;
+    --dhav-gold-line: #eadca0;
+
+    --dhav-danger: #a33b3b;
+    --dhav-danger-bg: #fff5f5;
+    --dhav-danger-line: #efcaca;
+
+    --dhav-gap: 14px;
+    --dhav-page-padding: 14px;
+
+    --dhav-radius: 14px;
+    --dhav-small-radius: 10px;
+
+    --dhav-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.035),
+        0 4px 16px rgba(0, 0, 0, 0.035);
+
+    --dhav-shadow-hover:
+        0 6px 20px rgba(0, 0, 0, 0.07);
+}
+
+
+/* ============================================================
+   02. GLOBAL RESET / PAGE
+   ============================================================ */
+
+.dh-available-page,
+.dh-available-page *,
+.dh-available-page *::before,
+.dh-available-page *::after {
+    box-sizing: border-box;
+}
+
+.dh-available-page {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+
+    min-height: 640px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background: var(--dhav-bg);
+    color: var(--dhav-text);
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+.dh-available-page > :not(.dh-available-main) {
+    flex-shrink: 0;
+}
+
+.dh-available-page :where(
+    h1,
+    h2,
+    h3,
+    h4,
+    p
+) {
+    margin: 0;
+}
+
+.dh-available-page :where(
+    button,
+    input,
+    select
+) {
+    font: inherit;
+    color: inherit;
+}
+
+.dh-available-page button {
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.dh-available-page :where(
+    button,
+    a,
+    [role="button"]
+):focus-visible {
+    outline: 2px solid rgba(212, 175, 55, 0.8);
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   03. MAIN PAGE AREA
+   ============================================================ */
+
+.dh-available-main {
+    flex: 1 1 0;
+
+    min-width: 0;
+    min-height: 0;
+
+    padding: var(--dhav-page-padding);
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   04. MAIN THREE PANEL LAYOUT
+   ============================================================ */
+
+.dh-available-three-column-layout {
+    width: 100%;
+    height: 100%;
+
+    min-width: 0;
+    min-height: 0;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 48fr)
+        minmax(300px, 30fr)
+        minmax(250px, 22fr);
+
+    grid-template-rows: minmax(0, 1fr);
+
+    gap: var(--dhav-gap);
+}
+
+
+/* ============================================================
+   05. SHARED COLUMN
+   ============================================================ */
+
+.dh-available-column {
+    min-width: 0;
+    min-height: 0;
+
+    overflow: hidden;
+
+    background: var(--dhav-card);
+
+    border: 1px solid var(--dhav-line);
+    border-radius: var(--dhav-radius);
+
+    box-shadow: var(--dhav-shadow);
+}
+
+
+/* ============================================================
+   06. COMMON LABELS
+   ============================================================ */
+
+.dh-available-eyebrow,
+.dh-available-section-label {
+    display: block;
+
+    color: var(--dhav-gold-text);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    letter-spacing: 0.14em;
+
+    text-transform: uppercase;
+}
+
+
+/* ============================================================
+   07. MAP COLUMN
+   ============================================================ */
+
+.dh-available-map-column {
+    position: relative;
+
+    min-width: 0;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   08. MAP INTRO
+   ============================================================ */
+
+.dh-available-column-intro {
+    flex: 0 0 auto;
+
+    min-width: 0;
+
+    padding: 20px 22px 14px;
+}
+
+.dh-available-intro-copy {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.dh-available-intro-copy h1 {
+    overflow: hidden;
+
+    color: var(--dhav-text);
+
+    font-size: clamp(20px, 1.55vw, 25px);
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.018em;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dh-available-map-description {
+    max-width: 680px;
+
+    color: var(--dhav-muted);
+
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+
+/* ============================================================
+   09. OLD MAP HEADING
+   ============================================================ */
+
+.dh-available-map-heading {
+    display: none;
+}
+
+
+/* ============================================================
+   10. MAP SHELL
+   ============================================================ */
+
+.dh-available-map-shell {
+    flex: 1 1 auto;
+
+    min-width: 0;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 8px 22px 18px;
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   11. MAP WRAPPER
+   ------------------------------------------------------------
+   Important:
+   The map itself gets visible spacing from the surrounding
+   content. It does not touch the column edges.
+   ============================================================ */
+
+.dh-available-main-map-wrapper {
+    position: relative;
+
+    flex: 1 1 auto;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 240px;
+
+    isolation: isolate;
+
+    overflow: hidden;
+
+    background: #e9e9e9;
+
+    border: 1px solid var(--dhav-line);
+    border-radius: 13px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.035);
+}
+
+
+/* ============================================================
+   12. LEAFLET MAP
+   ============================================================ */
+
+.dh-available-main-map.leaflet-container {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: #e9e9e9;
+
+    font-family: inherit;
+}
+
+
+/* ============================================================
+   13. MAP TAGLINE
+   ============================================================ */
+
+.dh-available-map-tagline {
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 48px;
+
+    padding: 13px 2px 4px;
+
+    color: var(--dhav-gold-text);
+
+    font-size: 16px;
+    font-weight: 800;
+
+    line-height: 1.3;
+
+    letter-spacing: 0.015em;
+}
+
+
+/* ============================================================
+   14. MAP LEGEND
+   ============================================================ */
+
+.dh-available-map-legend {
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px 20px;
+
+    padding: 5px 2px 0;
+
+    color: var(--dhav-muted);
+
+    font-size: 10.5px;
+    line-height: 1.4;
+}
+
+.dh-available-map-legend > span {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+.dh-available-legend-marker {
+    width: 18px;
+    height: 18px;
+
+    display: inline-grid;
+    place-items: center;
+
+    color: #111111;
+
+    background: var(--dhav-gold);
+
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.2);
+
+    font-size: 8px;
+    font-style: normal;
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   15. MAP EMPTY STATE
+   ============================================================ */
+
+.dh-available-map-empty {
+    position: absolute;
+
+    z-index: 1200;
+
+    top: 50%;
+    left: 50%;
+
+    width: min(270px, calc(100% - 32px));
+
+    padding: 20px 18px;
+
+    text-align: center;
+
+    transform: translate(-50%, -50%);
+
+    background: rgba(255, 255, 255, 0.97);
+
+    border: 1px solid var(--dhav-line);
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.1);
+}
+
+.dh-available-map-empty span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 25px;
+    line-height: 1;
+}
+
+.dh-available-map-empty strong {
+    display: block;
+
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.dh-available-map-empty p {
+    margin-top: 5px;
+
+    color: var(--dhav-muted);
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   16. LEAFLET CONTROLS
+   ============================================================ */
+
+.dh-available-main-map.leaflet-container .leaflet-bar {
+    overflow: hidden;
+
+    border: 0;
+    border-radius: 8px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.dh-available-main-map.leaflet-container .leaflet-bar a {
+    width: 30px;
+    height: 30px;
+
+    line-height: 30px;
+
+    color: var(--dhav-text);
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.dh-available-main-map.leaflet-container .leaflet-bar a:last-child {
+    border-bottom: 0;
+}
+
+.dh-available-main-map.leaflet-container .leaflet-bar a:hover {
+    color: #111111;
+
+    background: var(--dhav-gold-soft);
+}
+
+.dh-available-main-map.leaflet-container .leaflet-control-attribution {
+    padding: 2px 6px;
+
+    background: rgba(255, 255, 255, 0.88);
+
+    font-size: 10px;
+}
+
+
+/* ============================================================
+   17. LEAFLET POPUP
+   ============================================================ */
+
+.dh-available-main-map.leaflet-container
+.leaflet-popup-content-wrapper {
+    padding: 0;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.16);
+}
+
+.dh-available-main-map.leaflet-container
+.leaflet-popup-content {
+    margin: 12px 14px;
+
+    font-family: inherit;
+
+    line-height: 1.4;
+}
+
+.dh-available-marker-popup {
+    min-width: 170px;
+    max-width: 230px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.dh-available-marker-popup strong {
+    font-size: 13px;
+    font-weight: 800;
+
+    line-height: 1.35;
+}
+
+.dh-available-marker-popup span {
+    color: var(--dhav-muted);
+
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.dh-available-marker-popup small {
+    color: var(--dhav-gold-text);
+
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   18. MAP MARKERS
+   ============================================================ */
+
+.dh-available-numbered-marker-wrapper,
+.dh-available-selected-marker-wrapper {
+    background: transparent;
+    border: 0;
+}
+
+.dh-available-numbered-marker {
+    position: absolute;
+
+    top: 7px;
+    left: 3px;
+
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--dhav-gold);
+
+    border: 2px solid #ffffff;
+
+    border-radius: 50% 50% 50% 0;
+
+    box-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.28);
+
+    transform: rotate(-45deg);
+}
+
+.dh-available-numbered-marker span {
+    color: #111111;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    line-height: 1;
+
+    transform: rotate(45deg);
+}
+
+.dh-available-selected-marker-wrapper {
+    z-index: 1000 !important;
+}
+
+.dh-available-selected-marker {
+    position: absolute;
+
+    top: 6px;
+    left: 3px;
+
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    background: #111111;
+
+    border: 3px solid var(--dhav-gold);
+
+    border-radius: 50% 50% 50% 0;
+
+    box-shadow:
+        0 0 0 4px rgba(212, 175, 55, 0.28),
+        0 5px 12px rgba(0, 0, 0, 0.35);
+
+    transform: rotate(-45deg);
+}
+
+.dh-available-selected-marker span {
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    line-height: 1;
+
+    transform: rotate(45deg);
+}
+
+
+/* ============================================================
+   19. LOCATION ERROR
+   ============================================================ */
+
+.dh-available-location-error {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    background: var(--dhav-danger-bg);
+
+    border: 1px solid var(--dhav-danger-line);
+    border-radius: 10px;
+
+    box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.dh-available-location-error.compact {
+    position: absolute;
+
+    z-index: 30;
+
+    top: 72px;
+    right: 20px;
+    left: 20px;
+}
+
+.dh-location-message-icon {
+    width: 22px;
+    height: 22px;
+
+    flex: 0 0 22px;
+
+    display: grid;
+    place-items: center;
+
+    color: var(--dhav-danger);
+
+    background: #f6dcdc;
+
+    border-radius: 50%;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.dh-available-location-error-content {
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.dh-available-location-error-content strong {
+    font-size: 12.5px;
+    font-weight: 800;
+}
+
+.dh-available-location-error-content span {
+    color: var(--dhav-text-2);
+
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.dh-available-location-error > button {
+    flex: 0 0 auto;
+
+    height: 29px;
+
+    padding: 0 11px;
+
+    color: var(--dhav-danger);
+
+    background: #ffffff;
+
+    border: 1px solid #e3b8b8;
+    border-radius: 7px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.dh-available-location-error > button:hover {
+    background: #fff0f0;
+}
+
+
+/* ============================================================
+   20. SHOPS COLUMN
+   ============================================================ */
+
+.dh-available-shops-column {
+    min-height: 0;
+
+    display: grid;
+
+    grid-template-rows:
+        auto
+        auto
+        minmax(0, 1fr)
+        auto;
+}
+
+
+/* ============================================================
+   21. SHOPS HEADER
+   ============================================================ */
+
+.dh-available-shops-header {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 20px 18px 15px;
+}
+
+.dh-available-shops-header > div:first-child {
+    min-width: 0;
+}
+
+.dh-available-shops-header h2 {
+    margin-top: 6px;
+
+    overflow: hidden;
+
+    color: var(--dhav-text);
+
+    font-size: 18px;
+    font-weight: 800;
+
+    line-height: 1.25;
+
+    letter-spacing: -0.015em;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dh-available-result-summary {
+    flex: 0 0 auto;
+
+    display: inline-flex;
+    align-items: baseline;
+
+    gap: 4px;
+
+    padding: 6px 10px;
+
+    color: var(--dhav-muted);
+
+    background: var(--dhav-soft);
+
+    border: 1px solid var(--dhav-line);
+    border-radius: 999px;
+
+    font-size: 11px;
+    line-height: 1.2;
+
+    white-space: nowrap;
+}
+
+.dh-available-result-summary strong {
+    color: var(--dhav-text);
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   22. SEARCH / FILTER CONTROLS
+   ============================================================ */
+
+.dh-available-controls {
+    min-width: 0;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        128px;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 0 18px 15px;
+}
+
+.dh-available-search-wrapper {
+    position: relative;
+
+    min-width: 0;
+}
+
+.dh-available-search-wrapper input {
+    width: 100%;
+    height: 38px;
+
+    padding: 0 35px;
+
+    color: var(--dhav-text);
+
+    background: #ffffff;
+
+    border: 1px solid var(--dhav-line-2);
+    border-radius: 9px;
+
+    outline: none;
+
+    font-size: 12.5px;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.dh-available-search-wrapper input::placeholder {
+    color: #9a9a9a;
+}
+
+.dh-available-search-wrapper input:hover:not(:disabled) {
+    border-color: #bdbdbd;
+}
+
+.dh-available-search-wrapper input:focus {
+    border-color: var(--dhav-gold-dark);
+
+    box-shadow:
+        0 0 0 3px rgba(212, 175, 55, 0.13);
+}
+
+.dh-available-search-wrapper input:disabled {
+    color: #888888;
+
+    background: #f6f6f6;
+
+    cursor: not-allowed;
+}
+
+.dh-available-search-icon {
+    position: absolute;
+
+    top: 50%;
+    left: 11px;
+
+    color: #7a7a7a;
+
+    font-size: 14px;
+    line-height: 1;
+
+    transform: translateY(-50%);
+
+    pointer-events: none;
+}
+
+.dh-available-search-clear {
+    position: absolute;
+
+    top: 50%;
+    right: 6px;
+
+    width: 23px;
+    height: 23px;
+
+    display: grid;
+    place-items: center;
+
+    padding: 0;
+
+    color: #6f6f6f;
+
+    background: #f1f1f1;
+
+    border: 0;
+    border-radius: 50%;
+
+    font-size: 14px;
+    line-height: 1;
+
+    transform: translateY(-50%);
+}
+
+.dh-available-search-clear:hover {
+    color: #111111;
+
+    background: #e6e6e6;
+}
+
+.dh-available-search-spinner {
+    position: absolute;
+
+    top: 50%;
+    right: 11px;
+
+    width: 14px;
+    height: 14px;
+
+    margin-top: -7px;
+
+    border: 2px solid #dddddd;
+    border-top-color: #111111;
+
+    border-radius: 50%;
+
+    animation: dhavSpin 0.7s linear infinite;
+}
+
+@keyframes dhavSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   23. FILTER
+   ============================================================ */
+
+.dh-available-filter-select {
+    width: 100%;
+    height: 38px;
+
+    padding: 0 28px 0 11px;
+
+    color: var(--dhav-text-2);
+
+    background-color: #ffffff;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555555' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+
+    background-repeat: no-repeat;
+    background-position: right 9px center;
+
+    border: 1px solid var(--dhav-line-2);
+    border-radius: 9px;
+
+    outline: none;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.dh-available-filter-select:hover {
+    border-color: #bdbdbd;
+}
+
+.dh-available-filter-select:focus {
+    border-color: var(--dhav-gold-dark);
+
+    box-shadow:
+        0 0 0 3px rgba(212, 175, 55, 0.13);
+}
+
+
+/* ============================================================
+   24. SHOP LIST
+   ============================================================ */
+
+.dh-available-shop-list-scroll {
+    min-height: 0;
+
+    padding:
+        3px
+        10px
+        16px
+        18px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    overscroll-behavior: contain;
+
+    scrollbar-gutter: stable;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        #cfcfcf
+        transparent;
+}
+
+.dh-available-shop-list-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dh-available-shop-list-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dh-available-shop-list-scroll::-webkit-scrollbar-thumb {
+    background: #cfcfcf;
+
+    border-radius: 999px;
+}
+
+.dh-available-shop-list-scroll::-webkit-scrollbar-thumb:hover {
+    background: #a9a9a9;
+}
+
+.dh-available-shop-list {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+/* ============================================================
+   25. SHOP CARD
+   ============================================================ */
+
+.dh-available-shop-card {
+    flex: 0 0 auto;
+
+    min-width: 0;
+
+    min-height: 108px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 15px 16px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--dhav-line);
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        background-color 0.15s ease,
+        transform 0.12s ease;
+}
+
+.dh-available-shop-card:hover {
+    border-color: #c9c9c9;
+
+    box-shadow: var(--dhav-shadow-hover);
+
+    transform: translateY(-1px);
+}
+
+.dh-available-shop-card.selected {
+    background: #fffdf6;
+
+    border-color: var(--dhav-gold);
+
+    box-shadow:
+        0 0 0 3px rgba(212, 175, 55, 0.13);
+}
+
+
+/* ============================================================
+   26. SHOP CARD TOP
+   ============================================================ */
+
+.dh-available-shop-card-top {
+    min-width: 0;
+
+    display: grid;
+
+    grid-template-columns:
+        44px
+        minmax(0, 1fr)
+        auto;
+
+    align-items: center;
+
+    column-gap: 13px;
+}
+
+
+/* ============================================================
+   27. SHOP ICON
+   ============================================================ */
+
+.dh-available-shop-icon {
+    grid-column: 1;
+    grid-row: 1;
+
+    width: 44px;
+    height: 44px;
+
+    display: grid;
+    place-items: center;
+
+    background: #f4f4f4;
+
+    border-radius: 11px;
+
+    font-size: 20px;
+}
+
+.dh-available-shop-card.selected
+.dh-available-shop-icon {
+    background: var(--dhav-gold-soft);
+}
+
+
+/* ============================================================
+   28. SHOP NUMBER
+   ============================================================ */
+
+.dh-available-shop-number {
+    grid-column: 1;
+    grid-row: 1;
+
+    z-index: 2;
+
+    justify-self: start;
+    align-self: start;
+
+    width: 20px;
+    height: 20px;
+
+    display: grid;
+    place-items: center;
+
+    color: #ffffff;
+
+    background: #111111;
+
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    line-height: 1;
+
+    transform: translate(-6px, -6px);
+}
+
+.dh-available-shop-card.selected
+.dh-available-shop-number {
+    color: #111111;
+
+    background: var(--dhav-gold);
+}
+
+
+/* ============================================================
+   29. SHOP INFORMATION
+   ============================================================ */
+
+.dh-available-shop-info {
+    grid-column: 2;
+    grid-row: 1;
+
+    min-width: 0;
+}
+
+.dh-available-shop-info h3 {
+    overflow: hidden;
+
+    color: var(--dhav-text);
+
+    font-size: 14.5px;
+    font-weight: 750;
+
+    line-height: 21px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dh-available-shop-address {
+    display: -webkit-box;
+
+    margin-top: 5px;
+
+    overflow: hidden;
+
+    color: var(--dhav-muted);
+
+    font-size: 12px;
+    line-height: 17px;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    line-clamp: 2;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   30. SHOP DISTANCE
+   ============================================================ */
+
+.dh-available-shop-distance {
+    grid-column: 3;
+    grid-row: 1;
+
+    align-self: center;
+
+    margin-left: 4px;
+
+    padding: 5px 9px;
+
+    color: #6b5409;
+
+    background: var(--dhav-gold-soft);
+
+    border: 1px solid var(--dhav-gold-line);
+    border-radius: 999px;
+
+    font-size: 10.5px;
+    font-weight: 750;
+
+    line-height: 14px;
+
+    text-align: right;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   31. PRODUCT SEARCH META
+   ============================================================ */
+
+.dh-available-shop-meta {
+    margin-top: 12px;
+
+    padding-top: 10px;
+
+    color: var(--dhav-gold-text);
+
+    border-top: 1px solid #f0f0f0;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.06em;
+
+    text-transform: uppercase;
+}
+
+
+/* ============================================================
+   32. PRODUCT RESULTS
+   ============================================================ */
+
+.dh-available-products-list {
+    min-width: 0;
+
+    margin-top: 8px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.dh-available-product-row {
+    min-width: 0;
+
+    display: grid;
+
+    grid-template-columns:
+        28px
+        minmax(0, 1fr)
+        auto;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 7px 8px;
+
+    background: var(--dhav-soft);
+
+    border: 1px solid #eeeeee;
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.dh-available-product-row:hover {
+    background: var(--dhav-gold-soft);
+
+    border-color: var(--dhav-gold-line);
+}
+
+.dh-available-product-icon {
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+    place-items: center;
+
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+    border-radius: 7px;
+
+    font-size: 13px;
+}
+
+.dh-available-product-details {
+    min-width: 0;
+}
+
+.dh-available-product-details h4 {
+    overflow: hidden;
+
+    font-size: 11.5px;
+    font-weight: 700;
+
+    line-height: 1.3;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dh-available-product-details span {
+    display: block;
+
+    margin-top: 1px;
+
+    overflow: hidden;
+
+    color: var(--dhav-muted);
+
+    font-size: 10px;
+    line-height: 1.3;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dh-available-product-stock {
+    text-align: right;
+
+    line-height: 1.2;
+}
+
+.dh-available-product-stock strong {
+    display: block;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.dh-available-product-stock span {
+    display: block;
+
+    color: var(--dhav-muted);
+
+    font-size: 9px;
+}
+
+
+/* ============================================================
+   33. PAGINATION
+   ============================================================ */
+
+.dh-available-pagination {
+    min-height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    padding: 5px 8px;
+
+    background: var(--dhav-card);
+
+    border-top: 1px solid #efefef;
+}
+
+.dh-available-pagination-pages {
+    display: flex;
+    align-items: center;
+
+    gap: 3px;
+}
+
+.dh-available-pagination-arrow,
+.dh-available-pagination-page {
+    min-width: 22px;
+    height: 22px;
+
+    display: grid;
+    place-items: center;
+
+    padding: 0 5px;
+
+    color: #6f6f6f;
+
+    background: transparent;
+
+    border: 1px solid transparent;
+    border-radius: 6px;
+
+    font-size: 10.5px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+.dh-available-pagination-page:hover:not(.active),
+.dh-available-pagination-arrow:hover:not(:disabled) {
+    color: #111111;
+
+    background: var(--dhav-soft);
+
+    border-color: var(--dhav-line);
+}
+
+.dh-available-pagination-page.active {
+    color: #ffffff;
+
+    background: #111111;
+
+    border-color: #111111;
+}
+
+.dh-available-pagination-arrow:disabled {
+    opacity: 0.3;
+
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
+   34. EMPTY SHOP STATE
+   ============================================================ */
+
+.dh-available-empty {
+    margin: 5px 0;
+
+    padding: 26px 16px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 7px;
+
+    text-align: center;
+
+    background: var(--dhav-soft);
+
+    border: 1px dashed var(--dhav-line-2);
+    border-radius: 12px;
+}
+
+.dh-available-empty-icon {
+    width: 44px;
+    height: 44px;
+
+    display: grid;
+    place-items: center;
+
+    margin-bottom: 4px;
+
+    background: var(--dhav-gold-soft);
+
+    border-radius: 11px;
+
+    font-size: 19px;
+}
+
+.dh-available-empty h3 {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.dh-available-empty p {
+    max-width: 280px;
+
+    color: var(--dhav-muted);
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.dh-available-empty button {
+    height: 34px;
+
+    margin-top: 7px;
+
+    padding: 0 15px;
+
+    color: #ffffff;
+
+    background: #111111;
+
+    border: 1px solid #111111;
+    border-radius: 8px;
+
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+.dh-available-empty button:hover {
+    color: #111111;
+
+    background: var(--dhav-gold);
+
+    border-color: var(--dhav-gold);
+}
+
+
+/* ============================================================
+   35. SHOP SKELETON
+   ============================================================ */
+
+.dh-available-shop-skeleton {
+    min-height: 108px;
+
+    padding: 15px 16px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--dhav-line);
+    border-radius: 12px;
+}
+
+.dh-skeleton-top {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    margin-bottom: 4px;
+}
+
+.dh-skeleton-icon {
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    background: #eeeeee;
+
+    border-radius: 11px;
+}
+
+.dh-skeleton-heading {
+    min-width: 0;
+
+    flex: 1;
+}
+
+.dh-skeleton-line {
+    height: 9px;
+
+    margin-top: 7px;
+
+    border-radius: 6px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #eeeeee 25%,
+            #f7f7f7 37%,
+            #eeeeee 63%
+        );
+
+    background-size: 400% 100%;
+
+    animation:
+        dhavShimmer 1.3s ease infinite;
+}
+
+.dh-skeleton-heading
+.dh-skeleton-line:first-child {
+    margin-top: 0;
+}
+
+.dh-skeleton-line.large {
+    width: 62%;
+
+    height: 11px;
+}
+
+.dh-skeleton-line.short {
+    width: 38%;
+}
+
+@keyframes dhavShimmer {
+    0% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+
+/* ============================================================
+   36. DETAILS COLUMN
+   ============================================================ */
+
+.dh-available-details-column {
+    min-width: 0;
+    min-height: 0;
+
+    display: grid;
+
+    grid-template-rows:
+        auto
+        minmax(0, 1fr);
+}
+
+
+/* ============================================================
+   37. DETAILS HEADER
+   ============================================================ */
+
+.dh-available-details-header {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+
+    padding: 18px 16px 15px;
+
+    border-bottom: 1px solid var(--dhav-line);
+}
+
+
+/* ============================================================
+   38. LOCATION BUTTON
+   ============================================================ */
+
+.dh-available-location-button {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 10px;
+
+    text-align: left;
+
+    background: var(--dhav-soft);
+
+    border: 1px solid var(--dhav-line-2);
+    border-radius: 10px;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.dh-available-location-button:hover:not(:disabled) {
+    background: var(--dhav-gold-soft);
+
+    border-color: var(--dhav-gold);
+}
+
+.dh-available-location-button:disabled {
+    opacity: 0.65;
+
+    cursor: progress;
+}
+
+.dh-available-location-button-icon {
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    display: grid;
+    place-items: center;
+
+    background: #ffffff;
+
+    border: 1px solid var(--dhav-gold-line);
+    border-radius: 8px;
+
+    font-size: 13px;
+}
+
+.dh-available-location-button-content {
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.dh-available-location-button-content small {
+    color: var(--dhav-muted);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+}
+
+.dh-available-location-button-content strong {
+    display: -webkit-box;
+
+    overflow: hidden;
+
+    font-size: 11.5px;
+    font-weight: 700;
+
+    line-height: 1.35;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    line-clamp: 2;
+
+    overflow-wrap: anywhere;
+}
+
+.dh-available-location-button-arrow {
+    flex: 0 0 auto;
+
+    color: #888888;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   39. DETAILS SCROLL
+   ============================================================ */
+
+.dh-available-details-scroll {
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 18px 16px 16px;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        #d0d0d0
+        transparent;
+}
+
+.dh-available-details-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+.dh-available-details-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dh-available-details-scroll::-webkit-scrollbar-thumb {
+    background: #d0d0d0;
+
+    border-radius: 999px;
+}
+
+
+/* ============================================================
+   40. EMPTY DETAILS STATE
+   ============================================================ */
+
+.dh-available-details-empty {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 10px 4px 22px;
+
+    text-align: center;
+}
+
+.dh-available-details-empty-icon {
+    width: 44px;
+    height: 44px;
+
+    display: grid;
+    place-items: center;
+
+    margin-bottom: 12px;
+
+    color: var(--dhav-gold-text);
+
+    background: var(--dhav-gold-soft);
+
+    border: 1px solid var(--dhav-gold-line);
+    border-radius: 11px;
+
+    font-size: 19px;
+}
+
+.dh-available-details-empty h3 {
+    margin-top: 2px;
+
+    font-size: 15px;
+    font-weight: 800;
+
+    line-height: 1.3;
+}
+
+.dh-available-details-empty p {
+    max-width: 230px;
+
+    margin-top: 7px;
+
+    color: var(--dhav-muted);
+
+    font-size: 11.5px;
+    line-height: 1.55;
+}
+
+
+/* ============================================================
+   41. BENEFITS
+   ============================================================ */
+
+.dh-available-benefits {
+    width: 100%;
+
+    margin-top: 24px;
+
+    padding: 15px 14px 7px;
+
+    background: var(--dhav-soft);
+
+    border: 1px solid var(--dhav-line);
+    border-radius: 12px;
+
+    text-align: left;
+}
+
+.dh-available-benefits
+.dh-available-detail-label {
+    margin-bottom: 8px;
+}
+
+.dh-available-benefit-item {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 11px 0;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.dh-available-benefit-item:last-child {
+    border-bottom: 0;
+}
+
+.dh-available-benefit-item > span {
+    width: 27px;
+    height: 27px;
+
+    flex: 0 0 27px;
+
+    display: grid;
+    place-items: center;
+
+    color: #111111;
+
+    background: var(--dhav-gold-soft);
+
+    border: 1px solid var(--dhav-gold-line);
+    border-radius: 50%;
+
+    font-size: 0;
+    font-weight: 900;
+
+    line-height: 1;
+}
+
+.dh-available-benefit-item > span::before {
+    content: "\2713";
+
+    color: var(--dhav-gold-text);
+
+    font-size: 12px;
+    font-weight: 900;
+
+    line-height: 1;
+}
+
+/* house / check / deal */
+.dh-available-benefit-item:nth-of-type(1) > span::before {
+    content: "\2302";
+}
+
+.dh-available-benefit-item:nth-of-type(2) > span::before {
+    content: "\2713";
+}
+
+.dh-available-benefit-item:nth-of-type(3) > span::before {
+    content: "%";
+}
+
+.dh-available-benefit-item:nth-of-type(4) > span::before {
+    content: "\2605";
+}
+
+.dh-available-benefit-item strong {
+    min-width: 0;
+
+    color: var(--dhav-text-2);
+
+    font-size: 11.5px;
+    font-weight: 650;
+
+    line-height: 1.5;
+}
+
+.dh-available-benefits-selected {
+    margin-top: 24px;
+}
+
+
+/* ============================================================
+   42. SELECTED SHOP
+   ============================================================ */
+
+.dh-available-selected-shop {
+    flex: 1 0 auto;
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ============================================================
+   43. SELECTED SHOP HEADER
+   ============================================================ */
+
+.dh-available-selected-shop-top {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding-bottom: 15px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.dh-available-selected-shop-icon {
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--dhav-gold-soft);
+
+    border: 1px solid var(--dhav-gold-line);
+    border-radius: 10px;
+
+    font-size: 18px;
+}
+
+.dh-available-selected-shop-top > div:last-child {
+    min-width: 0;
+}
+
+.dh-available-selected-shop-top
+> div:last-child
+> span {
+    display: block;
+
+    color: var(--dhav-gold-text);
+
+    font-size: 9px;
+    font-weight: 750;
+
+    letter-spacing: 0.12em;
+}
+
+.dh-available-selected-shop-top h2 {
+    display: -webkit-box;
+
+    margin-top: 3px;
+
+    overflow: hidden;
+
+    font-size: 14.5px;
+    font-weight: 800;
+
+    line-height: 1.35;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    line-clamp: 2;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   44. DETAIL BLOCKS
+   ============================================================ */
+
+.dh-available-detail-block {
+    min-width: 0;
+
+    margin-top: 17px;
+}
+
+.dh-available-detail-label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--dhav-muted);
+
+    font-size: 9px;
+    font-weight: 750;
+
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+}
+
+.dh-available-detail-block strong {
+    display: block;
+
+    color: var(--dhav-text);
+
+    font-size: 11.5px;
+    font-weight: 600;
+
+    line-height: 1.55;
+
+    overflow-wrap: anywhere;
+}
+
+.dh-available-detail-block p {
+    color: var(--dhav-text-2);
+
+    font-size: 11.5px;
+    line-height: 1.55;
+
+    overflow-wrap: anywhere;
+}
+
+.dh-available-detail-link {
+    display: block;
+
+    color: var(--dhav-gold-text);
+
+    font-size: 11.5px;
+    font-weight: 700;
+
+    line-height: 1.45;
+
+    text-decoration: none;
+
+    overflow-wrap: anywhere;
+}
+
+.dh-available-detail-link:hover {
+    text-decoration: underline;
+}
+
+
+/* ============================================================
+   45. DETAIL STATS
+   ============================================================ */
+
+.dh-available-detail-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 9px;
+
+    margin-top: 15px;
+}
+
+.dh-available-detail-stat {
+    min-width: 0;
+
+    padding: 10px;
+
+    background: var(--dhav-soft);
+
+    border: 1px solid #ececec;
+    border-radius: 9px;
+}
+
+.dh-available-detail-stat span {
+    display: block;
+
+    color: var(--dhav-muted);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+}
+
+.dh-available-detail-stat strong {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    line-height: 1.25;
+}
+
+
+/* ============================================================
+   46. SELECTED SHOP PRODUCTS
+   ============================================================ */
+
+.dh-available-detail-products {
+    min-width: 0;
+
+    margin-top: 17px;
+}
+
+.dh-available-detail-products
+.dh-available-detail-label {
+    margin-bottom: 3px;
+}
+
+.dh-available-detail-product {
+    width: 100%;
+    min-width: 0;
+
+    display: grid;
+
+    grid-template-columns:
+        27px
+        minmax(0, 1fr)
+        auto;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 7px;
+
+    padding: 8px;
+
+    text-align: left;
+
+    background: #ffffff;
+
+    border: 1px solid #ececec;
+    border-radius: 8px;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.dh-available-detail-product:hover {
+    background: var(--dhav-gold-soft);
+
+    border-color: var(--dhav-gold-line);
+}
+
+.dh-available-detail-product
+> span:first-child {
+    width: 27px;
+    height: 27px;
+
+    display: grid;
+    place-items: center;
+
+    background: #f6f6f6;
+
+    border-radius: 7px;
+
+    font-size: 12px;
+}
+
+.dh-available-detail-product
+> span:nth-child(2) {
+    min-width: 0;
+}
+
+.dh-available-detail-product strong {
+    display: block;
+
+    overflow: hidden;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    line-height: 1.35;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dh-available-detail-product small {
+    display: block;
+
+    margin-top: 1px;
+
+    color: var(--dhav-muted);
+
+    font-size: 10px;
+    line-height: 1.3;
+}
+
+.dh-available-detail-product b {
+    color: #8a8a8a;
+
+    font-size: 11px;
+}
+
+
+/* ============================================================
+   47. ACTION BUTTONS
+   ------------------------------------------------------------
+   ALWAYS VERTICAL
+   ============================================================ */
+
+.dh-available-detail-actions {
+    position: sticky;
+
+    bottom: 0;
+
+    z-index: 2;
+
+    margin-top: 22px;
+
+    padding:
+        15px 0
+        14px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0),
+            #ffffff 16px
+        );
+}
+
+.dh-available-book-button,
+.dh-available-map-button {
+    min-width: 0;
+
+    width: 100%;
+    height: 39px;
+
+    flex: 0 0 auto;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 10px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+    font-weight: 750;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.1s ease;
+}
+
+.dh-available-book-button {
+    color: #111111;
+
+    background: var(--dhav-gold);
+
+    border: 1px solid var(--dhav-gold-dark);
+}
+
+.dh-available-book-button:hover {
+    background: #c9a22e;
+}
+
+.dh-available-map-button {
+    color: #111111;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+}
+
+.dh-available-map-button:hover {
+    background: var(--dhav-soft);
+
+    border-color: #111111;
+}
+
+.dh-available-book-button:active,
+.dh-available-map-button:active {
+    transform: translateY(1px);
+}
+
+
+/* ============================================================
+   48. LOCATION METHOD POPUP
+   ============================================================ */
+
+.dh-location-method-content,
+.dh-location-method-content *,
+.dh-location-map-content,
+.dh-location-map-content *,
+.dh-google-maps-confirm-content,
+.dh-google-maps-confirm-content * {
+    box-sizing: border-box;
+}
+
+.dh-location-method-content,
+.dh-location-map-content {
+    display: flex;
+    flex-direction: column;
+
+    gap: 13px;
+}
+
+.dh-location-method-description,
+.dh-location-map-description {
+    margin: 0;
+
+    color: var(--dhav-muted);
+
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.dh-location-method-card {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 15px;
+
+    text-align: left;
+
+    color: var(--dhav-text);
+
+    background: #ffffff;
+
+    border: 1px solid var(--dhav-line);
+    border-radius: 12px;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.dh-location-method-card:hover:not(:disabled) {
+    background: var(--dhav-gold-soft);
+
+    border-color: var(--dhav-gold);
+}
+
+.dh-location-method-card:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+.dh-location-method-icon {
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--dhav-gold-soft);
+
+    border-radius: 10px;
+
+    font-size: 18px;
+}
+
+.dh-location-method-card-content {
+    min-width: 0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.dh-location-method-card-content strong {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.dh-location-method-card-content span {
+    color: var(--dhav-muted);
+
+    font-size: 12.5px;
+    line-height: 1.45;
+}
+
+.dh-location-method-arrow {
+    color: #888888;
+
+    font-weight: 700;
+}
+
+.dh-location-method-note {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 8px;
+
+    padding: 10px 12px;
+
+    background: var(--dhav-soft);
+
+    border: 1px solid #eeeeee;
+    border-radius: 10px;
+}
+
+.dh-location-method-note p {
+    margin: 0;
+
+    color: var(--dhav-muted);
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   49. LOCATION MAP POPUP
+   ============================================================ */
+
+.dh-location-map-search {
+    display: flex;
+
+    gap: 8px;
+}
+
+.dh-location-map-search input {
+    min-width: 0;
+
+    flex: 1;
+
+    height: 40px;
+
+    padding: 0 12px;
+
+    color: var(--dhav-text);
+
+    background: #ffffff;
+
+    border: 1px solid var(--dhav-line-2);
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 13.5px;
+}
+
+.dh-location-map-search input:focus {
+    border-color: var(--dhav-gold-dark);
+
+    box-shadow:
+        0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+.dh-location-map-search button {
+    height: 40px;
+
+    padding: 0 18px;
+
+    color: #ffffff;
+
+    background: #111111;
+
+    border: 1px solid #111111;
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.dh-location-map-search button:hover:not(:disabled) {
+    color: #111111;
+
+    background: var(--dhav-gold);
+
+    border-color: var(--dhav-gold);
+}
+
+.dh-location-map-search button:disabled {
+    opacity: 0.6;
+
+    cursor: wait;
+}
+
+.dh-location-map-error {
+    padding: 9px 12px;
+
+    color: var(--dhav-danger);
+
+    background: var(--dhav-danger-bg);
+
+    border: 1px solid var(--dhav-danger-line);
+    border-radius: 8px;
+
+    font-size: 12.5px;
+}
+
+
+/* ============================================================
+   50. LOCATION MAP
+   ============================================================ */
+
+.dh-location-map-wrapper {
+    height: clamp(260px, 44vh, 390px);
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    border: 1px solid var(--dhav-line);
+    border-radius: 12px;
+}
+
+.dh-location-map.leaflet-container {
+    width: 100%;
+    height: 100%;
+
+    font-family: inherit;
+}
+
+.dh-location-selected-info {
+    display: flex;
+    flex-wrap: wrap;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 7px 14px;
+
+    padding: 10px 12px;
+
+    background: var(--dhav-gold-soft);
+
+    border: 1px solid var(--dhav-gold-line);
+    border-radius: 10px;
+}
+
+.dh-location-selected-info > div {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.dh-location-selected-info > div span {
+    color: var(--dhav-gold-text);
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+}
+
+.dh-location-selected-info > div strong {
+    font-size: 13px;
+    font-weight: 700;
+
+    line-height: 1.35;
+}
+
+.dh-location-selected-info > span {
+    color: var(--dhav-muted);
+
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   51. POPUP BUTTONS
+   ============================================================ */
+
+.dh-location-modal-actions,
+.dh-google-maps-confirm-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 8px;
+}
+
+.dh-google-maps-confirm-actions {
+    justify-content: center;
+
+    margin-top: 18px;
+}
+
+.dh-location-modal-secondary,
+.dh-location-modal-primary,
+.dh-google-maps-cancel,
+.dh-google-maps-open {
+    height: 36px;
+
+    padding: 0 16px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.dh-location-modal-secondary,
+.dh-google-maps-cancel {
+    color: var(--dhav-text-2);
+
+    background: #ffffff;
+
+    border: 1px solid var(--dhav-line-2);
+}
+
+.dh-location-modal-secondary:hover,
+.dh-google-maps-cancel:hover {
+    background: var(--dhav-soft);
+
+    border-color: #999999;
+}
+
+.dh-location-modal-primary,
+.dh-google-maps-open {
+    color: #111111;
+
+    background: var(--dhav-gold);
+
+    border: 1px solid var(--dhav-gold-dark);
+}
+
+.dh-location-modal-primary:hover:not(:disabled),
+.dh-google-maps-open:hover {
+    background: #c9a22e;
+}
+
+.dh-location-modal-primary:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
+   52. GOOGLE MAPS CONFIRMATION
+   ============================================================ */
+
+.dh-google-maps-confirm-content {
+    text-align: center;
+}
+
+.dh-google-maps-confirm-icon {
+    width: 52px;
+    height: 52px;
+
+    display: grid;
+    place-items: center;
+
+    margin: 0 auto 12px;
+
+    background: var(--dhav-gold-soft);
+
+    border-radius: 14px;
+
+    font-size: 24px;
+}
+
+.dh-google-maps-confirm-content h3 {
+    margin: 0;
+
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.dh-google-maps-confirm-content p {
+    max-width: 360px;
+
+    margin: 8px auto 0;
+
+    color: var(--dhav-muted);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   53. LARGE DESKTOP
+   ============================================================ */
+
+@media (min-width: 1600px) {
+
+    .dh-available-column-intro {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .dh-available-map-shell {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .dh-available-intro-copy h1 {
+        font-size: 25px;
+    }
+
+    .dh-available-shops-header h2 {
+        font-size: 19px;
+    }
+
+    .dh-available-shop-info h3 {
+        font-size: 15px;
+    }
+
+    .dh-available-shop-address {
+        font-size: 12.5px;
+    }
+
+    .dh-available-detail-block strong,
+    .dh-available-detail-link {
+        font-size: 12px;
+    }
+}
+
+
+/* ============================================================
+   54. TABLET
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+    .dh-available-three-column-layout {
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 1fr);
+
+        grid-template-rows:
+            minmax(0, 1.45fr)
+            minmax(0, 1fr);
+
+        grid-template-areas:
+            "map shops"
+            "map details";
+    }
+
+    .dh-available-map-column {
+        grid-area: map;
+    }
+
+    .dh-available-shops-column {
+        grid-area: shops;
+    }
+
+    .dh-available-details-column {
+        grid-area: details;
+    }
+}
+
+
+/* ============================================================
+   55. SMALL TABLET
+   ============================================================ */
+
+@media (max-width: 850px) {
+
+    .dh-available-three-column-layout {
+        gap: 11px;
+    }
+
+    .dh-available-column-intro {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .dh-available-map-shell {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .dh-available-controls {
+        grid-template-columns:
+            minmax(0, 1fr)
+            118px;
+    }
+
+    .dh-available-details-header,
+    .dh-available-details-scroll {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+}
+
+
+/* ============================================================
+   56. MOBILE
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    .dh-available-page {
+        height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+
+        overflow: visible;
+    }
+
+    .dh-available-main {
+        flex: 0 0 auto;
+
+        padding: 10px;
+
+        overflow: visible;
+    }
+
+    .dh-available-three-column-layout {
+        width: 100%;
+        height: auto;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 11px;
+    }
+
+    .dh-available-map-column,
+    .dh-available-shops-column,
+    .dh-available-details-column {
+        width: 100%;
+
+        flex: 0 0 auto;
+    }
+
+
+    /* --------------------------------------------------------
+       MOBILE MAP
+       -------------------------------------------------------- */
+
+    .dh-available-map-column {
+        height: 455px;
+    }
+
+    .dh-available-column-intro {
+        padding:
+            17px
+            14px
+            12px;
+    }
+
+    .dh-available-intro-copy h1 {
+        font-size: 20px;
+    }
+
+    .dh-available-map-shell {
+        height: 0;
+
+        flex: 1 1 auto;
+
+        padding:
+            5px
+            12px
+            13px;
+    }
+
+    .dh-available-main-map-wrapper {
+        flex: 1 1 auto;
+
+        min-height: 220px;
+    }
+
+    .dh-available-map-tagline {
+        min-height: 40px;
+
+        padding:
+            8px
+            2px
+            2px;
+
+        font-size: 15px;
+    }
+
+    .dh-available-map-legend {
+        padding:
+            5px
+            2px
+            0;
+    }
+
+
+    /* --------------------------------------------------------
+       MOBILE SHOPS
+       -------------------------------------------------------- */
+
+    .dh-available-shops-column {
+        height: auto;
+
+        min-height: 500px;
+    }
+
+    .dh-available-shops-header {
+        padding:
+            18px
+            14px
+            14px;
+    }
+
+    .dh-available-controls {
+        grid-template-columns:
+            minmax(0, 1fr)
+            112px;
+
+        padding:
+            0
+            14px
+            14px;
+    }
+
+    .dh-available-shop-list-scroll {
+        max-height: 520px;
+
+        padding:
+            3px
+            8px
+            14px
+            14px;
+    }
+
+    .dh-available-pagination {
+        min-height: 36px;
+    }
+
+
+    /* --------------------------------------------------------
+       MOBILE DETAILS
+       -------------------------------------------------------- */
+
+    .dh-available-details-column {
+        height: auto;
+
+        min-height: 320px;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dh-available-details-header {
+        flex: 0 0 auto;
+
+        padding:
+            17px
+            14px
+            14px;
+    }
+
+    .dh-available-details-scroll {
+        flex: 0 0 auto;
+
+        padding:
+            17px
+            14px
+            18px;
+
+        overflow: visible;
+    }
+
+    .dh-available-detail-actions {
+        position: static;
+
+        margin-top: 22px;
+
+        padding:
+            3px
+            0
+            0;
+
+        background: none;
+    }
+
+
+    /* --------------------------------------------------------
+       LOCATION ERROR
+       -------------------------------------------------------- */
+
+    .dh-available-location-error.compact {
+        top: 63px;
+
+        right: 12px;
+        left: 12px;
+    }
+
+
+    /* --------------------------------------------------------
+       LOCATION POPUP
+       -------------------------------------------------------- */
+
+    .dh-location-map-search {
+        flex-direction: column;
+    }
+
+    .dh-location-map-search button {
+        width: 100%;
+    }
+
+    .dh-location-modal-actions,
+    .dh-google-maps-confirm-actions {
+        flex-wrap: wrap;
+    }
+}
+
+
+/* ============================================================
+   57. SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 520px) {
+
+    .dh-available-page {
+        min-height: 100vh;
+    }
+
+    .dh-available-column-intro,
+    .dh-available-shops-header,
+    .dh-available-details-header {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .dh-available-controls {
+        grid-template-columns:
+            minmax(0, 1fr)
+            108px;
+
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .dh-available-shop-list-scroll {
+        padding-left: 14px;
+        padding-right: 8px;
+    }
+
+    .dh-available-shop-card {
+        padding:
+            14px;
+    }
+
+    .dh-available-shop-card-top {
+        grid-template-columns:
+            40px
+            minmax(0, 1fr)
+            auto;
+
+        column-gap: 11px;
+    }
+
+    .dh-available-shop-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .dh-available-shop-distance {
+        padding:
+            5px
+            8px;
+
+        font-size: 10px;
+    }
+
+    .dh-available-detail-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* ============================================================
+   58. VERY SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 420px) {
+
+    .dh-available-map-column {
+        height: 430px;
+    }
+
+    .dh-available-controls {
+        grid-template-columns:
+            minmax(0, 1fr)
+            104px;
+    }
+
+    .dh-available-search-wrapper input,
+    .dh-available-filter-select {
+        height: 36px;
+    }
+
+    .dh-available-shop-card {
+        min-height: 100px;
+    }
+
+    .dh-available-shop-card-top {
+        grid-template-columns:
+            38px
+            minmax(0, 1fr);
+
+        row-gap: 7px;
+    }
+
+    .dh-available-shop-distance {
+        grid-column: 2;
+
+        grid-row: 2;
+
+        justify-self: start;
+
+        margin-left: 0;
+    }
+
+    .dh-available-detail-actions {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+
+/* ============================================================
+   59. REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .dh-available-page *,
+    .dh-available-page *::before,
+    .dh-available-page *::after {
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        scroll-behavior: auto !important;
+
+        transition-duration: 0.01ms !important;
+    }
+}
+
+
+/* ============================================================
+   60. FINAL SPACING SAFETY
+   ------------------------------------------------------------
+   These rules stay LAST intentionally.
+   They prevent accidental compression from inherited styles.
+   ============================================================ */
+
+.dh-available-main-map-wrapper {
+    order: 1;
+}
+
+.dh-available-map-tagline {
+    order: 2;
+}
+
+.dh-available-map-legend {
+    order: 3;
+}
+
+
+/* Desktop: use available height naturally */
+@media (min-width: 701px) {
+
+    .dh-available-map-shell {
+        padding-bottom: 18px;
+    }
+
+    .dh-available-main-map-wrapper {
+        flex: 1 1 auto;
+
+        min-height: 240px;
+    }
+
+    .dh-available-map-tagline {
+        flex: 0 0 auto;
+    }
+
+    .dh-available-map-legend {
+        flex: 0 0 auto;
+    }
+
+    .dh-available-shop-card,
+    .dh-available-shop-skeleton {
+        min-height: 100px;
+    }
+
+    .dh-available-details-empty {
+        padding-top: 14px;
+    }
+
+    .dh-available-details-empty .dh-available-benefits {
+        margin-top: 28px;
+    }
+}

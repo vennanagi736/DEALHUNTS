@@ -1,0 +1,2196 @@
+/* ============================================================
+   GLOBAL PAGE
+============================================================ */
+
+.dh-manage-coming-soon {
+    width: 100%;
+    min-height: 100vh;
+    background: #f5f6f8;
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   MAIN
+============================================================ */
+
+.dh-coming-soon-main {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 50px 50px;
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+
+.dh-coming-soon-page-header {
+    width: 100%;
+
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 20px !important;
+}
+
+.dh-coming-soon-header-left {
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+.dh-coming-soon-page-header h1 {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 30px;
+    font-weight: 750;
+
+    line-height: 1.2;
+}
+
+.dh-coming-soon-page-header p {
+    margin: 6px 0 0;
+
+    color: #737983;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   TOTAL PRODUCTS
+============================================================ */
+
+.dh-coming-soon-total {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    align-self: flex-start;
+
+    margin: 2px 0 0;
+
+    padding: 7px 11px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e4e8;
+    border-radius: 7px;
+
+    color: #000000;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.15px;
+
+    white-space: nowrap;
+
+    box-sizing: border-box;
+}
+
+.dh-coming-soon-total strong {
+    margin-left: 4px;
+
+    color: #000000;
+
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   HEADER ACTIONS
+============================================================ */
+
+.dh-coming-soon-header-actions {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   PRIMARY BUTTON
+============================================================ */
+
+.dh-coming-soon-primary-btn {
+    min-height: 44px;
+
+    padding: 0 20px;
+
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+
+    background: #d4af37;
+    color: #111111;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dh-coming-soon-primary-btn:hover {
+    background: #bd9828;
+    border-color: #bd9828;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.10);
+}
+
+.dh-coming-soon-primary-btn:active {
+    transform: translateY(0);
+}
+
+.dh-coming-soon-primary-btn:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.5;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   MAIN CONTENT
+============================================================ */
+
+.dh-coming-soon-content {
+    width: 100%;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e5ea;
+    border-radius: 14px;
+
+    padding: 24px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+
+/* ============================================================
+   PRODUCT GRID
+============================================================ */
+
+.dh-coming-soon-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+/* ============================================================
+   PRODUCT CARD
+============================================================ */
+
+.dh-coming-soon-card {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e5ea;
+    border-radius: 12px;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.dh-coming-soon-card:hover {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.07);
+
+    transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   SELECTED CARD
+============================================================ */
+
+.dh-coming-soon-card-selected {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 0 2px rgba(212, 175, 55, 0.12),
+        0 8px 22px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ============================================================
+   CARD IMAGE
+============================================================ */
+
+.dh-coming-soon-card-image {
+    width: 100%;
+    height: 225px;
+
+    overflow: hidden;
+
+    background: #f7f8fa;
+
+    border-bottom: 1px solid #e7e9ed;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.dh-coming-soon-card-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: contain;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+    transition:
+        transform 0.3s ease;
+}
+
+.dh-coming-soon-card:hover
+.dh-coming-soon-card-image img {
+    transform: scale(1.025);
+}
+
+.dh-coming-soon-no-image {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #9aa1aa;
+
+    font-size: 13px;
+
+    background: #f5f6f8;
+}
+
+
+/* ============================================================
+   CARD CONTENT
+============================================================ */
+
+.dh-coming-soon-card-content {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 18px;
+}
+
+
+/* ============================================================
+   BRAND + PRIORITY ROW
+============================================================ */
+
+.dh-coming-soon-card-brand-row {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 9px;
+}
+
+.dh-coming-soon-card-brand {
+    min-width: 0;
+
+    color: #a17b13;
+
+    font-size: 11px;
+    font-weight: 750;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.55px;
+
+    line-height: 1.3;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   PRIORITY
+============================================================ */
+
+.dh-coming-soon-card-priority {
+    flex-shrink: 0;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 24px;
+
+    padding: 0 9px;
+
+    border: 1px solid #eadcae;
+    border-radius: 6px;
+
+    background: #fffaf0;
+    color: #8a6812;
+
+    font-size: 10px;
+    font-weight: 750;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    letter-spacing: 0.15px;
+}
+
+
+/* ============================================================
+   PRODUCT NAME
+============================================================ */
+
+.dh-coming-soon-card-content h3 {
+    margin: 0 0 8px;
+
+    color: #172033;
+
+    font-size: 17px;
+    font-weight: 750;
+
+    line-height: 1.35;
+
+    letter-spacing: -0.1px;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   DESCRIPTION
+============================================================ */
+
+.dh-coming-soon-card-content p {
+    margin: 0 0 17px;
+
+    color: #707782;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   DATE RANGE
+============================================================ */
+
+.dh-coming-soon-card-date {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    margin-top: auto;
+
+    padding: 11px 12px;
+
+    border: 1px solid #e9ebef;
+    border-radius: 8px;
+
+    background: #fafbfc;
+}
+
+.dh-coming-soon-card-date span {
+    color: #858c96;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.dh-coming-soon-card-date strong {
+    color: #172033;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.dh-coming-soon-empty {
+    min-height: 300px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 40px 20px;
+
+    border: 1px dashed #d9dde3;
+    border-radius: 10px;
+
+    background: #fafbfc;
+
+    box-sizing: border-box;
+}
+
+.dh-coming-soon-empty-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 14px;
+
+    border-radius: 50%;
+
+    background: #fff8df;
+
+    font-size: 25px;
+}
+
+.dh-coming-soon-empty h2 {
+    margin: 0 0 7px;
+
+    color: #172033;
+
+    font-size: 17px;
+    font-weight: 750;
+}
+
+.dh-coming-soon-empty p {
+    max-width: 420px;
+
+    margin: 0;
+
+    color: #7b818b;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   BOTTOM ACTION FOOTER
+============================================================ */
+
+.dh-coming-soon-footer {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 18px;
+
+    padding: 0 3px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   VIEW DETAILS BUTTON
+============================================================ */
+
+.dh-coming-soon-view-btn {
+    min-width: 145px;
+    min-height: 44px;
+
+    padding: 0 20px;
+
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #8a6812;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dh-coming-soon-view-btn:hover {
+    background: #fffaf0;
+
+    border-color: #bd9828;
+
+    color: #76590d;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 14px rgba(212, 175, 55, 0.15);
+}
+
+.dh-coming-soon-view-btn:active {
+    transform: translateY(0);
+}
+
+.dh-coming-soon-view-btn:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.45;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   POPUP OVERLAY
+============================================================ */
+
+.dh-coming-soon-popup-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    background: rgba(15, 20, 30, 0.55);
+
+    box-sizing: border-box;
+
+    z-index: 2000;
+
+    overflow-y: auto;
+}
+
+
+/* ============================================================
+   NORMAL POPUP
+============================================================ */
+
+.dh-coming-soon-popup {
+    width: 100%;
+
+    max-width: 650px;
+
+    max-height:
+        calc(100vh - 50px);
+
+    display: flex;
+
+    flex-direction: column;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e4e8;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 20px 55px rgba(0, 0, 0, 0.20);
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   DETAILS RIGHT-SIDE DRAWER
+============================================================ */
+
+.dh-coming-soon-details-popup {
+    position: fixed;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    width: min(520px, 100vw);
+    max-width: 520px;
+
+    height: 100vh;
+    max-height: 100vh;
+
+    margin: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    border-radius: 16px 0 0 16px;
+
+    animation:
+        dh-coming-soon-slide-in
+        0.25s ease-out;
+}
+
+
+/* ============================================================
+   DRAWER ANIMATION
+============================================================ */
+
+@keyframes dh-coming-soon-slide-in {
+
+    from {
+        transform: translateX(100%);
+
+        opacity: 0.7;
+    }
+
+    to {
+        transform: translateX(0);
+
+        opacity: 1;
+    }
+}
+
+
+/* ============================================================
+   POPUP HEADER
+============================================================ */
+
+.dh-coming-soon-popup-header {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 22px 24px;
+
+    border-bottom: 1px solid #e9ebef;
+
+    flex-shrink: 0;
+}
+
+.dh-coming-soon-popup-header h2 {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 19px;
+    font-weight: 750;
+
+    line-height: 1.3;
+}
+
+.dh-coming-soon-popup-header p {
+    margin: 5px 0 0;
+
+    color: #7b818b;
+
+    font-size: 11px;
+
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   POPUP CLOSE
+============================================================ */
+
+.dh-coming-soon-popup-close {
+    width: 32px;
+    height: 32px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e1e4e8;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #5d646e;
+
+    font-size: 20px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.dh-coming-soon-popup-close:hover {
+    border-color: #d4af37;
+
+    color: #b08a18;
+
+    background: #fffdf5;
+}
+
+
+/* ============================================================
+   NORMAL POPUP BODY
+============================================================ */
+
+.dh-coming-soon-popup-body {
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 24px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   DETAILS DRAWER BODY
+============================================================ */
+
+.dh-coming-soon-details-body {
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   ALL PRODUCTS LIST
+============================================================ */
+
+.dh-coming-soon-details-list {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+/* ============================================================
+   PRODUCT ITEM IN DRAWER
+============================================================ */
+
+.dh-coming-soon-details-item {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    min-height: 180px;
+
+    padding: 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e4e8;
+    border-radius: 10px;
+
+    box-sizing: border-box;
+}
+
+.dh-coming-soon-details-item:hover {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ============================================================
+   DRAWER PRODUCT IMAGE
+   DESKTOP / LAPTOP PRESERVED
+============================================================ */
+
+.dh-coming-soon-details-item-image {
+    flex: 0 0 175px;
+
+    flex-basis: 250px;
+
+    width: 200px !important;
+    height: 170px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+
+    background: #f7f8fa;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 9px;
+
+    box-sizing: border-box;
+}
+
+.dh-coming-soon-details-item-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    padding: 6px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   PRODUCT CONTENT IN DRAWER
+============================================================ */
+
+.dh-coming-soon-details-item-content {
+    flex: 1;
+
+    min-width: 0;
+
+    margin-left: 15px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+
+/* ============================================================
+   PRODUCT NAME LABEL
+============================================================ */
+
+.dh-coming-soon-details-item-label {
+    margin-bottom: 4px;
+
+    color: #8a9099;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+
+/* ============================================================
+   PRODUCT NAME
+============================================================ */
+
+.dh-coming-soon-details-item-content h3 {
+    margin: 0 0 10px;
+
+    color: #172033;
+
+    font-size: 13px;
+    font-weight: 750;
+
+    line-height: 1.4;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   SMALL EDIT / DELETE BUTTONS
+============================================================ */
+
+.dh-coming-soon-details-item-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-left: 15px;
+}
+
+
+/* ============================================================
+   EDIT BUTTON
+============================================================ */
+
+.dh-coming-soon-edit-btn {
+    min-width: 55px;
+    height: 30px;
+
+    padding: 0 10px;
+
+    border: 1px solid #d4af37;
+
+    border-radius: 6px;
+
+    background: #d4af37;
+
+    color: #111111;
+
+    font-family: inherit;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.dh-coming-soon-edit-btn:hover:not(:disabled) {
+    background: #bd9827;
+
+    border-color: #bd9827;
+
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   DELETE BUTTON
+   WHITE BACKGROUND PRESERVED
+============================================================ */
+
+.dh-coming-soon-delete-btn {
+    min-width: 55px;
+    height: 30px;
+
+    padding: 0 10px;
+
+    border: 1px solid #c53b3b;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #c53b3b;
+
+    font-family: inherit;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.dh-coming-soon-delete-btn:hover:not(:disabled) {
+    background: #ffffff;
+
+    border-color: #a92f2f;
+
+    color: #a92f2f;
+
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   DISABLED EDIT / DELETE
+============================================================ */
+
+.dh-coming-soon-edit-btn:disabled,
+.dh-coming-soon-delete-btn:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.55;
+
+    transform: none;
+}
+
+
+/* ============================================================
+   DETAILS DRAWER FOOTER
+============================================================ */
+
+.dh-coming-soon-details-popup
+.dh-coming-soon-popup-footer {
+    flex-shrink: 0;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    padding: 14px 20px;
+
+    border-top: 1px solid #e5e7eb;
+
+    background: #ffffff;
+}
+
+
+/* ============================================================
+   DETAILS CLOSE BUTTON
+============================================================ */
+
+.dh-coming-soon-details-popup
+.dh-coming-soon-cancel-btn {
+    width: 100%;
+
+    min-height: 38px;
+}
+
+
+/* ============================================================
+   DETAILS IMAGE - LEGACY SUPPORT
+============================================================ */
+
+.dh-coming-soon-details-image {
+    width: 100%;
+    height: 230px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 24px;
+
+    overflow: hidden;
+
+    border: 1px solid #e2e5ea;
+
+    border-radius: 12px;
+
+    background: #f7f8fa;
+
+    box-sizing: border-box;
+}
+
+.dh-coming-soon-details-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    padding: 15px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   DETAILS INFORMATION - LEGACY SUPPORT
+============================================================ */
+
+.dh-coming-soon-details-info {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.dh-coming-soon-details-row {
+    display: grid;
+
+    grid-template-columns:
+        115px minmax(0, 1fr);
+
+    gap: 18px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.dh-coming-soon-details-row > span {
+    color: #777d86;
+
+    font-size: 10px;
+    font-weight: 750;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.45px;
+}
+
+.dh-coming-soon-details-row > strong {
+    color: #172033;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    line-height: 1.55;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   FORM GROUP
+============================================================ */
+
+.dh-coming-soon-form-group {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+    margin-bottom: 18px;
+}
+
+.dh-coming-soon-form-group > label {
+    color: #172033;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+/* ============================================================
+   INPUTS
+============================================================ */
+
+.dh-coming-soon-form-group input,
+.dh-coming-soon-form-group textarea {
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border: 1px solid #d9dde3;
+
+    border-radius: 7px;
+
+    outline: none;
+
+    background: #ffffff;
+    color: #172033;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dh-coming-soon-form-group input {
+    min-height: 43px;
+}
+
+.dh-coming-soon-form-group textarea {
+    min-height: 100px;
+
+    resize: vertical;
+
+    line-height: 1.5;
+}
+
+.dh-coming-soon-form-group input:focus,
+.dh-coming-soon-form-group textarea:focus {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 0 3px rgba(212, 175, 55, 0.12);
+}
+
+.dh-coming-soon-form-group input::placeholder,
+.dh-coming-soon-form-group textarea::placeholder {
+    color: #a0a5ae;
+}
+
+
+/* ============================================================
+   FORM HELP
+============================================================ */
+
+.dh-coming-soon-form-group > small {
+    color: #8a9099;
+
+    font-size: 10px;
+
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   DATE ROW
+============================================================ */
+
+.dh-coming-soon-date-row {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 16px;
+}
+
+
+/* ============================================================
+   IMAGE UPLOAD
+============================================================ */
+
+.dh-coming-soon-image-upload {
+    width: 100%;
+
+    display: flex;
+
+    align-items: stretch;
+
+    gap: 12px;
+}
+
+
+/* ============================================================
+   UPLOAD BOX
+============================================================ */
+
+.dh-coming-soon-upload-box {
+    position: relative;
+
+    width: 580px !important;
+    margin: auto !important;
+    height: 145px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px dashed #c9ced6;
+
+    border-radius: 9px;
+
+    background: #f8f9fa;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.dh-coming-soon-upload-box:hover {
+    border-color: #d4af37;
+
+    background: #fffdf5;
+}
+
+.dh-coming-soon-upload-box span {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 7px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #d4af37;
+
+    font-size: 22px;
+}
+
+.dh-coming-soon-upload-box small {
+    color: #172033;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.dh-coming-soon-upload-box input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+/* ============================================================
+   IMAGE PREVIEW
+============================================================ */
+
+.dh-coming-soon-preview {
+    width: 125px;
+    height: 125px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e2e5ea;
+
+    border-radius: 9px;
+
+    background: #f5f6f8;
+
+    box-sizing: border-box;
+}
+
+.dh-coming-soon-preview img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    padding: 8px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   IMAGE HELP
+============================================================ */
+
+.dh-coming-soon-help {
+    display: block;
+
+    margin-top: 8px;
+
+    color: #8a9099;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   POPUP FOOTER
+============================================================ */
+
+.dh-coming-soon-popup-footer {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 16px 24px;
+
+    border-top: 1px solid #e9ebef;
+
+    background: #ffffff;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   POPUP BUTTONS
+============================================================ */
+
+.dh-coming-soon-cancel-btn,
+.dh-coming-soon-save-btn {
+    min-height: 41px;
+
+    padding: 0 18px;
+
+    border-radius: 7px;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   CANCEL / CLOSE
+============================================================ */
+
+.dh-coming-soon-cancel-btn {
+    border: 1px solid #d9dde3;
+
+    background: #ffffff;
+
+    color: #555c66;
+}
+
+.dh-coming-soon-cancel-btn:hover {
+    background: #f5f6f8;
+
+    border-color: #cdd2d9;
+}
+
+
+/* ============================================================
+   SAVE
+============================================================ */
+
+.dh-coming-soon-save-btn {
+    border: 1px solid #d4af37;
+
+    background: #d4af37;
+
+    color: #111111;
+}
+
+.dh-coming-soon-save-btn:hover {
+    background: #bd9828;
+
+    border-color: #bd9828;
+}
+
+
+/* ============================================================
+   DISABLED POPUP BUTTONS
+============================================================ */
+
+.dh-coming-soon-cancel-btn:disabled,
+.dh-coming-soon-save-btn:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.55;
+}
+
+
+/* ============================================================
+   SCROLLBARS
+============================================================ */
+
+.dh-coming-soon-popup-body::-webkit-scrollbar,
+.dh-coming-soon-details-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dh-coming-soon-popup-body::-webkit-scrollbar-track,
+.dh-coming-soon-details-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.dh-coming-soon-popup-body::-webkit-scrollbar-thumb,
+.dh-coming-soon-details-body::-webkit-scrollbar-thumb {
+    background: #cfd3d9;
+
+    border-radius: 10px;
+}
+
+.dh-coming-soon-popup-body::-webkit-scrollbar-thumb:hover,
+.dh-coming-soon-details-body::-webkit-scrollbar-thumb:hover {
+    background: #b8bdc5;
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 1050px) {
+
+    .dh-coming-soon-main {
+        padding: 35px 35px 45px;
+    }
+
+    .dh-coming-soon-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .dh-coming-soon-details-item-image {
+        flex-basis: 135px;
+
+        width: 135px;
+        height: 135px;
+    }
+}
+
+
+/* ============================================================
+   SMALL TABLET
+============================================================ */
+
+@media (max-width: 800px) {
+
+    .dh-coming-soon-main {
+        padding: 30px 25px 40px;
+    }
+
+    .dh-coming-soon-page-header {
+        flex-direction: row;
+
+        align-items: flex-start;
+    }
+
+    .dh-coming-soon-total {
+        margin-top: 0;
+
+        flex-shrink: 0;
+    }
+
+    .dh-coming-soon-popup-overlay {
+        padding: 15px;
+    }
+
+    .dh-coming-soon-popup {
+        max-height:
+            calc(100vh - 30px);
+    }
+
+    .dh-coming-soon-details-popup {
+        top: 0;
+        right: 0;
+        bottom: 0;
+
+        width: 520px;
+        max-width: 100vw;
+
+        height: 100vh;
+        max-height: 100vh;
+
+        border-radius:
+            14px 0 0 14px;
+    }
+
+    .dh-coming-soon-details-item-image {
+        flex-basis: 130px;
+
+        width: 130px;
+        height: 130px;
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 650px) {
+
+    .dh-coming-soon-main {
+        padding: 25px 16px 35px;
+    }
+
+    .dh-coming-soon-page-header {
+        flex-direction: row;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .dh-coming-soon-upload-box {
+        width: 100% !important;
+        height: 145px;
+        flex-shrink: 1;
+    }
+
+    .dh-coming-soon-header-left {
+        flex: 1;
+
+        min-width: 0;
+    }
+
+    .dh-coming-soon-page-header h1 {
+        font-size: 24px;
+
+        letter-spacing: -0.2px;
+    }
+
+    .dh-coming-soon-page-header p {
+        font-size: 12px;
+    }
+
+    .dh-coming-soon-total {
+        padding: 6px 9px;
+
+        margin-top: 0;
+
+        font-size: 10px;
+
+        flex-shrink: 0;
+    }
+
+    .dh-coming-soon-content {
+        padding: 14px;
+
+        border-radius: 11px;
+    }
+
+    .dh-coming-soon-grid {
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+    }
+
+    .dh-coming-soon-card-image {
+        height: 220px;
+    }
+
+    .dh-coming-soon-card-content {
+        padding: 16px;
+    }
+
+
+    /* --------------------------------------------------------
+       BOTTOM BUTTONS
+    -------------------------------------------------------- */
+
+    .dh-coming-soon-footer {
+        gap: 8px;
+
+        padding: 0;
+    }
+
+    .dh-coming-soon-view-btn,
+    .dh-coming-soon-primary-btn {
+        flex: 1;
+
+        min-width: 0;
+
+        min-height: 42px;
+
+        padding-left: 10px;
+        padding-right: 10px;
+
+        font-size: 12px;
+    }
+
+
+    /* --------------------------------------------------------
+       DRAWER
+    -------------------------------------------------------- */
+
+    .dh-coming-soon-details-popup {
+        width: 92vw;
+
+        max-width: 92vw;
+
+        border-radius:
+            14px 0 0 14px;
+    }
+
+    .dh-coming-soon-details-body {
+        padding: 15px;
+    }
+
+
+    /* --------------------------------------------------------
+       DRAWER PRODUCT
+       MOBILE IMAGE WIDTH DOUBLED
+    -------------------------------------------------------- */
+
+    .dh-coming-soon-details-item {
+        min-height: 135px;
+
+        padding: 9px;
+    }
+
+    .dh-coming-soon-details-item-image {
+        flex: 0 0 210px;
+
+        width: 210px;
+
+        height: 105px;
+    }
+
+    .dh-coming-soon-details-item-content {
+        margin-left: 10px;
+    }
+
+    .dh-coming-soon-details-item-content h3 {
+        margin-bottom: 8px;
+
+        font-size: 12px;
+    }
+
+    .dh-coming-soon-edit-btn,
+    .dh-coming-soon-delete-btn {
+        min-width: 50px;
+
+        height: 28px;
+
+        padding: 0 8px;
+
+        font-size: 9px;
+    }
+
+
+    /* --------------------------------------------------------
+       FORM
+    -------------------------------------------------------- */
+
+    .dh-coming-soon-date-row {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+    .dh-coming-soon-upload-box,
+    .dh-coming-soon-preview {
+        width: 130px;
+        height: 130px;
+    }
+
+
+    /* --------------------------------------------------------
+       POPUP
+    -------------------------------------------------------- */
+
+    .dh-coming-soon-popup-header {
+        padding: 18px;
+    }
+
+    .dh-coming-soon-popup-body {
+        padding: 18px;
+    }
+
+    .dh-coming-soon-popup-footer {
+        padding: 14px 18px;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .dh-coming-soon-main {
+        padding: 20px 12px 30px;
+    }
+
+    .dh-coming-soon-page-header {
+        flex-direction: row;
+
+        align-items: flex-start;
+
+        gap: 8px;
+    }
+
+    .dh-coming-soon-header-left {
+        flex: 1;
+
+        min-width: 0;
+    }
+
+    .dh-coming-soon-total {
+        align-self: flex-start;
+
+        margin-top: 0;
+
+        flex-shrink: 0;
+
+        padding: 6px 8px;
+    }
+
+    .dh-coming-soon-page-header h1 {
+        font-size: 21px;
+    }
+
+    .dh-coming-soon-content {
+        padding: 10px;
+
+        border-radius: 9px;
+    }
+
+    .dh-coming-soon-card-image {
+        height: 195px;
+    }
+
+    .dh-coming-soon-card-content {
+        padding: 14px;
+    }
+
+
+    /* --------------------------------------------------------
+       BOTTOM BUTTONS
+    -------------------------------------------------------- */
+
+    .dh-coming-soon-footer {
+        gap: 7px;
+
+        flex-direction: row;
+    }
+
+    .dh-coming-soon-view-btn,
+    .dh-coming-soon-primary-btn {
+        flex: 1;
+
+        width: auto;
+
+        min-width: 0;
+
+        min-height: 40px;
+
+        font-size: 11px;
+    }
+
+
+    /* --------------------------------------------------------
+       DRAWER
+    -------------------------------------------------------- */
+
+    .dh-coming-soon-details-popup {
+        top: 0;
+        right: 0;
+        bottom: 0;
+
+        width: calc(100vw - 8px);
+        max-width: calc(100vw - 8px);
+
+        height: 100vh;
+        max-height: 100vh;
+
+        border-radius:
+            11px 0 0 11px;
+    }
+
+    .dh-coming-soon-details-body {
+        padding: 12px;
+    }
+
+    .dh-coming-soon-details-item {
+        min-height: 120px;
+
+        padding: 8px;
+
+        gap: 10px;
+    }
+
+
+    /* --------------------------------------------------------
+       MOBILE DRAWER IMAGE
+       180px WIDTH
+    -------------------------------------------------------- */
+
+    .dh-coming-soon-details-item-image {
+        flex: 0 0 180px;
+
+        width: 180px;
+
+        height: 90px;
+    }
+
+    .dh-coming-soon-details-item-content {
+        margin-left: 9px;
+    }
+
+    .dh-coming-soon-details-item-label {
+        font-size: 8px;
+    }
+
+    .dh-coming-soon-details-item-content h3 {
+        font-size: 11px;
+
+        margin-bottom: 7px;
+    }
+
+    .dh-coming-soon-details-item-actions {
+        gap: 5px;
+    }
+
+    .dh-coming-soon-edit-btn,
+    .dh-coming-soon-delete-btn {
+        min-width: 46px;
+
+        height: 27px;
+
+        padding: 0 7px;
+
+        font-size: 8.5px;
+    }
+
+
+    /* --------------------------------------------------------
+       IMAGE UPLOAD
+    -------------------------------------------------------- */
+
+    .dh-coming-soon-upload-box,
+    .dh-coming-soon-preview {
+        width: 120px;
+        height: 120px;
+    }
+
+
+    /* --------------------------------------------------------
+       NORMAL POPUP
+    -------------------------------------------------------- */
+
+    .dh-coming-soon-popup-overlay {
+        padding: 8px;
+    }
+
+    .dh-coming-soon-popup {
+        max-height:
+            calc(100vh - 16px);
+
+        border-radius: 11px;
+    }
+
+    .dh-coming-soon-popup-header h2 {
+        font-size: 16px;
+    }
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+============================================================ */
+
+@media (max-width: 360px) {
+
+    .dh-coming-soon-main {
+        padding: 18px 10px 25px;
+    }
+
+    .dh-coming-soon-page-header {
+        gap: 6px;
+    }
+
+    .dh-coming-soon-header-left {
+        flex: 1;
+
+        min-width: 0;
+    }
+
+    .dh-coming-soon-page-header h1 {
+        font-size: 19px;
+    }
+
+    .dh-coming-soon-total {
+        font-size: 9px;
+
+        padding: 5px 8px;
+    }
+
+    .dh-coming-soon-card-image {
+        height: 175px;
+    }
+
+    .dh-coming-soon-card-content h3 {
+        font-size: 15px;
+    }
+
+    .dh-coming-soon-upload-box,
+    .dh-coming-soon-preview {
+        width: 105px;
+        height: 105px;
+    }
+
+
+    /* --------------------------------------------------------
+       BOTTOM ACTIONS
+       KEEP BUTTONS SIDE-BY-SIDE
+    -------------------------------------------------------- */
+
+    .dh-coming-soon-footer {
+        flex-direction: row;
+
+        align-items: stretch;
+
+        gap: 6px;
+    }
+
+    .dh-coming-soon-view-btn,
+    .dh-coming-soon-primary-btn {
+        width: auto;
+
+        flex: 1;
+
+        min-width: 0;
+
+        padding-left: 6px;
+        padding-right: 6px;
+
+        font-size: 10px;
+    }
+
+
+    /* --------------------------------------------------------
+       DRAWER PRODUCT
+       IMAGE WIDTH DOUBLED
+    -------------------------------------------------------- */
+
+    .dh-coming-soon-details-item {
+        align-items: flex-start;
+
+        min-height: 105px;
+
+        gap: 8px;
+    }
+
+    .dh-coming-soon-details-item-image {
+        flex: 0 0 144px;
+
+        width: 144px;
+
+        height: 72px;
+    }
+
+    .dh-coming-soon-details-item-content {
+        margin-left: 8px;
+    }
+
+    .dh-coming-soon-edit-btn,
+    .dh-coming-soon-delete-btn {
+        min-width: 43px;
+
+        height: 25px;
+
+        padding: 0 6px;
+
+        font-size: 8px;
+    }
+
+    .dh-coming-soon-details-item-actions {
+        gap: 4px;
+    }
+}

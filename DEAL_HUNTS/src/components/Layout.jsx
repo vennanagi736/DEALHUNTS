@@ -18,6 +18,7 @@ function Layout({ title, children }) {
     "/vendorlogin",
     "/vendorregister",
     "/adminlogin",
+    "/forgot-password",
   ];
 
   const hideSideBar = authPages.includes(currentPath);

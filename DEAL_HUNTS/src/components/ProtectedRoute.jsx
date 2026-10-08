@@ -32,49 +32,113 @@ const normalizeRole = (role) => {
    GET CURRENT SESSION
 ============================================================ */
 
-const getCurrentSession = () => {
+const getCurrentSession = (allowedRoles = []) => {
 
     /* --------------------------------------------------------
-       USER
+       ADMIN
        --------------------------------------------------------
-       User token is checked first because user-only pages such
-       as Cart, Wishlist and Orders must use the user session.
+       If this route requires ADMIN, check the admin session
+       first even when a user session also exists.
     -------------------------------------------------------- */
 
-    const userToken =
-        localStorage.getItem("userJwtToken");
+    if (allowedRoles.includes("ROLE_ADMIN")) {
 
-    if (userToken) {
+        const adminToken =
+            localStorage.getItem("adminJwtToken");
 
-        return {
-            token: userToken,
-            role:
-                normalizeRole(
-                    localStorage.getItem("userRole")
-                ) || "ROLE_USER",
-        };
-    }
+        if (adminToken) {
 
-
-    /* --------------------------------------------------------
-       OLD USER TOKEN
-    -------------------------------------------------------- */
-
-    const oldUserToken =
-        localStorage.getItem("jwtToken");
-
-    if (oldUserToken) {
-
-        return {
-            token: oldUserToken,
-            role: "ROLE_USER",
-        };
+            return {
+                token: adminToken,
+                role:
+                    normalizeRole(
+                        localStorage.getItem("adminRole")
+                    ) || "ROLE_ADMIN",
+            };
+        }
     }
 
 
     /* --------------------------------------------------------
        VENDOR
+       -------------------------------------------------------- */
+
+    if (allowedRoles.includes("ROLE_VENDOR")) {
+
+        const vendorToken =
+            localStorage.getItem("vendorJwtToken");
+
+        if (vendorToken) {
+
+            return {
+                token: vendorToken,
+                role:
+                    normalizeRole(
+                        localStorage.getItem("vendorRole")
+                    ) || "ROLE_VENDOR",
+            };
+        }
+    }
+
+
+    /* --------------------------------------------------------
+       USER
+       -------------------------------------------------------- */
+
+    if (allowedRoles.includes("ROLE_USER")) {
+
+        const userToken =
+            localStorage.getItem("userJwtToken");
+
+        if (userToken) {
+
+            return {
+                token: userToken,
+                role:
+                    normalizeRole(
+                        localStorage.getItem("userRole")
+                    ) || "ROLE_USER",
+            };
+        }
+
+
+        /* ----------------------------------------------------
+           OLD USER TOKEN
+        ---------------------------------------------------- */
+
+        const oldUserToken =
+            localStorage.getItem("jwtToken");
+
+        if (oldUserToken) {
+
+            return {
+                token: oldUserToken,
+                role: "ROLE_USER",
+            };
+        }
+    }
+
+
+    /* --------------------------------------------------------
+       COMMON FALLBACK
+       --------------------------------------------------------
+       Used for routes that allow multiple roles.
     -------------------------------------------------------- */
+
+    const adminToken =
+        localStorage.getItem("adminJwtToken");
+
+    if (adminToken) {
+
+        return {
+            token: adminToken,
+            role:
+                normalizeRole(
+                    localStorage.getItem("adminRole")
+                ) || "ROLE_ADMIN",
+        };
+    }
+
 
     const vendorToken =
         localStorage.getItem("vendorJwtToken");
@@ -91,21 +155,29 @@ const getCurrentSession = () => {
     }
 
 
-    /* --------------------------------------------------------
-       ADMIN
-    -------------------------------------------------------- */
+    const userToken =
+        localStorage.getItem("userJwtToken");
 
-    const adminToken =
-        localStorage.getItem("adminJwtToken");
-
-    if (adminToken) {
+    if (userToken) {
 
         return {
-            token: adminToken,
+            token: userToken,
             role:
                 normalizeRole(
-                    localStorage.getItem("adminRole")
-                ) || "ROLE_ADMIN",
+                    localStorage.getItem("userRole")
+                ) || "ROLE_USER",
+        };
+    }
+
+
+    const oldUserToken =
+        localStorage.getItem("jwtToken");
+
+    if (oldUserToken) {
+
+        return {
+            token: oldUserToken,
+            role: "ROLE_USER",
         };
     }
 
@@ -135,7 +207,7 @@ const ProtectedRoute = ({
     const {
         token,
         role,
-    } = getCurrentSession();
+    } = getCurrentSession(allowedRoles);
 
 
     /* ========================================================

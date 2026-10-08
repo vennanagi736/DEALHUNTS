@@ -1,5 +1,6 @@
 /* ============================================================
    DEALHUNTS — VENDOR REGISTER
+   PROFESSIONAL BLACK / GOLD / WHITE UI
 
    GOLD  : #d4af37
    BLACK : #000000
@@ -14,6 +15,7 @@
 html,
 body,
 #root {
+    width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
@@ -21,6 +23,13 @@ body,
 
 * {
     box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 
@@ -35,8 +44,6 @@ body,
 
     display: flex;
     flex-direction: column;
-
-    box-sizing: border-box;
 
     background: #f7f7f7;
 
@@ -57,8 +64,6 @@ body,
     justify-content: center;
     align-items: flex-start;
 
-    box-sizing: border-box;
-
     padding: 30px 20px 40px;
 
     overflow-y: auto;
@@ -67,9 +72,6 @@ body,
     scrollbar-width: thin;
     scrollbar-color: #b8b8b8 transparent;
 }
-
-
-/* Chrome / Edge / Safari */
 
 .form-wrapper::-webkit-scrollbar {
     width: 7px;
@@ -102,8 +104,6 @@ body,
     margin: 0 auto;
     padding: 30px 35px 28px;
 
-    box-sizing: border-box;
-
     background: #ffffff;
 
     border: 1px solid #e1e1e1;
@@ -125,7 +125,6 @@ body,
 
     color: #000000;
 
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 24px;
     font-weight: 700;
 
@@ -149,49 +148,16 @@ body,
 
 
 /* ============================================================
-   INPUTS / SELECT / TEXTAREA
+   FORM GROUP
 ============================================================ */
 
-.register-box input,
-.register-box select,
-.register-box textarea {
+.form-group {
     width: 100%;
-
-    box-sizing: border-box;
-
-    margin-top: 5px;
-    margin-bottom: 16px;
-
-    padding: 11px 13px;
-
-    border: 1px solid #d2d2d2;
-    border-radius: 6px;
-
-    background: #ffffff;
-    color: #222222;
-
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-
-    outline: none;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+    margin: 0;
 }
 
-.register-box input:focus,
-.register-box select:focus,
-.register-box textarea:focus {
-    border-color: #d4af37;
-
-    box-shadow:
-        0 0 0 2px rgba(212, 175, 55, 0.12);
-}
-
-.register-box textarea {
-    min-height: 90px;
-    resize: vertical;
+.form-group + .form-group {
+    margin-top: 0;
 }
 
 
@@ -202,47 +168,29 @@ body,
 .register-box label {
     display: block;
 
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 
     color: #222222;
 
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
     font-weight: 600;
+
+    line-height: 1.35;
 }
 
 
 /* ============================================================
-   VENDOR LOCATION BOX
+   INPUTS / SELECT / TEXTAREA
 ============================================================ */
 
-.vendor-location-box {
+.register-box input,
+.register-box select,
+.register-box textarea {
     width: 100%;
 
-    margin: 2px 0 16px;
-    padding: 14px;
-
-    box-sizing: border-box;
-
-    border: 1px solid #d8d8d8;
-    border-radius: 8px;
-
-    background: #fafafa;
-}
-
-
-/* ============================================================
-   LOCATION INPUT
-============================================================ */
-
-.vendor-location-box input {
-    width: 100%;
-
-    margin: 0 0 12px;
+    margin: 0 0 16px;
 
     padding: 11px 13px;
-
-    box-sizing: border-box;
 
     border: 1px solid #d2d2d2;
     border-radius: 6px;
@@ -250,46 +198,523 @@ body,
     background: #ffffff;
     color: #222222;
 
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
+    line-height: 1.4;
 
     outline: none;
 
     transition:
         border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.register-box input::placeholder,
+.register-box textarea::placeholder {
+    color: #999999;
+}
+
+.register-box input:hover,
+.register-box select:hover,
+.register-box textarea:hover {
+    border-color: #bdbdbd;
+}
+
+.register-box input:focus,
+.register-box select:focus,
+.register-box textarea:focus {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 0 2px rgba(212, 175, 55, 0.13);
+}
+
+.register-box textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+
+/* ============================================================
+   PASSWORD FIELD
+============================================================ */
+
+.password-field {
+    position: relative;
+
+    width: 100%;
+}
+
+.password-field input {
+    padding-right: 55px;
+}
+
+.password-field .password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 8px;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0;
+
+    transform: translateY(-50%);
+
+    border: none;
+    border-radius: 5px;
+
+    background: transparent !important;
+    color: #555555;
+
+    cursor: pointer;
+
+    box-shadow: none !important;
+    outline: none;
+
+    transition: color 0.2s ease;
+}
+
+.password-field .password-toggle:hover,
+.password-field .password-toggle:focus,
+.password-field .password-toggle:active {
+    background: transparent !important;
+    color: #000000;
+
+    box-shadow: none !important;
+}
+
+.password-field .password-toggle:focus-visible {
+    outline: 2px solid #d4af37;
+    outline-offset: 1px;
+}
+
+.password-toggle svg {
+    width: 19px;
+    height: 19px;
+
+    display: block;
+
+    margin: 0 !important;
+}
+
+
+/* ============================================================
+   SHOP LOCATION SECTION
+============================================================ */
+
+.vendor-location-section {
+    width: 100%;
+
+    margin: 2px 0 18px;
+    padding: 14px;
+
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+
+    background: #fafafa;
+}
+
+.vendor-location-section > label {
+    display: block;
+
+    margin: 0 0 9px;
+
+    color: #111111;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   LOCATION OPEN BUTTON
+============================================================ */
+
+.vendor-location-open-button {
+    width: 100%;
+    height: 42px;
+
+    margin: 0;
+    padding: 0 14px;
+
+    border: 1px solid #d4af37;
+    border-radius: 6px;
+
+    background: #d4af37;
+    color: #000000;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
         box-shadow 0.2s ease;
 }
 
-.vendor-location-box input:focus {
+.vendor-location-open-button:hover {
+    background: #d4af37;
+    color: #000000;
+
+    border-color: #d4af37;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.14);
+}
+
+.vendor-location-open-button:active {
+    transform: translateY(0);
+}
+
+.vendor-location-open-button:focus-visible {
+    outline: 2px solid #d4af37;
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   CONFIRMED LOCATION
+============================================================ */
+
+.vendor-location-confirmed {
+    width: 100%;
+
+    margin-top: 9px;
+    padding: 8px 10px;
+
+    border: 1px solid #c9dfc9;
+    border-radius: 6px;
+
+    background: #f3f9f3;
+    color: #28752d;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-align: center;
+
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   LOCATION POPUP OVERLAY
+============================================================ */
+
+.vendor-location-popup-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.58);
+
+    overflow: hidden;
+
+    animation: vendorLocationOverlayIn 0.18s ease;
+}
+
+
+/* ============================================================
+   LOCATION POPUP
+   Header and footer remain visible.
+   Only .vendor-location-popup-scroll scrolls.
+============================================================ */
+
+.vendor-location-popup {
+    position: relative;
+
+    width: min(760px, 100%);
+    max-height: calc(100vh - 40px);
+
+    display: flex;
+    flex-direction: column;
+
+    min-height: 0;
+
+    background: #ffffff;
+
+    border: 1px solid #dedede;
+    border-radius: 12px;
+
+    box-shadow:
+        0 20px 55px rgba(0, 0, 0, 0.25);
+
+    overflow: hidden;
+
+    animation: vendorLocationPopupIn 0.2s ease;
+}
+
+
+/* ============================================================
+   POPUP HEADER
+============================================================ */
+
+.vendor-location-popup-header {
+    flex: 0 0 auto;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 17px 20px;
+
+    border-bottom: 1px solid #e8e8e8;
+
+    background: #ffffff;
+}
+
+.vendor-location-popup-header > div {
+    min-width: 0;
+}
+
+.vendor-location-popup-header h3 {
+    margin: 0;
+
+    color: #000000;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    line-height: 1.25;
+}
+
+.vendor-location-popup-header p {
+    margin: 5px 0 0;
+
+    color: #777777;
+
+    font-size: 12px;
+
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   POPUP CLOSE
+============================================================ */
+
+.vendor-location-popup-close {
+    flex: 0 0 auto;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0;
+
+    border: 1px solid transparent;
+    border-radius: 6px;
+
+    background: transparent;
+    color: #000000;
+
+    font-size: 23px;
+    font-weight: 400;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.vendor-location-popup-close:hover {
+    background: #d4af37;
+    color: #000000;
+
+    border-color: #d4af37;
+
+    border-radius: 50%;
+
+    transform: rotate(90deg);
+}
+
+.vendor-location-popup-close:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+.vendor-location-popup-close:focus-visible {
+    outline: 2px solid #d4af37;
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   POPUP SCROLL CONTENT
+   IMPORTANT:
+   JSX uses .vendor-location-popup-scroll
+============================================================ */
+
+.vendor-location-popup-scroll {
+    flex: 1 1 auto;
+
+    min-height: 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 0;
+
+    overscroll-behavior: contain;
+
+    scrollbar-width: thin;
+    scrollbar-color: #777777 #f3f3f3;
+}
+
+.vendor-location-popup-scroll::-webkit-scrollbar {
+    width: 7px;
+}
+
+.vendor-location-popup-scroll::-webkit-scrollbar-track {
+    background: #f3f3f3;
+}
+
+.vendor-location-popup-scroll::-webkit-scrollbar-thumb {
+    background: #777777;
+
+    border-radius: 10px;
+}
+
+.vendor-location-popup-scroll::-webkit-scrollbar-thumb:hover {
+    background: #d4af37;
+}
+
+
+/* ============================================================
+   GOOGLE MAP LINK SECTION
+============================================================ */
+
+.vendor-location-link-section {
+    width: 100%;
+
+    padding: 15px 20px 0;
+}
+
+.vendor-location-link-section label {
+    display: block;
+
+    margin: 0 0 7px;
+
+    color: #222222;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   GOOGLE MAP LINK ROW
+============================================================ */
+
+.vendor-location-link-row {
+    width: 100%;
+
+    display: flex;
+    align-items: stretch;
+
+    gap: 8px;
+}
+
+.vendor-location-link-row input {
+    flex: 1;
+    min-width: 0;
+
+    width: auto;
+    height: 42px;
+
+    margin: 0;
+
+    padding: 10px 12px;
+
+    border: 1px solid #d2d2d2;
+    border-radius: 6px;
+
+    background: #ffffff;
+    color: #222222;
+
+    font-size: 13px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.vendor-location-link-row input:hover {
+    border-color: #bdbdbd;
+}
+
+.vendor-location-link-row input:focus {
     border-color: #d4af37;
 
     box-shadow:
         0 0 0 2px rgba(212, 175, 55, 0.12);
 }
 
+.vendor-location-link-row input:disabled {
+    background: #f5f5f5;
+    color: #888888;
+
+    cursor: not-allowed;
+}
+
 
 /* ============================================================
-   GET LOCATION BUTTON
+   USE LINK
 ============================================================ */
 
-.get-location-button {
-    width: 100%;
+.vendor-location-use-link {
+    flex: 0 0 105px;
+
     height: 42px;
 
-    margin: 0 0 12px;
-
-    padding: 0 14px;
-
-    box-sizing: border-box;
+    margin: 0;
+    padding: 0 12px;
 
     border: 1px solid #d4af37;
     border-radius: 6px;
 
-    background: #ffffff;
+    background: #d4af37;
     color: #000000;
 
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 700;
 
     cursor: pointer;
@@ -302,7 +727,7 @@ body,
         box-shadow 0.2s ease;
 }
 
-.get-location-button:hover {
+.vendor-location-use-link:hover:not(:disabled) {
     background: #d4af37;
     color: #000000;
 
@@ -311,70 +736,277 @@ body,
     transform: translateY(-1px);
 
     box-shadow:
-        0 4px 10px rgba(0, 0, 0, 0.10);
+        0 4px 10px rgba(0, 0, 0, 0.14);
 }
 
-.get-location-button:active {
+.vendor-location-use-link:active:not(:disabled) {
     transform: translateY(0);
 }
 
-.get-location-button:focus-visible {
+.vendor-location-use-link:disabled {
+    background: #d4af37;
+    color: #000000;
+
+    border-color: #d4af37;
+
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+.vendor-location-use-link:focus-visible {
     outline: 2px solid #d4af37;
     outline-offset: 2px;
 }
 
 
 /* ============================================================
-   LOCATION COORDINATES
+   LINK NOTE
 ============================================================ */
 
-.location-coordinates {
-    width: 100%;
+.vendor-location-link-note {
+    margin-top: 7px;
 
-    display: flex;
-    flex-direction: column;
+    color: #777777;
 
-    gap: 5px;
-
-    padding: 10px 12px;
-
-    box-sizing: border-box;
-
-    border: 1px solid #d8d8d8;
-    border-radius: 6px;
-
-    background: #ffffff;
-
-    color: #555555;
-
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
+    font-size: 10.5px;
 
     line-height: 1.5;
 }
 
-.location-coordinates span:first-child {
-    color: #222222;
-    font-weight: 600;
-}
-
-.location-coordinates span:last-child {
-    color: #555555;
+.vendor-location-link-note b {
+    color: #000000;
+    font-weight: 700;
 }
 
 
 /* ============================================================
-   ERROR
+   LOCATION ACTIONS
 ============================================================ */
 
-.error-message {
+.vendor-location-actions {
     width: 100%;
 
-    margin: 4px 0 15px;
+    display: flex;
+    align-items: center;
 
-    padding: 10px 12px;
+    padding: 10px 20px 0;
+}
 
-    box-sizing: border-box;
+
+/* ============================================================
+   GET MY LOCATION
+============================================================ */
+
+.vendor-location-gps-button {
+    width: 100%;
+    height: 40px;
+
+    margin: 0;
+    padding: 0 14px;
+
+    border: 1px solid #d4af37;
+    border-radius: 6px;
+
+    background: #d4af37;
+    color: #000000;
+
+    font-size: 12.5px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.vendor-location-gps-button:hover:not(:disabled) {
+    background: #d4af37;
+    color: #000000;
+
+    border-color: #d4af37;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 3px 9px rgba(0, 0, 0, 0.12);
+}
+
+.vendor-location-gps-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.vendor-location-gps-button:disabled {
+    background: #d4af37;
+    color: #000000;
+
+    border-color: #d4af37;
+
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+.vendor-location-gps-button:focus-visible {
+    outline: 2px solid #d4af37;
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   GPS NOTE
+============================================================ */
+
+.vendor-location-gps-note {
+    margin: 7px 20px 0;
+
+    color: #777777;
+
+    font-size: 10.5px;
+
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   RESOLVED GOOGLE PLACE
+============================================================ */
+
+.vendor-location-place {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    margin: 10px 20px 0;
+    padding: 11px 12px;
+
+    border: 1px solid #e4d39a;
+    border-radius: 7px;
+
+    background: #fffdf5;
+    color: #333333;
+
+    font-size: 11.5px;
+
+    line-height: 1.45;
+}
+
+.vendor-location-place > strong {
+    display: block;
+
+    margin-bottom: 2px;
+
+    color: #000000;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.vendor-location-place span {
+    color: #555555;
+
+    font-size: 10.5px;
+}
+
+.vendor-location-place-name,
+.vendor-location-place-address {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.vendor-location-place-name strong,
+.vendor-location-place-address strong {
+    color: #222222;
+
+    font-size: 11.5px;
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+}
+
+.vendor-location-place small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #777777;
+
+    font-size: 10px;
+
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   COORDINATES
+============================================================ */
+
+.vendor-location-coordinates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+
+    margin-top: 4px;
+}
+
+.vendor-location-coordinates > div {
+    min-width: 0;
+
+    padding: 7px 8px;
+
+    border: 1px solid #eadfb9;
+    border-radius: 5px;
+
+    background: #ffffff;
+}
+
+.vendor-location-coordinates span {
+    display: block;
+
+    margin-bottom: 2px;
+
+    color: #777777;
+
+    font-size: 9.5px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+}
+
+.vendor-location-coordinates strong {
+    display: block;
+
+    color: #222222;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   LOCATION ERROR
+============================================================ */
+
+.vendor-location-error {
+    margin: 10px 20px 0;
+    padding: 9px 11px;
 
     border: 1px solid #e0b4b4;
     border-radius: 6px;
@@ -382,7 +1014,343 @@ body,
     background: #fff5f5;
     color: #c62828;
 
+    font-size: 12px;
+    font-weight: 500;
+
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   LOCATION MESSAGE
+============================================================ */
+
+.vendor-location-message {
+    margin: 10px 20px 0;
+    padding: 9px 11px;
+
+    border: 1px solid #e4d39a;
+    border-radius: 6px;
+
+    background: #fffdf5;
+    color: #444444;
+
+    font-size: 12px;
+
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   MAP WRAPPER
+============================================================ */
+
+.vendor-location-map-wrapper {
+    position: relative;
+
+    width: calc(100% - 40px);
+    height: 360px;
+
+    flex: 0 0 360px;
+
+    margin: 14px 20px 0;
+
+    overflow: hidden;
+
+    border: 1px solid #d7d7d7;
+    border-radius: 9px;
+
+    background: #eeeeee;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+
+/* ============================================================
+   LEAFLET MAP
+============================================================ */
+
+.vendor-location-map {
+    width: 100%;
+    height: 100%;
+
+    background: #eeeeee;
+}
+
+.vendor-location-map .leaflet-container {
     font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* ============================================================
+   MAP HINT
+============================================================ */
+
+.vendor-location-map-hint {
+    position: absolute;
+
+    left: 50%;
+    bottom: 10px;
+
+    z-index: 500;
+
+    width: max-content;
+    max-width: calc(100% - 20px);
+
+    transform: translateX(-50%);
+
+    padding: 7px 11px;
+
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 5px;
+
+    background: rgba(255, 255, 255, 0.95);
+    color: #333333;
+
+    font-size: 10.5px;
+    font-weight: 600;
+
+    line-height: 1.35;
+
+    text-align: center;
+
+    pointer-events: none;
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ============================================================
+   POPUP FOOTER
+============================================================ */
+
+.vendor-location-popup-footer {
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 15px 20px;
+
+    background: #ffffff;
+
+    border-top: 1px solid #e5e5e5;
+
+    box-shadow:
+        0 -3px 10px rgba(0, 0, 0, 0.03);
+}
+
+
+/* ============================================================
+   CANCEL
+============================================================ */
+
+.vendor-location-cancel-button {
+    min-width: 95px;
+    height: 40px;
+
+    margin: 0;
+    padding: 0 15px;
+
+    border: 1px solid #000000;
+    border-radius: 6px;
+
+    background: #ffffff;
+    color: #000000;
+
+    font-size: 12.5px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.vendor-location-cancel-button:hover:not(:disabled) {
+    background: #d4af37;
+    color: #000000;
+
+    border-color: #d4af37;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.vendor-location-cancel-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.vendor-location-cancel-button:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+.vendor-location-cancel-button:focus-visible {
+    outline: 2px solid #d4af37;
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   CONFIRM LOCATION
+============================================================ */
+
+.vendor-location-confirm-button {
+    min-width: 145px;
+    height: 40px;
+
+    margin: 0;
+    padding: 0 16px;
+
+    border: 1px solid #d4af37;
+    border-radius: 6px;
+
+    background: #d4af37;
+    color: #000000;
+
+    font-size: 12.5px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.vendor-location-confirm-button:hover:not(:disabled) {
+    background: #d4af37;
+    color: #000000;
+
+    border-color: #d4af37;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 11px rgba(0, 0, 0, 0.14);
+}
+
+.vendor-location-confirm-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.vendor-location-confirm-button:disabled {
+    background: #e3e3e3;
+    color: #888888;
+
+    border-color: #d5d5d5;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+.vendor-location-confirm-button:focus-visible {
+    outline: 2px solid #d4af37;
+    outline-offset: 2px;
+}
+
+
+/* ============================================================
+   MAIN REGISTER BUTTON
+============================================================ */
+
+.register-box > button[type="submit"] {
+    width: 100%;
+    height: 45px;
+
+    margin-top: 5px;
+    padding: 0 18px;
+
+    border: 1px solid #d4af37;
+    border-radius: 7px;
+
+    background: #d4af37;
+    color: #000000;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.register-box > button[type="submit"]:hover:not(:disabled) {
+    background: #d4af37;
+    color: #000000;
+
+    border-color: #d4af37;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 14px rgba(0, 0, 0, 0.15);
+}
+
+.register-box > button[type="submit"]:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.register-box > button[type="submit"]:disabled {
+    background: #d4af37;
+    color: #000000;
+
+    border-color: #d4af37;
+
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   ERROR MESSAGE
+============================================================ */
+
+.error-message {
+    width: 100%;
+
+    margin: 4px 0 15px;
+    padding: 10px 12px;
+
+    border: 1px solid #e0b4b4;
+    border-radius: 6px;
+
+    background: #fff5f5;
+    color: #c62828;
+
     font-size: 13px;
     font-weight: 500;
 
@@ -391,17 +1359,14 @@ body,
 
 
 /* ============================================================
-   RESPONSE MESSAGE
+   REGISTER RESPONSE MESSAGE
 ============================================================ */
 
 .register-message {
     width: 100%;
 
     margin: 5px 0 15px;
-
     padding: 10px 12px;
-
-    box-sizing: border-box;
 
     border: 1px solid #c8dfc8;
     border-radius: 6px;
@@ -409,96 +1374,9 @@ body,
     background: #f3f8f3;
     color: #28752d;
 
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
 
     line-height: 1.4;
-}
-
-
-/* ============================================================
-   REGISTER BUTTON
-============================================================ */
-
-.register-box > button[type="submit"] {
-    width: 100%;
-    height: 45px;
-
-    margin-top: 5px;
-
-    padding: 0 18px;
-
-    box-sizing: border-box;
-
-    border: 1px solid #d4af37;
-    border-radius: 7px;
-
-    background: #d4af37;
-    color: #000000;
-
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.register-box > button[type="submit"]:hover {
-    background: #000000;
-    color: #d4af37;
-
-    border-color: #000000;
-
-    transform: translateY(-1px);
-
-    box-shadow:
-        0 5px 14px rgba(0, 0, 0, 0.15);
-}
-
-.register-box > button[type="submit"]:active {
-    transform: translateY(0);
-}
-
-
-/* ============================================================
-   DISABLED REGISTER BUTTON
-============================================================ */
-
-.register-box > button[type="submit"]:disabled {
-    background: #d4af37;
-    color: #000000;
-
-    border-color: #d4af37;
-
-    cursor: not-allowed;
-
-    opacity: 0.75;
-
-    transform: none;
-
-    box-shadow: none;
-}
-
-.register-box > button[type="submit"]:disabled:hover {
-    background: #d4af37;
-    color: #000000;
-
-    border-color: #d4af37;
-
-    cursor: not-allowed;
-
-    opacity: 0.75;
-
-    transform: none;
-
-    box-shadow: none;
 }
 
 
@@ -513,7 +1391,6 @@ body,
 
     color: #555555;
 
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
 
     line-height: 1.5;
@@ -537,7 +1414,40 @@ body,
 
 
 /* ============================================================
-   FOCUS
+   LIVE FIELD VALIDATION
+============================================================ */
+
+.form-group.has-error input,
+.form-group.has-error select,
+.form-group.has-error textarea {
+    border-color: #dc3545;
+}
+
+.form-group.has-error input:focus,
+.form-group.has-error select:focus,
+.form-group.has-error textarea:focus {
+    border-color: #dc3545;
+
+    box-shadow:
+        0 0 0 2px rgba(220, 53, 69, 0.08);
+}
+
+.field-error {
+    margin-top: -10px;
+    margin-bottom: 12px;
+
+    color: #dc3545;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    font-weight: 500;
+}
+
+
+/* ============================================================
+   ACCESSIBILITY FOCUS
 ============================================================ */
 
 .register-box input:focus-visible,
@@ -547,6 +1457,86 @@ body,
 .register-box a:focus-visible {
     outline: 2px solid #d4af37;
     outline-offset: 2px;
+}
+
+
+/* ============================================================
+   POPUP ANIMATIONS
+============================================================ */
+
+@keyframes vendorLocationOverlayIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes vendorLocationPopupIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ============================================================
+   LEAFLET CONTROLS
+============================================================ */
+
+.vendor-location-map .leaflet-control-zoom {
+    margin-top: 10px;
+    margin-left: 10px;
+
+    border: 1px solid #d5d5d5;
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.12);
+}
+
+.vendor-location-map .leaflet-control-zoom a {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #000000;
+    background: #ffffff;
+
+    border: none;
+
+    font-weight: 700;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.vendor-location-map .leaflet-control-zoom a + a {
+    border-top: 1px solid #e0e0e0;
+}
+
+.vendor-location-map .leaflet-control-zoom a:hover {
+    background: #d4af37;
+    color: #000000;
+}
+
+.vendor-location-map .leaflet-control-attribution {
+    font-size: 9px;
+
+    background: rgba(255, 255, 255, 0.9);
 }
 
 
@@ -570,6 +1560,15 @@ body,
         font-size: 22px;
 
         margin-bottom: 24px;
+    }
+
+    .vendor-location-popup {
+        max-height: calc(100vh - 30px);
+    }
+
+    .vendor-location-map-wrapper {
+        height: 330px;
+        flex-basis: 330px;
     }
 }
 
@@ -612,16 +1611,140 @@ body,
         font-size: 13px;
     }
 
-    .vendor-location-box {
+
+    /* --------------------------------------------------------
+       LOCATION SECTION
+    -------------------------------------------------------- */
+
+    .vendor-location-section {
         padding: 12px;
     }
 
-    .vendor-location-box input {
-        font-size: 13px;
+    .vendor-location-open-button {
+        height: 40px;
+
+        font-size: 12px;
     }
 
-    .location-coordinates {
+
+    /* --------------------------------------------------------
+       POPUP
+    -------------------------------------------------------- */
+
+    .vendor-location-popup-overlay {
+        align-items: center;
+
+        padding: 10px;
+    }
+
+    .vendor-location-popup {
+        width: 100%;
+
+        max-height: calc(100vh - 20px);
+
+        border-radius: 10px;
+    }
+
+    .vendor-location-popup-header {
+        padding: 15px;
+    }
+
+    .vendor-location-popup-header h3 {
+        font-size: 16px;
+    }
+
+    .vendor-location-popup-header p {
+        font-size: 11px;
+    }
+
+    .vendor-location-link-section {
+        padding: 13px 15px 0;
+    }
+
+    .vendor-location-link-row {
+        gap: 6px;
+    }
+
+    .vendor-location-link-row input {
+        font-size: 12px;
+
+        padding: 9px 10px;
+    }
+
+    .vendor-location-use-link {
+        flex: 0 0 88px;
+
+        height: 40px;
+
+        padding: 0 8px;
+
         font-size: 11.5px;
+    }
+
+    .vendor-location-actions {
+        padding: 9px 15px 0;
+    }
+
+    .vendor-location-gps-button {
+        height: 39px;
+
+        font-size: 11.5px;
+    }
+
+    .vendor-location-gps-note {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    .vendor-location-place,
+    .vendor-location-error,
+    .vendor-location-message {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    .vendor-location-map-wrapper {
+        width: calc(100% - 30px);
+
+        height: 300px;
+        flex-basis: 300px;
+
+        margin-top: 12px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    .vendor-location-map-hint {
+        bottom: 8px;
+
+        max-width: calc(100% - 16px);
+
+        padding: 6px 8px;
+
+        font-size: 9.5px;
+    }
+
+    .vendor-location-popup-footer {
+        gap: 7px;
+
+        padding: 12px 15px 15px;
+    }
+
+    .vendor-location-cancel-button,
+    .vendor-location-confirm-button {
+        flex: 1;
+
+        min-width: 0;
+
+        height: 40px;
+
+        padding: 0 8px;
+
+        font-size: 11.5px;
+    }
+
+    .vendor-location-coordinates {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -654,13 +1777,185 @@ body,
         font-size: 12px;
     }
 
-    .vendor-location-box {
-        padding: 10px;
+
+    /* --------------------------------------------------------
+       POPUP
+    -------------------------------------------------------- */
+
+    .vendor-location-popup-overlay {
+        padding: 6px;
     }
 
-    .get-location-button {
-        height: 40px;
+    .vendor-location-popup {
+        max-height: calc(100vh - 12px);
 
-        font-size: 12.5px;
+        border-radius: 8px;
+    }
+
+    .vendor-location-popup-header {
+        padding: 13px 12px 10px;
+    }
+
+    .vendor-location-popup-header h3 {
+        font-size: 15px;
+    }
+
+    .vendor-location-popup-header p {
+        font-size: 10.5px;
+    }
+
+    .vendor-location-popup-close {
+        width: 29px;
+        height: 29px;
+
+        font-size: 21px;
+    }
+
+    .vendor-location-link-section {
+        padding: 11px 12px 0;
+    }
+
+    .vendor-location-link-row {
+        flex-direction: column;
+    }
+
+    .vendor-location-link-row input {
+        width: 100%;
+
+        height: 40px;
+    }
+
+    .vendor-location-use-link {
+        width: 100%;
+
+        flex: none;
+
+        height: 39px;
+    }
+
+    .vendor-location-actions {
+        padding: 8px 12px 0;
+    }
+
+    .vendor-location-gps-note {
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+
+    .vendor-location-place,
+    .vendor-location-error,
+    .vendor-location-message {
+        margin-left: 12px;
+        margin-right: 12px;
+
+        font-size: 11px;
+    }
+
+    .vendor-location-map-wrapper {
+        width: calc(100% - 24px);
+
+        height: 250px;
+        flex-basis: 250px;
+
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+
+    .vendor-location-popup-footer {
+        flex-direction: column;
+
+        padding: 10px 12px 12px;
+    }
+
+    .vendor-location-cancel-button,
+    .vendor-location-confirm-button {
+        width: 100%;
+
+        flex: none;
+    }
+
+    .vendor-location-coordinates {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ============================================================
+   VERY SMALL DEVICES
+============================================================ */
+
+@media (max-width: 340px) {
+
+    .form-wrapper {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    .register-box {
+        padding-left: 11px;
+        padding-right: 11px;
+    }
+
+    .vendor-location-popup-overlay {
+        padding: 4px;
+    }
+
+    .vendor-location-popup {
+        max-height: calc(100vh - 8px);
+    }
+
+    .vendor-location-popup-header {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .vendor-location-link-section {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .vendor-location-actions {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .vendor-location-gps-note,
+    .vendor-location-place,
+    .vendor-location-error,
+    .vendor-location-message {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .vendor-location-map-wrapper {
+        width: calc(100% - 20px);
+
+        margin-left: 10px;
+        margin-right: 10px;
+
+        height: 225px;
+        flex-basis: 225px;
+    }
+
+    .vendor-location-popup-footer {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

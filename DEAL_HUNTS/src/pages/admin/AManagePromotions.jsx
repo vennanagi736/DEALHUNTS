@@ -153,6 +153,186 @@ function AdminManagePromotions() {
                     </button>
 
 
+                    {/* =================================================
+                        MANAGE TODAY'S BEST DEALS
+                    ================================================= */}
+
+                    <button
+                        type="button"
+                        className="promotion-option"
+                        onClick={() =>
+                            navigate("/admin/manage-todays-best-deals")
+                        }
+                    >
+
+                        <div className="promotion-option-icon">
+                            💰
+                        </div>
+
+                        <div className="promotion-option-content">
+
+                            <h2>
+                                Manage Today's Best Deals
+                            </h2>
+
+                            <p>
+                                Select and manage the best deals that
+                                should be highlighted on the user home page.
+                            </p>
+
+                        </div>
+
+                        <span className="promotion-option-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    {/* =================================================
+                        MANAGE AVAILABLE NEAR YOU
+                    ================================================= */}
+
+                    <button
+                        type="button"
+                        className="promotion-option"
+                        onClick={() =>
+                            navigate("/admin/manage-available-near-you")
+                        }
+                    >
+
+                        <div className="promotion-option-icon">
+                            📍
+                        </div>
+
+                        <div className="promotion-option-content">
+
+                            <h2>
+                                Manage Available Near You
+                            </h2>
+
+                            <p>
+                                Manage the products and local availability
+                                displayed in the Available Near You section.
+                            </p>
+
+                        </div>
+
+                        <span className="promotion-option-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    {/* =================================================
+                        MANAGE NEW ARRIVALS
+                    ================================================= */}
+
+                    <button
+                        type="button"
+                        className="promotion-option"
+                        onClick={() =>
+                            navigate("/admin/manage-new-arrivals")
+                        }
+                    >
+
+                        <div className="promotion-option-icon">
+                            ✨
+                        </div>
+
+                        <div className="promotion-option-content">
+
+                            <h2>
+                                Manage New Arrivals
+                            </h2>
+
+                            <p>
+                                Select and manage the newly launched products
+                                displayed on the user home page.
+                            </p>
+
+                        </div>
+
+                        <span className="promotion-option-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    {/* =================================================
+                        MANAGE COMING SOON PRODUCTS
+                    ================================================= */}
+
+                    <button
+                        type="button"
+                        className="promotion-option"
+                        onClick={() =>
+                            navigate("/admin/manage-coming-soon")
+                        }
+                    >
+
+                        <div className="promotion-option-icon">
+                            🚀
+                        </div>
+
+                        <div className="promotion-option-content">
+
+                            <h2>
+                                Manage Coming Soon Products
+                            </h2>
+
+                            <p>
+                                Select and manage products that will be
+                                available soon on DEALHUNTS.
+                            </p>
+
+                        </div>
+
+                        <span className="promotion-option-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    {/* =================================================
+                        MANAGE WHY DEALHUNTS
+                    ================================================= */}
+
+                    <button
+                        type="button"
+                        className="promotion-option"
+                        onClick={() =>
+                            navigate("/admin/manage-why-dealhunts")
+                        }
+                    >
+
+                        <div className="promotion-option-icon">
+                            ⭐
+                        </div>
+
+                        <div className="promotion-option-content">
+
+                            <h2>
+                                Manage Why DEALHUNTS
+                            </h2>
+
+                            <p>
+                                Manage the benefits, highlights and content
+                                displayed in the Why DEALHUNTS section.
+                            </p>
+
+                        </div>
+
+                        <span className="promotion-option-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
                 </div>
 
 

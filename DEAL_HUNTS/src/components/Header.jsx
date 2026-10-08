@@ -21,7 +21,7 @@ import "../styles/Header.css";
    COMMON LOGO
 ============================================================ */
 
-function Logo({ admin = false }) {
+function Logo({ admin = false, vendor = false }) {
 
   return (
     <div className="left-section">
@@ -39,8 +39,14 @@ function Logo({ admin = false }) {
       </div>
 
       {admin && (
-        <span className="Admin">
-          Admin
+        <span className="Admin-hl">
+          ADMIN
+        </span>
+      )}
+
+      {vendor && (
+        <span className="Vendor">
+          VENDOR
         </span>
       )}
 
@@ -84,10 +90,6 @@ function getCurrentStoredRole() {
 
   /* ----------------------------------------------------------
      TOKEN FIRST
-     
-     Token is the actual login/session indicator.
-     This prevents stale role values from localStorage
-     incorrectly changing the current role.
   ---------------------------------------------------------- */
 
   if (
@@ -225,8 +227,21 @@ function Header({
   const [searchOpen, setSearchOpen] =
     useState(false);
 
+
+  /*
+     This state controls ONLY the mobile navigation.
+
+     Desktop and laptop/tablet remain visible.
+  */
   const [mobileNavVisible, setMobileNavVisible] =
     useState(true);
+
+
+  /*
+     Controls the Admin Content / Trending dropdowns.
+  */
+  const [openAdminDropdown, setOpenAdminDropdown] =
+    useState(null);
 
 
   /* ==========================================================
@@ -243,15 +258,80 @@ function Header({
 
   useEffect(() => {
 
+    let hideTimer = null;
+
+    const isMobile = () => {
+      return window.innerWidth <= 768;
+    };
+
+
     const handleScroll = () => {
 
-      if (window.scrollY <= 8) {
+      /*
+         Desktop / laptop / tablet:
+         Do absolutely nothing to navigation visibility.
+      */
+
+      if (!isMobile()) {
+
+        if (hideTimer) {
+          clearTimeout(hideTimer);
+          hideTimer = null;
+        }
+
         setMobileNavVisible(true);
-      } else {
-        setMobileNavVisible(false);
+
+        return;
       }
 
+
+      /*
+         MOBILE:
+         As soon as scrolling begins,
+         show the navigation.
+      */
+
+      setMobileNavVisible(true);
+
+
+      /*
+         Clear previous hide timer.
+      */
+
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+      }
+
+
+      /*
+         Hide after scrolling stops
+         for 1.5 seconds.
+      */
+
+      hideTimer = setTimeout(() => {
+
+        if (window.innerWidth <= 768) {
+          setMobileNavVisible(false);
+        }
+
+      }, 1500);
+
     };
+
+
+    const handleResize = () => {
+
+      if (window.innerWidth > 768) {
+
+        if (hideTimer) {
+          clearTimeout(hideTimer);
+          hideTimer = null;
+        }
+
+        setMobileNavVisible(true);
+      }
+    };
+
 
     window.addEventListener(
       "scroll",
@@ -259,7 +339,14 @@ function Header({
       { passive: true }
     );
 
-    handleScroll();
+    window.addEventListener(
+      "resize",
+      handleResize
+    );
+
+
+    setMobileNavVisible(true);
+
 
     return () => {
 
@@ -268,13 +355,98 @@ function Header({
         handleScroll
       );
 
+      window.removeEventListener(
+        "resize",
+        handleResize
+      );
+
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+      }
+
     };
 
   }, []);
 
 
   /* ==========================================================
-     LOGIN PAGES
+     CLOSE ADMIN DROPDOWN WHEN ROUTE CHANGES
+  ========================================================== */
+
+  useEffect(() => {
+
+    setOpenAdminDropdown(null);
+
+  }, [location.pathname]);
+
+
+  /* ==========================================================
+     CLOSE ADMIN DROPDOWN WHEN CLICKING OUTSIDE
+  ========================================================== */
+
+  useEffect(() => {
+
+    const handleOutsideClick = (event) => {
+
+      if (
+        !event.target.closest(
+          ".dh-admin-dropdown"
+        )
+      ) {
+
+        setOpenAdminDropdown(null);
+
+      }
+
+    };
+
+
+    document.addEventListener(
+      "mousedown",
+      handleOutsideClick
+    );
+
+
+    return () => {
+
+      document.removeEventListener(
+        "mousedown",
+        handleOutsideClick
+      );
+
+    };
+
+  }, []);
+
+
+  /* ==========================================================
+     TOGGLE ADMIN DROPDOWN
+  ========================================================== */
+
+  const toggleAdminDropdown = (name) => {
+
+    setOpenAdminDropdown(
+      previous =>
+        previous === name
+          ? null
+          : name
+    );
+
+  };
+
+
+  /* ==========================================================
+     MOBILE NAV CLASS
+  ========================================================== */
+
+  const mobileNavClass =
+    mobileNavVisible
+      ? "mobile-nav-visible"
+      : "mobile-nav-hidden";
+
+
+  /* ==========================================================
+     LOGIN / AUTH PAGES
   ========================================================== */
 
   const isLoginPage =
@@ -286,10 +458,32 @@ function Header({
 
 
   /* ==========================================================
-     PROFILE PAGE
+     FORGOT PASSWORD PAGE
+  ========================================================== */
 
-     IMPORTANT:
-     /profile is shared by USER / VENDOR / ADMIN.
+  const isForgotPasswordPage =
+    currentPath === "/forgot-password";
+
+
+  /* ==========================================================
+     FORGOT PASSWORD HEADER
+  ========================================================== */
+
+  if (isForgotPasswordPage) {
+
+    return (
+      <header className="header">
+
+        <Logo />
+
+      </header>
+    );
+
+  }
+
+
+  /* ==========================================================
+     PROFILE PAGE
   ========================================================== */
 
   const isProfilePage =
@@ -298,8 +492,6 @@ function Header({
 
   /* ==========================================================
      PROFILE ROLE
-
-     Only relevant when current page is /profile.
   ========================================================== */
 
   const profileRole =
@@ -310,15 +502,6 @@ function Header({
 
   /* ==========================================================
      VENDOR PAGE
-
-     Normal vendor pages:
-       /vendorHome
-       /vendorProductPage
-       /vendor/manage-products
-       /vendor/...
-
-     Also:
-       /profile when logged-in role = VENDOR
   ========================================================== */
 
   const isVendorPage =
@@ -334,13 +517,6 @@ function Header({
 
   /* ==========================================================
      ADMIN PAGE
-
-     Normal admin pages:
-       /admin...
-       /manage-...
-
-     Also:
-       /profile when logged-in role = ADMIN
   ========================================================== */
 
   const isAdminPage =
@@ -357,8 +533,6 @@ function Header({
 
   /* ==========================================================
      USER LOGIN STATUS
-
-     USER HEADER is shown only for a logged-in USER.
   ========================================================== */
 
   const isUserLoggedIn =
@@ -498,7 +672,21 @@ function Header({
 
         <Logo admin />
 
-        <nav className="dh-header-navigation">
+        <nav
+          className={`dh-header-navigation ${mobileNavClass}`}
+        >
+
+          
+          <NavLink
+            to="/adminAddProduct"
+            className={({ isActive }) =>
+              isActive
+                ? "header-nav-link active"
+                : "header-nav-link"
+            }
+          >
+            Add Product
+          </NavLink>
 
           <NavLink
             to="/admin/import-products"
@@ -532,9 +720,9 @@ function Header({
   }
 
 
-  /* ============================================================
+  /* ==========================================================
      ADMIN IMPORT PRODUCTS
-  ============================================================ */
+  ========================================================== */
 
   const isAdminImportPage =
     currentPath === "/admin/import-products";
@@ -561,7 +749,9 @@ function Header({
 
         <Logo admin />
 
-        <nav className="dh-header-navigation">
+        <nav
+          className={`dh-header-navigation ${mobileNavClass}`}
+        >
 
           <NavLink
             to="/admin/master-data"
@@ -584,9 +774,9 @@ function Header({
   }
 
 
-  /* ============================================================
+  /* ==========================================================
      ADMIN MASTER DATA
-  ============================================================ */
+  ========================================================== */
 
   const isAdminMasterDataPage =
     currentPath === "/admin/master-data";
@@ -613,7 +803,9 @@ function Header({
 
         <Logo admin />
 
-        <nav className="dh-header-navigation">
+        <nav
+          className={`dh-header-navigation ${mobileNavClass}`}
+        >
 
           <NavLink
             to="/admin/import-products"
@@ -636,9 +828,9 @@ function Header({
   }
 
 
-  /* ============================================================
+  /* ==========================================================
      ADMIN VENDORS
-  ============================================================ */
+  ========================================================== */
 
   const isAdminVendorsSection =
     currentPath === "/manage-vendors" ||
@@ -674,9 +866,9 @@ function Header({
   }
 
 
-  /* ============================================================
+  /* ==========================================================
      ADMIN PROMOTIONS
-  ============================================================ */
+  ========================================================== */
 
   const isAdminPromotionsPage =
     currentPath === "/admin/manage-promotions";
@@ -711,198 +903,9 @@ function Header({
   }
 
 
-  /* ============================================================
-     ADMIN TRENDING CAROUSEL
-  ============================================================ */
-
-  const isAdminTrendingCarouselPage =
-    currentPath === "/admin/manage-carousel";
-
-
-  if (isAdminTrendingCarouselPage) {
-
-    return (
-      <header className="header">
-
-        {showMenu && (
-
-          <button
-            type="button"
-            className="dh-header-menu-button"
-            onClick={onMenuClick}
-            aria-label="Open navigation menu"
-            title="Menu"
-          >
-            ☰
-          </button>
-
-        )}
-
-        <Logo admin />
-
-        <nav className="dh-header-navigation">
-
-          <NavLink
-            to="/admin/manage-trending-deals"
-            className={({ isActive }) =>
-              isActive
-                ? "header-nav-link active"
-                : "header-nav-link"
-            }
-          >
-            Trending Deals
-          </NavLink>
-
-          <NavLink
-            to="/admin/manage-trending-categories"
-            className={({ isActive }) =>
-              isActive
-                ? "header-nav-link active"
-                : "header-nav-link"
-            }
-          >
-            Trending Categories
-          </NavLink>
-
-        </nav>
-
-        <AccountActions />
-
-      </header>
-    );
-
-  }
-
-
-  /* ============================================================
-     ADMIN TRENDING DEALS
-  ============================================================ */
-
-  const isAdminTrendingDealsPage =
-    currentPath === "/admin/manage-trending-deals";
-
-
-  if (isAdminTrendingDealsPage) {
-
-    return (
-      <header className="header">
-
-        {showMenu && (
-
-          <button
-            type="button"
-            className="dh-header-menu-button"
-            onClick={onMenuClick}
-            aria-label="Open navigation menu"
-            title="Menu"
-          >
-            ☰
-          </button>
-
-        )}
-
-        <Logo admin />
-
-        <nav className="dh-header-navigation">
-
-          <NavLink
-            to="/admin/manage-trending-categories"
-            className={({ isActive }) =>
-              isActive
-                ? "header-nav-link active"
-                : "header-nav-link"
-            }
-          >
-            Trending Categories
-          </NavLink>
-
-          <NavLink
-            to="/admin/manage-carousel"
-            className={({ isActive }) =>
-              isActive
-                ? "header-nav-link active"
-                : "header-nav-link"
-            }
-          >
-            Trending Carousel
-          </NavLink>
-
-        </nav>
-
-        <AccountActions />
-
-      </header>
-    );
-
-  }
-
-
-  /* ============================================================
-     ADMIN TRENDING CATEGORIES
-  ============================================================ */
-
-  const isAdminTrendingCategoriesPage =
-    currentPath === "/admin/manage-trending-categories";
-
-
-  if (isAdminTrendingCategoriesPage) {
-
-    return (
-      <header className="header">
-
-        {showMenu && (
-
-          <button
-            type="button"
-            className="dh-header-menu-button"
-            onClick={onMenuClick}
-            aria-label="Open navigation menu"
-            title="Menu"
-          >
-            ☰
-          </button>
-
-        )}
-
-        <Logo admin />
-
-        <nav className="dh-header-navigation">
-
-          <NavLink
-            to="/admin/manage-trending-deals"
-            className={({ isActive }) =>
-              isActive
-                ? "header-nav-link active"
-                : "header-nav-link"
-            }
-          >
-            Trending Deals
-          </NavLink>
-
-          <NavLink
-            to="/admin/manage-carousel"
-            className={({ isActive }) =>
-              isActive
-                ? "header-nav-link active"
-                : "header-nav-link"
-            }
-          >
-            Trending Carousel
-          </NavLink>
-
-        </nav>
-
-        <AccountActions />
-
-      </header>
-    );
-
-  }
-
-
-  /* ============================================================
+  /* ==========================================================
      ADMIN ORDERS
-  ============================================================ */
+  ========================================================== */
 
   const isAdminOrdersPage =
     currentPath === "/manage-orders" ||
@@ -942,9 +945,9 @@ function Header({
   }
 
 
-  /* ============================================================
+  /* ==========================================================
      VENDOR HEADER
-  ============================================================ */
+  ========================================================== */
 
   if (isVendorPage) {
 
@@ -965,9 +968,11 @@ function Header({
 
         )}
 
-        <Logo />
+        <Logo vendor />
 
-        <nav className="dh-header-navigation">
+        <nav
+          className={`dh-header-navigation ${mobileNavClass}`}
+        >
 
           <NavLink
             to="/vendorHome"
@@ -1014,7 +1019,227 @@ function Header({
 
 
   /* ============================================================
+     ADMIN CONTENT + TRENDING PAGES
+     
+     IMPORTANT:
+     Content / Trending dropdowns appear ONLY on these
+     8 pages.
+  ============================================================ */
+
+  const isAdminContentTrendingPage =
+    currentPath === "/admin/manage-carousel" ||
+    currentPath === "/admin/manage-trending-deals" ||
+    currentPath === "/admin/manage-trending-categories" ||
+    currentPath === "/admin/manage-available-near-you" ||
+    currentPath === "/admin/manage-why-dealhunts" ||
+    currentPath === "/admin/manage-todays-deals" ||
+    currentPath === "/admin/manage-coming-soon" ||
+    currentPath === "/admin/manage-new-arrivals";
+
+
+  if (isAdminContentTrendingPage) {
+
+    return (
+      <header className="header">
+
+        {showMenu && (
+
+          <button
+            type="button"
+            className="dh-header-menu-button"
+            onClick={onMenuClick}
+            aria-label="Open navigation menu"
+            title="Menu"
+          >
+            ☰
+          </button>
+
+        )}
+
+
+        {/* ====================================================
+            ADMIN LOGO
+        ==================================================== */}
+
+        <Logo admin />
+
+
+        {/* ====================================================
+            ADMIN CONTENT / TRENDING NAVIGATION
+
+            ONLY THESE TWO SECTIONS
+        ==================================================== */}
+
+        <nav
+          className={`dh-header-navigation ${mobileNavClass} dh-admin-navigation`}
+        >
+
+          {/* ==================================================
+              CONTENT DROPDOWN
+          ================================================== */}
+
+          <div
+            className={`dh-admin-dropdown ${
+              openAdminDropdown === "content"
+                ? "open"
+                : ""
+            }`}
+          >
+
+            <button
+              type="button"
+              className="dh-admin-dropdown-trigger"
+              onClick={() =>
+                toggleAdminDropdown("content")
+              }
+              aria-haspopup="true"
+              aria-expanded={
+                openAdminDropdown === "content"
+              }
+            >
+
+              <span>
+                Content
+              </span>
+
+              <span className="dh-admin-dropdown-arrow">
+                ▾
+              </span>
+
+            </button>
+
+
+            <div className="dh-admin-dropdown-menu">
+
+              <NavLink
+                to="/admin/manage-new-arrivals"
+                className="dh-admin-dropdown-item"
+              >
+                New Arrivals
+              </NavLink>
+
+
+              <NavLink
+                to="/admin/manage-coming-soon"
+                className="dh-admin-dropdown-item"
+              >
+                Coming Soon
+              </NavLink>
+
+
+              <NavLink
+                to="/admin/manage-why-dealhunts"
+                className="dh-admin-dropdown-item"
+              >
+                Why DealHunts
+              </NavLink>
+
+
+              <NavLink
+                to="/admin/manage-available-near-you"
+                className="dh-admin-dropdown-item"
+              >
+                Available Near You
+              </NavLink>
+
+
+              <NavLink
+                to="/admin/manage-todays-deals"
+                className="dh-admin-dropdown-item"
+              >
+                Today's Deals
+              </NavLink>
+
+            </div>
+
+          </div>
+
+
+          {/* ==================================================
+              TRENDING DROPDOWN
+          ================================================== */}
+
+          <div
+            className={`dh-admin-dropdown ${
+              openAdminDropdown === "trending"
+                ? "open"
+                : ""
+            }`}
+          >
+
+            <button
+              type="button"
+              className="dh-admin-dropdown-trigger"
+              onClick={() =>
+                toggleAdminDropdown("trending")
+              }
+              aria-haspopup="true"
+              aria-expanded={
+                openAdminDropdown === "trending"
+              }
+            >
+
+              <span>
+                Trending
+              </span>
+
+              <span className="dh-admin-dropdown-arrow">
+                ▾
+              </span>
+
+            </button>
+
+
+            <div className="dh-admin-dropdown-menu">
+
+              <NavLink
+                to="/admin/manage-carousel"
+                className="dh-admin-dropdown-item"
+              >
+                Trending Carousel
+              </NavLink>
+
+
+              <NavLink
+                to="/admin/manage-trending-deals"
+                className="dh-admin-dropdown-item"
+              >
+                Trending Deals
+              </NavLink>
+
+
+              <NavLink
+                to="/admin/manage-trending-categories"
+                className="dh-admin-dropdown-item"
+              >
+                Trending Categories
+              </NavLink>
+
+            </div>
+
+          </div>
+
+        </nav>
+
+
+        {/* ====================================================
+            ADMIN ACCOUNT ACTIONS
+        ==================================================== */}
+
+        <AccountActions />
+
+      </header>
+    );
+
+  }
+
+
+  /* ============================================================
      ADMIN GENERAL HEADER
+     
+     KEEP THE OLD ADMIN HEADER FOR ALL OTHER ADMIN PAGES.
+     
+     Products | Vendors | Promotions
   ============================================================ */
 
   if (isAdminPage) {
@@ -1038,7 +1263,9 @@ function Header({
 
         <Logo admin />
 
-        <nav className="dh-header-navigation">
+        <nav
+          className={`dh-header-navigation ${mobileNavClass}`}
+        >
 
           <NavLink
             to="/adminProducts"
@@ -1051,6 +1278,7 @@ function Header({
             Products
           </NavLink>
 
+
           <NavLink
             to="/manage-vendors"
             className={({ isActive }) =>
@@ -1061,6 +1289,7 @@ function Header({
           >
             Vendors
           </NavLink>
+
 
           <NavLink
             to="/admin/manage-promotions"
@@ -1126,8 +1355,6 @@ function Header({
 
       {/* --------------------------------------------------------
           MOBILE SEARCH BUTTON
-          
-          Hidden on USER HOME page.
       -------------------------------------------------------- */}
 
       {currentPath !== "/home" && (
@@ -1167,9 +1394,7 @@ function Header({
       <nav
         className={
           `dh-header-navigation ${
-            mobileNavVisible
-              ? "mobile-nav-visible"
-              : "mobile-nav-hidden"
+            mobileNavClass
           }`
         }
       >
@@ -1185,6 +1410,7 @@ function Header({
           Home
         </NavLink>
 
+
         <NavLink
           to="/products"
           className={({ isActive }) =>
@@ -1195,6 +1421,7 @@ function Header({
         >
           Products
         </NavLink>
+
 
         <NavLink
           to="/wishlist"
@@ -1223,10 +1450,6 @@ function Header({
 
       {/* --------------------------------------------------------
           LOGIN POPUP
-          
-          Used by both:
-          - Wishlist
-          - Cart
       -------------------------------------------------------- */}
 
       <Popup
@@ -1243,6 +1466,7 @@ function Header({
           {loginPopupMessage}
         </p>
 
+
         <div className="wishlist-popup-actions">
 
           <NavLink
@@ -1254,6 +1478,7 @@ function Header({
           >
             Proceed to Login
           </NavLink>
+
 
           <button
             type="button"
@@ -1272,41 +1497,53 @@ function Header({
 
       {/* --------------------------------------------------------
           SEARCH FORM
-          
-          Hidden on USER HOME page.
       -------------------------------------------------------- */}
 
       {currentPath !== "/home" && (
 
-        <form className="header-search" onSubmit={handleSearch}>
-  <input
-    type="text"
-    placeholder="Search products..."
-    value={searchQuery}
-    onChange={(event) => setSearchQuery(event.target.value)}
-    aria-label="Search products"
-  />
+        <form
+          className="header-search"
+          onSubmit={handleSearch}
+        >
 
-  {searchQuery ? (
-    <button
-      type="button"
-      className="header-search-clear"
-      onClick={() => setSearchQuery("")}
-      aria-label="Clear search"
-      title="Clear search"
-    >
-      <FiX />
-    </button>
-  ) : (
-    <button
-      type="submit"
-      aria-label="Search"
-      title="Search"
-    >
-      <FiSearch />
-    </button>
-  )}
-</form>
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(event) =>
+              setSearchQuery(event.target.value)
+            }
+            aria-label="Search products"
+          />
+
+
+          {searchQuery ? (
+
+            <button
+              type="button"
+              className="header-search-clear"
+              onClick={() =>
+                setSearchQuery("")
+              }
+              aria-label="Clear search"
+              title="Clear search"
+            >
+              <FiX />
+            </button>
+
+          ) : (
+
+            <button
+              type="submit"
+              aria-label="Search"
+              title="Search"
+            >
+              <FiSearch />
+            </button>
+
+          )}
+
+        </form>
 
       )}
 
@@ -1316,10 +1553,6 @@ function Header({
       -------------------------------------------------------- */}
 
       <div className="header-actions">
-
-        {/* ------------------------------------------------------
-            CART
-        ------------------------------------------------------ */}
 
         <NavLink
           to="/cart"
@@ -1345,10 +1578,6 @@ function Header({
           <FiShoppingCart />
         </NavLink>
 
-
-        {/* ------------------------------------------------------
-            PROFILE / LOGIN
-        ------------------------------------------------------ */}
 
         {isUserLoggedIn ? (
 

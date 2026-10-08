@@ -2301,16 +2301,6 @@ function ProductComparison() {
 
                     <div className="dh-pc-page-heading-content-user">
 
-
-
-                        <h1>
-                            Product Comparison
-                        </h1>
-
-                        <p>
-                            Hunt Deals, Save Money
-                        </p>
-
                     </div>
 
                 </div>
@@ -2505,10 +2495,6 @@ function ProductComparison() {
                                 <div className="dh-pc-section-heading-user">
 
                                     <div>
-
-                                        <span className="dh-pc-eyebrow-user">
-                                            CONFIGURE
-                                        </span>
 
                                         <h2>
                                             Select your

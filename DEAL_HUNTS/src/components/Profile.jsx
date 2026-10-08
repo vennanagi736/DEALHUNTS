@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 import "../styles/Profile.css";
 
 const API_BASE_URL = "http://localhost:8080";
@@ -38,6 +37,7 @@ const ROLE_CONFIG = {
 ============================================================ */
 
 function normalizeRole(role) {
+
     if (!role) {
         return null;
     }
@@ -64,7 +64,9 @@ function normalizeRole(role) {
 ============================================================ */
 
 function decodeJwt(token) {
+
     try {
+
         if (!token) {
             return null;
         }
@@ -89,14 +91,22 @@ function decodeJwt(token) {
                 .map(
                     (char) =>
                         "%" +
-                        ("00" + char.charCodeAt(0).toString(16)).slice(-2)
+                        ("00" +
+                            char.charCodeAt(0).toString(16)
+                        ).slice(-2)
                 )
                 .join("")
         );
 
         return JSON.parse(decoded);
+
     } catch (error) {
-        console.error("JWT decode failed:", error);
+
+        console.error(
+            "JWT decode failed:",
+            error
+        );
+
         return null;
     }
 }
@@ -107,6 +117,7 @@ function decodeJwt(token) {
 ============================================================ */
 
 function getStoredRole() {
+
     const possibleKeys = [
         "adminRole",
         "vendorRole",
@@ -118,8 +129,12 @@ function getStoredRole() {
     ];
 
     for (const key of possibleKeys) {
-        const value = localStorage.getItem(key);
-        const role = normalizeRole(value);
+
+        const value =
+            localStorage.getItem(key);
+
+        const role =
+            normalizeRole(value);
 
         if (role) {
             return role;
@@ -135,7 +150,9 @@ function getStoredRole() {
 ============================================================ */
 
 function getTokenForRole(role) {
+
     if (role === "ADMIN") {
+
         return (
             localStorage.getItem("adminJwtToken") ||
             localStorage.getItem("adminToken")
@@ -143,6 +160,7 @@ function getTokenForRole(role) {
     }
 
     if (role === "VENDOR") {
+
         return (
             localStorage.getItem("vendorJwtToken") ||
             localStorage.getItem("vendorToken")
@@ -150,6 +168,7 @@ function getTokenForRole(role) {
     }
 
     if (role === "USER") {
+
         return (
             localStorage.getItem("userJwtToken") ||
             localStorage.getItem("jwtToken")
@@ -172,12 +191,18 @@ function getActiveSession() {
      * being selected accidentally.
      */
 
-    const storedRole = getStoredRole();
+    const storedRole =
+        getStoredRole();
 
     if (storedRole) {
-        const token = getTokenForRole(storedRole);
+
+        const token =
+            getTokenForRole(
+                storedRole
+            );
 
         if (token) {
+
             return {
                 role: storedRole,
                 token,
@@ -194,19 +219,33 @@ function getActiveSession() {
      */
 
     const sessions = [
+
         {
             role: "ADMIN",
-            token: localStorage.getItem("adminJwtToken")
+            token:
+                localStorage.getItem(
+                    "adminJwtToken"
+                )
         },
+
         {
             role: "VENDOR",
-            token: localStorage.getItem("vendorJwtToken")
+            token:
+                localStorage.getItem(
+                    "vendorJwtToken"
+                )
         },
+
         {
             role: "USER",
-            token: localStorage.getItem("userJwtToken")
+            token:
+                localStorage.getItem(
+                    "userJwtToken"
+                )
         }
+
     ];
+
 
     for (const session of sessions) {
 
@@ -214,20 +253,34 @@ function getActiveSession() {
             continue;
         }
 
-        const payload = decodeJwt(session.token);
+        const payload =
+            decodeJwt(
+                session.token
+            );
 
         const jwtRole =
-            normalizeRole(payload?.role) ||
             normalizeRole(
-                Array.isArray(payload?.authorities)
+                payload?.role
+            ) ||
+            normalizeRole(
+                Array.isArray(
+                    payload?.authorities
+                )
                     ? payload.authorities[0]
                     : payload?.authorities
             );
 
         return {
-            role: jwtRole || session.role,
-            token: session.token,
+
+            role:
+                jwtRole ||
+                session.role,
+
+            token:
+                session.token,
+
             payload
+
         };
     }
 
@@ -313,6 +366,7 @@ function getInitials(profile) {
         .filter(Boolean);
 
     if (words.length >= 2) {
+
         return (
             words[0].charAt(0) +
             words[1].charAt(0)
@@ -320,6 +374,7 @@ function getInitials(profile) {
     }
 
     if (words.length === 1) {
+
         return words[0]
             .substring(0, 2)
             .toUpperCase();
@@ -340,23 +395,33 @@ function normalizeProfileResponse(response) {
     }
 
     if (response.data !== undefined) {
-        return normalizeProfileResponse(response.data);
+        return normalizeProfileResponse(
+            response.data
+        );
     }
 
     if (response.user !== undefined) {
-        return normalizeProfileResponse(response.user);
+        return normalizeProfileResponse(
+            response.user
+        );
     }
 
     if (response.vendor !== undefined) {
-        return normalizeProfileResponse(response.vendor);
+        return normalizeProfileResponse(
+            response.vendor
+        );
     }
 
     if (response.admin !== undefined) {
-        return normalizeProfileResponse(response.admin);
+        return normalizeProfileResponse(
+            response.admin
+        );
     }
 
     if (response.profile !== undefined) {
-        return normalizeProfileResponse(response.profile);
+        return normalizeProfileResponse(
+            response.profile
+        );
     }
 
     return response;
@@ -369,13 +434,20 @@ function normalizeProfileResponse(response) {
 
 export default function Profile() {
 
-    const navigate = useNavigate();
+    const navigate =
+        useNavigate();
 
-    const [session, setSession] = useState(null);
-    const [profile, setProfile] = useState(null);
+    const [session, setSession] =
+        useState(null);
 
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const [profile, setProfile] =
+        useState(null);
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [error, setError] =
+        useState("");
 
     const [activeSection, setActiveSection] =
         useState("overview");
@@ -385,125 +457,146 @@ export default function Profile() {
        LOAD PROFILE
     ======================================================== */
 
-    const loadProfile = useCallback(async () => {
+    const loadProfile =
+        useCallback(
+            async () => {
 
-        setLoading(true);
-        setError("");
+                setLoading(true);
+                setError("");
 
-        try {
+                try {
 
-            const activeSession =
-                getActiveSession();
+                    const activeSession =
+                        getActiveSession();
 
-            if (!activeSession) {
+                    if (!activeSession) {
 
-                setSession(null);
-                setProfile(null);
-                setLoading(false);
+                        setSession(null);
+                        setProfile(null);
+                        setLoading(false);
 
-                return;
-            }
-
-
-            const normalizedRole =
-                normalizeRole(activeSession.role);
-
-
-            if (!normalizedRole) {
-                throw new Error(
-                    "Unable to determine account role."
-                );
-            }
-
-
-            const config =
-                ROLE_CONFIG[normalizedRole];
-
-
-            if (!config) {
-                throw new Error(
-                    "Unsupported account role."
-                );
-            }
-
-
-            if (!activeSession.token) {
-                throw new Error(
-                    "Authentication token was not found."
-                );
-            }
-
-
-            setSession({
-                ...activeSession,
-                role: normalizedRole
-            });
-
-
-            const response =
-                await axios.get(
-                    `${API_BASE_URL}${config.endpoint}`,
-                    {
-                        headers: {
-                            Authorization:
-                                `Bearer ${activeSession.token}`
-                        }
+                        return;
                     }
-                );
 
 
-            const actualProfile =
-                normalizeProfileResponse(
-                    response.data
-                );
+                    const normalizedRole =
+                        normalizeRole(
+                            activeSession.role
+                        );
 
 
-            setProfile(actualProfile);
+                    if (!normalizedRole) {
 
-        } catch (err) {
-
-            console.error(
-                "Profile loading error:",
-                err
-            );
+                        throw new Error(
+                            "Unable to determine account role."
+                        );
+                    }
 
 
-            if (err.response?.status === 401) {
+                    const config =
+                        ROLE_CONFIG[
+                            normalizedRole
+                        ];
 
-                setError(
-                    "Your session has expired. Please login again."
-                );
 
-            } else if (err.response?.status === 403) {
+                    if (!config) {
 
-                setError(
-                    "You are not authorized to view this profile."
-                );
+                        throw new Error(
+                            "Unsupported account role."
+                        );
+                    }
 
-            } else if (err.response?.status === 404) {
 
-                setError(
-                    "Profile API endpoint was not found."
-                );
+                    if (!activeSession.token) {
 
-            } else {
+                        throw new Error(
+                            "Authentication token was not found."
+                        );
+                    }
 
-                setError(
-                    err.message ||
-                    "Unable to load profile details."
-                );
-            }
 
-        } finally {
+                    setSession({
+                        ...activeSession,
+                        role: normalizedRole
+                    });
 
-            setLoading(false);
-        }
 
-    }, []);
+                    const response =
+                        await axios.get(
+                            `${API_BASE_URL}${config.endpoint}`,
+                            {
+                                headers: {
+                                    Authorization:
+                                        `Bearer ${activeSession.token}`
+                                }
+                            }
+                        );
+
+
+                    const actualProfile =
+                        normalizeProfileResponse(
+                            response.data
+                        );
+
+
+                    setProfile(
+                        actualProfile
+                    );
+
+                } catch (err) {
+
+                    console.error(
+                        "Profile loading error:",
+                        err
+                    );
+
+
+                    if (
+                        err.response?.status === 401
+                    ) {
+
+                        setError(
+                            "Your session has expired. Please login again."
+                        );
+
+                    } else if (
+                        err.response?.status === 403
+                    ) {
+
+                        setError(
+                            "You are not authorized to view this profile."
+                        );
+
+                    } else if (
+                        err.response?.status === 404
+                    ) {
+
+                        setError(
+                            "Profile API endpoint was not found."
+                        );
+
+                    } else {
+
+                        setError(
+                            err.message ||
+                            "Unable to load profile details."
+                        );
+                    }
+
+                } finally {
+
+                    setLoading(false);
+                }
+
+            },
+            []
+        );
 
 
     useEffect(() => {
+
         loadProfile();
+
     }, [loadProfile]);
 
 
@@ -514,7 +607,11 @@ export default function Profile() {
     const handleLogout = () => {
 
         if (!session) {
-            navigate("/login");
+
+            navigate(
+                "/login"
+            );
+
             return;
         }
 
@@ -583,11 +680,17 @@ export default function Profile() {
         }
 
 
-        localStorage.removeItem("role");
+        localStorage.removeItem(
+            "role"
+        );
 
-        navigate("/login", {
-            replace: true
-        });
+
+        navigate(
+            "/login",
+            {
+                replace: true
+            }
+        );
     };
 
 
@@ -598,23 +701,20 @@ export default function Profile() {
     if (loading) {
 
         return (
-            <>
-                <Header />
 
-                <div className="dh-profile-page">
+            <div className="dh-profile-page">
 
-                    <div className="dh-profile-loading">
+                <div className="dh-profile-loading">
 
-                        <div className="dh-profile-spinner"></div>
+                    <div className="dh-profile-spinner"></div>
 
-                        <p>
-                            Loading profile...
-                        </p>
-
-                    </div>
+                    <p>
+                        Loading profile...
+                    </p>
 
                 </div>
-            </>
+
+            </div>
         );
     }
 
@@ -626,45 +726,45 @@ export default function Profile() {
     if (!session) {
 
         return (
-            <>
-                <Header />
 
-                <div className="dh-profile-page">
+            <div className="dh-profile-page">
 
-                    <div className="dh-profile-empty">
+                <div className="dh-profile-empty">
 
-                        <div className="dh-profile-empty-icon">
-                            👤
-                        </div>
-
-                        <h2>
-                            No active account
-                        </h2>
-
-                        <p>
-                            Please login to view your
-                            DEALHUNTS profile.
-                        </p>
-
-                        <button
-                            type="button"
-                            onClick={() =>
-                                navigate("/login")
-                            }
-                            className="dh-profile-primary-btn"
-                        >
-                            Login
-                        </button>
-
+                    <div className="dh-profile-empty-icon">
+                        👤
                     </div>
 
+                    <h2>
+                        No active account
+                    </h2>
+
+                    <p>
+                        Please login to view your
+                        DEALHUNTS profile.
+                    </p>
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            navigate(
+                                "/login"
+                            )
+                        }
+                        className="dh-profile-primary-btn"
+                    >
+                        Login
+                    </button>
+
                 </div>
-            </>
+
+            </div>
         );
     }
 
 
-    const role = session.role;
+    const role =
+        session.role;
 
 
     /* ========================================================
@@ -672,267 +772,612 @@ export default function Profile() {
     ======================================================== */
 
     return (
-        <>
+
+        <div className="dh-profile-page">
 
             {/* =================================================
-                DEALHUNTS HEADER
+                PROFILE HEADER CARD
             ================================================= */}
 
-            <Header />
+            <section className="dh-profile-header-card">
+
+                <div className="dh-profile-avatar">
+
+                    {getInitials(
+                        profile
+                    )}
+
+                </div>
 
 
-            <div className="dh-profile-page">
+                <div className="dh-profile-header-info">
+
+                    <div className="dh-profile-name-row">
+
+                        <h1>
+                            {getDisplayName(
+                                profile
+                            )}
+                        </h1>
+
+                        <span
+                            className={
+                                `dh-profile-role-badge ` +
+                                `dh-profile-role-${role.toLowerCase()}`
+                            }
+                        >
+                            {role}
+                        </span>
+
+                    </div>
+
+
+                    <p className="dh-profile-email">
+
+                        {formatValue(
+                            profile?.email ||
+                            profile?.username ||
+                            session?.payload?.email
+                        )}
+
+                    </p>
+
+
+                    <p className="dh-profile-account-text">
+
+                        DEALHUNTS{" "}
+                        {role.toLowerCase()} account
+
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    className="dh-profile-logout-btn"
+                    onClick={handleLogout}
+                >
+                    Logout
+                </button>
+
+            </section>
+
+
+            {/* =================================================
+                ERROR
+            ================================================= */}
+
+            {error && (
+
+                <div className="dh-profile-error">
+
+                    <div>
+
+                        <strong>
+                            Unable to load profile
+                        </strong>
+
+                        <span>
+                            {error}
+                        </span>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={loadProfile}
+                    >
+                        Retry
+                    </button>
+
+                </div>
+
+            )}
+
+
+            {/* =================================================
+                PROFILE CONTENT
+            ================================================= */}
+
+            <section className="dh-profile-content">
 
                 {/* =================================================
-                    PROFILE HEADER CARD
+                    LEFT NAVIGATION
                 ================================================= */}
 
-                <section className="dh-profile-header-card">
+                <aside className="dh-profile-menu">
 
-                    <div className="dh-profile-avatar">
-                        {getInitials(profile)}
-                    </div>
-
-
-                    <div className="dh-profile-header-info">
-
-                        <div className="dh-profile-name-row">
-
-                            <h1>
-                                {getDisplayName(profile)}
-                            </h1>
-
-                            <span
-                                className={
-                                    `dh-profile-role-badge ` +
-                                    `dh-profile-role-${role.toLowerCase()}`
-                                }
-                            >
-                                {role}
-                            </span>
-
-                        </div>
-
-
-                        <p className="dh-profile-email">
-
-                            {formatValue(
-                                profile?.email ||
-                                profile?.username ||
-                                session?.payload?.email
-                            )}
-
-                        </p>
-
-
-                        <p className="dh-profile-account-text">
-
-                            DEALHUNTS{" "}
-                            {role.toLowerCase()} account
-
-                        </p>
-
-                    </div>
+                    <button
+                        type="button"
+                        className={
+                            activeSection === "overview"
+                                ? "active"
+                                : ""
+                        }
+                        onClick={() =>
+                            setActiveSection(
+                                "overview"
+                            )
+                        }
+                    >
+                        <span>⌂</span>
+                        Overview
+                    </button>
 
 
                     <button
                         type="button"
-                        className="dh-profile-logout-btn"
-                        onClick={handleLogout}
+                        className={
+                            activeSection === "personal"
+                                ? "active"
+                                : ""
+                        }
+                        onClick={() =>
+                            setActiveSection(
+                                "personal"
+                            )
+                        }
                     >
-                        Logout
+                        <span>👤</span>
+                        Personal Details
                     </button>
 
-                </section>
+
+                    <button
+                        type="button"
+                        className={
+                            activeSection === "account"
+                                ? "active"
+                                : ""
+                        }
+                        onClick={() =>
+                            setActiveSection(
+                                "account"
+                            )
+                        }
+                    >
+                        <span>⚙</span>
+                        Account Details
+                    </button>
+
+
+                    {role === "USER" && (
+
+                        <button
+                            type="button"
+                            className={
+                                activeSection === "activity"
+                                    ? "active"
+                                    : ""
+                            }
+                            onClick={() =>
+                                setActiveSection(
+                                    "activity"
+                                )
+                            }
+                        >
+                            <span>🛒</span>
+                            My Activity
+                        </button>
+
+                    )}
+
+
+                    {role === "VENDOR" && (
+
+                        <button
+                            type="button"
+                            className={
+                                activeSection === "business"
+                                    ? "active"
+                                    : ""
+                            }
+                            onClick={() =>
+                                setActiveSection(
+                                    "business"
+                                )
+                            }
+                        >
+                            <span>🏪</span>
+                            Business Details
+                        </button>
+
+                    )}
+
+
+                    {role === "ADMIN" && (
+
+                        <button
+                            type="button"
+                            className={
+                                activeSection === "admin"
+                                    ? "active"
+                                    : ""
+                            }
+                            onClick={() =>
+                                setActiveSection(
+                                    "admin"
+                                )
+                            }
+                        >
+                            <span>🛡</span>
+                            Administration
+                        </button>
+
+                    )}
+
+                </aside>
 
 
                 {/* =================================================
-                    ERROR
+                    RIGHT CONTENT
                 ================================================= */}
 
-                {error && (
+                <main className="dh-profile-details">
 
-                    <div className="dh-profile-error">
+                    {/* =================================================
+                        OVERVIEW
+                    ================================================= */}
 
-                        <div>
-                            <strong>
-                                Unable to load profile
-                            </strong>
+                    {activeSection === "overview" && (
 
-                            <span>
-                                {error}
-                            </span>
+                        <div className="dh-profile-section">
+
+                            <div className="dh-profile-section-heading">
+
+                                <h2>
+                                    Profile Overview
+                                </h2>
+
+                                <p>
+                                    Your actual DEALHUNTS
+                                    account information.
+                                </p>
+
+                            </div>
+
+
+                            <div className="dh-profile-overview-grid">
+
+                                <div className="dh-profile-info-card">
+
+                                    <span className="dh-profile-card-label">
+                                        Account Type
+                                    </span>
+
+                                    <strong>
+                                        {role}
+                                    </strong>
+
+                                </div>
+
+
+                                <div className="dh-profile-info-card">
+
+                                    <span className="dh-profile-card-label">
+                                        Name
+                                    </span>
+
+                                    <strong>
+                                        {getDisplayName(
+                                            profile
+                                        )}
+                                    </strong>
+
+                                </div>
+
+
+                                <div className="dh-profile-info-card">
+
+                                    <span className="dh-profile-card-label">
+                                        Email
+                                    </span>
+
+                                    <strong>
+                                        {formatValue(
+                                            profile?.email ||
+                                            session?.payload?.email
+                                        )}
+                                    </strong>
+
+                                </div>
+
+
+                                <div className="dh-profile-info-card">
+
+                                    <span className="dh-profile-card-label">
+                                        Account ID
+                                    </span>
+
+                                    <strong>
+                                        {formatValue(
+                                            profile?.id ||
+                                            profile?.userId ||
+                                            profile?.vendorId ||
+                                            profile?.adminId
+                                        )}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
                         </div>
 
-                        <button
-                            type="button"
-                            onClick={loadProfile}
-                        >
-                            Retry
-                        </button>
-
-                    </div>
-
-                )}
-
-
-                {/* =================================================
-                    PROFILE CONTENT
-                ================================================= */}
-
-                <section className="dh-profile-content">
-
-                    {/* =================================================
-                        LEFT NAVIGATION
-                    ================================================= */}
-
-                    <aside className="dh-profile-menu">
-
-                        <button
-                            type="button"
-                            className={
-                                activeSection === "overview"
-                                    ? "active"
-                                    : ""
-                            }
-                            onClick={() =>
-                                setActiveSection(
-                                    "overview"
-                                )
-                            }
-                        >
-                            <span>⌂</span>
-                            Overview
-                        </button>
-
-
-                        <button
-                            type="button"
-                            className={
-                                activeSection === "personal"
-                                    ? "active"
-                                    : ""
-                            }
-                            onClick={() =>
-                                setActiveSection(
-                                    "personal"
-                                )
-                            }
-                        >
-                            <span>👤</span>
-                            Personal Details
-                        </button>
-
-
-                        <button
-                            type="button"
-                            className={
-                                activeSection === "account"
-                                    ? "active"
-                                    : ""
-                            }
-                            onClick={() =>
-                                setActiveSection(
-                                    "account"
-                                )
-                            }
-                        >
-                            <span>⚙</span>
-                            Account Details
-                        </button>
-
-
-                        {role === "USER" && (
-
-                            <button
-                                type="button"
-                                className={
-                                    activeSection === "activity"
-                                        ? "active"
-                                        : ""
-                                }
-                                onClick={() =>
-                                    setActiveSection(
-                                        "activity"
-                                    )
-                                }
-                            >
-                                <span>🛒</span>
-                                My Activity
-                            </button>
-
-                        )}
-
-
-                        {role === "VENDOR" && (
-
-                            <button
-                                type="button"
-                                className={
-                                    activeSection === "business"
-                                        ? "active"
-                                        : ""
-                                }
-                                onClick={() =>
-                                    setActiveSection(
-                                        "business"
-                                    )
-                                }
-                            >
-                                <span>🏪</span>
-                                Business Details
-                            </button>
-
-                        )}
-
-
-                        {role === "ADMIN" && (
-
-                            <button
-                                type="button"
-                                className={
-                                    activeSection === "admin"
-                                        ? "active"
-                                        : ""
-                                }
-                                onClick={() =>
-                                    setActiveSection(
-                                        "admin"
-                                    )
-                                }
-                            >
-                                <span>🛡</span>
-                                Administration
-                            </button>
-
-                        )}
-
-                    </aside>
+                    )}
 
 
                     {/* =================================================
-                        RIGHT CONTENT
+                        PERSONAL DETAILS
                     ================================================= */}
 
-                    <main className="dh-profile-details">
+                    {activeSection === "personal" && (
 
-                        {/* =================================================
-                            OVERVIEW
-                        ================================================= */}
+                        <div className="dh-profile-section">
 
-                        {activeSection === "overview" && (
+                            <div className="dh-profile-section-heading">
+
+                                <h2>
+                                    Personal Details
+                                </h2>
+
+                                <p>
+                                    Information associated
+                                    with this account.
+                                </p>
+
+                            </div>
+
+
+                            <div className="dh-profile-details-grid">
+
+                                <div className="dh-profile-detail-item">
+
+                                    <label>
+                                        Full Name
+                                    </label>
+
+                                    <div>
+                                        {getDisplayName(
+                                            profile
+                                        )}
+                                    </div>
+
+                                </div>
+
+
+                                <div className="dh-profile-detail-item">
+
+                                    <label>
+                                        Email
+                                    </label>
+
+                                    <div>
+                                        {formatValue(
+                                            profile?.email ||
+                                            session?.payload?.email
+                                        )}
+                                    </div>
+
+                                </div>
+
+
+                                <div className="dh-profile-detail-item">
+
+                                    <label>
+                                        Username
+                                    </label>
+
+                                    <div>
+                                        {formatValue(
+                                            profile?.username
+                                        )}
+                                    </div>
+
+                                </div>
+
+
+                                <div className="dh-profile-detail-item">
+
+                                    <label>
+                                        Phone
+                                    </label>
+
+                                    <div>
+                                        {formatValue(
+                                            profile?.phone ||
+                                            profile?.phoneNo ||
+                                            profile?.phoneNumber ||
+                                            profile?.mobile
+                                        )}
+                                    </div>
+
+                                </div>
+
+
+                                <div className="dh-profile-detail-item">
+
+                                    <label>
+                                        First Name
+                                    </label>
+
+                                    <div>
+                                        {formatValue(
+                                            profile?.firstName ||
+                                            profile?.firstname
+                                        )}
+                                    </div>
+
+                                </div>
+
+
+                                <div className="dh-profile-detail-item">
+
+                                    <label>
+                                        Last Name
+                                    </label>
+
+                                    <div>
+                                        {formatValue(
+                                            profile?.lastName ||
+                                            profile?.lastname
+                                        )}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    )}
+
+
+                    {/* =================================================
+                        ACCOUNT DETAILS
+                    ================================================= */}
+
+                    {activeSection === "account" && (
+
+                        <div className="dh-profile-section">
+
+                            <div className="dh-profile-section-heading">
+
+                                <h2>
+                                    Account Details
+                                </h2>
+
+                                <p>
+                                    Authentication and
+                                    account information.
+                                </p>
+
+                            </div>
+
+
+                            <div className="dh-profile-details-grid">
+
+                                <div className="dh-profile-detail-item">
+
+                                    <label>
+                                        Role
+                                    </label>
+
+                                    <div>
+                                        {formatValue(
+                                            profile?.role ||
+                                            `ROLE_${role}`
+                                        )}
+                                    </div>
+
+                                </div>
+
+
+                                <div className="dh-profile-detail-item">
+
+                                    <label>
+                                        Account ID
+                                    </label>
+
+                                    <div>
+                                        {formatValue(
+                                            profile?.id ||
+                                            profile?.userId ||
+                                            profile?.vendorId ||
+                                            profile?.adminId
+                                        )}
+                                    </div>
+
+                                </div>
+
+
+                                <div className="dh-profile-detail-item">
+
+                                    <label>
+                                        Account Status
+                                    </label>
+
+                                    <div>
+                                        {formatValue(
+                                            profile?.status ||
+                                            profile?.accountStatus ||
+                                            profile?.approvalStatus
+                                        )}
+                                    </div>
+
+                                </div>
+
+
+                                <div className="dh-profile-detail-item">
+
+                                    <label>
+                                        Created At
+                                    </label>
+
+                                    <div>
+                                        {formatValue(
+                                            profile?.createdAt ||
+                                            profile?.createdDate
+                                        )}
+                                    </div>
+
+                                </div>
+
+
+                                <div className="dh-profile-detail-item">
+
+                                    <label>
+                                        Updated At
+                                    </label>
+
+                                    <div>
+                                        {formatValue(
+                                            profile?.updatedAt ||
+                                            profile?.updatedDate
+                                        )}
+                                    </div>
+
+                                </div>
+
+
+                                <div className="dh-profile-detail-item">
+
+                                    <label>
+                                        Authentication
+                                    </label>
+
+                                    <div>
+                                        Active
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    )}
+
+
+                    {/* =================================================
+                        USER ACTIVITY
+                    ================================================= */}
+
+                    {role === "USER" &&
+                        activeSection === "activity" && (
 
                             <div className="dh-profile-section">
 
                                 <div className="dh-profile-section-heading">
 
                                     <h2>
-                                        Profile Overview
+                                        My Activity
                                     </h2>
 
                                     <p>
-                                        Your actual DEALHUNTS
-                                        account information.
+                                        Your DEALHUNTS
+                                        shopping account.
                                     </p>
 
                                 </div>
@@ -943,11 +1388,11 @@ export default function Profile() {
                                     <div className="dh-profile-info-card">
 
                                         <span className="dh-profile-card-label">
-                                            Account Type
+                                            Cart
                                         </span>
 
                                         <strong>
-                                            {role}
+                                            View Cart
                                         </strong>
 
                                     </div>
@@ -956,13 +1401,11 @@ export default function Profile() {
                                     <div className="dh-profile-info-card">
 
                                         <span className="dh-profile-card-label">
-                                            Name
+                                            Wishlist
                                         </span>
 
                                         <strong>
-                                            {getDisplayName(
-                                                profile
-                                            )}
+                                            View Wishlist
                                         </strong>
 
                                     </div>
@@ -971,32 +1414,11 @@ export default function Profile() {
                                     <div className="dh-profile-info-card">
 
                                         <span className="dh-profile-card-label">
-                                            Email
+                                            Orders
                                         </span>
 
                                         <strong>
-                                            {formatValue(
-                                                profile?.email ||
-                                                session?.payload?.email
-                                            )}
-                                        </strong>
-
-                                    </div>
-
-
-                                    <div className="dh-profile-info-card">
-
-                                        <span className="dh-profile-card-label">
-                                            Account ID
-                                        </span>
-
-                                        <strong>
-                                            {formatValue(
-                                                profile?.id ||
-                                                profile?.userId ||
-                                                profile?.vendorId ||
-                                                profile?.adminId
-                                            )}
+                                            View Orders
                                         </strong>
 
                                     </div>
@@ -1008,23 +1430,24 @@ export default function Profile() {
                         )}
 
 
-                        {/* =================================================
-                            PERSONAL DETAILS
-                        ================================================= */}
+                    {/* =================================================
+                        VENDOR BUSINESS
+                    ================================================= */}
 
-                        {activeSection === "personal" && (
+                    {role === "VENDOR" &&
+                        activeSection === "business" && (
 
                             <div className="dh-profile-section">
 
                                 <div className="dh-profile-section-heading">
 
                                     <h2>
-                                        Personal Details
+                                        Business Details
                                     </h2>
 
                                     <p>
-                                        Information associated
-                                        with this account.
+                                        Vendor account and
+                                        business information.
                                     </p>
 
                                 </div>
@@ -1033,86 +1456,185 @@ export default function Profile() {
                                 <div className="dh-profile-details-grid">
 
                                     <div className="dh-profile-detail-item">
+
+                                        <label>
+                                            Vendor ID
+                                        </label>
+
+                                        <div>
+                                            {formatValue(
+                                                profile?.id ||
+                                                profile?.vendorId
+                                            )}
+                                        </div>
+
+                                    </div>
+
+
+                                    <div className="dh-profile-detail-item">
+
                                         <label>
                                             Full Name
                                         </label>
 
                                         <div>
-                                            {getDisplayName(
-                                                profile
+                                            {formatValue(
+                                                profile?.fullName ||
+                                                profile?.name
                                             )}
                                         </div>
+
                                     </div>
 
 
                                     <div className="dh-profile-detail-item">
+
+                                        <label>
+                                            Shop Name
+                                        </label>
+
+                                        <div>
+                                            {formatValue(
+                                                profile?.shopName
+                                            )}
+                                        </div>
+
+                                    </div>
+
+
+                                    <div className="dh-profile-detail-item">
+
                                         <label>
                                             Email
                                         </label>
 
                                         <div>
                                             {formatValue(
-                                                profile?.email ||
-                                                session?.payload?.email
+                                                profile?.email
                                             )}
                                         </div>
+
                                     </div>
 
 
                                     <div className="dh-profile-detail-item">
-                                        <label>
-                                            Username
-                                        </label>
 
-                                        <div>
-                                            {formatValue(
-                                                profile?.username
-                                            )}
-                                        </div>
-                                    </div>
-
-
-                                    <div className="dh-profile-detail-item">
                                         <label>
                                             Phone
                                         </label>
 
                                         <div>
                                             {formatValue(
-                                                profile?.phone ||
                                                 profile?.phoneNo ||
-                                                profile?.phoneNumber ||
-                                                profile?.mobile
+                                                profile?.phone ||
+                                                profile?.phoneNumber
                                             )}
                                         </div>
+
                                     </div>
 
 
                                     <div className="dh-profile-detail-item">
+
                                         <label>
-                                            First Name
+                                            Status
                                         </label>
 
                                         <div>
                                             {formatValue(
-                                                profile?.firstName ||
-                                                profile?.firstname
+                                                profile?.status
                                             )}
                                         </div>
+
                                     </div>
 
 
                                     <div className="dh-profile-detail-item">
+
                                         <label>
-                                            Last Name
+                                            City
                                         </label>
 
                                         <div>
                                             {formatValue(
-                                                profile?.lastName ||
-                                                profile?.lastname
+                                                profile?.city
                                             )}
                                         </div>
+
+                                    </div>
+
+
+                                    <div className="dh-profile-detail-item">
+
+                                        <label>
+                                            State
+                                        </label>
+
+                                        <div>
+                                            {formatValue(
+                                                profile?.state
+                                            )}
+                                        </div>
+
+                                    </div>
+
+
+                                    <div className="dh-profile-detail-item">
+
+                                        <label>
+                                            Pincode
+                                        </label>
+
+                                        <div>
+                                            {formatValue(
+                                                profile?.pincode
+                                            )}
+                                        </div>
+
+                                    </div>
+
+
+                                    <div className="dh-profile-detail-item dh-profile-detail-full">
+
+                                        <label>
+                                            Address
+                                        </label>
+
+                                        <div>
+                                            {formatValue(
+                                                profile?.address
+                                            )}
+                                        </div>
+
+                                    </div>
+
+
+                                    <div className="dh-profile-detail-item dh-profile-detail-full">
+
+                                        <label>
+                                            Location
+                                        </label>
+
+                                        <div>
+
+                                            {profile?.locationLink ? (
+
+                                                <a
+                                                    href={
+                                                        profile.locationLink
+                                                    }
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    Open Location
+                                                </a>
+
+                                            ) : (
+                                                "Not available"
+                                            )}
+
+                                        </div>
+
                                     </div>
 
                                 </div>
@@ -1122,23 +1644,24 @@ export default function Profile() {
                         )}
 
 
-                        {/* =================================================
-                            ACCOUNT DETAILS
-                        ================================================= */}
+                    {/* =================================================
+                        ADMIN
+                    ================================================= */}
 
-                        {activeSection === "account" && (
+                    {role === "ADMIN" &&
+                        activeSection === "admin" && (
 
                             <div className="dh-profile-section">
 
                                 <div className="dh-profile-section-heading">
 
                                     <h2>
-                                        Account Details
+                                        Administration
                                     </h2>
 
                                     <p>
-                                        Authentication and
-                                        account information.
+                                        Administrator account
+                                        information.
                                     </p>
 
                                 </div>
@@ -1147,6 +1670,53 @@ export default function Profile() {
                                 <div className="dh-profile-details-grid">
 
                                     <div className="dh-profile-detail-item">
+
+                                        <label>
+                                            Admin ID
+                                        </label>
+
+                                        <div>
+                                            {formatValue(
+                                                profile?.id ||
+                                                profile?.adminId
+                                            )}
+                                        </div>
+
+                                    </div>
+
+
+                                    <div className="dh-profile-detail-item">
+
+                                        <label>
+                                            Admin Name
+                                        </label>
+
+                                        <div>
+                                            {getDisplayName(
+                                                profile
+                                            )}
+                                        </div>
+
+                                    </div>
+
+
+                                    <div className="dh-profile-detail-item">
+
+                                        <label>
+                                            Email
+                                        </label>
+
+                                        <div>
+                                            {formatValue(
+                                                profile?.email
+                                            )}
+                                        </div>
+
+                                    </div>
+
+
+                                    <div className="dh-profile-detail-item">
+
                                         <label>
                                             Role
                                         </label>
@@ -1157,76 +1727,23 @@ export default function Profile() {
                                                 `ROLE_${role}`
                                             )}
                                         </div>
+
                                     </div>
 
 
                                     <div className="dh-profile-detail-item">
+
                                         <label>
-                                            Account ID
-                                        </label>
-
-                                        <div>
-                                            {formatValue(
-                                                profile?.id ||
-                                                profile?.userId ||
-                                                profile?.vendorId ||
-                                                profile?.adminId
-                                            )}
-                                        </div>
-                                    </div>
-
-
-                                    <div className="dh-profile-detail-item">
-                                        <label>
-                                            Account Status
+                                            Status
                                         </label>
 
                                         <div>
                                             {formatValue(
                                                 profile?.status ||
-                                                profile?.accountStatus ||
-                                                profile?.approvalStatus
+                                                profile?.accountStatus
                                             )}
                                         </div>
-                                    </div>
 
-
-                                    <div className="dh-profile-detail-item">
-                                        <label>
-                                            Created At
-                                        </label>
-
-                                        <div>
-                                            {formatValue(
-                                                profile?.createdAt ||
-                                                profile?.createdDate
-                                            )}
-                                        </div>
-                                    </div>
-
-
-                                    <div className="dh-profile-detail-item">
-                                        <label>
-                                            Updated At
-                                        </label>
-
-                                        <div>
-                                            {formatValue(
-                                                profile?.updatedAt ||
-                                                profile?.updatedDate
-                                            )}
-                                        </div>
-                                    </div>
-
-
-                                    <div className="dh-profile-detail-item">
-                                        <label>
-                                            Authentication
-                                        </label>
-
-                                        <div>
-                                            Active
-                                        </div>
                                     </div>
 
                                 </div>
@@ -1235,374 +1752,10 @@ export default function Profile() {
 
                         )}
 
+                </main>
 
-                        {/* =================================================
-                            USER ACTIVITY
-                        ================================================= */}
+            </section>
 
-                        {role === "USER" &&
-                            activeSection === "activity" && (
-
-                                <div className="dh-profile-section">
-
-                                    <div className="dh-profile-section-heading">
-
-                                        <h2>
-                                            My Activity
-                                        </h2>
-
-                                        <p>
-                                            Your DEALHUNTS
-                                            shopping account.
-                                        </p>
-
-                                    </div>
-
-
-                                    <div className="dh-profile-overview-grid">
-
-                                        <div className="dh-profile-info-card">
-
-                                            <span className="dh-profile-card-label">
-                                                Cart
-                                            </span>
-
-                                            <strong>
-                                                View Cart
-                                            </strong>
-
-                                        </div>
-
-
-                                        <div className="dh-profile-info-card">
-
-                                            <span className="dh-profile-card-label">
-                                                Wishlist
-                                            </span>
-
-                                            <strong>
-                                                View Wishlist
-                                            </strong>
-
-                                        </div>
-
-
-                                        <div className="dh-profile-info-card">
-
-                                            <span className="dh-profile-card-label">
-                                                Orders
-                                            </span>
-
-                                            <strong>
-                                                View Orders
-                                            </strong>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            )}
-
-
-                        {/* =================================================
-                            VENDOR BUSINESS
-                        ================================================= */}
-
-                        {role === "VENDOR" &&
-                            activeSection === "business" && (
-
-                                <div className="dh-profile-section">
-
-                                    <div className="dh-profile-section-heading">
-
-                                        <h2>
-                                            Business Details
-                                        </h2>
-
-                                        <p>
-                                            Vendor account and
-                                            business information.
-                                        </p>
-
-                                    </div>
-
-
-                                    <div className="dh-profile-details-grid">
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                Vendor ID
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.id ||
-                                                    profile?.vendorId
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                Full Name
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.fullName ||
-                                                    profile?.name
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                Shop Name
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.shopName
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                Email
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.email
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                Phone
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.phoneNo ||
-                                                    profile?.phone ||
-                                                    profile?.phoneNumber
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                Status
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.status
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                City
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.city
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                State
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.state
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                Pincode
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.pincode
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item dh-profile-detail-full">
-                                            <label>
-                                                Address
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.address
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item dh-profile-detail-full">
-                                            <label>
-                                                Location
-                                            </label>
-
-                                            <div>
-
-                                                {profile?.locationLink ? (
-
-                                                    <a
-                                                        href={
-                                                            profile.locationLink
-                                                        }
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        Open Location
-                                                    </a>
-
-                                                ) : (
-                                                    "Not available"
-                                                )}
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            )}
-
-
-                        {/* =================================================
-                            ADMIN
-                        ================================================= */}
-
-                        {role === "ADMIN" &&
-                            activeSection === "admin" && (
-
-                                <div className="dh-profile-section">
-
-                                    <div className="dh-profile-section-heading">
-
-                                        <h2>
-                                            Administration
-                                        </h2>
-
-                                        <p>
-                                            Administrator account
-                                            information.
-                                        </p>
-
-                                    </div>
-
-
-                                    <div className="dh-profile-details-grid">
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                Admin ID
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.id ||
-                                                    profile?.adminId
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                Admin Name
-                                            </label>
-
-                                            <div>
-                                                {getDisplayName(
-                                                    profile
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                Email
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.email
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                Role
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.role ||
-                                                    `ROLE_${role}`
-                                                )}
-                                            </div>
-                                        </div>
-
-
-                                        <div className="dh-profile-detail-item">
-                                            <label>
-                                                Status
-                                            </label>
-
-                                            <div>
-                                                {formatValue(
-                                                    profile?.status ||
-                                                    profile?.accountStatus
-                                                )}
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            )}
-
-                    </main>
-
-                </section>
-
-            </div>
-
-        </>
+        </div>
     );
 }

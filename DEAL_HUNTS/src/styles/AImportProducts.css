@@ -479,3 +479,126 @@
         width: 100%;
     }
 }
+
+/* =========================================================
+   CSV HEADER SECTION
+   ========================================================= */
+
+.csv-format-section {
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+/* =========================================================
+   CSV HEADER BOX
+   ========================================================= */
+
+.csv-header-preview {
+    width: 100%;
+    overflow: hidden;
+
+    border: 1px solid #dedede;
+    border-radius: 9px;
+
+    background: #ffffff;
+}
+
+
+/* =========================================================
+   CSV HEADER TITLE
+   ========================================================= */
+
+.preview-title {
+    padding: 11px 14px;
+
+    background: #f5f5f5;
+    color: #444444;
+
+    border-bottom: 1px solid #dedede;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   CSV HEADER TEXT
+   ========================================================= */
+
+.csv-header-code {
+    width: 100%;
+
+    padding: 16px;
+
+    background: #202020;
+    color: #ffffff;
+
+    font-family: "Courier New", monospace;
+    font-size: 12px;
+    line-height: 1.6;
+
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+
+/* =========================================================
+   IMPORTANT NOTE
+   ========================================================= */
+
+.csv-note {
+    margin-top: 13px;
+    padding: 12px 14px;
+
+    background: #fffaf0;
+    color: #6d5a24;
+
+    border: 1px solid #f0dfad;
+    border-left: 4px solid #d4af37;
+
+    border-radius: 7px;
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.csv-note strong {
+    color: #4f421d;
+    font-weight: 750;
+}
+
+.csv-note span {
+    color: #6d5a24;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .csv-format-section {
+        margin-top: 6px;
+    }
+
+    .preview-title {
+        padding: 10px 12px;
+        font-size: 11px;
+    }
+
+    .csv-header-code {
+        padding: 13px;
+        font-size: 10px;
+    }
+
+    .csv-note {
+        margin-top: 11px;
+        padding: 10px 12px;
+        font-size: 11px;
+    }
+}

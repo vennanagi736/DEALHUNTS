@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Settings from "./components/Settings";
 import Layout from "./components/Layout";
+import ForgotPassword from "./components/ForgotPassword";
 
 /* ============================================================
    COMMON / PROFILE
@@ -30,7 +31,7 @@ import OrderSuccess from "./pages/user/OrderSuccess";
 import UserOrders from "./pages/user/Orders";
 import BookVisit from "./pages/user/BookVisit";
 import UserVisitRequests from "./pages/user/UVisitRequests";
-
+import AvailableShopNearYou from "./pages/user/AvailableShopNearMe";
 
 /* ============================================================
    VENDOR
@@ -74,6 +75,11 @@ import AdminManagePromotions from "./pages/admin/AManagePromotions";
 import AdminManageCarousel from "./pages/admin/AManageCarousel";
 import AdminManageTrendingDeals from "./pages/admin/AManageTrendingDeals";
 import AdminManageTrendingCategories from "./pages/admin/AManageTrendingCategories";
+import AdminManageTodaysBestDeals from "./pages/admin/AManageTodaysBestDeals";
+import AdminManageAvailableNearYou from "./pages/admin/AManageAvailableNearYou";
+import AdminManageNewArrivals from "./pages/admin/AManageNewArrivals";
+import AdminManageComingSoon from "./pages/admin/AManageComingSoon";
+import AdminManageWhyDealHunts from "./pages/admin/AManageWhyDealHunts";
 
 
 function App() {
@@ -108,6 +114,18 @@ function App() {
                     element={
                         <Layout>
                             <Home />
+                        </Layout>
+                    }
+                />
+                {/* ----------------------------------------------------
+                    USER / VENDOR FORGOT PASSWORD
+                ---------------------------------------------------- */}
+
+                <Route
+                    path="/forgot-password"
+                    element={
+                        <Layout showMenu={false}>
+                            <ForgotPassword />
                         </Layout>
                     }
                 />
@@ -200,11 +218,12 @@ function App() {
                                 "ROLE_ADMIN"
                             ]}
                         >
-                            <Profile />
+                            <Layout>
+                                <Profile />
+                            </Layout>
                         </ProtectedRoute>
                     }
                 />
-
 
                 {/* ====================================================
                     USER PROTECTED ROUTES
@@ -384,8 +403,19 @@ function App() {
                                 "ROLE_USER"
                             ]}
                         >
+                            <Layout>
                             <UserVisitRequests />
+                            </Layout>
                         </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/available-near-you"
+                    element={
+                    <ProtectedRoute
+                    allowedRoles={["ROLE_USER"]}>
+                        <AvailableShopNearYou/></ProtectedRoute>
                     }
                 />
 
@@ -984,21 +1014,84 @@ function App() {
                     ADMIN TRENDING CATEGORIES
                 ==================================================== */}
 
-                <Route
-                    path="/admin/manage-trending-categories"
-                    element={
-                        <ProtectedRoute
-                            allowedRoles={[
-                                "ROLE_ADMIN"
-                            ]}
-                        >
-                            <Layout>
-                                <AdminManageTrendingCategories />
-                            </Layout>
-                        </ProtectedRoute>
-                    }
-                />
+                ```jsx
+<Route
+    path="/admin/manage-trending-categories"
+    element={
+        <ProtectedRoute
+            allowedRoles={["ROLE_ADMIN"]}
+        >
+            <Layout>
+                <AdminManageTrendingCategories />
+            </Layout>
+        </ProtectedRoute>
+    }
+/>
 
+<Route
+    path="/admin/manage-todays-best-deals"
+    element={
+        <ProtectedRoute
+            allowedRoles={["ROLE_ADMIN"]}
+        >
+            <Layout>
+                <AdminManageTodaysBestDeals />
+            </Layout>
+        </ProtectedRoute>
+    }
+/>
+
+<Route
+    path="/admin/manage-available-near-you"
+    element={
+        <ProtectedRoute
+            allowedRoles={["ROLE_ADMIN"]}
+        >
+            <Layout>
+                <AdminManageAvailableNearYou />
+            </Layout>
+        </ProtectedRoute>
+    }
+/>
+
+<Route
+    path="/admin/manage-new-arrivals"
+    element={
+        <ProtectedRoute
+            allowedRoles={["ROLE_ADMIN"]}
+        >
+            <Layout>
+                <AdminManageNewArrivals />
+            </Layout>
+        </ProtectedRoute>
+    }
+/>
+
+<Route
+    path="/admin/manage-coming-soon"
+    element={
+        <ProtectedRoute
+            allowedRoles={["ROLE_ADMIN"]}
+        >
+            <Layout>
+                <AdminManageComingSoon />
+            </Layout>
+        </ProtectedRoute>
+    }
+/>
+
+<Route
+    path="/admin/manage-why-dealhunts"
+    element={
+        <ProtectedRoute
+            allowedRoles={["ROLE_ADMIN"]}
+        >
+            <Layout>
+                <AdminManageWhyDealHunts />
+            </Layout>
+        </ProtectedRoute>
+    }
+/>
             </Routes>
 
         </BrowserRouter>

@@ -287,6 +287,7 @@ function Login() {
 
             <Link
               to="/forgot-password"
+              state={{accountType: "user"}}
               className="dh-user-login-link"
             >
               Forgot Password?

@@ -1259,7 +1259,13 @@
     outline: none;
 
 }
+.wishlist-card__image-wrap-user {
+    cursor: pointer;
+}
 
+.wishlist-card__image-wrap-user img {
+    cursor: pointer;
+}
 
 /* ============================================================
    EMPTY STATE

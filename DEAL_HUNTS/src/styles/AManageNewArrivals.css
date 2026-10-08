@@ -1,0 +1,2269 @@
+/* ============================================================
+   GLOBAL PAGE
+============================================================ */
+
+.dh-manage-new-arrivals {
+    width: 100%;
+    min-height: 100vh;
+    background: #f5f6f8;
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   MAIN
+============================================================ */
+
+.dh-new-arrivals-main {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 34px 44px 42px;
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   PAGE HEADER
+============================================================ */
+
+.dh-new-arrivals-page-header {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 16px !important;
+}
+
+.dh-new-arrivals-header-left {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.dh-new-arrivals-page-header h1 {
+    margin: 0;
+    color: #172033;
+    font-size: 30px;
+    font-weight: 750;
+    line-height: 1.2;
+}
+
+.dh-new-arrivals-page-header p {
+    margin: 5px 0 0;
+    color: #737983;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   TOTAL
+============================================================ */
+
+.dh-new-arrivals-total {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin: 2px 0 0;
+    padding: 7px 11px;
+    background: #ffffff;
+    border: 1px solid #e1e4e8;
+    border-radius: 7px;
+    color: #000000;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15px;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.dh-new-arrivals-total strong {
+    margin-left: 4px;
+    color: #000000;
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   HEADER ACTIONS
+============================================================ */
+
+.dh-new-arrivals-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   PRIMARY BUTTON
+============================================================ */
+
+.dh-new-arrivals-primary-btn {
+    min-height: 42px;
+    padding: 0 18px;
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+    background: #d4af37;
+    color: #111111;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dh-new-arrivals-primary-btn:hover {
+    background: #bd9828;
+    border-color: #bd9828;
+    transform: translateY(-1px);
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.10);
+}
+
+.dh-new-arrivals-primary-btn:active {
+    transform: translateY(0);
+}
+
+.dh-new-arrivals-primary-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   MAIN CONTENT
+============================================================ */
+
+.dh-new-arrivals-content {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e2e5ea;
+    border-radius: 14px;
+    padding: 16px;
+    box-sizing: border-box;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+
+/* ============================================================
+   PRODUCT GRID
+============================================================ */
+
+.dh-new-arrivals-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+
+/* ============================================================
+   PRODUCT CARD
+============================================================ */
+
+.dh-new-arrivals-card {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e2e5ea;
+    border-radius: 12px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.dh-new-arrivals-card:hover {
+    border-color: #d4af37;
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.07);
+    transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   SELECTED CARD
+============================================================ */
+
+.dh-new-arrivals-card-selected {
+    border-color: #d4af37;
+    box-shadow:
+        0 0 0 2px rgba(212, 175, 55, 0.12),
+        0 8px 22px rgba(0, 0, 0, 0.06);
+}
+
+
+/* ============================================================
+   CARD IMAGE
+============================================================ */
+
+.dh-new-arrivals-card-image {
+    width: 100%;
+    height: 195px;
+    overflow: hidden;
+    background: #f7f8fa;
+    border-bottom: 1px solid #e7e9ed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dh-new-arrivals-card-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    padding: 12px;
+    box-sizing: border-box;
+    transition:
+        transform 0.3s ease;
+}
+
+.dh-new-arrivals-card:hover
+.dh-new-arrivals-card-image img {
+    transform: scale(1.025);
+}
+
+
+/* ============================================================
+   NO IMAGE
+============================================================ */
+
+.dh-new-arrivals-no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9aa1aa;
+    font-size: 13px;
+    background: #f5f6f8;
+}
+
+
+/* ============================================================
+   CARD CONTENT
+============================================================ */
+
+.dh-new-arrivals-card-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    padding: 14px;
+}
+
+
+/* ============================================================
+   BRAND + PRIORITY
+============================================================ */
+
+.dh-new-arrivals-card-brand-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 6px;
+}
+
+.dh-new-arrivals-card-brand {
+    min-width: 0;
+    color: #a17b13;
+    font-size: 10px;
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 0.55px;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   PRIORITY
+============================================================ */
+
+.dh-new-arrivals-card-priority {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 22px;
+    padding: 0 8px;
+    border: 1px solid #eadcae;
+    border-radius: 6px;
+    background: #fffaf0;
+    color: #8a6812;
+    font-size: 9px;
+    font-weight: 750;
+    line-height: 1;
+    white-space: nowrap;
+    letter-spacing: 0.15px;
+}
+
+
+/* ============================================================
+   PRODUCT NAME
+============================================================ */
+
+.dh-new-arrivals-card-content h3 {
+    margin: 0 0 6px;
+    color: #172033;
+    font-size: 16px;
+    font-weight: 750;
+    line-height: 1.35;
+    letter-spacing: -0.1px;
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   DESCRIPTION
+============================================================ */
+
+.dh-new-arrivals-card-content p {
+    margin: 0 0 11px;
+    color: #707782;
+    font-size: 11px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   DATE RANGE
+============================================================ */
+
+.dh-new-arrivals-card-date {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: auto;
+    padding: 8px 9px;
+    border: 1px solid #e9ebef;
+    border-radius: 7px;
+    background: #fafbfc;
+}
+
+.dh-new-arrivals-card-date span {
+    color: #858c96;
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dh-new-arrivals-card-date strong {
+    color: #172033;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.dh-new-arrivals-empty {
+    min-height: 230px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 25px 20px;
+    border: 1px dashed #d9dde3;
+    border-radius: 10px;
+    background: #fafbfc;
+    box-sizing: border-box;
+}
+
+.dh-new-arrivals-empty-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    background: #fff8df;
+    font-size: 22px;
+}
+
+.dh-new-arrivals-empty h2 {
+    margin: 0 0 5px;
+    color: #172033;
+    font-size: 16px;
+    font-weight: 750;
+}
+
+.dh-new-arrivals-empty p {
+    max-width: 420px;
+    margin: 0;
+    color: #7b818b;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   BOTTOM FOOTER
+============================================================ */
+
+.dh-new-arrivals-footer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 9px;
+    margin-top: 12px;
+    padding: 0 2px;
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   VIEW DETAILS
+============================================================ */
+
+.dh-new-arrivals-view-btn {
+    min-width: 135px;
+    min-height: 40px;
+    padding: 0 17px;
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #8a6812;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 750;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dh-new-arrivals-view-btn:hover {
+    background: #fffaf0;
+    border-color: #bd9828;
+    color: #76590d;
+    transform: translateY(-1px);
+    box-shadow:
+        0 5px 14px rgba(212, 175, 55, 0.15);
+}
+
+.dh-new-arrivals-view-btn:active {
+    transform: translateY(0);
+}
+
+.dh-new-arrivals-view-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   POPUP OVERLAY
+============================================================ */
+
+.dh-new-arrivals-popup-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+
+    padding: 20px;
+
+    background: rgba(15, 20, 30, 0.55);
+
+    box-sizing: border-box;
+
+    z-index: 2000;
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   ADD / EDIT FORM OVERLAY
+   ALWAYS CENTERED (horizontally + vertically)
+   !important added so no other rule can push it to the right
+============================================================ */
+
+.dh-new-arrivals-popup-overlay.dh-new-arrivals-form-overlay {
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 18px;
+}
+
+
+/* ============================================================
+   ADD / EDIT FORM POPUP
+   IMPORTANT:
+   This rule comes AFTER the generic popup overlay.
+   It completely defines the centered modal.
+============================================================ */
+
+.dh-new-arrivals-form-overlay
+.dh-new-arrivals-popup {
+
+    position: relative;
+
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+
+    width: min(600px, calc(100vw - 36px));
+    max-width: 600px;
+
+    height: auto;
+    max-height: calc(100vh - 36px);
+
+    /* auto margins keep the modal in the middle */
+    margin: auto !important;
+
+    flex: 0 0 auto;
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e4e8;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 22px 55px rgba(0, 0, 0, 0.22);
+
+    overflow: hidden;
+
+    animation:
+        dh-new-arrivals-center-in
+        0.22s ease-out;
+}
+
+
+/* ============================================================
+   DETAILS OVERLAY
+   RIGHT SIDE
+============================================================ */
+
+.dh-new-arrivals-details-overlay {
+    align-items: stretch;
+    justify-content: flex-end;
+
+    padding: 0;
+}
+
+
+/* ============================================================
+   DETAILS RIGHT DRAWER
+   (made smaller: 570px -> 430px)
+============================================================ */
+
+.dh-new-arrivals-details-overlay
+.dh-new-arrivals-details-popup {
+
+    position: relative;
+
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+
+    width: min(430px, 100vw);
+    max-width: 430px;
+
+    height: 100vh;
+    max-height: 100vh;
+
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e4e8;
+    border-right: none;
+
+    border-radius: 14px 0 0 14px;
+
+    box-shadow:
+        -12px 0 35px rgba(0, 0, 0, 0.18);
+
+    overflow: hidden;
+
+    animation:
+        dh-new-arrivals-slide-in
+        0.25s ease-out;
+}
+
+
+/* ============================================================
+   CENTER ANIMATION
+============================================================ */
+
+@keyframes dh-new-arrivals-center-in {
+
+    from {
+        transform: translateY(12px) scale(0.985);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* ============================================================
+   DRAWER ANIMATION
+============================================================ */
+
+@keyframes dh-new-arrivals-slide-in {
+
+    from {
+        transform: translateX(100%);
+        opacity: 0.7;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+/* ============================================================
+   POPUP HEADER
+============================================================ */
+
+.dh-new-arrivals-popup-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 15px 18px;
+
+    border-bottom: 1px solid #e9ebef;
+
+    flex-shrink: 0;
+
+    background: #ffffff;
+}
+
+.dh-new-arrivals-popup-header h2 {
+    margin: 0;
+    color: #172033;
+    font-size: 18px;
+    font-weight: 750;
+    line-height: 1.3;
+}
+
+.dh-new-arrivals-popup-header p {
+    margin: 3px 0 0;
+    color: #7b818b;
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   DETAILS DRAWER HEADER (compact)
+============================================================ */
+
+.dh-new-arrivals-details-popup
+.dh-new-arrivals-popup-header {
+    padding: 10px 12px;
+    gap: 8px;
+}
+
+.dh-new-arrivals-details-popup
+.dh-new-arrivals-popup-header h2 {
+    font-size: 15px;
+}
+
+.dh-new-arrivals-details-popup
+.dh-new-arrivals-popup-header p {
+    margin-top: 1px;
+    font-size: 9px;
+}
+
+
+/* ============================================================
+   CLOSE BUTTON
+============================================================ */
+
+.dh-new-arrivals-popup-close {
+    width: 29px;
+    height: 29px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e1e4e8;
+    border-radius: 7px;
+
+    background: #ffffff;
+    color: #111111;
+
+    font-size: 19px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.dh-new-arrivals-popup-close:hover {
+    border-color: #d4af37;
+    color: #8a6812;
+    background: #fffdf5;
+}
+
+
+/* ============================================================
+   FORM BODY
+============================================================ */
+
+.dh-new-arrivals-popup-body {
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding: 16px 18px;
+
+    box-sizing: border-box;
+
+    color: #172033;
+}
+
+
+/* ============================================================
+   DETAILS BODY (less white space)
+============================================================ */
+
+.dh-new-arrivals-details-body {
+    flex: 1;
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding: 8px;
+
+    box-sizing: border-box;
+
+    color: #172033;
+}
+
+
+/* ============================================================
+   DETAILS LIST
+============================================================ */
+
+.dh-new-arrivals-details-list {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+
+/* ============================================================
+   DETAILS ITEM (compact)
+============================================================ */
+
+.dh-new-arrivals-details-item {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    min-height: 0;
+
+    padding: 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e4e8;
+
+    border-radius: 8px;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dh-new-arrivals-details-item:hover {
+    border-color: #d4af37;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+
+/* ============================================================
+   DETAILS IMAGE (smaller)
+============================================================ */
+
+.dh-new-arrivals-details-item-image {
+
+    flex: 0 0 110px;
+
+    width: 110px !important;
+    height: 82px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+
+    background: #f7f8fa;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 7px;
+
+    box-sizing: border-box;
+}
+
+.dh-new-arrivals-details-item-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: contain;
+
+    padding: 4px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   DETAILS CONTENT
+============================================================ */
+
+.dh-new-arrivals-details-item-content {
+    flex: 1;
+
+    min-width: 0;
+
+    margin-left: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+
+/* ============================================================
+   DETAILS LABEL
+============================================================ */
+
+.dh-new-arrivals-details-item-label {
+    margin-bottom: 1px;
+
+    color: #8a9099;
+
+    font-size: 7.5px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.55px;
+}
+
+
+/* ============================================================
+   DETAILS PRODUCT NAME
+============================================================ */
+
+.dh-new-arrivals-details-item-content h3 {
+    margin: 0 0 3px;
+
+    color: #172033;
+
+    font-size: 11px;
+    font-weight: 750;
+
+    line-height: 1.3;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   DETAILS BRAND
+============================================================ */
+
+.dh-new-arrivals-details-item-brand {
+    margin-bottom: 3px;
+
+    color: #a17b13;
+
+    font-size: 8.5px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+}
+
+
+/* ============================================================
+   DETAILS DATE
+============================================================ */
+
+.dh-new-arrivals-details-item-date {
+    margin-bottom: 4px;
+
+    color: #68707b;
+
+    font-size: 8.5px;
+
+    font-weight: 600;
+
+    line-height: 1.3;
+}
+
+
+/* ============================================================
+   DETAILS ACTIONS
+============================================================ */
+
+.dh-new-arrivals-details-item-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    margin-left: 0;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   EDIT BUTTON
+============================================================ */
+
+.dh-new-arrivals-edit-btn {
+    min-width: 46px;
+
+    height: 24px;
+
+    padding: 0 7px;
+
+    border: 1px solid #d4af37;
+
+    border-radius: 6px;
+
+    background: #d4af37;
+
+    color: #111111;
+
+    font-family: inherit;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.dh-new-arrivals-edit-btn:hover:not(:disabled) {
+    background: #bd9827;
+    border-color: #bd9827;
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   DELETE BUTTON
+============================================================ */
+
+.dh-new-arrivals-delete-btn {
+    min-width: 46px;
+
+    height: 24px;
+
+    padding: 0 7px;
+
+    border: 1px solid #c53b3b;
+
+    border-radius: 6px;
+
+    background: #ffffff;
+
+    color: #c53b3b;
+
+    font-family: inherit;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.dh-new-arrivals-delete-btn:hover:not(:disabled) {
+    background: #ffffff;
+    border-color: #a92f2f;
+    color: #a92f2f;
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   DISABLED ACTIONS
+============================================================ */
+
+.dh-new-arrivals-edit-btn:disabled,
+.dh-new-arrivals-delete-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    transform: none;
+}
+
+
+/* ============================================================
+   DETAILS FOOTER (compact)
+============================================================ */
+
+.dh-new-arrivals-details-popup
+.dh-new-arrivals-popup-footer {
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    padding: 7px 8px;
+
+    border-top: 1px solid #e5e7eb;
+
+    background: #ffffff;
+}
+
+
+/* ============================================================
+   DETAILS CLOSE BUTTON
+============================================================ */
+
+.dh-new-arrivals-details-popup
+.dh-new-arrivals-cancel-btn {
+
+    width: 100%;
+
+    min-height: 30px;
+
+    color: #111111;
+}
+
+
+/* ============================================================
+   LEGACY DETAILS IMAGE
+============================================================ */
+
+.dh-new-arrivals-details-image {
+    width: 100%;
+    height: 200px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 16px;
+
+    overflow: hidden;
+
+    border: 1px solid #e2e5ea;
+
+    border-radius: 10px;
+
+    background: #f7f8fa;
+
+    box-sizing: border-box;
+}
+
+.dh-new-arrivals-details-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: contain;
+
+    padding: 10px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   LEGACY DETAILS INFORMATION
+============================================================ */
+
+.dh-new-arrivals-details-info {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.dh-new-arrivals-details-row {
+    display: grid;
+
+    grid-template-columns:
+        105px minmax(0, 1fr);
+
+    gap: 12px;
+
+    padding: 10px 0;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.dh-new-arrivals-details-row > span {
+    color: #777d86;
+
+    font-size: 9px;
+    font-weight: 750;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.45px;
+}
+
+.dh-new-arrivals-details-row > strong {
+    color: #172033;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   FORM GROUP
+============================================================ */
+
+.dh-new-arrivals-form-group {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    margin-bottom: 11px;
+}
+
+.dh-new-arrivals-form-group > label {
+    color: #172033;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+/* ============================================================
+   FORM INPUTS
+============================================================ */
+
+.dh-new-arrivals-form-group input,
+.dh-new-arrivals-form-group textarea,
+.dh-new-arrivals-form-group select {
+
+    width: 100%;
+
+    padding: 9px 10px;
+
+    border: 1px solid #d9dde3;
+
+    border-radius: 7px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #172033;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dh-new-arrivals-form-group input {
+    min-height: 38px;
+}
+
+.dh-new-arrivals-form-group textarea {
+    min-height: 85px;
+
+    resize: vertical;
+
+    line-height: 1.5;
+}
+
+.dh-new-arrivals-form-group select {
+    min-height: 38px;
+
+    cursor: pointer;
+}
+
+.dh-new-arrivals-form-group input:focus,
+.dh-new-arrivals-form-group textarea:focus,
+.dh-new-arrivals-form-group select:focus {
+
+    border-color: #d4af37;
+
+    box-shadow:
+        0 0 0 3px rgba(212, 175, 55, 0.12);
+}
+
+.dh-new-arrivals-form-group input::placeholder,
+.dh-new-arrivals-form-group textarea::placeholder {
+    color: #a0a5ae;
+}
+
+
+/* ============================================================
+   FORM HELP
+============================================================ */
+
+.dh-new-arrivals-form-group > small {
+    color: #8a9099;
+
+    font-size: 9px;
+
+    line-height: 1.4;
+}
+
+
+/* ============================================================
+   DATE ROW
+============================================================ */
+
+.dh-new-arrivals-date-row {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 10px;
+}
+
+
+/* ============================================================
+   IMAGE UPLOAD
+============================================================ */
+
+.dh-new-arrivals-image-upload {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+}
+
+
+/* ============================================================
+   UPLOAD BOX
+============================================================ */
+
+.dh-new-arrivals-upload-box {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: none;
+
+    margin: 0;
+
+    height: 155px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    border: 1px dashed #c9ced6;
+
+    border-radius: 9px;
+
+    background: #f8f9fa;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.dh-new-arrivals-upload-box:hover {
+
+    border-color: #d4af37;
+
+    background: #fffdf5;
+
+    box-shadow:
+        0 4px 12px rgba(212, 175, 55, 0.08);
+}
+
+
+/* ============================================================
+   UPLOAD ICON
+============================================================ */
+
+.dh-new-arrivals-upload-box span {
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #d4af37;
+
+    font-size: 22px;
+
+    line-height: 1;
+}
+
+
+/* ============================================================
+   HIDE UPLOAD TEXT
+============================================================ */
+
+.dh-new-arrivals-upload-box small {
+    display: none;
+}
+
+.dh-new-arrivals-help {
+    display: none;
+}
+
+
+/* ============================================================
+   FILE INPUT
+============================================================ */
+
+.dh-new-arrivals-upload-box input {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   IMAGE PREVIEW
+============================================================ */
+
+.dh-new-arrivals-preview {
+
+    width: 135px;
+
+    height: 135px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e2e5ea;
+
+    border-radius: 9px;
+
+    background: #f5f6f8;
+
+    box-sizing: border-box;
+}
+
+.dh-new-arrivals-preview img {
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: contain;
+
+    padding: 6px;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   POPUP FOOTER
+============================================================ */
+
+.dh-new-arrivals-popup-footer {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    padding: 10px 18px;
+
+    border-top: 1px solid #e9ebef;
+
+    background: #ffffff;
+
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   POPUP BUTTONS
+============================================================ */
+
+.dh-new-arrivals-cancel-btn,
+.dh-new-arrivals-save-btn {
+
+    min-height: 37px;
+
+    padding: 0 16px;
+
+    border-radius: 7px;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   CANCEL
+============================================================ */
+
+.dh-new-arrivals-cancel-btn {
+
+    border: 1px solid #d9dde3;
+
+    background: #ffffff;
+
+    color: #111111;
+}
+
+.dh-new-arrivals-cancel-btn:hover {
+
+    background: #f5f6f8;
+
+    border-color: #cdd2d9;
+
+    color: #111111;
+}
+
+
+/* ============================================================
+   SAVE
+============================================================ */
+
+.dh-new-arrivals-save-btn {
+
+    border: 1px solid #d4af37;
+
+    background: #d4af37;
+
+    color: #111111;
+}
+
+.dh-new-arrivals-save-btn:hover {
+
+    background: #bd9828;
+
+    border-color: #bd9828;
+
+    color: #111111;
+}
+
+
+/* ============================================================
+   DISABLED POPUP BUTTONS
+============================================================ */
+
+.dh-new-arrivals-cancel-btn:disabled,
+.dh-new-arrivals-save-btn:disabled {
+
+    cursor: not-allowed;
+
+    opacity: 0.55;
+}
+
+
+/* ============================================================
+   GLOBAL POPUP TEXT SAFETY
+============================================================ */
+
+.dh-new-arrivals-popup,
+.dh-new-arrivals-details-popup {
+
+    color: #172033;
+}
+
+.dh-new-arrivals-popup button,
+.dh-new-arrivals-details-popup button {
+
+    font-family: inherit;
+}
+
+.dh-new-arrivals-popup input,
+.dh-new-arrivals-popup textarea,
+.dh-new-arrivals-popup select {
+
+    color: #172033;
+}
+
+
+/* ============================================================
+   SCROLLBARS
+============================================================ */
+
+.dh-new-arrivals-popup-body::-webkit-scrollbar,
+.dh-new-arrivals-details-body::-webkit-scrollbar {
+
+    width: 5px;
+}
+
+.dh-new-arrivals-popup-body::-webkit-scrollbar-track,
+.dh-new-arrivals-details-body::-webkit-scrollbar-track {
+
+    background: transparent;
+}
+
+.dh-new-arrivals-popup-body::-webkit-scrollbar-thumb,
+.dh-new-arrivals-details-body::-webkit-scrollbar-thumb {
+
+    background: #cfd3d9;
+
+    border-radius: 10px;
+}
+
+.dh-new-arrivals-popup-body::-webkit-scrollbar-thumb:hover,
+.dh-new-arrivals-details-body::-webkit-scrollbar-thumb:hover {
+
+    background: #b8bdc5;
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 1050px) {
+
+    .dh-new-arrivals-main {
+        padding: 32px 32px 40px;
+    }
+
+    .dh-new-arrivals-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .dh-new-arrivals-details-overlay
+    .dh-new-arrivals-details-popup {
+
+        width: 410px;
+        max-width: 410px;
+    }
+
+    .dh-new-arrivals-details-item-image {
+
+        flex-basis: 105px;
+
+        width: 105px !important;
+
+        height: 78px;
+    }
+}
+
+
+/* ============================================================
+   SMALL TABLET
+============================================================ */
+
+@media (max-width: 800px) {
+
+    .dh-new-arrivals-main {
+        padding: 28px 24px 36px;
+    }
+
+    .dh-new-arrivals-form-overlay
+    .dh-new-arrivals-popup {
+
+        width: min(580px, calc(100vw - 36px));
+
+        max-width: calc(100vw - 36px);
+    }
+
+    .dh-new-arrivals-details-overlay
+    .dh-new-arrivals-details-popup {
+
+        width: 390px;
+
+        max-width: 390px;
+    }
+
+    .dh-new-arrivals-details-item-image {
+
+        flex-basis: 100px;
+
+        width: 100px !important;
+
+        height: 75px;
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 650px) {
+
+    .dh-new-arrivals-main {
+        padding: 23px 15px 32px;
+    }
+
+    .dh-new-arrivals-page-header {
+
+        flex-direction: row;
+
+        align-items: flex-start;
+
+        gap: 12px;
+    }
+
+    .dh-new-arrivals-page-header h1 {
+        font-size: 24px;
+    }
+
+    .dh-new-arrivals-page-header p {
+        font-size: 12px;
+    }
+
+    .dh-new-arrivals-total {
+
+        padding: 6px 9px;
+
+        font-size: 10px;
+    }
+
+
+    /* --------------------------------------------------------
+       CONTENT
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-content {
+        padding: 11px;
+        border-radius: 11px;
+    }
+
+    .dh-new-arrivals-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 13px;
+    }
+
+    .dh-new-arrivals-card-image {
+        height: 205px;
+    }
+
+    .dh-new-arrivals-card-content {
+        padding: 13px;
+    }
+
+
+    /* --------------------------------------------------------
+       FOOTER
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-footer {
+
+        gap: 7px;
+
+        padding: 0;
+    }
+
+    .dh-new-arrivals-view-btn,
+    .dh-new-arrivals-primary-btn {
+
+        flex: 1;
+
+        min-width: 0;
+
+        min-height: 40px;
+
+        padding-left: 9px;
+        padding-right: 9px;
+
+        font-size: 11px;
+    }
+
+
+    /* --------------------------------------------------------
+       CENTER FORM
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-popup-overlay.dh-new-arrivals-form-overlay {
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        padding: 10px;
+    }
+
+    .dh-new-arrivals-form-overlay
+    .dh-new-arrivals-popup {
+
+        position: relative;
+
+        top: auto;
+        right: auto;
+        bottom: auto;
+        left: auto;
+
+        width: calc(100vw - 20px);
+
+        max-width: calc(100vw - 20px);
+
+        height: auto;
+
+        max-height: calc(100vh - 20px);
+
+        border-radius: 12px;
+    }
+
+
+    /* --------------------------------------------------------
+       DETAILS DRAWER
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-details-overlay {
+
+        align-items: stretch;
+
+        justify-content: flex-end;
+
+        padding: 0;
+    }
+
+    .dh-new-arrivals-details-overlay
+    .dh-new-arrivals-details-popup {
+
+        width: min(88vw, 380px);
+
+        max-width: min(88vw, 380px);
+
+        height: 100vh;
+
+        border-radius: 12px 0 0 12px;
+    }
+
+
+    /* --------------------------------------------------------
+       BODIES
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-popup-body {
+        padding: 14px;
+    }
+
+    .dh-new-arrivals-details-body {
+        padding: 6px;
+    }
+
+
+    /* --------------------------------------------------------
+       DETAILS ITEM
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-details-item {
+
+        min-height: 0;
+
+        padding: 5px;
+
+        gap: 7px;
+    }
+
+    .dh-new-arrivals-details-item-image {
+
+        flex: 0 0 95px;
+
+        width: 95px !important;
+
+        height: 72px;
+    }
+
+    .dh-new-arrivals-details-item-content {
+        margin-left: 0;
+    }
+
+    .dh-new-arrivals-details-item-content h3 {
+
+        margin-bottom: 3px;
+
+        font-size: 10.5px;
+    }
+
+    .dh-new-arrivals-details-item-actions {
+
+        gap: 4px;
+
+        margin-left: 0;
+    }
+
+    .dh-new-arrivals-edit-btn,
+    .dh-new-arrivals-delete-btn {
+
+        min-width: 42px;
+
+        height: 24px;
+
+        padding: 0 6px;
+
+        font-size: 8px;
+    }
+
+
+    /* --------------------------------------------------------
+       DATE
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-date-row {
+
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+
+    /* --------------------------------------------------------
+       IMAGE UPLOAD
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-upload-box {
+
+        width: 100%;
+
+        height: 145px;
+    }
+
+    .dh-new-arrivals-preview {
+
+        width: 115px;
+
+        height: 115px;
+    }
+
+
+    /* --------------------------------------------------------
+       HEADER / FOOTER
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-popup-header {
+        padding: 14px 15px;
+    }
+
+    .dh-new-arrivals-popup-footer {
+        padding: 9px 15px;
+    }
+
+    .dh-new-arrivals-details-popup
+    .dh-new-arrivals-popup-header {
+        padding: 9px 11px;
+    }
+
+    .dh-new-arrivals-details-popup
+    .dh-new-arrivals-popup-footer {
+        padding: 6px 8px;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .dh-new-arrivals-main {
+        padding: 19px 11px 28px;
+    }
+
+    .dh-new-arrivals-page-header {
+
+        gap: 7px;
+    }
+
+    .dh-new-arrivals-page-header h1 {
+        font-size: 21px;
+    }
+
+    .dh-new-arrivals-content {
+        padding: 9px;
+    }
+
+    .dh-new-arrivals-card-image {
+        height: 190px;
+    }
+
+    .dh-new-arrivals-card-content {
+        padding: 12px;
+    }
+
+
+    /* --------------------------------------------------------
+       CENTER FORM
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-popup-overlay.dh-new-arrivals-form-overlay {
+
+        padding: 7px;
+    }
+
+    .dh-new-arrivals-form-overlay
+    .dh-new-arrivals-popup {
+
+        width: calc(100vw - 14px);
+
+        max-width: calc(100vw - 14px);
+
+        max-height: calc(100vh - 14px);
+
+        border-radius: 10px;
+    }
+
+
+    /* --------------------------------------------------------
+       DETAILS DRAWER
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-details-overlay
+    .dh-new-arrivals-details-popup {
+
+        width: calc(100vw - 8px);
+
+        max-width: calc(100vw - 8px);
+
+        border-radius: 10px 0 0 10px;
+    }
+
+    .dh-new-arrivals-details-body {
+        padding: 5px;
+    }
+
+    .dh-new-arrivals-details-item {
+
+        min-height: 0;
+
+        padding: 5px;
+
+        gap: 6px;
+    }
+
+    .dh-new-arrivals-details-item-image {
+
+        flex: 0 0 88px;
+
+        width: 88px !important;
+
+        height: 66px;
+    }
+
+    .dh-new-arrivals-details-item-label {
+        font-size: 7px;
+    }
+
+    .dh-new-arrivals-details-item-content h3 {
+
+        font-size: 10px;
+
+        margin-bottom: 3px;
+    }
+
+    .dh-new-arrivals-details-item-brand {
+        font-size: 8px;
+
+        margin-bottom: 3px;
+    }
+
+    .dh-new-arrivals-details-item-date {
+        font-size: 8px;
+
+        margin-bottom: 4px;
+    }
+
+    .dh-new-arrivals-edit-btn,
+    .dh-new-arrivals-delete-btn {
+
+        min-width: 38px;
+
+        height: 22px;
+
+        padding: 0 5px;
+
+        font-size: 7.5px;
+    }
+
+
+    /* --------------------------------------------------------
+       IMAGE
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-upload-box {
+        height: 140px;
+    }
+
+    .dh-new-arrivals-preview {
+
+        width: 105px;
+
+        height: 105px;
+    }
+
+
+    /* --------------------------------------------------------
+       POPUP
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-popup-header h2 {
+        font-size: 16px;
+    }
+
+    .dh-new-arrivals-details-popup
+    .dh-new-arrivals-popup-header h2 {
+        font-size: 14px;
+    }
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+============================================================ */
+
+@media (max-width: 360px) {
+
+    .dh-new-arrivals-main {
+        padding: 17px 9px 24px;
+    }
+
+    .dh-new-arrivals-page-header {
+        gap: 5px;
+    }
+
+    .dh-new-arrivals-page-header h1 {
+        font-size: 19px;
+    }
+
+    .dh-new-arrivals-total {
+
+        font-size: 9px;
+
+        padding: 5px 7px;
+    }
+
+    .dh-new-arrivals-card-image {
+        height: 175px;
+    }
+
+    .dh-new-arrivals-card-content h3 {
+        font-size: 15px;
+    }
+
+
+    /* --------------------------------------------------------
+       CENTER FORM
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-popup-overlay.dh-new-arrivals-form-overlay {
+
+        padding: 5px;
+    }
+
+    .dh-new-arrivals-form-overlay
+    .dh-new-arrivals-popup {
+
+        width: calc(100vw - 10px);
+
+        max-width: calc(100vw - 10px);
+
+        max-height: calc(100vh - 10px);
+
+        border-radius: 9px;
+    }
+
+
+    /* --------------------------------------------------------
+       DETAILS
+    -------------------------------------------------------- */
+
+    .dh-new-arrivals-details-item {
+
+        min-height: 0;
+
+        gap: 5px;
+    }
+
+    .dh-new-arrivals-details-item-image {
+
+        flex: 0 0 80px;
+
+        width: 80px !important;
+
+        height: 60px;
+    }
+
+    .dh-new-arrivals-edit-btn,
+    .dh-new-arrivals-delete-btn {
+
+        min-width: 36px;
+
+        height: 22px;
+
+        padding: 0 4px;
+
+        font-size: 7px;
+    }
+
+    .dh-new-arrivals-details-item-actions {
+        gap: 2px;
+    }
+}

@@ -9,18 +9,24 @@
 
 /* ============================================================
    VENDOR HOME CONTAINER
+   (page is locked to viewport height; columns scroll inside)
 ============================================================ */
 
 .home-container-vendor-vd {
+    --vd-header-h: 70px; /* set to your navbar height, or 0px if no header above */
+
     width: 100%;
-    min-height: 100vh;
-    height: auto;
+    height: calc(100vh - var(--vd-header-h));
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background: whitesmoke;
     color: #111111;
+    gap: 10px !important;
     font-family: Arial, sans-serif;
-    overflow-x: hidden;
+    margin-top: -15px !important;
+    padding: 15px;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 
@@ -30,25 +36,67 @@
 
 .vendor-dashboard-vd {
     width: 100%;
+    flex: 1;
+    min-height: 0;
     display: grid;
     grid-template-columns: 65% 35%;
+    grid-template-rows: minmax(0, 1fr);
     gap: 20px;
     padding: 20px;
     box-sizing: border-box;
+    overflow: hidden;
+}
+
+.vendor-dashboard-main-vd,
+.vendor-dashboard-side-vd {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 4px 8px 20px 4px;
+    box-sizing: border-box;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--vd-gray-100) transparent;
 }
 
 .vendor-dashboard-main-vd {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
     gap: 24px;
 }
 
 .vendor-dashboard-side-vd {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
     gap: 20px;
+}
+
+/* Chrome / Edge / Safari scrollbar */
+.vendor-dashboard-main-vd::-webkit-scrollbar,
+.vendor-dashboard-side-vd::-webkit-scrollbar {
+    width: 6px;
+}
+
+.vendor-dashboard-main-vd::-webkit-scrollbar-track,
+.vendor-dashboard-side-vd::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.vendor-dashboard-main-vd::-webkit-scrollbar-thumb,
+.vendor-dashboard-side-vd::-webkit-scrollbar-thumb {
+    background: var(--vd-gray-500);
+    border-radius: 999px;
+}
+
+.vendor-dashboard-main-vd::-webkit-scrollbar-thumb:hover,
+.vendor-dashboard-side-vd::-webkit-scrollbar-thumb:hover {
+    background: var(--vd-gray-500);
+}
+
+/* children must not squash when the column is shorter than its content */
+.vendor-dashboard-main-vd > *,
+.vendor-dashboard-side-vd > * {
+    flex-shrink: 0;
 }
 
 
@@ -449,9 +497,9 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    color: var(--vd-gold-bright);
-    font-family: cursive;
+    color: var(--vd-gold-bright) !important;
     font-size: 25px;
+    font-family: cursive;
     letter-spacing: 0.02em;
     text-align: center;
     padding: 2px 4px 6px;
@@ -894,13 +942,29 @@
 
 /* ============================================================
    RESPONSIVE — 900px
+   (single column: switch back to normal page scrolling)
 ============================================================ */
 
 @media (max-width: 900px) {
 
+    .home-container-vendor-vd {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+    }
+
     .vendor-dashboard-vd {
         grid-template-columns: 1fr;
+        grid-template-rows: auto;
         padding: 18px 16px 50px;
+        overflow: visible;
+    }
+
+    .vendor-dashboard-main-vd,
+    .vendor-dashboard-side-vd {
+        height: auto;
+        overflow: visible;
+        padding: 0;
     }
 
     .vd-summary-row {

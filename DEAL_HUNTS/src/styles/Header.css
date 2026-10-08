@@ -1,21 +1,39 @@
 /* ============================================================
    DEALHUNTS — COMMON HEADER
+   ============================================================
+
+   HEADER NAVIGATION:
+   Content ▾ | Trending ▾
 
    GOLD  : #d4af37
    BLACK : #000000
    WHITE : #ffffff
 
-   DESKTOP:
-   Existing layout preserved.
+   Desktop:
+   - Navigation remains absolutely centered.
+   - Only Content and Trending are shown.
+   - Dropdowns open as proper floating panels.
 
-   LAPTOP / TABLET:
-   Search icon first.
-   Search bar opens inside header.
+   Tablet:
+   - Search icon first.
+   - Search opens inside header.
 
-   MOBILE:
-   Top header = menu + logo + search + cart + profile
-   Bottom navigation = mobile navigation
+   Mobile:
+   - Top header = menu + logo + search + cart + profile
+   - Bottom navigation = Content + Trending
 ============================================================ */
+
+
+/* ============================================================
+   GLOBAL BOX SIZING
+============================================================ */
+
+.dh-header-navigation,
+.dh-header-navigation *,
+.header,
+.header * {
+    box-sizing: border-box;
+}
 
 
 /* ============================================================
@@ -24,10 +42,14 @@
 
 .dh-header-wrapper {
     width: 100%;
-    min-height: 72px;
+    max-height: 60px !important;
+    min-height: 60px;
+
     display: flex;
     align-items: center;
-    background: #ffffff;
+
+    background: #ffffff !important;
+
     box-sizing: border-box;
 }
 
@@ -38,14 +60,22 @@
 
 .header {
     position: relative;
+
     width: 100%;
-    min-height: 72px;
+    height: 60px !important;
+    min-height: 60px;
+
     display: flex;
     align-items: center;
+
     padding: 0 28px 0 14px;
+
     background: #ffffff;
+
     box-sizing: border-box;
+
     z-index: 1000;
+
     border-bottom: 1px solid #eeeeee;
 }
 
@@ -58,9 +88,12 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+
     flex-shrink: 0;
     min-width: max-content;
+
     gap: 8px;
+
     z-index: 3;
 }
 
@@ -72,6 +105,7 @@
 .logo {
     display: flex;
     align-items: center;
+
     font-family:
         Inter,
         system-ui,
@@ -81,10 +115,14 @@
         Roboto,
         Arial,
         sans-serif;
+
     font-size: 28px;
     font-weight: 800;
+
     line-height: 1;
+
     letter-spacing: -0.6px;
+
     white-space: nowrap;
 }
 
@@ -108,11 +146,13 @@
 
 
 /* ============================================================
-   ADMIN TEXT
+   ADMIN / VENDOR TEXT
 ============================================================ */
 
-.Admin {
-    color: #555555;
+.Admin-hl,
+.Vendor {
+    color: #666666;
+
     font-family:
         Inter,
         system-ui,
@@ -122,32 +162,67 @@
         Roboto,
         Arial,
         sans-serif;
-    font-size: 14px;
+
+    font-size: 12px;
     font-weight: 600;
+
     white-space: nowrap;
-    margin-left: 4px;
+
+    margin-left: -2px;
+    margin-top: 12px;
+
+    text-transform: none !important;
 }
 
 
 /* ============================================================
    CENTER NAVIGATION
-   DESKTOP — PRESERVED
+   DESKTOP
+
+   IMPORTANT:
+   Navigation remains absolutely centered.
 ============================================================ */
 
 .dh-header-navigation {
     position: absolute;
+
     left: 50%;
     top: 50%;
+
     transform: translate(-50%, -50%);
+
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 32px;
+
+    gap: 34px;
+
     width: max-content;
     max-width: calc(100% - 420px);
+
+    min-width: 0;
+
     white-space: nowrap;
-    z-index: 2;
+
+    z-index: 20;
+
     box-sizing: border-box;
+}
+
+
+/* ============================================================
+   NAVIGATION ITEM
+============================================================ */
+
+.dh-header-navigation-item {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    flex-shrink: 0;
+
+    height: 60px;
 }
 
 
@@ -157,11 +232,17 @@
 
 .header-nav-link {
     position: relative;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
+    gap: 5px;
+
     color: #111111;
+
     text-decoration: none;
+
     font-family:
         Inter,
         system-ui,
@@ -171,16 +252,53 @@
         Roboto,
         Arial,
         sans-serif;
+
     font-size: 15px;
     font-weight: 600;
+
     line-height: 1;
+
     padding: 10px 0;
+
     white-space: nowrap;
+
     flex-shrink: 0;
+
+    cursor: pointer;
+
     -webkit-tap-highlight-color: transparent;
+
     transition:
         color 0.2s ease,
         transform 0.2s ease;
+}
+
+
+/* ============================================================
+   DROPDOWN ARROW
+============================================================ */
+
+.header-nav-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-left: 2px;
+
+    font-size: 10px;
+    line-height: 1;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+
+/* Arrow rotates when dropdown is open */
+
+.dh-header-navigation-item.open
+.header-nav-arrow {
+    transform: rotate(180deg);
 }
 
 
@@ -190,6 +308,7 @@
 
 .header-nav-link:hover {
     color: #111111;
+
     transform: translateY(-1px);
 }
 
@@ -201,12 +320,13 @@
 .header-nav-link:focus,
 .header-nav-link:focus-visible {
     color: #111111;
+
     outline: none;
 }
 
 
 /* ============================================================
-   NAVIGATION VISITED
+   VISITED
 ============================================================ */
 
 .header-nav-link:visited {
@@ -217,24 +337,28 @@
 /* ============================================================
    GOLD UNDERLINE
    HOVER ONLY
-   IMPORTANT:
-   Active/current page DOES NOT get underline.
 ============================================================ */
 
 .header-nav-link::after {
     content: "";
+
     position: absolute;
+
     left: 0;
     bottom: 2px;
+
     width: 0;
     height: 2px;
+
     background: #d4af37;
+
     border-radius: 2px;
+
     transition: width 0.25s ease;
 }
 
 
-/* Gold underline ONLY while hovering */
+/* Hover only */
 
 .header-nav-link:hover::after {
     width: 100%;
@@ -251,10 +375,197 @@
 }
 
 
-/* Explicitly prevent active page from showing underline */
-
 .header-nav-link.active::after {
     width: 0;
+}
+
+
+/* ============================================================
+   DROPDOWN WRAPPER
+============================================================ */
+
+.dh-header-dropdown-wrapper {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    height: 60px;
+}
+
+
+/* ============================================================
+   DROPDOWN PANEL
+
+   IMPORTANT:
+   This creates an actual dropdown box rather than a straight
+   line underneath the navigation.
+============================================================ */
+
+.dh-header-dropdown {
+    position: absolute;
+
+    top: calc(100% + 8px);
+    left: 50%;
+
+    transform:
+        translateX(-50%)
+        translateY(-6px);
+
+    min-width: 210px;
+
+    padding: 8px;
+
+    background: #ffffff;
+
+    border: 1px solid #e4e4e4;
+
+    border-radius: 9px;
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.12),
+        0 3px 8px rgba(0, 0, 0, 0.06);
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    z-index: 10000;
+
+    white-space: normal;
+
+    transition:
+        opacity 0.18s ease,
+        visibility 0.18s ease,
+        transform 0.18s ease;
+}
+
+
+/* ============================================================
+   DROPDOWN OPEN
+============================================================ */
+
+.dh-header-navigation-item.open
+.dh-header-dropdown {
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+
+/* ============================================================
+   DROPDOWN HOVER
+
+   Also allows hover interaction if the component uses hover
+   based opening.
+============================================================ */
+
+.dh-header-navigation-item:hover
+.dh-header-dropdown {
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+
+/* ============================================================
+   DROPDOWN ITEM
+============================================================ */
+
+.dh-header-dropdown-item {
+    width: 100%;
+
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 10px 13px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: #222222;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    font-size: 13.5px;
+    font-weight: 500;
+
+    line-height: 1.3;
+
+    text-align: left;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease;
+}
+
+
+/* ============================================================
+   DROPDOWN ITEM HOVER
+============================================================ */
+
+.dh-header-dropdown-item:hover {
+    background: #faf6e8;
+
+    color: #8a6812;
+}
+
+
+/* ============================================================
+   DROPDOWN ITEM ACTIVE
+============================================================ */
+
+.dh-header-dropdown-item.active {
+    background: #f8f3e3;
+
+    color: #8a6812;
+
+    font-weight: 650;
+}
+
+
+/* ============================================================
+   DROPDOWN DIVIDER
+============================================================ */
+
+.dh-header-dropdown-divider {
+    width: 100%;
+
+    height: 1px;
+
+    margin: 5px 0;
+
+    background: #eeeeee;
 }
 
 
@@ -264,13 +575,17 @@
 
 .header-actions {
     margin-left: auto;
+
     display: flex;
     align-items: center;
     justify-content: flex-end;
+
     gap: 20px;
+
     flex-shrink: 0;
     min-width: max-content;
-    z-index: 3;
+
+    z-index: 30;
 }
 
 
@@ -281,28 +596,40 @@
 .header-icon {
     width: 26px;
     height: 26px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     padding: 0;
+
     border: none;
+
     background: transparent;
+
     color: #111111;
+
     text-decoration: none;
+
     font-size: 20px;
     line-height: 1;
+
     flex-shrink: 0;
+
     cursor: pointer;
+
     transition:
         color 0.2s ease,
         transform 0.2s ease,
         background 0.2s ease;
+
     -webkit-tap-highlight-color: transparent;
 }
 
 
 .header-icon:hover {
     color: #111111;
+
     transform: translateY(-1px);
 }
 
@@ -324,10 +651,14 @@
 
 .header-login {
     position: relative;
+
     display: inline-flex;
     align-items: center;
+
     color: #111111;
+
     text-decoration: none;
+
     font-family:
         Inter,
         system-ui,
@@ -337,12 +668,18 @@
         Roboto,
         Arial,
         sans-serif;
+
     font-size: 15px;
     font-weight: 600;
+
     line-height: 1;
+
     padding: 9px 0;
+
     white-space: nowrap;
+
     cursor: pointer;
+
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -355,6 +692,7 @@
 .header-login:focus,
 .header-login:focus-visible {
     color: #111111;
+
     outline: none;
 }
 
@@ -365,17 +703,23 @@
 
 
 /* ============================================================
-   LOGIN UNDERLINE — HOVER ONLY
+   LOGIN UNDERLINE
+   HOVER ONLY
 ============================================================ */
 
 .header-login::after {
     content: "";
+
     position: absolute;
+
     left: 0;
     bottom: 1px;
+
     width: 0;
     height: 2px;
+
     background: #d4af37;
+
     transition: width 0.25s ease;
 }
 
@@ -385,33 +729,40 @@
 }
 
 
-/* Login active state does not force underline */
-
 .header-login.active::after {
     width: 0;
 }
 
 
 /* ============================================================
-   SEARCH
-   DESKTOP VERSION
+   DESKTOP SEARCH
 ============================================================ */
 
 .header-search {
     position: absolute;
+
     right: 150px !important;
     top: 50%;
+
     transform: translateY(-50%);
+
     width: 250px;
     height: 38px;
+
     display: flex;
     align-items: center;
+
     background: #ffffff;
+
     border: 1px solid #dcdcdc;
+
     border-radius: 6px;
+
     overflow: hidden;
+
     box-sizing: border-box;
-    z-index: 2;
+
+    z-index: 25;
 }
 
 
@@ -421,17 +772,26 @@
 
 .header-search input {
     flex: 1;
+
     min-width: 0;
     width: 100%;
     height: 100%;
+
     padding: 0 12px;
+
     margin: 0;
+
     border: none !important;
     border-right: none !important;
+
     outline: none !important;
+
     box-shadow: none !important;
+
     background: transparent;
+
     color: #111111;
+
     font-family:
         Inter,
         system-ui,
@@ -441,7 +801,9 @@
         Roboto,
         Arial,
         sans-serif;
+
     font-size: 14px;
+
     box-sizing: border-box;
 }
 
@@ -453,26 +815,36 @@
 
 /* ============================================================
    SEARCH BUTTON
-   Used for the search icon when the input is empty.
 ============================================================ */
 
 .header-search button {
     width: 42px;
     height: 100%;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     flex-shrink: 0;
+
     padding: 0;
     margin: 0;
+
     border: none !important;
     border-left: none !important;
+
     outline: none !important;
+
     box-shadow: none !important;
+
     background: transparent !important;
+
     color: #111111;
+
     font-size: 18px;
+
     cursor: pointer;
+
     transition: color 0.2s ease;
 }
 
@@ -487,7 +859,9 @@
 .header-search button:active {
     border: none !important;
     border-left: none !important;
+
     outline: none !important;
+
     box-shadow: none !important;
 }
 
@@ -499,38 +873,44 @@
 
 .header-search:focus-within {
     border-color: #dcdcdc !important;
+
     box-shadow: none !important;
 }
 
 
 /* ============================================================
-   SEARCH CLEAR X
-   Appears ONLY after typing.
-   
-   Result:
-   [ iphone                         × ]
-   
-   No divider line between text and X.
+   SEARCH CLEAR
 ============================================================ */
 
 .header-search-clear {
     width: 32px !important;
     height: 100%;
+
     flex: 0 0 32px !important;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     margin: 0;
     padding: 0;
+
     border: none !important;
     border-left: none !important;
     border-right: none !important;
+
     outline: none !important;
+
     box-shadow: none !important;
+
     background: transparent !important;
+
     color: #777777;
+
     font-size: 15px;
+
     cursor: pointer;
+
     transition: color 0.2s ease;
 }
 
@@ -546,7 +926,9 @@
     border: none !important;
     border-left: none !important;
     border-right: none !important;
+
     outline: none !important;
+
     box-shadow: none !important;
 }
 
@@ -554,18 +936,20 @@
 .header-search-clear svg {
     width: 15px;
     height: 15px;
+
     display: block;
+
     flex-shrink: 0;
 }
 
 
 /* ============================================================
    MOBILE SEARCH BUTTON
-   Hidden on desktop.
 ============================================================ */
 
 .mobile-search-button {
     display: none;
+
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -583,33 +967,48 @@
 .dh-header-menu-button {
     width: 40px;
     height: 40px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     margin: 0 12px 0 0;
+
     padding: 0;
+
     border: none;
+
     border-radius: 6px;
+
     background: transparent;
+
     color: #000000;
+
     font-family:
         Arial,
         Helvetica,
         sans-serif;
+
     font-size: 26px;
     font-weight: 500;
+
     line-height: 1;
+
     cursor: pointer;
+
     flex-shrink: 0;
+
     transition:
         background 0.2s ease,
         color 0.2s ease;
+
     -webkit-tap-highlight-color: transparent;
 }
 
 
 .dh-header-menu-button:hover {
     background: #f1f1f1;
+
     color: #000000;
 }
 
@@ -621,6 +1020,7 @@
 
 .dh-header-menu-button:focus-visible {
     outline: 2px solid #d4af37;
+
     outline-offset: 2px;
 }
 
@@ -631,10 +1031,14 @@
 
 .page-header-title {
     position: absolute;
+
     left: 50%;
     top: 50%;
+
     transform: translate(-50%, -50%);
+
     color: #111111;
+
     font-family:
         Inter,
         system-ui,
@@ -644,10 +1048,14 @@
         Roboto,
         Arial,
         sans-serif;
+
     font-size: 18px;
     font-weight: 700;
+
     line-height: 1;
+
     white-space: nowrap;
+
     z-index: 2;
 }
 
@@ -659,27 +1067,37 @@
 .header-back-button {
     width: 34px;
     height: 34px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     padding: 0;
+
     border: none;
+
     background: transparent;
+
     color: #111111;
+
     font-size: 20px;
+
     cursor: pointer;
+
     border-radius: 5px;
+
     transition:
         background 0.2s ease,
         color 0.2s ease,
         transform 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
 }
 
 
 .header-back-button:hover {
     background: #f1f1f1;
+
     color: #d4af37;
+
     transform: translateX(-1px);
 }
 
@@ -695,14 +1113,14 @@
 ============================================================ */
 
 .header:has(.dh-header-menu-button) {
-    min-height: 72px;
+    min-height: 60px;
+    height: 60px;
 }
 
 
 /* ============================================================
    LARGE TABLET / SMALL DESKTOP
    1200px — 1001px
-   SEARCH ICON FIRST
 ============================================================ */
 
 @media (max-width: 1200px) and (min-width: 1001px) {
@@ -713,37 +1131,58 @@
 
 
     .dh-header-navigation {
-        gap: 24px;
+        gap: 26px;
+
         max-width: calc(100% - 360px);
     }
 
 
-    /* --------------------------------------------------------
-       SEARCH ICON
-    -------------------------------------------------------- */
+    .header-nav-link {
+        font-size: 14px;
+    }
+
+
+    .dh-header-dropdown {
+        min-width: 200px;
+    }
+
+
+    /* SEARCH ICON */
 
     .mobile-search-button {
         width: 36px;
         height: 40px;
+
         display: flex;
         align-items: center;
         justify-content: center;
+
         margin: 0 6px 0 0;
         padding: 0;
+
         border: none;
+
         border-radius: 7px;
+
         background: transparent;
+
         color: #111111;
+
         font-size: 20px;
+
         cursor: pointer;
+
         flex-shrink: 0;
+
         z-index: 30;
+
         box-sizing: border-box;
     }
 
 
     .mobile-search-button:hover {
         color: #111111;
+
         background: #fafafa;
     }
 
@@ -751,79 +1190,83 @@
     .mobile-search-button svg {
         width: 21px;
         height: 21px;
+
         flex-shrink: 0;
     }
 
 
-    /* --------------------------------------------------------
-       SEARCH CLOSED
-    -------------------------------------------------------- */
+    /* SEARCH CLOSED */
 
     .header > .header-search {
         display: none;
+
         position: absolute;
+
         width: 220px;
         height: 40px;
+
         top: 50%;
         right: 146px;
         left: auto;
+
         transform: translateY(-50%);
+
         z-index: 50;
     }
 
 
-    /* --------------------------------------------------------
-       SEARCH OPEN
-    -------------------------------------------------------- */
+    /* SEARCH OPEN */
 
     .header.mobile-search-open > .header-search {
         display: flex;
+
         width: 220px;
         height: 40px;
+
         top: 50%;
         right: 146px;
         left: auto;
+
         transform: translateY(-50%);
+
         z-index: 100;
     }
 
 
-    /* --------------------------------------------------------
-       X / CLOSE BUTTON
-    -------------------------------------------------------- */
+    /* CLOSE SEARCH */
 
     .header.mobile-search-open > .mobile-search-button {
         position: absolute;
+
         right: 100px;
         left: auto;
+
         top: 50%;
+
         width: 40px;
         height: 40px;
+
         margin: 0;
         padding: 0;
+
         display: flex;
+
         align-items: center;
         justify-content: center;
+
         z-index: 120;
+
         background: #ffffff;
+
         border-radius: 7px;
+
         box-sizing: border-box;
     }
 
 
-    .header.mobile-search-open > .mobile-search-button svg {
-        width: 21px;
-        height: 21px;
-        flex-shrink: 0;
-    }
-
-
-    /* --------------------------------------------------------
-       ACTIONS
-    -------------------------------------------------------- */
-
     .header-actions {
         gap: 16px;
+
         z-index: 30;
     }
 }
@@ -832,7 +1275,6 @@
 /* ============================================================
    TABLET / SMALL LAPTOP
    1000px — 769px
-   SEARCH ICON FIRST
 ============================================================ */
 
 @media (max-width: 1000px) and (min-width: 769px) {
@@ -847,13 +1289,15 @@
     }
 
 
-    .Admin {
+    .Admin-hl,
+    .Vendor {
         font-size: 13px;
     }
 
 
     .dh-header-navigation {
-        gap: 18px;
+        gap: 20px;
+
         max-width: calc(100% - 300px);
     }
 
@@ -863,32 +1307,48 @@
     }
 
 
-    /* --------------------------------------------------------
-       SEARCH ICON
-    -------------------------------------------------------- */
+    .dh-header-dropdown {
+        min-width: 190px;
+    }
+
+
+    /* SEARCH ICON */
 
     .mobile-search-button {
         width: 34px;
         height: 38px;
+
         display: flex;
         align-items: center;
         justify-content: center;
+
         margin: 0 5px 0 0;
+
         padding: 0;
+
         border: none;
+
         border-radius: 7px;
+
         background: transparent;
+
         color: #111111;
+
         font-size: 19px;
+
         cursor: pointer;
+
         flex-shrink: 0;
+
         z-index: 30;
+
         box-sizing: border-box;
     }
 
 
     .mobile-search-button:hover {
         color: #111111;
+
         background: #fafafa;
     }
 
@@ -896,79 +1356,83 @@
     .mobile-search-button svg {
         width: 20px;
         height: 20px;
+
         flex-shrink: 0;
     }
 
 
-    /* --------------------------------------------------------
-       SEARCH CLOSED
-    -------------------------------------------------------- */
+    /* SEARCH CLOSED */
 
     .header > .header-search {
         display: none;
+
         position: absolute;
+
         width: 190px;
         height: 38px;
+
         top: 50%;
         right: 126px;
         left: auto;
+
         transform: translateY(-50%);
+
         z-index: 50;
     }
 
 
-    /* --------------------------------------------------------
-       SEARCH OPEN
-    -------------------------------------------------------- */
+    /* SEARCH OPEN */
 
     .header.mobile-search-open > .header-search {
         display: flex;
+
         width: 190px;
         height: 38px;
+
         top: 50%;
         right: 126px;
         left: auto;
+
         transform: translateY(-50%);
+
         z-index: 100;
     }
 
 
-    /* --------------------------------------------------------
-       X / CLOSE BUTTON
-    -------------------------------------------------------- */
+    /* CLOSE */
 
     .header.mobile-search-open > .mobile-search-button {
         position: absolute;
+
         right: 80px;
         left: auto;
+
         top: 50%;
+
         width: 38px;
         height: 38px;
+
         margin: 0;
         padding: 0;
+
         display: flex;
+
         align-items: center;
         justify-content: center;
+
         z-index: 120;
+
         background: #ffffff;
+
         border-radius: 7px;
+
         box-sizing: border-box;
     }
 
 
-    .header.mobile-search-open > .mobile-search-button svg {
-        width: 20px;
-        height: 20px;
-        flex-shrink: 0;
-    }
-
-
-    /* --------------------------------------------------------
-       ACTIONS
-    -------------------------------------------------------- */
-
     .header-actions {
         gap: 14px;
+
         z-index: 30;
     }
 
@@ -976,6 +1440,7 @@
     .header-icon {
         width: 24px;
         height: 24px;
+
         font-size: 19px;
     }
 }
@@ -987,23 +1452,29 @@
 
 @media (max-width: 768px) {
 
-    /* ========================================================
-       HEADER
-    ======================================================== */
-
     .header {
         position: relative;
+
         width: 100%;
+
         min-height: 54px;
         height: 54px;
+
         display: flex;
+
         flex-wrap: nowrap;
         flex-direction: row;
+
         align-items: center;
+
         padding: 0 9px;
+
         background: #ffffff;
+
         box-sizing: border-box;
+
         overflow: visible;
+
         z-index: 1000;
     }
 
@@ -1015,53 +1486,76 @@
 
 
     /* ========================================================
-       MENU BUTTON
+       MENU
     ======================================================== */
 
     .header > .dh-header-menu-button {
         position: relative;
+
         flex: 0 0 34px;
+
         width: 34px;
         height: 38px;
+
         margin: 0 3px 0 0;
+
         padding: 0;
+
         display: flex;
+
         align-items: center;
         justify-content: center;
+
         border: none;
+
         border-radius: 7px;
+
         background: transparent;
+
         color: #111111;
+
         font-size: 20px;
+
         line-height: 1;
+
         z-index: 20;
+
         box-sizing: border-box;
-        -webkit-tap-highlight-color: transparent;
     }
 
 
     .header > .dh-header-menu-button:hover {
         background: #f7f7f7;
+
         color: #111111;
     }
 
 
     /* ========================================================
-       LOGO / LEFT SECTION
+       LEFT SECTION
     ======================================================== */
 
     .header > .left-section {
         flex: 1 1 auto;
+
         min-width: 0;
+
         width: auto;
+
         height: 54px;
+
         display: flex;
+
         align-items: center;
         justify-content: flex-start;
+
         padding: 0;
         margin: 0;
+
         gap: 5px;
+
         overflow: hidden;
+
         z-index: 5;
     }
 
@@ -1069,54 +1563,79 @@
     .header > .left-section .logo {
         min-width: 0;
         max-width: 100%;
+
         display: flex;
         align-items: center;
+
         font-size: 21px;
         font-weight: 800;
+
         line-height: 1;
+
         letter-spacing: -0.5px;
+
         white-space: nowrap;
+
         overflow: hidden;
+
         text-overflow: ellipsis;
     }
 
 
-    .header > .left-section .Admin {
+    .header > .left-section .Admin-hl,
+    .header > .left-section .Vendor {
         flex-shrink: 0;
-        margin-left: 1px;
+
+        margin-left: -2px;
+        margin-top: 12px;
+
         font-size: 11px;
         font-weight: 600;
     }
 
 
     /* ========================================================
-       MOBILE SEARCH BUTTON
+       MOBILE SEARCH
     ======================================================== */
 
     .mobile-search-button {
         position: relative;
+
         flex: 0 0 34px;
+
         width: 34px;
         height: 38px;
+
         display: flex;
+
         align-items: center;
         justify-content: center;
+
         margin: 0 2px 0 0;
+
         padding: 0;
+
         border: none;
+
         border-radius: 7px;
+
         background: transparent;
+
         color: #111111;
+
         font-size: 20px;
+
         cursor: pointer;
+
         z-index: 30;
+
         box-sizing: border-box;
-        -webkit-tap-highlight-color: transparent;
     }
 
 
     .mobile-search-button:hover {
         color: #111111;
+
         background: #fafafa;
     }
 
@@ -1129,26 +1648,35 @@
     .mobile-search-button svg {
         width: 21px;
         height: 21px;
+
         flex-shrink: 0;
     }
 
 
     /* ========================================================
        HEADER ACTIONS
-       CART + PROFILE / LOGIN
     ======================================================== */
 
     .header > .header-actions {
         position: relative;
+
         flex: 0 0 auto;
+
         width: auto;
+
         height: 54px;
+
         min-width: 0;
+
         margin: 0;
+
         display: flex;
+
         align-items: center;
         justify-content: flex-end;
+
         gap: 7px;
+
         z-index: 20;
     }
 
@@ -1156,11 +1684,16 @@
     .header > .header-actions .header-icon {
         width: 29px;
         height: 38px;
+
         min-width: 29px;
+
         display: flex;
+
         align-items: center;
         justify-content: center;
+
         padding: 0;
+
         font-size: 20px;
     }
 
@@ -1173,88 +1706,120 @@
 
     .header > .header-actions .header-login {
         display: inline-flex;
+
         align-items: center;
+
         height: 38px;
+
         padding: 0;
+
         font-size: 13px;
     }
 
 
     /* ========================================================
-       MOBILE SEARCH FORM
-       CLOSED
+       MOBILE SEARCH BOX
     ======================================================== */
 
     .header > .header-search {
         display: none;
+
         position: absolute;
+
         right: 104px !important;
         left: auto;
+
         top: 8px;
+
         width: 280px !important;
         max-width: 300px !important;
+
         height: 38px;
+
         margin: 0;
+
         transform: none;
+
         align-items: center;
+
         background: #ffffff;
+
         border: 1px solid #dddddd;
+
         border-radius: 8px;
+
         overflow: hidden;
+
         box-sizing: border-box;
-        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+
+        box-shadow:
+            0 3px 12px rgba(0, 0, 0, 0.06);
+
         z-index: 100;
     }
 
-
-    /* ========================================================
-       MOBILE SEARCH OPEN
-    ======================================================== */
 
     .header.mobile-search-open > .header-search {
         display: flex;
+
         right: 116px;
+
         left: auto;
+
         width: 280px;
+
         max-width: calc(100vw - 140px);
+
         height: 38px;
+
         top: 8px;
+
         transform: none;
+
         z-index: 100;
     }
 
 
     /* ========================================================
-       HIDE LOGO WHEN SEARCH IS OPEN
+       HIDE LOGO WHILE SEARCH OPEN
     ======================================================== */
 
     .header.mobile-search-open > .left-section .logo,
-    .header.mobile-search-open > .left-section .Admin {
+    .header.mobile-search-open > .left-section .Admin-hl,
+    .header.mobile-search-open > .left-section .Vendor {
         visibility: hidden;
     }
 
 
     /* ========================================================
-       SEARCH CLOSE BUTTON
-       X sits immediately after search field.
-       Cart/profile remain untouched.
+       SEARCH CLOSE
     ======================================================== */
 
     .header.mobile-search-open > .mobile-search-button {
         position: absolute;
+
         right: 72px;
         left: auto;
+
         top: 8px;
+
         width: 38px;
         height: 38px;
+
         display: flex;
+
         align-items: center;
         justify-content: center;
+
         margin: 0;
         padding: 0;
+
         background: #ffffff;
+
         border-radius: 7px;
+
         z-index: 120;
+
         box-sizing: border-box;
     }
 
@@ -1271,17 +1836,27 @@
 
     .header.mobile-search-open > .header-search input {
         flex: 1;
+
         min-width: 0;
+
         width: 100%;
         height: 100%;
+
         padding: 0 10px;
+
         margin: 0;
+
         border: none !important;
         border-right: none !important;
+
         outline: none !important;
+
         box-shadow: none !important;
+
         background: transparent;
+
         color: #111111;
+
         font-family:
             Inter,
             system-ui,
@@ -1291,7 +1866,9 @@
             Roboto,
             Arial,
             sans-serif;
+
         font-size: 13px;
+
         box-sizing: border-box;
     }
 
@@ -1302,27 +1879,37 @@
 
 
     /* ========================================================
-       MOBILE SEARCH BUTTONS
-       No divider line.
+       SEARCH BUTTON
     ======================================================== */
 
     .header.mobile-search-open > .header-search button {
         width: 40px;
         height: 100%;
+
         display: flex;
+
         align-items: center;
         justify-content: center;
+
         flex: 0 0 40px;
+
         margin: 0;
         padding: 0;
+
         border: none !important;
         border-left: none !important;
         border-right: none !important;
+
         outline: none !important;
+
         box-shadow: none !important;
+
         background: transparent !important;
+
         color: #111111;
+
         font-size: 17px;
+
         cursor: pointer;
     }
 
@@ -1332,41 +1919,41 @@
     }
 
 
-    .header.mobile-search-open > .header-search button:focus,
-    .header.mobile-search-open > .header-search button:focus-visible,
-    .header.mobile-search-open > .header-search button:active {
-        border: none !important;
-        border-left: none !important;
-        border-right: none !important;
-        outline: none !important;
-        box-shadow: none !important;
-    }
+    /* ========================================================
+       CLEAR BUTTON
+    ======================================================== */
 
-
-    /* --------------------------------------------------------
-       MOBILE CLEAR X
-       No vertical separator.
-    -------------------------------------------------------- */
-
-    .header.mobile-search-open > .header-search .header-search-clear {
+    .header.mobile-search-open
+    > .header-search
+    .header-search-clear {
         width: 32px !important;
+
         flex: 0 0 32px !important;
+
         border: none !important;
         border-left: none !important;
         border-right: none !important;
+
         outline: none !important;
+
         box-shadow: none !important;
+
         background: transparent !important;
+
         color: #777777;
     }
 
 
-    .header.mobile-search-open > .header-search .header-search-clear:hover {
+    .header.mobile-search-open
+    > .header-search
+    .header-search-clear:hover {
         color: #111111 !important;
     }
 
 
-    .header.mobile-search-open > .header-search .header-search-clear svg {
+    .header.mobile-search-open
+    > .header-search
+    .header-search-clear svg {
         width: 15px;
         height: 15px;
     }
@@ -1374,158 +1961,298 @@
 
     /* ========================================================
        MOBILE BOTTOM NAVIGATION
+       
+       ONLY:
+       Content
+       Trending
     ======================================================== */
 
     .header > .dh-header-navigation {
         position: fixed;
+
         left: 0;
         right: 0;
+
         bottom: 0;
         top: auto;
+
         width: 100%;
+
         max-width: none;
         min-width: 0;
+
         height: 54px;
+
         margin: 0;
+
         padding: 0 18px;
+
         display: flex;
+
         align-items: center;
         justify-content: center;
-        gap: 34px;
+
+        gap: 42px;
+
         background: #ffffff;
+
         border-top: 1px solid #e5e5e5;
+
         border-bottom: none;
-        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.07);
+
+        box-shadow:
+            0 -4px 16px rgba(0, 0, 0, 0.07);
+
         box-sizing: border-box;
+
         white-space: nowrap;
-        overflow-x: auto;
-        overflow-y: hidden;
+
+        overflow-x: visible;
+        overflow-y: visible;
+
         transform: translateY(0);
+
         opacity: 1;
+
+        visibility: visible;
+
         transition:
-            transform 0.22s ease,
-            opacity 0.22s ease;
+            transform 0.35s ease,
+            opacity 0.3s ease,
+            visibility 0s linear 0s;
+
         z-index: 9999;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        -webkit-overflow-scrolling: touch;
     }
 
 
     /* ========================================================
-       MOBILE NAV — VISIBLE
+       MOBILE NAV VISIBLE
     ======================================================== */
 
     .header > .dh-header-navigation.mobile-nav-visible {
         transform: translateY(0);
+
         opacity: 1;
+
+        visibility: visible;
+
         pointer-events: auto;
     }
 
 
     /* ========================================================
-       MOBILE NAV — HIDDEN WHEN SCROLLING
+       MOBILE NAV HIDDEN
     ======================================================== */
 
     .header > .dh-header-navigation.mobile-nav-hidden {
         transform: translateY(110%);
+
         opacity: 0;
+
+        visibility: hidden;
+
         pointer-events: none;
+
+        transition:
+            transform 0.4s ease,
+            opacity 0.3s ease,
+            visibility 0s linear 0.4s;
     }
 
 
     /* ========================================================
-       HIDE MOBILE NAV SCROLLBAR
+       MOBILE NAV ITEM
     ======================================================== */
 
-    .header > .dh-header-navigation::-webkit-scrollbar {
-        display: none;
-    }
+    .header > .dh-header-navigation
+    .dh-header-navigation-item {
 
-
-    /* ========================================================
-       MOBILE NAV LINKS
-    ======================================================== */
-
-    .header > .dh-header-navigation .header-nav-link {
         position: relative;
-        flex: 0 0 auto;
-        width: auto;
-        min-width: max-content;
+
         height: 54px;
+
+        display: flex;
+
+        align-items: center;
+
+        flex: 0 0 auto;
+    }
+
+
+    /* ========================================================
+       MOBILE NAV LINK
+    ======================================================== */
+
+    .header > .dh-header-navigation
+    .header-nav-link {
+
+        position: relative;
+
+        flex: 0 0 auto;
+
+        width: auto;
+
+        min-width: max-content;
+
+        height: 54px;
+
         display: inline-flex;
+
         align-items: center;
         justify-content: center;
+
         margin: 0;
+
         padding: 0 3px;
+
+        gap: 4px;
+
         color: #555555;
+
         font-size: 14px;
+
         font-weight: 600;
+
         line-height: 1;
+
         white-space: nowrap;
+
         text-decoration: none;
+
         transform: none;
+
         -webkit-tap-highlight-color: transparent;
     }
 
 
-    .header > .dh-header-navigation .header-nav-link:hover {
+    .header > .dh-header-navigation
+    .header-nav-link:hover {
+
         color: #111111;
+
         transform: none;
     }
 
 
-    .header > .dh-header-navigation .header-nav-link:focus,
-    .header > .dh-header-navigation .header-nav-link:focus-visible {
+    .header > .dh-header-navigation
+    .header-nav-link:focus,
+    .header > .dh-header-navigation
+    .header-nav-link:focus-visible {
+
         color: #555555;
+
         outline: none;
     }
 
 
-    .header > .dh-header-navigation .header-nav-link:visited {
+    .header > .dh-header-navigation
+    .header-nav-link:visited {
+
         color: #555555;
     }
 
 
     /* ========================================================
-       MOBILE NAV UNDERLINE
+       MOBILE UNDERLINE
        HOVER ONLY
     ======================================================== */
 
-    .header > .dh-header-navigation .header-nav-link::after {
+    .header > .dh-header-navigation
+    .header-nav-link::after {
+
         content: "";
+
         position: absolute;
+
         left: 0;
         right: 0;
+
         bottom: 7px;
+
         width: 0;
         height: 2px;
+
         background: #d4af37;
+
         border-radius: 2px;
+
         transition: width 0.2s ease;
     }
 
 
-    /* Gold underline ONLY on hover */
+    .header > .dh-header-navigation
+    .header-nav-link:hover::after {
 
-    .header > .dh-header-navigation .header-nav-link:hover::after {
         width: 100%;
     }
 
 
     /* ========================================================
-       MOBILE ACTIVE PAGE
-       NO GOLD UNDERLINE
+       MOBILE ACTIVE
+       NO UNDERLINE
     ======================================================== */
 
-    .header > .dh-header-navigation .header-nav-link.active {
+    .header > .dh-header-navigation
+    .header-nav-link.active {
+
         color: #111111;
+
         font-weight: 650;
     }
 
 
-    .header > .dh-header-navigation .header-nav-link.active::after {
+    .header > .dh-header-navigation
+    .header-nav-link.active::after {
+
         width: 0;
+    }
+
+
+    /* ========================================================
+       MOBILE DROPDOWN
+
+       Dropdown opens upward because the navigation is fixed
+       at the bottom of the screen.
+    ======================================================== */
+
+    .header > .dh-header-navigation
+    .dh-header-dropdown {
+
+        top: auto;
+
+        bottom: calc(100% + 7px);
+
+        left: 50%;
+
+        min-width: 190px;
+
+        transform:
+            translateX(-50%)
+            translateY(6px);
+
+        box-shadow:
+            0 -10px 30px rgba(0, 0, 0, 0.12),
+            0 -3px 8px rgba(0, 0, 0, 0.05);
+    }
+
+
+    .header > .dh-header-navigation
+    .dh-header-navigation-item.open
+    .dh-header-dropdown {
+
+        transform:
+            translateX(-50%)
+            translateY(0);
+    }
+
+
+    .header > .dh-header-navigation
+    .dh-header-navigation-item:hover
+    .dh-header-dropdown {
+
+        transform:
+            translateX(-50%)
+            translateY(0);
     }
 
 
@@ -1535,21 +2262,26 @@
 
     .page-header-title {
         top: 27px;
+
         font-size: 16px;
     }
 
 
     /* ========================================================
-       HEADERS WITHOUT MENU BUTTONS
+       HEADERS WITHOUT MENU
     ======================================================== */
 
-    .header:not(:has(.dh-header-menu-button)) > .left-section {
+    .header:not(:has(.dh-header-menu-button))
+    > .left-section {
+
         padding-left: 0;
         padding-right: 0;
     }
 
 
-    .header:not(:has(.dh-header-menu-button)) > .header-actions {
+    .header:not(:has(.dh-header-menu-button))
+    > .header-actions {
+
         margin-left: auto;
     }
 }
@@ -1563,182 +2295,258 @@
 
     .header {
         height: 52px;
+
         min-height: 52px;
+
         padding: 0 7px;
     }
 
 
     .header:has(.dh-header-menu-button) {
         height: 52px;
+
         min-height: 52px;
     }
 
 
-    /* --------------------------------------------------------
-       MENU
-    -------------------------------------------------------- */
+    /* MENU */
 
     .header > .dh-header-menu-button {
+
         flex-basis: 34px;
+
         width: 34px;
         height: 34px;
+
         margin-right: 1px;
+
         font-size: 21px;
     }
 
 
-    /* --------------------------------------------------------
-       LEFT SECTION
-    -------------------------------------------------------- */
+    /* LEFT */
 
     .header > .left-section {
+
         height: 52px;
+
         min-width: 0;
+
         padding: 0;
+
         gap: 4px;
     }
 
 
-    /* --------------------------------------------------------
-       LOGO
-    -------------------------------------------------------- */
+    /* LOGO */
 
     .header > .left-section .logo {
+
         font-size: 20px;
+
         letter-spacing: -0.5px;
     }
 
 
-    .header > .left-section .Admin {
+    .header > .left-section .Admin-hl,
+    .header > .left-section .Vendor {
+
+        margin-left: -2px;
+
+        margin-top: 12px;
+
         font-size: 10px;
     }
 
 
-    /* --------------------------------------------------------
-       SEARCH BUTTON
-    -------------------------------------------------------- */
+    /* SEARCH */
 
     .mobile-search-button {
+
         flex-basis: 33px;
+
         width: 33px;
         height: 36px;
+
         margin-right: 1px;
+
         font-size: 18px;
     }
 
 
     .mobile-search-button svg {
+
         width: 20px;
         height: 20px;
     }
 
 
-    /* --------------------------------------------------------
-       ACTIONS
-    -------------------------------------------------------- */
+    /* ACTIONS */
 
     .header > .header-actions {
+
         height: 52px;
+
         gap: 5px;
     }
 
 
     .header > .header-actions .header-icon {
+
         width: 27px;
         height: 36px;
+
         min-width: 27px;
+
         font-size: 18px;
     }
 
 
     .header > .header-actions .header-icon svg {
+
         width: 20px;
         height: 20px;
     }
 
 
     .header > .header-actions .header-login {
+
         height: 36px;
+
         font-size: 12px;
     }
 
 
-    /* --------------------------------------------------------
-       SEARCH OPEN
-    -------------------------------------------------------- */
+    /* SEARCH */
 
     .header > .header-search {
+
         right: 110px;
+
         left: auto;
+
         top: 7px;
+
         width: 270px;
+
         max-width: calc(100vw - 135px);
+
         height: 38px;
     }
 
 
     .header.mobile-search-open > .header-search {
+
         right: 110px;
+
         left: auto;
+
         top: 7px;
+
         width: 270px;
+
         max-width: calc(100vw - 135px);
+
         height: 38px;
+
         transform: none;
     }
 
 
     .header.mobile-search-open > .mobile-search-button {
+
         right: 66px;
+
         left: auto;
+
         top: 7px;
+
         width: 38px;
+
         height: 38px;
     }
 
 
-    /* --------------------------------------------------------
-       BOTTOM NAV
-    -------------------------------------------------------- */
+    /* BOTTOM NAV */
 
     .header > .dh-header-navigation {
+
         height: 52px;
+
         padding: 0 14px;
-        gap: 27px;
+
+        gap: 30px;
     }
 
 
-    .header > .dh-header-navigation .header-nav-link {
+    .header > .dh-header-navigation
+    .dh-header-navigation-item {
+
         height: 52px;
+    }
+
+
+    .header > .dh-header-navigation
+    .header-nav-link {
+
+        height: 52px;
+
         font-size: 13px;
     }
 
 
-    .header > .dh-header-navigation .header-nav-link::after {
+    .header > .dh-header-navigation
+    .header-nav-link::after {
+
         bottom: 7px;
     }
 
 
-    /* --------------------------------------------------------
-       NO-MENU HEADERS
-    -------------------------------------------------------- */
+    .header > .dh-header-navigation
+    .dh-header-dropdown {
 
-    .header:not(:has(.dh-header-menu-button)) > .left-section {
+        min-width: 175px;
+
+        padding: 7px;
+    }
+
+
+    .header > .dh-header-navigation
+    .dh-header-dropdown-item {
+
+        min-height: 40px;
+
+        padding: 9px 11px;
+
+        font-size: 12.5px;
+    }
+
+
+    /* NO MENU */
+
+    .header:not(:has(.dh-header-menu-button))
+    > .left-section {
+
         padding-left: 3px;
+
         padding-right: 0;
     }
 
 
-    /* --------------------------------------------------------
-       SMALL MOBILE CLEAR X
-       Keep X inside the same search box with no divider.
-    -------------------------------------------------------- */
+    /* CLEAR X */
 
-    .header.mobile-search-open > .header-search .header-search-clear {
+    .header.mobile-search-open
+    > .header-search
+    .header-search-clear {
+
         width: 32px !important;
+
         flex: 0 0 32px !important;
+
         border: none !important;
+
         border-left: none !important;
+
         border-right: none !important;
     }
 }
@@ -1751,176 +2559,255 @@
 @media (max-width: 360px) {
 
     .header {
+
         height: 50px;
+
         min-height: 50px;
+
         padding: 0 6px;
     }
 
 
     .header:has(.dh-header-menu-button) {
+
         height: 50px;
+
         min-height: 50px;
     }
 
 
-    /* --------------------------------------------------------
-       MENU
-    -------------------------------------------------------- */
+    /* MENU */
 
     .header > .dh-header-menu-button {
+
         flex-basis: 33px;
+
         width: 33px;
         height: 33px;
+
         margin-right: 0;
+
         font-size: 20px;
     }
 
 
-    /* --------------------------------------------------------
-       LEFT SECTION
-    -------------------------------------------------------- */
+    /* LEFT */
 
     .header > .left-section {
+
         height: 50px;
+
         gap: 3px;
     }
 
 
-    /* --------------------------------------------------------
-       LOGO
-    -------------------------------------------------------- */
+    /* LOGO */
 
     .header > .left-section .logo {
+
         font-size: 19px;
+
         letter-spacing: -0.6px;
     }
 
 
-    .header > .left-section .Admin {
+    .header > .left-section .Admin-hl,
+    .header > .left-section .Vendor {
+
+        margin-left: -2px;
+
+        margin-top: 12px;
+
         font-size: 9px;
     }
 
 
-    /* --------------------------------------------------------
-       SEARCH BUTTON
-    -------------------------------------------------------- */
+    /* SEARCH */
 
     .mobile-search-button {
+
         flex-basis: 32px;
+
         width: 32px;
         height: 34px;
+
         margin-right: 0;
+
         font-size: 17px;
     }
 
 
     .mobile-search-button svg {
+
         width: 19px;
         height: 19px;
     }
 
 
-    /* --------------------------------------------------------
-       ACTIONS
-    -------------------------------------------------------- */
+    /* ACTIONS */
 
     .header > .header-actions {
+
         height: 50px;
+
         gap: 3px;
     }
 
 
     .header > .header-actions .header-icon {
+
         width: 25px;
         height: 34px;
+
         min-width: 25px;
+
         font-size: 17px;
     }
 
 
     .header > .header-actions .header-icon svg {
+
         width: 19px;
         height: 19px;
     }
 
 
     .header > .header-actions .header-login {
+
         height: 34px;
+
         font-size: 11px;
     }
 
 
-    /* --------------------------------------------------------
-       SEARCH OPEN
-    -------------------------------------------------------- */
+    /* SEARCH */
 
     .header > .header-search {
+
         right: 100px;
+
         left: auto;
+
         top: 6px;
+
         width: 220px;
+
         max-width: calc(100vw - 120px);
+
         height: 37px;
     }
 
 
     .header.mobile-search-open > .header-search {
+
         right: 100px;
+
         left: auto;
+
         top: 6px;
+
         width: 220px;
+
         max-width: calc(100vw - 120px);
+
         height: 37px;
+
         transform: none;
     }
 
 
     .header.mobile-search-open > .mobile-search-button {
+
         right: 60px;
+
         left: auto;
+
         top: 6px;
+
         width: 34px;
+
         height: 37px;
     }
 
 
-    .header.mobile-search-open > .header-search input {
+    .header.mobile-search-open
+    > .header-search input {
+
         font-size: 12px;
+
         padding-left: 9px;
     }
 
 
-    /* --------------------------------------------------------
-       BOTTOM NAV
-    -------------------------------------------------------- */
+    /* BOTTOM NAV */
 
     .header > .dh-header-navigation {
+
         height: 50px;
+
         padding: 0 11px;
-        gap: 22px;
+
+        gap: 24px;
     }
 
 
-    .header > .dh-header-navigation .header-nav-link {
+    .header > .dh-header-navigation
+    .dh-header-navigation-item {
+
         height: 50px;
+    }
+
+
+    .header > .dh-header-navigation
+    .header-nav-link {
+
+        height: 50px;
+
         font-size: 12px;
     }
 
 
-    .header > .dh-header-navigation .header-nav-link::after {
+    .header > .dh-header-navigation
+    .header-nav-link::after {
+
         bottom: 7px;
     }
 
 
-    /* --------------------------------------------------------
-       VERY SMALL MOBILE CLEAR X
-    -------------------------------------------------------- */
+    .header > .dh-header-navigation
+    .dh-header-dropdown {
 
-    .header.mobile-search-open > .header-search .header-search-clear {
+        min-width: 160px;
+
+        padding: 6px;
+    }
+
+
+    .header > .dh-header-navigation
+    .dh-header-dropdown-item {
+
+        min-height: 38px;
+
+        padding: 8px 10px;
+
+        font-size: 12px;
+    }
+
+
+    /* CLEAR */
+
+    .header.mobile-search-open
+    > .header-search
+    .header-search-clear {
+
         width: 32px !important;
+
         flex: 0 0 32px !important;
+
         border: none !important;
+
         border-left: none !important;
+
         border-right: none !important;
     }
 }
@@ -1934,347 +2821,37 @@
 .header-search button svg,
 .mobile-search-button svg,
 .header-back-button svg {
+
     display: block;
+
     width: 1em;
     height: 1em;
+
     flex-shrink: 0;
 }
 
 
 /* ============================================================
-   HEADER NAVIGATION BOX SIZING
-============================================================ */
-
-.dh-header-navigation,
-.dh-header-navigation * {
-    box-sizing: border-box;
-}
-
-
-/* =========================================================
-   DEALHUNTS POPUP - PROFESSIONAL WHITE & GOLD
-========================================================= */
-
-.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh;
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    box-sizing: border-box;
-    background: rgba(20, 20, 20, 0.52);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-}
-
-
-/* =========================================================
-   MAIN POPUP
-========================================================= */
-
-.popup-container {
-    position: relative;
-    width: 400px;
-    max-width: calc(100vw - 40px);
-    margin: 0 auto;
-    background: #ffffff;
-    border: 1px solid rgba(212, 175, 55, 0.65);
-    border-radius: 12px;
-    overflow: hidden;
-    box-sizing: border-box;
-    box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.20),
-        0 4px 16px rgba(0, 0, 0, 0.08);
-    animation: popupOpen 0.2s ease-out;
-}
-
-
-@keyframes popupOpen {
-
-    from {
-        opacity: 0;
-        transform: translateY(8px) scale(0.98);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-
-/* =========================================================
-   POPUP HEADER
-========================================================= */
-
-.popup-header {
-    width: 100%;
-    min-height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    background: #ffffff;
-    border-bottom: 1px solid #eadfbf;
-    box-sizing: border-box;
-}
-
-
-.popup-header h2 {
-    margin: 0;
-    color: #171717;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.2px;
-}
-
-
-/* =========================================================
-   CLOSE BUTTON
-========================================================= */
-
-.popup-close {
-    width: 34px;
-    height: 34px;
-    flex: 0 0 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    border: none;
-    border-radius: 50%;
-    background: transparent;
-    color: #777777;
-    font-size: 22px;
-    font-weight: 300;
-    line-height: 1;
-    cursor: pointer;
-    transition:
-        background 0.18s ease,
-        color 0.18s ease;
-}
-
-
-.popup-close:hover {
-    background: #f7f2e4;
-    color: #b08a1a;
-}
-
-
-/* =========================================================
-   BODY
-========================================================= */
-
-.popup-body {
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    padding: 24px 24px 22px;
-    background: #ffffff;
-    box-sizing: border-box;
-}
-
-
-/* =========================================================
-   WISHLIST LOGIN POPUP
-========================================================= */
-
-.wishlist-login-popup {
-    height: auto !important;
-    min-height: 0 !important;
-}
-
-
-.wishlist-login-popup .popup-body {
-    height: auto !important;
-    min-height: 0 !important;
-    padding: 24px 28px 20px;
-    text-align: center;
-}
-
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
-.wishlist-login-popup .popup-body p {
-    margin: 0 0 22px;
-    color: #5f5f5f;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
-}
-
-
-/* =========================================================
-   ACTIONS
-========================================================= */
-
-.wishlist-popup-actions {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-    margin: 0;
-    padding: 0;
-}
-
-
-/* =========================================================
-   PROCEED TO LOGIN
-========================================================= */
-
-.wishlist-proceed-login {
-    width: 100%;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding: 0 16px;
-    box-sizing: border-box;
-    border: 1px solid #d4af37;
-    border-radius: 7px;
-    background: #d4af37;
-    color: #111111;
-    font-size: 14px;
-    font-weight: 700;
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-        background 0.18s ease,
-        border-color 0.18s ease,
-        transform 0.18s ease,
-        box-shadow 0.18s ease;
-}
-
-
-.wishlist-proceed-login:hover {
-    background: #e1bd4e;
-    border-color: #e1bd4e;
-    transform: translateY(-1px);
-    box-shadow:
-        0 4px 10px rgba(212, 175, 55, 0.20);
-}
-
-
-/* =========================================================
-   NO THANKS
-========================================================= */
-
-.wishlist-no-thanks {
-    width: 100%;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding: 0 16px;
-    box-sizing: border-box;
-    border: 1px solid #dedede;
-    border-radius: 7px;
-    background: #ffffff;
-    color: #555555;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition:
-        background 0.18s ease,
-        color 0.18s ease,
-        border-color 0.18s ease;
-}
-
-
-.wishlist-no-thanks:hover {
-    background: #faf8f1;
-    border-color: #d4af37;
-    color: #a68119;
-}
-
-
-/* =========================================================
-   POPUP MOBILE
-========================================================= */
-
-@media (max-width: 480px) {
-
-    .popup-overlay {
-        padding: 16px;
-    }
-
-
-    .popup-container {
-        width: 100%;
-        max-width: calc(100vw - 32px);
-        border-radius: 10px;
-    }
-
-
-    .popup-header {
-        min-height: 58px;
-        padding: 0 16px;
-    }
-
-
-    .popup-header h2 {
-        font-size: 18px;
-    }
-
-
-    .popup-body {
-        padding: 20px 18px 18px;
-    }
-
-
-    .wishlist-login-popup .popup-body {
-        padding: 20px 18px 18px;
-    }
-
-
-    .wishlist-login-popup .popup-body p {
-        margin-bottom: 18px;
-        font-size: 13px;
-    }
-
-
-    .wishlist-proceed-login {
-        height: 42px;
-        font-size: 13px;
-    }
-
-
-    .wishlist-no-thanks {
-        height: 40px;
-        font-size: 13px;
-    }
-}
-
-
-/* ============================================================
    FINAL SEARCH CLEANUP
-   Ensures absolutely no divider between input and X.
+   NO DIVIDER BETWEEN INPUT AND X
 ============================================================ */
 
 .header-search,
 .header-search:focus-within {
+
     box-shadow: none;
 }
 
 
 .header-search input,
 .header-search input:focus {
+
     border: none !important;
+
     border-right: none !important;
+
     outline: none !important;
+
     box-shadow: none !important;
 }
 
@@ -2284,10 +2861,15 @@
 .header-search button:focus,
 .header-search button:focus-visible,
 .header-search button:active {
+
     border: none !important;
+
     border-left: none !important;
+
     border-right: none !important;
+
     outline: none !important;
+
     box-shadow: none !important;
 }
 
@@ -2297,10 +2879,15 @@
 .header-search-clear:focus,
 .header-search-clear:focus-visible,
 .header-search-clear:active {
+
     border: none !important;
+
     border-left: none !important;
+
     border-right: none !important;
+
     outline: none !important;
+
     box-shadow: none !important;
 }
 
@@ -2313,15 +2900,20 @@
 
     .header.mobile-search-open > .header-search,
     .header.mobile-search-open > .header-search:focus-within {
+
         box-shadow: none !important;
     }
 
 
     .header.mobile-search-open > .header-search input,
     .header.mobile-search-open > .header-search input:focus {
+
         border: none !important;
+
         border-right: none !important;
+
         outline: none !important;
+
         box-shadow: none !important;
     }
 
@@ -2331,23 +2923,1269 @@
     .header.mobile-search-open > .header-search button:focus,
     .header.mobile-search-open > .header-search button:focus-visible,
     .header.mobile-search-open > .header-search button:active {
+
         border: none !important;
+
         border-left: none !important;
+
         border-right: none !important;
+
         outline: none !important;
+
         box-shadow: none !important;
     }
 
 
-    .header.mobile-search-open > .header-search .header-search-clear,
-    .header.mobile-search-open > .header-search .header-search-clear:hover,
-    .header.mobile-search-open > .header-search .header-search-clear:focus,
-    .header.mobile-search-open > .header-search .header-search-clear:focus-visible,
-    .header.mobile-search-open > .header-search .header-search-clear:active {
+    .header.mobile-search-open
+    > .header-search
+    .header-search-clear,
+    .header.mobile-search-open
+    > .header-search
+    .header-search-clear:hover,
+    .header.mobile-search-open
+    > .header-search
+    .header-search-clear:focus,
+    .header.mobile-search-open
+    > .header-search
+    .header-search-clear:focus-visible,
+    .header.mobile-search-open
+    > .header-search
+    .header-search-clear:active {
+
         border: none !important;
+
         border-left: none !important;
+
         border-right: none !important;
+
         outline: none !important;
+
         box-shadow: none !important;
     }
+}
+
+
+/* ============================================================
+   ADMIN / VENDOR TEXT CASING
+============================================================ */
+
+.header .Admin-hl,
+.header .Vendor {
+
+    text-transform: none !important;
+}
+
+
+/* ============================================================
+   DEALHUNTS POPUP
+   PROFESSIONAL WHITE & GOLD
+============================================================ */
+
+.popup-overlay {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100vw;
+
+    height: 100vh;
+    height: 100dvh;
+
+    z-index: 99999;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    background: rgba(20, 20, 20, 0.52);
+
+    backdrop-filter: blur(6px);
+
+    -webkit-backdrop-filter: blur(6px);
+}
+
+
+/* ============================================================
+   POPUP
+============================================================ */
+
+.popup-container {
+
+    position: relative;
+
+    width: 400px;
+
+    max-width: calc(100vw - 40px);
+
+    margin: 0 auto;
+
+    background: #ffffff;
+
+    border: 1px solid rgba(212, 175, 55, 0.65);
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.20),
+        0 4px 16px rgba(0, 0, 0, 0.08);
+
+    animation: popupOpen 0.2s ease-out;
+}
+
+
+@keyframes popupOpen {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(8px)
+            scale(0.98);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+/* ============================================================
+   POPUP HEADER
+============================================================ */
+
+.popup-header {
+
+    width: 100%;
+
+    min-height: 64px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #eadfbf;
+
+    box-sizing: border-box;
+}
+
+
+.popup-header h2 {
+
+    margin: 0;
+
+    color: #171717;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.2px;
+}
+
+
+/* ============================================================
+   CLOSE
+============================================================ */
+
+.popup-close {
+
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #777777;
+
+    font-size: 22px;
+
+    font-weight: 300;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease;
+}
+
+
+.popup-close:hover {
+
+    background: #f7f2e4;
+
+    color: #b08a1a;
+}
+
+
+/* ============================================================
+   POPUP BODY
+============================================================ */
+
+.popup-body {
+
+    width: 100%;
+
+    height: auto;
+
+    min-height: 0;
+
+    padding: 24px 24px 22px;
+
+    background: #ffffff;
+
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   WISHLIST LOGIN POPUP
+============================================================ */
+
+.wishlist-login-popup {
+
+    height: auto !important;
+
+    min-height: 0 !important;
+}
+
+
+.wishlist-login-popup .popup-body {
+
+    height: auto !important;
+
+    min-height: 0 !important;
+
+    padding: 24px 28px 20px;
+
+    text-align: center;
+}
+
+
+/* ============================================================
+   MESSAGE
+============================================================ */
+
+.wishlist-login-popup .popup-body p {
+
+    margin: 0 0 22px;
+
+    color: #5f5f5f;
+
+    font-size: 14px;
+
+    font-weight: 400;
+
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   ACTIONS
+============================================================ */
+
+.wishlist-popup-actions {
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+
+/* ============================================================
+   PROCEED LOGIN
+============================================================ */
+
+.wishlist-proceed-login {
+
+    width: 100%;
+
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+
+    padding: 0 16px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d4af37;
+
+    border-radius: 7px;
+
+    background: #d4af37;
+
+    color: #111111;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+.wishlist-proceed-login:hover {
+
+    background: #e1bd4e;
+
+    border-color: #e1bd4e;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 10px rgba(212, 175, 55, 0.20);
+}
+
+
+/* ============================================================
+   NO THANKS
+============================================================ */
+
+.wishlist-no-thanks {
+
+    width: 100%;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+
+    padding: 0 16px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #dedede;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #555555;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        border-color 0.18s ease;
+}
+
+
+.wishlist-no-thanks:hover {
+
+    background: #faf8f1;
+
+    border-color: #d4af37;
+
+    color: #a68119;
+}
+
+
+/* ============================================================
+   POPUP MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .popup-overlay {
+
+        padding: 16px;
+    }
+
+
+    .popup-container {
+
+        width: 100%;
+
+        max-width: calc(100vw - 32px);
+
+        border-radius: 10px;
+    }
+
+
+    .popup-header {
+
+        min-height: 58px;
+
+        padding: 0 16px;
+    }
+
+
+    .popup-header h2 {
+
+        font-size: 18px;
+    }
+
+
+    .popup-body {
+
+        padding: 20px 18px 18px;
+    }
+
+
+    .wishlist-login-popup .popup-body {
+
+        padding: 20px 18px 18px;
+    }
+
+
+    .wishlist-login-popup .popup-body p {
+
+        margin-bottom: 18px;
+
+        font-size: 13px;
+    }
+
+
+    .wishlist-proceed-login {
+
+        height: 42px;
+
+        font-size: 13px;
+    }
+
+
+    .wishlist-no-thanks {
+
+        height: 40px;
+
+        font-size: 13px;
+    }
+}
+
+/* ============================================================
+   ADMIN CONTENT / TRENDING DROPDOWNS
+   FINAL OVERRIDE
+   ------------------------------------------------------------
+   ADMIN HEADER:
+   Content ▾    Trending ▾
+
+   Each dropdown opens as a proper white boxed menu.
+============================================================ */
+
+
+/* ============================================================
+   ADMIN NAVIGATION CONTAINER
+============================================================ */
+
+.dh-header-navigation.dh-admin-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 34px;
+    width: max-content;
+    max-width: calc(100% - 420px);
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   DROPDOWN WRAPPER
+============================================================ */
+
+.dh-admin-navigation .dh-admin-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   DROPDOWN TRIGGER
+   IMPORTANT:
+   Override browser default button appearance.
+============================================================ */
+
+.dh-admin-navigation .dh-admin-dropdown-trigger {
+    position: relative;
+
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    width: auto !important;
+    min-width: 0 !important;
+    height: auto !important;
+
+    margin: 0 !important;
+    padding: 9px 0 !important;
+
+    border: none !important;
+    border-radius: 0 !important;
+
+    outline: none !important;
+    box-shadow: none !important;
+
+    background: transparent !important;
+
+    color: #111111 !important;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    appearance: none !important;
+    -webkit-appearance: none !important;
+
+    -webkit-tap-highlight-color: transparent;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* Remove every browser button pseudo/default effect */
+
+.dh-admin-navigation .dh-admin-dropdown-trigger::before {
+    display: none !important;
+}
+
+.dh-admin-navigation .dh-admin-dropdown-trigger::after {
+    content: none !important;
+}
+
+
+/* ============================================================
+   TRIGGER HOVER
+============================================================ */
+
+.dh-admin-navigation .dh-admin-dropdown-trigger:hover {
+    color: #111111 !important;
+    background: transparent !important;
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   TRIGGER FOCUS
+============================================================ */
+
+.dh-admin-navigation .dh-admin-dropdown-trigger:focus,
+.dh-admin-navigation .dh-admin-dropdown-trigger:focus-visible,
+.dh-admin-navigation .dh-admin-dropdown-trigger:active {
+    color: #111111 !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+/* ============================================================
+   ARROW
+============================================================ */
+
+.dh-admin-navigation .dh-admin-dropdown-arrow {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    margin-left: 6px;
+
+    color: #111111;
+
+    font-size: 11px;
+    line-height: 1;
+
+    transition: transform 0.2s ease;
+}
+
+
+/* Rotate arrow when dropdown is open */
+
+.dh-admin-navigation .dh-admin-dropdown.open
+.dh-admin-dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+
+/* ============================================================
+   GOLD HOVER LINE
+   HOVER ONLY — NOT ACTIVE
+============================================================ */
+
+.dh-admin-navigation .dh-admin-dropdown-trigger {
+    isolation: isolate;
+}
+
+.dh-admin-navigation .dh-admin-dropdown-trigger:hover::after {
+    content: "";
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 2px;
+
+    width: 100%;
+    height: 2px;
+
+    background: #d4af37;
+    border-radius: 2px;
+
+    display: block !important;
+}
+
+
+/* ============================================================
+   DROPDOWN MENU
+   THIS IS THE IMPORTANT PART
+   ------------------------------------------------------------
+   Forces the links into a VERTICAL BOX.
+============================================================ */
+
+.dh-admin-navigation .dh-admin-dropdown-menu {
+    position: absolute;
+
+    top: calc(100% + 10px);
+    left: 50%;
+
+    width: max-content;
+    min-width: 225px;
+    max-width: 300px;
+
+    margin: 0;
+    padding: 7px 0;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+
+    background: #ffffff !important;
+
+    border: 1px solid #e2e2e2 !important;
+    border-radius: 9px !important;
+
+    box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.14),
+        0 3px 8px rgba(0, 0, 0, 0.07);
+
+    box-sizing: border-box;
+
+    z-index: 10000;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform:
+        translateX(-50%)
+        translateY(-6px);
+
+    transition:
+        opacity 0.18s ease,
+        visibility 0.18s ease,
+        transform 0.18s ease;
+}
+
+
+/* ============================================================
+   OPEN DROPDOWN
+============================================================ */
+
+.dh-admin-navigation .dh-admin-dropdown.open
+.dh-admin-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+
+/* ============================================================
+   DROPDOWN MENU ITEMS
+   IMPORTANT:
+   Remove old .header-nav-link behavior.
+============================================================ */
+
+.dh-admin-navigation
+.dh-admin-dropdown-menu
+.dh-admin-dropdown-item {
+
+    position: relative;
+
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    min-height: 42px;
+
+    margin: 0 !important;
+    padding: 10px 16px !important;
+
+    box-sizing: border-box;
+
+    color: #222222 !important;
+
+    background: #ffffff !important;
+
+    border: none !important;
+    border-radius: 0 !important;
+
+    outline: none !important;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+
+    text-align: left;
+
+    text-decoration: none !important;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transform: none !important;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ============================================================
+   REMOVE OLD NAV LINK UNDERLINE
+============================================================ */
+
+.dh-admin-navigation
+.dh-admin-dropdown-menu
+.dh-admin-dropdown-item::after {
+
+    content: none !important;
+
+    display: none !important;
+
+    width: 0 !important;
+    height: 0 !important;
+}
+
+
+/* ============================================================
+   REMOVE VISITED LINK PURPLE
+============================================================ */
+
+.dh-admin-navigation
+.dh-admin-dropdown-menu
+.dh-admin-dropdown-item:visited {
+
+    color: #222222 !important;
+}
+
+
+/* ============================================================
+   DROPDOWN ITEM HOVER
+============================================================ */
+
+.dh-admin-navigation
+.dh-admin-dropdown-menu
+.dh-admin-dropdown-item:hover {
+
+    color: #111111 !important;
+
+    background: #faf7ec !important;
+
+    text-decoration: none !important;
+
+    transform: none !important;
+}
+
+
+/* ============================================================
+   DROPDOWN ITEM ACTIVE
+   NO GOLD UNDERLINE
+============================================================ */
+
+.dh-admin-navigation
+.dh-admin-dropdown-menu
+.dh-admin-dropdown-item.active {
+
+    color: #111111 !important;
+
+    background: #ffffff !important;
+
+    font-weight: 600 !important;
+
+    text-decoration: none !important;
+}
+
+
+.dh-admin-navigation
+.dh-admin-dropdown-menu
+.dh-admin-dropdown-item.active::after {
+
+    display: none !important;
+    width: 0 !important;
+}
+
+
+/* ============================================================
+   DROPDOWN ITEM FOCUS
+============================================================ */
+
+.dh-admin-navigation
+.dh-admin-dropdown-menu
+.dh-admin-dropdown-item:focus,
+.dh-admin-navigation
+.dh-admin-dropdown-menu
+.dh-admin-dropdown-item:focus-visible {
+
+    color: #111111 !important;
+
+    background: #faf7ec !important;
+
+    outline: none !important;
+    box-shadow: none !important;
+
+    text-decoration: none !important;
+}
+
+
+/* ============================================================
+   SMALL GOLD ACCENT ON HOVER
+============================================================ */
+
+.dh-admin-navigation
+.dh-admin-dropdown-menu
+.dh-admin-dropdown-item:hover {
+
+    border-left: 3px solid #d4af37 !important;
+
+    padding-left: 13px !important;
+}
+
+
+/* ============================================================
+   DESKTOP DROPDOWN SHADOW / LAYER
+============================================================ */
+
+.dh-admin-navigation .dh-admin-dropdown {
+    z-index: 10001;
+}
+
+
+/* ============================================================
+   ADMIN NAVIGATION — TABLET
+============================================================ */
+
+@media (max-width: 1200px) and (min-width: 769px) {
+
+    .dh-header-navigation.dh-admin-navigation {
+        gap: 24px;
+        max-width: calc(100% - 350px);
+    }
+
+
+    .dh-admin-navigation .dh-admin-dropdown-trigger {
+        font-size: 14px !important;
+    }
+
+
+    .dh-admin-navigation .dh-admin-dropdown-menu {
+        min-width: 210px;
+    }
+
+
+    .dh-admin-navigation
+    .dh-admin-dropdown-menu
+    .dh-admin-dropdown-item {
+
+        min-height: 40px;
+
+        padding: 9px 15px !important;
+
+        font-size: 13px !important;
+    }
+}
+
+
+/* ============================================================
+   MOBILE ADMIN NAVIGATION
+   ------------------------------------------------------------
+   Content + Trending stay visible in the bottom navigation.
+============================================================ */
+
+@media (max-width: 768px) {
+
+    .header > .dh-header-navigation.dh-admin-navigation {
+
+        position: fixed;
+
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: auto;
+
+        width: 100%;
+        max-width: none;
+
+        height: 54px;
+
+        margin: 0;
+        padding: 0 18px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 34px;
+
+        background: #ffffff;
+
+        border-top: 1px solid #e5e5e5;
+        border-bottom: none;
+
+        box-shadow:
+            0 -4px 16px rgba(0, 0, 0, 0.07);
+
+        overflow: visible;
+
+        z-index: 9999;
+    }
+
+
+    /* --------------------------------------------------------
+       MOBILE DROPDOWN WRAPPER
+    -------------------------------------------------------- */
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown {
+
+        position: relative;
+
+        height: 54px;
+
+        display: flex;
+        align-items: center;
+    }
+
+
+    /* --------------------------------------------------------
+       MOBILE TRIGGER
+    -------------------------------------------------------- */
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown-trigger {
+
+        height: 54px !important;
+
+        padding: 0 4px !important;
+
+        font-size: 14px !important;
+
+        color: #555555 !important;
+    }
+
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown-trigger:hover {
+
+        color: #111111 !important;
+        transform: none;
+    }
+
+
+    /* --------------------------------------------------------
+       MOBILE DROPDOWN MENU
+       Opens ABOVE bottom navigation.
+    -------------------------------------------------------- */
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown-menu {
+
+        top: auto;
+
+        bottom: calc(100% + 9px);
+
+        left: 50%;
+
+        min-width: 215px;
+        max-width: calc(100vw - 24px);
+
+        padding: 6px 0;
+
+        border-radius: 9px;
+
+        transform:
+            translateX(-50%)
+            translateY(6px);
+    }
+
+
+    /* --------------------------------------------------------
+       MOBILE OPEN STATE
+    -------------------------------------------------------- */
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown.open
+    .dh-admin-dropdown-menu {
+
+        transform:
+            translateX(-50%)
+            translateY(0);
+    }
+
+
+    /* --------------------------------------------------------
+       MOBILE MENU ITEMS
+    -------------------------------------------------------- */
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown-menu
+    .dh-admin-dropdown-item {
+
+        min-height: 42px;
+
+        padding: 10px 15px !important;
+
+        font-size: 13px !important;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .header > .dh-header-navigation.dh-admin-navigation {
+
+        height: 52px;
+
+        padding: 0 14px;
+
+        gap: 27px;
+    }
+
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown {
+
+        height: 52px;
+    }
+
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown-trigger {
+
+        height: 52px !important;
+
+        font-size: 13px !important;
+    }
+
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown-menu {
+
+        min-width: 205px;
+
+        bottom: calc(100% + 8px);
+    }
+
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown-menu
+    .dh-admin-dropdown-item {
+
+        min-height: 40px;
+
+        padding: 9px 14px !important;
+
+        font-size: 12px !important;
+    }
+}
+
+
+/* ============================================================
+   VERY SMALL MOBILE
+============================================================ */
+
+@media (max-width: 360px) {
+
+    .header > .dh-header-navigation.dh-admin-navigation {
+
+        height: 50px;
+
+        padding: 0 11px;
+
+        gap: 22px;
+    }
+
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown {
+
+        height: 50px;
+    }
+
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown-trigger {
+
+        height: 50px !important;
+
+        font-size: 12px !important;
+    }
+
+
+    .header > .dh-header-navigation.dh-admin-navigation
+    .dh-admin-dropdown-menu {
+
+        min-width: 195px;
+    }
+}
+
+
+/* ============================================================
+   IMPORTANT:
+   PREVENT GLOBAL HEADER LINK CSS FROM AFFECTING
+   ADMIN DROPDOWN ITEMS
+============================================================ */
+
+.dh-admin-navigation
+.dh-admin-dropdown-menu
+.header-nav-link {
+
+    position: static !important;
+
+    display: flex !important;
+
+    width: 100% !important;
+
+    padding: 10px 16px !important;
+
+    margin: 0 !important;
+
+    color: #222222 !important;
+
+    background: #ffffff !important;
+
+    text-decoration: none !important;
+
+    transform: none !important;
+}
+
+
+.dh-admin-navigation
+.dh-admin-dropdown-menu
+.header-nav-link::after {
+
+    display: none !important;
+
+    content: none !important;
+}
+
+
+.dh-admin-navigation
+.dh-admin-dropdown-menu
+.header-nav-link:hover {
+
+    color: #111111 !important;
+
+    background: #faf7ec !important;
+
+    transform: none !important;
+
+    text-decoration: none !important;
 }

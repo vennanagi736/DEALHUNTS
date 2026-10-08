@@ -2479,7 +2479,7 @@ button {
 
     background: var(--dh-black);
 
-    color: var(--dh-white);
+    color: var(--dh-gold);
 
     font-size: 11px;
     font-weight: 750;
@@ -2492,7 +2492,7 @@ button {
         border-color 0.2s ease;
 }
 
-
+/* 
 .dh-product-comparison-rank-button-user:hover {
 
     background: var(--dh-gold);
@@ -2500,7 +2500,7 @@ button {
     border-color: var(--dh-gold);
 
     color: var(--dh-black);
-}
+} */
 
 
 /* =========================================================
@@ -5813,7 +5813,9 @@ body {
     left: 0 !important;
     z-index: 120 !important;
     width: 34px !important;
+    margin-left: 1350px !important;
     height: 30px !important;
+    margin-top: -5px !important;
     min-width: 34px !important;
     min-height: 30px !important;
     display: inline-flex !important;
@@ -5821,7 +5823,7 @@ body {
     justify-content: center !important;
     padding: 0 !important;
     border: 1px solid #d9dade !important;
-    border-radius: 8px !important;
+    border-radius: 18px !important;
     background: #ffffff !important;
     color: #111111 !important;
     box-shadow: 0 3px 10px rgba(0,0,0,.07) !important;
@@ -6091,6 +6093,7 @@ body {
 .dh-pc-content-card-user {
     width: 100% !important;
     margin: 0 0 12px !important;
+    margin-top: -3px !important;
     padding: 18px !important;
     border: 1px solid #dedfe1 !important;
     border-radius: 13px !important;

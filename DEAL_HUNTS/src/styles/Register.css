@@ -23,8 +23,6 @@
 
     box-sizing: border-box;
 
-    background: #ffffff;
-
     font-family:
         Inter,
         system-ui,
@@ -239,7 +237,7 @@
     background: #d4af37;
     color: #000000;
 
-    border-color: #000000;
+    border-color: #d4af37;
 }
 
 
