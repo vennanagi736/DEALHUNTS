@@ -8,8 +8,8 @@ The application combines online product discovery with local shop inventory info
 
 The project is built using **React.js, Java, Spring Boot, Spring Security, JWT, Hibernate, MySQL, Cloudinary, Google Maps, and Leaflet**.
 
-**Project Status:** Core features have been implemented, and the application continues to receive feature enhancements, UI improvements, and bug fixes.
 
+**Project Status:** The core development of DEALHUNTS is complete. The application continues to receive feature enhancements, UI improvements, bug fixes, and refinements.
 ---
 
 ## Table of Contents
