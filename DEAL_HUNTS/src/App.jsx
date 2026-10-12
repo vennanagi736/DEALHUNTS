@@ -415,7 +415,10 @@ function App() {
                     element={
                     <ProtectedRoute
                     allowedRoles={["ROLE_USER"]}>
-                        <AvailableShopNearYou/></ProtectedRoute>
+                        <Layout>
+                        <AvailableShopNearYou/>
+                        </Layout>
+                    </ProtectedRoute>
                     }
                 />
 

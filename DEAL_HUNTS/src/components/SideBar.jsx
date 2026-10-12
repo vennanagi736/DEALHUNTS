@@ -67,6 +67,10 @@ const USER_MENU = [
     label: "Products",
     path: "/products",
   },
+  {
+  label: "Near Shops",
+  path: "/available-near-you",
+  },
 
   {
     label: "Wishlist",
@@ -527,7 +531,8 @@ function Sidebar({
         to={item.path}
         end={
           item.path === "/home" ||
-          item.path === "/products"
+          item.path === "/products" ||
+          item.path === "/available-near-you"
         }
         onClick={
           handleCloseSidebar

@@ -19,7 +19,6 @@ import {
 
 import L from "leaflet";
 
-import Header from "../../components/Header";
 import Popup from "../../components/Popup";
 
 import "../../styles/AvailableShopNearMe.css";
@@ -2867,8 +2866,6 @@ function AvailableShopNearYou() {
 
     return (
         <div className="dh-available-page">
-
-            <Header />
 
             <main className="dh-available-main">
 

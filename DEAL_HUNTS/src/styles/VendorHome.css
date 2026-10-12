@@ -497,9 +497,9 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    color: var(--vd-gold-bright) !important;
-    font-size: 25px;
-    font-family: cursive;
+    color: black !important;
+    font-size: 20px;
+    font-weight: 600;   
     letter-spacing: 0.02em;
     text-align: center;
     padding: 2px 4px 6px;
@@ -511,6 +511,25 @@
     border-radius: 50%;
     background: var(--vd-gold);
     flex-shrink: 0;
+}
+/* Carousel dots (vendor home only) */
+.carousel-vendor-vd .dots-container {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: -8px !important;
+}
+
+.carousel-vendor-vd .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d9d3c4;
+  cursor: pointer;
+}
+
+.carousel-vendor-vd .dot.active {
+  background: #c9a227;
 }
 
 
@@ -1012,6 +1031,10 @@
     .vd-summary-row .vd-summary-card:last-child {
         grid-column: auto;
     }
+  .carousel-vendor-vd .dots-container {
+    gap: 8px;
+    margin-bottom: 0px !important;
+  }
 }
 
 

@@ -2,14 +2,14 @@
 
 ## A Full-Stack Software Application for Product Discovery, Local Shops, Inventory and Shopping
 
-DEALHUNTS is a full-stack web application designed to help customers discover products, explore product details, compare available options, and find nearby shops. It also provides vendors with inventory and product management features and administrators with tools to manage the platform.
+DEALHUNTS is a full-stack web application designed to connect online product discovery with local retail inventory. It helps customers explore products, compare available options, discover nearby shops through interactive maps, and manage their shopping activities. Vendors can manage their product offerings, prices, and stock, while administrators can manage the platform's users, vendors, and master product catalog.
 
-The application combines online product discovery with local shop inventory information, helping customers explore products and identify nearby vendors.
+Unlike a conventional product-listing application, DEALHUNTS brings **online product discovery and local shop inventory information together**. Customers can explore products and identify nearby shops, helping bridge the gap between online shopping and physical retail.
 
 The project is built using **React.js, Java, Spring Boot, Spring Security, JWT, Hibernate, MySQL, Cloudinary, Google Maps, and Leaflet**.
 
-
 **Project Status:** The core development of DEALHUNTS is complete. The application continues to receive feature enhancements, UI improvements, bug fixes, and refinements.
+
 ---
 
 ## Table of Contents
@@ -41,23 +41,25 @@ The project is built using **React.js, Java, Spring Boot, Spring Security, JWT, 
 
 ## 1. Project Overview
 
-DEALHUNTS connects product discovery with local retail inventory management.
+DEALHUNTS connects product discovery with local retail inventory management through a centralized web application.
 
-Customers can browse products, explore specifications, compare available options, manage their shopping activities, and discover nearby shops. Vendors can manage their product offerings, prices, stock, and related inventory information. Administrators can manage product catalog data, users, vendors, and other platform features.
+Customers can browse and search products, explore specifications, compare available options, manage wishlists and shopping carts, and discover nearby shops. Vendors can maintain product offerings, prices, and stock information. Administrators can manage the master product catalog, users, vendors, and supported platform features.
 
-The application separates the central product catalog from vendor-specific offerings. This makes it possible to maintain common product information while managing availability and pricing for individual vendors.
+A key design principle is the separation of the **central product catalog** from **vendor-specific offerings**. The catalog stores common product information, while individual vendors maintain their own pricing and inventory for the products they offer.
 
 ### Problems Addressed
 
-- Customers may need to visit multiple websites or shops to explore product options and prices.
-- Information about products and their specifications may be scattered across different sources.
-- Customers may find it difficult to discover local shops that offer products they want.
+- Customers may need to visit multiple websites or physical shops to explore products and prices.
+- Product information and specifications can be scattered across different sources.
+- Customers may struggle to discover nearby shops that carry products they need.
 - Local vendors need a convenient way to maintain product listings, prices, and stock.
-- Administrators need a centralized way to manage catalog information and platform operations.
+- Administrators need centralized tools to manage catalog information and platform operations.
 
 ### Proposed Solution
 
-DEALHUNTS brings these activities together in a single web application, combining online product discovery, vendor inventory management, local shop discovery, and shopping workflows.
+DEALHUNTS combines online product discovery, product information, vendor inventory management, local shop discovery, interactive map features, and supported shopping workflows in a single application.
+
+The goal is to make product exploration more convenient for customers while providing local vendors with a structured way to maintain their offerings.
 
 ---
 
@@ -65,14 +67,14 @@ DEALHUNTS brings these activities together in a single web application, combinin
 
 The primary objectives of DEALHUNTS are:
 
-1. Build a full-stack application using React.js and Spring Boot.
-2. Provide customers with a convenient product discovery experience.
-3. Organize product information, specifications, categories, brands, and variants.
+1. Build a full-stack web application using React.js and Spring Boot.
+2. Provide customers with convenient product discovery and search.
+3. Organize product information, specifications, categories, brands, and supported variants.
 4. Support vendor-specific product offerings, pricing, and stock management.
-5. Help customers discover nearby shops through map-based features.
+5. Help customers discover nearby shops through map-based functionality.
 6. Implement authentication and role-based access control.
 7. Provide administrators with tools to manage users, vendors, and catalog information.
-8. Integrate product image hosting and location-related functionality.
+8. Integrate product image hosting and location-related services.
 9. Maintain a modular application structure that supports future enhancements.
 
 ---
@@ -85,7 +87,7 @@ The primary objectives of DEALHUNTS are:
 - Browse and search products.
 - Explore product categories and brands.
 - View product details and specifications.
-- Explore product variants and available options.
+- Explore supported product variants and options.
 - Compare product information and vendor-specific offerings.
 - View available prices and stock information where provided.
 - Add products to a wishlist.
@@ -94,18 +96,19 @@ The primary objectives of DEALHUNTS are:
 - Use Cash on Delivery (COD) for supported checkout workflows.
 - View order history and order details.
 - Manage account settings.
-- Discover nearby shops and explore map-based locations.
-- Access available shop visit and location features.
+- Discover nearby shops using the available shop-discovery functionality.
+- Explore shop locations through interactive maps.
+- Access supported shop visit and map-opening actions.
 
 ### 3.2 Vendor Features
 
 - Vendor registration and login.
-- Vendor approval workflow managed by administrators.
+- Administrator-managed vendor approval workflow.
 - Access vendor-specific dashboard functionality.
 - Select products from the central product catalog.
 - Manage vendor product offerings.
 - Maintain product prices and stock quantities.
-- Manage supported discounts, product variants, colors, and related product information.
+- Manage supported discounts, variants, colors, and related product information.
 - Upload product images through the configured image-hosting integration.
 - Review available inventory and performance information.
 
@@ -149,7 +152,7 @@ The backend uses the following role authorities:
 2. The backend authenticates the request.
 3. Successful authentication provides the applicable authentication token.
 4. Protected frontend routes and backend endpoints enforce the required access.
-5. Vendors may need administrator approval before accessing approved vendor functionality.
+5. Vendors may require administrator approval before accessing approved vendor functionality.
 
 ---
 
@@ -196,36 +199,36 @@ The backend uses the following role authorities:
 DEALHUNTS follows a frontend-backend-database architecture.
 
 ```text
-                         CUSTOMER / VENDOR / ADMIN
-                                     |
-                                     v
-                         REACT.JS FRONTEND
-                           Vite Development
-                                     |
-                                     | HTTP / REST
-                                     | JWT Authorization
-                                     v
-                         SPRING BOOT BACKEND
-                                     |
-                  +------------------+------------------+
-                  |                  |                  |
-                  v                  v                  v
-          REST Controllers     Spring Security    Business Services
-                  |                  |                  |
-                  +------------------+------------------+
-                                     |
-                                     v
-                            SPRING DATA JPA
-                               / HIBERNATE
-                                     |
-                                     v
-                                MYSQL
-                                     |
-                  +------------------+------------------+
-                  |                                     |
-                  v                                     v
-           CLOUDINARY                           MAP INTEGRATIONS
-          Product Images                     Google Maps / Leaflet
+                  CUSTOMER / VENDOR / ADMIN
+                              |
+                              v
+                     REACT.JS FRONTEND
+                   Vite Development Server
+                              |
+                              | HTTP / REST
+                              | JWT Authorization
+                              v
+                     SPRING BOOT BACKEND
+                              |
+             +----------------+----------------+
+             |                |                |
+             v                v                v
+       REST Controllers  Spring Security  Business Services
+             |                |                |
+             +----------------+----------------+
+                              |
+                              v
+                       SPRING DATA JPA
+                         / HIBERNATE
+                              |
+                              v
+                            MYSQL
+                              |
+             +----------------+----------------+
+             |                                 |
+             v                                 v
+         CLOUDINARY                       MAP INTEGRATIONS
+       Product Images                  Google Maps / Leaflet
 ```
 
 ### Frontend Responsibilities
@@ -376,7 +379,7 @@ This separation allows multiple vendors to offer the same catalog product while 
 
 Product details can include the product description, brand, category, thumbnail image, specifications, and variant information.
 
-The backend's product service maps entity data into DTOs used by the frontend. This separates the API response structure from the internal database entity structure.
+The backend's product service maps entity data into Data Transfer Objects (DTOs) used by the frontend. This separates the API response structure from the internal database entity structure.
 
 ### 8.4 Inventory Management
 
@@ -398,7 +401,7 @@ These sections help organize product discovery and highlight selected content.
 
 ## 9. Local Shop Discovery and Maps
 
-DEALHUNTS combines online product discovery with local shop discovery.
+DEALHUNTS combines online product discovery with local shop discovery, helping customers explore physical retail options alongside online product listings.
 
 ### Main Capabilities
 
@@ -409,13 +412,25 @@ DEALHUNTS combines online product discovery with local shop discovery.
 - Help customers explore nearby shop information.
 - Provide available shop visit and map-opening actions.
 
-### Why Local Discovery Matters
+### How Local Shop Discovery Adds Value
 
-Customers may prefer to purchase a product from a nearby shop rather than relying exclusively on online listings. Local discovery can help them identify relevant shops and decide which locations to explore.
+Traditional online shopping primarily focuses on products listed by online sellers. DEALHUNTS extends product discovery toward local retail by incorporating shop location information and map-based exploration.
 
-### Important Consideration
+Customers can use the available nearby-shop features to explore relevant physical shops instead of relying exclusively on online listings. This can make it easier to identify shops worth visiting when location and inventory information are available.
 
-Map markers and shop locations depend on the quality of the stored address, coordinates, and geocoding results. Accurate vendor location data is important for reliable map presentation.
+For vendors, maintaining accurate shop and product information can improve how their offerings are presented to potential customers.
+
+### Interactive Map Features
+
+Map-based functionality provides a visual way to explore shop locations. Depending on the implemented page and available data, customers can view shop markers and use supported actions to open locations or explore visit-related information.
+
+Google Maps and Leaflet are included in the technology stack for map and location-related functionality.
+
+### Location Accuracy
+
+Map markers and nearby-shop results depend on the quality of stored addresses, coordinates, and geocoding results. Accurate vendor location data is important for reliable map presentation.
+
+**Important:** A displayed shop location does not by itself guarantee that a particular product is currently in stock. Product availability should be confirmed against the latest inventory information.
 
 ---
 
@@ -441,7 +456,7 @@ The logical database design separates common product information from vendor-spe
 | Location Information | Shop addresses and location-related information |
 | Merchandising | Supported promotional and product discovery content |
 
-These are **logical data areas**, not a claim that every item corresponds to one identically named database table.
+These are logical data areas, not a claim that every item corresponds to one identically named database table.
 
 ### 10.2 Catalog and Inventory Separation
 
@@ -450,16 +465,16 @@ The product catalog describes what a product is. Vendor inventory describes how 
 For example:
 
 ```text
-Master Product
-      |
-      +---------------------+
-      |                     |
-      v                     v
-Vendor A Offering      Vendor B Offering
-      |                     |
-      v                     v
-Vendor A Price         Vendor B Price
-Vendor A Stock         Vendor B Stock
+                  Master Product
+                        |
+             +----------+----------+
+             |                     |
+             v                     v
+      Vendor A Offering     Vendor B Offering
+             |                     |
+             v                     v
+       Vendor A Price        Vendor B Price
+       Vendor A Stock        Vendor B Stock
 ```
 
 This design supports product discovery across multiple vendors without requiring each vendor to maintain a completely separate copy of the common product definition.
@@ -490,7 +505,7 @@ On successful authentication, the application returns the relevant authenticatio
 
 JWTs allow the frontend to authenticate subsequent requests to protected backend endpoints.
 
-The backend validates the authentication information and applies the authorization rules associated with the requested operation.
+The backend validates authentication information and applies the authorization rules associated with the requested operation.
 
 ### 11.3 Password Security
 
@@ -502,7 +517,7 @@ The application distinguishes among customer, vendor, and administrator roles. P
 
 ### 11.5 Vendor Approval
 
-Vendor registration and administrator approval are separate parts of the vendor workflow. Approval status is used to support the platform's vendor access process.
+Vendor registration and administrator approval are separate parts of the vendor workflow. Approval status supports the platform's vendor access process.
 
 ### 11.6 CORS
 
@@ -589,7 +604,6 @@ DEALHUNTS/
 |   |
 |   +-- package.json
 |   +-- vite.config.js
-|   |
 |   +-- ... other frontend files
 |
 +-- Backend/
@@ -750,7 +764,7 @@ If Vite selects a different port because the default port is unavailable, use th
 5. Test the appropriate registration and login flows.
 6. Verify that product data loads from the backend.
 7. Test role-specific pages and features.
-8. Verify any external-service functionality using valid local configuration.
+8. Verify external-service functionality using valid local configuration.
 
 ---
 
