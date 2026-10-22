@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_BASE_URL } from "./config.js";
 
-const BASE_URL = "http://localhost:8080/vendor";
+const BASE_URL = `${API_BASE_URL}/vendor`;
 
 
 // ============================================================
