@@ -20,14 +20,6 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    console.log("FORM VALUES:", {
-      firstName,
-      lastName,
-      email,
-      password,
-      confirmPassword,
-    });
-
     const errorMessage = validateRegister(
       firstName,
       lastName,
@@ -54,11 +46,7 @@ function Register() {
         confirmPassword
       );
 
-      console.log("RESPONSE:", response.data);
-
       if (response.data?.success) {
-        console.log("Successfully Registered");
-
         setMessage(
           response.data?.message || "Register Successful"
         );

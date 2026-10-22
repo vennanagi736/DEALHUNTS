@@ -78,7 +78,6 @@ function VendorProductManage() {
     const fetchVariantAndColorNames = async (productList) => {
 
         try {
-
             const productIds = [
                 ...new Set(
                     productList
@@ -144,18 +143,6 @@ function VendorProductManage() {
 
             setVariantNames(variantMap);
             setColorNames(colorMap);
-
-
-            console.log(
-                "VARIANT NAMES:",
-                variantMap
-            );
-
-            console.log(
-                "COLOR NAMES:",
-                colorMap
-            );
-
         } catch (error) {
 
             console.error(
@@ -194,7 +181,6 @@ function VendorProductManage() {
 
 
         try {
-
             const response = await axios.get(
                 `${API_BASE_URL}/vendor/myProducts?vendorId=${vendorId}`,
                 {
@@ -214,16 +200,9 @@ function VendorProductManage() {
             setProducts(productData);
 
 
-            console.log(
-                "VENDOR PRODUCTS API RESPONSE:",
-                productData
-            );
-
-
             await fetchVariantAndColorNames(
                 productData
             );
-
         } catch (error) {
 
             console.error(
@@ -236,13 +215,7 @@ function VendorProductManage() {
 
                 setProducts([]);
 
-            } else if (error.response?.status === 401) {
-
-                console.log(
-                    "Unauthorized request"
-                );
-
-            } else {
+            } else if (error.response?.status === 401) {} else {
 
                 alert(
                     "Failed to fetch products."
@@ -435,24 +408,10 @@ function VendorProductManage() {
     };
 
 
-    useEffect(() => {
-
-        console.log(
-            "VENDOR CATEGORIES:",
-            vendorCategories
-        );
-
-    }, [vendorCategories]);
+    useEffect(() => {}, [vendorCategories]);
 
 
-    useEffect(() => {
-
-        console.log(
-            "VENDOR BRANDS:",
-            vendorBrands
-        );
-
-    }, [vendorBrands]);
+    useEffect(() => {}, [vendorBrands]);
 
 
     // =========================================================

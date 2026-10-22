@@ -73,7 +73,6 @@ public class PromotionController {
     }
     @GetMapping("/trending")
 public ResponseEntity<?> getTrendingPromotions() {
-    System.out.println("Trending is calling");
 
     return ResponseEntity.ok(
             promotionService.getTrendingPromotions()

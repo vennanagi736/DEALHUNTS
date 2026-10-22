@@ -94,7 +94,6 @@ function AdminManageNewArrivals() {
     const fetchNewArrivals = async () => {
 
         try {
-
             const response =
                 await fetch(
                     `${API}/admin/new-arrivals/all`,
@@ -117,15 +116,9 @@ function AdminManageNewArrivals() {
             const data =
                 await response.json();
 
-            console.log(
-                "NEW ARRIVALS API RESPONSE:",
-                data
-            );
-
             setNewArrivals(
                 normalizeArrayResponse(data)
             );
-
         } catch (error) {
 
             console.error(
@@ -147,7 +140,6 @@ function AdminManageNewArrivals() {
         setProductsLoading(true);
 
         try {
-
             const headers =
                 getAdminHeaders();
 
@@ -187,13 +179,7 @@ function AdminManageNewArrivals() {
             const productList =
                 normalizeArrayResponse(data);
 
-            console.log(
-                "Existing products loaded:",
-                productList
-            );
-
             setProducts(productList);
-
         } catch (error) {
 
             console.error(

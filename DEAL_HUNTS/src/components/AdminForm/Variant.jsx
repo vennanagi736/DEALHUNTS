@@ -44,10 +44,7 @@ setMasterData({
 
 
     const handleSubmit = (e) => {
-
         e.preventDefault();
-
-        console.log(variant);
 
         setVariant({
             category: "",
@@ -60,7 +57,6 @@ setMasterData({
             displaySize: "",
             battery: ""
         });
-
     };
 
 

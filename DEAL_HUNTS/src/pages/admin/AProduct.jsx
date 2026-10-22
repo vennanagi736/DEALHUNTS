@@ -77,7 +77,6 @@ function AdminProducts() {
     const fetchProducts = async () => {
 
         try {
-
             const res = await getAllProducts();
 
             const productList = res.data || [];
@@ -112,17 +111,6 @@ function AdminProducts() {
             );
 
             setProductVariantMap(variantMap);
-
-            console.log(
-                "PRODUCTS:",
-                productList
-            );
-
-            console.log(
-                "VARIANT MAP:",
-                variantMap
-            );
-
         } catch (error) {
 
             console.error(
@@ -326,7 +314,6 @@ function AdminProducts() {
     const handleOpenProductPopup = async (product) => {
 
         try {
-
             setSelectedProduct(product);
 
 
@@ -350,22 +337,6 @@ function AdminProducts() {
                 await getProductVariant(product.id);
 
 
-            console.log(
-                "Product ID:",
-                product.id
-            );
-
-            console.log(
-                "Variant API response:",
-                variantRes
-            );
-
-            console.log(
-                "Variants from API:",
-                variantRes.data
-            );
-
-
             setProductVariants(
                 variantRes.data || []
             );
@@ -384,7 +355,6 @@ function AdminProducts() {
             setChangeImageId(null);
 
             setShowPopup(true);
-
         } catch (error) {
 
             console.error(

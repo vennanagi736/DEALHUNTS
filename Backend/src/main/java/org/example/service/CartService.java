@@ -123,9 +123,6 @@ public class CartService {
                             return cartRepository.save(newCart);
                         });
 
-        System.out.println(
-                "CART ID: " + cart.getId()
-        );
 
         /* --------------------------------------------------------
            FIND EXISTING CART ITEM
@@ -175,21 +172,12 @@ public class CartService {
             cartItem.setQuantity(quantity);
         }
 
-        System.out.println(
-                "SAVING CART ITEM..."
-        );
 
         cartItemRepository.save(
                 cartItem
         );
 
-        System.out.println(
-                "CART ITEM SAVED"
-        );
 
-        System.out.println(
-                "CART ITEM ID: " + cartItem.getId()
-        );
 
         return buildCartResponse(cart);
     }

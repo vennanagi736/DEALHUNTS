@@ -36,10 +36,7 @@ function ProductMaster({masterData, setMasterData}) {
 
 
     const handleSubmit = (e) => {
-
         e.preventDefault();
-
-        console.log(product);
 
         setProduct({
             category: "",
@@ -48,7 +45,6 @@ function ProductMaster({masterData, setMasterData}) {
             description: "",
             image: ""
         });
-
     };
 
 

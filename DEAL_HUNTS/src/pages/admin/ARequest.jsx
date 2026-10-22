@@ -123,8 +123,6 @@ function AdminVendorRequest() {
 
               <tbody>
                 {requests.map((req) => {
-                  console.log(req);
-
                   return (
                     <tr key={req.id}>
                       <td>

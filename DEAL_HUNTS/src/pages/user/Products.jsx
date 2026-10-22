@@ -416,11 +416,6 @@ function Products() {
             `${API_BASE_URL}/admin/products/cards`
           );
 
-        console.log(
-          "Products received from backend:",
-          response.data
-        );
-
         if (Array.isArray(response.data)) {
           setProducts(
             response.data
@@ -487,10 +482,6 @@ function Products() {
       }
 
       try {
-        console.log(
-          "========== FETCH WISHLIST =========="
-        );
-
         const response =
           await axios.get(
             `${API_BASE_URL}/wishlist`,
@@ -501,11 +492,6 @@ function Products() {
               },
             }
           );
-
-        console.log(
-          "Wishlist response:",
-          response.data
-        );
 
         const wishlistItems =
           Array.isArray(response.data)
@@ -533,11 +519,6 @@ function Products() {
 
         setWishlist(
           new Set(productIds)
-        );
-
-        console.log(
-          "Loaded wishlist product IDs:",
-          productIds
         );
       } catch (error) {
         console.error(
@@ -604,20 +585,6 @@ function Products() {
           true
         );
 
-        console.log(
-          "========== WISHLIST ACTION =========="
-        );
-
-        console.log(
-          "Product ID:",
-          normalizedProductId
-        );
-
-        console.log(
-          "Already wishlisted:",
-          alreadyWishlisted
-        );
-
         /* ==================================================
            REMOVE
         ================================================== */
@@ -634,11 +601,6 @@ function Products() {
               }
             );
 
-          console.log(
-            "Wishlist remove response:",
-            response.data
-          );
-
           setWishlist(
             (previous) => {
               const next =
@@ -650,10 +612,6 @@ function Products() {
 
               return next;
             }
-          );
-
-          console.log(
-            "Removed from wishlist."
           );
         }
 
@@ -677,11 +635,6 @@ function Products() {
               }
             );
 
-          console.log(
-            "Wishlist add response:",
-            response.data
-          );
-
           setWishlist(
             (previous) => {
               const next =
@@ -693,10 +646,6 @@ function Products() {
 
               return next;
             }
-          );
-
-          console.log(
-            "Added to wishlist."
           );
         }
       } catch (error) {
@@ -773,15 +722,6 @@ function Products() {
 
   const handleAddToCart =
     async (product) => {
-      console.log(
-        "========== ADD TO CART START =========="
-      );
-
-      console.log(
-        "Product:",
-        product
-      );
-
       try {
         /* ====================================================
            CHECK LOGIN
@@ -826,11 +766,6 @@ function Products() {
             `${API_BASE_URL}/inventory/product/${product.id}/vendors`
           );
 
-        console.log(
-          "VENDOR RESPONSE:",
-          vendorResponse.data
-        );
-
         const inventories =
           Array.isArray(
             vendorResponse.data
@@ -858,11 +793,6 @@ function Products() {
 
         const inventory =
           inventories[0];
-
-        console.log(
-          "SELECTED INVENTORY:",
-          inventory
-        );
 
         /* ====================================================
            VALIDATE INVENTORY ID
@@ -901,19 +831,6 @@ function Products() {
               },
             }
           );
-
-        /* ====================================================
-           SUCCESS
-        ==================================================== */
-
-        console.log(
-          "CART RESPONSE:",
-          cartResponse.data
-        );
-
-        console.log(
-          "========== ADD TO CART END =========="
-        );
 
         alert(
           "Product added to cart!"

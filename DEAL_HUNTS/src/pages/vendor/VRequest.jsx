@@ -26,14 +26,11 @@ function RequestStatus() {
 
                 const vendorStatus = response.data;
 
-                console.log("Vendor status response:", vendorStatus);
-
                 setStatus(
                     typeof vendorStatus === "string"
                         ? vendorStatus.toUpperCase()
                         : vendorStatus?.status?.toUpperCase() || "ERROR"
                 );
-
             } catch (error) {
                 console.error(
                     "Vendor status request failed:",

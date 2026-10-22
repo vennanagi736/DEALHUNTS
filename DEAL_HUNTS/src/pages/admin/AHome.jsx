@@ -322,10 +322,6 @@ function AnalyticsChart({ data }) {
 
 
 function AdminHome() {
-
-  console.log("Amaing home koade");
-
-
   const [trendingItems, setTrendingItems] =
     useState([]);
 
@@ -376,55 +372,15 @@ function AdminHome() {
     const loadTrending = async () => {
 
       try {
-
-        console.log(
-          "Dashboard: calling promotions API"
-        );
-
-
         const response = await axios.get(
           `${API_BASE_URL}/admin/promotions/all`
-        );
-
-
-        console.log(
-          "Dashboard status:",
-          response.status
-        );
-
-        console.log(
-          "Dashboard data:",
-          response.data
         );
 
 
         setTrendingItems(
           response.data
         );
-
-      } catch (error) {
-
-        console.log(
-          "Dashboard trending ERROR:",
-          error
-        );
-
-        console.log(
-          "URL:",
-          error.config?.url
-        );
-
-        console.log(
-          "STATUS:",
-          error.response?.status
-        );
-
-        console.log(
-          "DATA:",
-          error.response?.data
-        );
-
-      }
+      } catch (error) {}
 
     };
 
@@ -443,14 +399,8 @@ function AdminHome() {
     const loadDashboardStats = async () => {
 
       try {
-
         const userResponse =
           await getUserCount();
-
-        console.log(
-          "userCount:",
-          userResponse.data
-        );
 
         setUserCount(
           userResponse.data
@@ -460,11 +410,6 @@ function AdminHome() {
         const vendorResponse =
           await getVendorCount();
 
-        console.log(
-          "VendorCount:",
-          vendorResponse.data
-        );
-
         setVendorCount(
           vendorResponse.data
         );
@@ -472,11 +417,6 @@ function AdminHome() {
 
         const productResponse =
           await getProductCount();
-
-        console.log(
-          "ProductCount:",
-          productResponse.data
-        );
 
         setProductCount(
           productResponse.data
@@ -494,7 +434,6 @@ function AdminHome() {
         // setOrderCount(
         //   orderResponse.data
         // );
-
       } catch (error) {
 
         console.error(
@@ -965,7 +904,6 @@ function AdminHome() {
     </div>
 
   );
-
 }
 
 

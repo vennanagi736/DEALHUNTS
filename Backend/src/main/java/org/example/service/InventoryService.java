@@ -339,25 +339,14 @@ public class InventoryService {
     // ============================================================
 public List<InventoryVendorDTO> getAvailableVendorsByProductId(Long productId) {
 
-    System.out.println("========================================");
-    System.out.println("Searching vendors for product ID: " + productId);
 
     List<InventoryVendorDTO> vendors =
             inventoryRepository.findAvailableVendorsByProductId(productId);
 
-    System.out.println("Vendors found: " + vendors.size());
 
     for (InventoryVendorDTO vendor : vendors) {
-        System.out.println("Inventory ID : " + vendor.getInventoryId());
-        System.out.println("Vendor ID    : " + vendor.getVendorId());
-        System.out.println("Shop Name    : " + vendor.getShopName());
-        System.out.println("Base Price   : " + vendor.getBasePrice());
-        System.out.println("Final Price  : " + vendor.getFinalPrice());
-        System.out.println("Stock        : " + vendor.getStock());
-        System.out.println("Discount     : " + vendor.getDiscount());
     }
 
-    System.out.println("========================================");
 
     return vendors;
 }

@@ -97,7 +97,6 @@ function AdminManageTrendingDeals() {
 
 
             for (const deal of res.data) {
-
                 const productId =
                     deal.product.id;
 
@@ -106,17 +105,9 @@ function AdminManageTrendingDeals() {
                     await getProductImages(productId);
 
 
-                console.log(
-                    "Images for product",
-                    productId,
-                    imageRes.data
-                );
-
-
                 imageMap[productId] =
                     imageRes.data?.[0]?.thumbnailUrl ||
                     null;
-
             }
 
 

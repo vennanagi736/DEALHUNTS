@@ -105,7 +105,6 @@ export default function Cart() {
 
 
     try {
-
       setLoading(true);
 
       setError("");
@@ -113,12 +112,6 @@ export default function Cart() {
 
       const response =
         await getCart();
-
-
-      console.log(
-        "CART RESPONSE:",
-        response.data
-      );
 
 
       setCart({
@@ -145,7 +138,6 @@ export default function Cart() {
           response.data.items ?? [],
 
       });
-
     } catch (err) {
 
       console.error(
@@ -220,7 +212,6 @@ export default function Cart() {
 
 
     try {
-
       setUpdatingItem(
         cartItemId
       );
@@ -231,12 +222,6 @@ export default function Cart() {
           cartItemId,
           newQuantity
         );
-
-
-      console.log(
-        "UPDATED CART:",
-        response.data
-      );
 
 
       setCart({
@@ -263,7 +248,6 @@ export default function Cart() {
           response.data.items ?? [],
 
       });
-
     } catch (err) {
 
       console.error(
@@ -295,7 +279,6 @@ export default function Cart() {
   ) => {
 
     try {
-
       setUpdatingItem(
         cartItemId
       );
@@ -305,12 +288,6 @@ export default function Cart() {
         await removeCartItem(
           cartItemId
         );
-
-
-      console.log(
-        "CART AFTER REMOVE:",
-        response.data
-      );
 
 
       setCart({
@@ -337,7 +314,6 @@ export default function Cart() {
           response.data.items ?? [],
 
       });
-
     } catch (err) {
 
       console.error(

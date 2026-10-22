@@ -16,9 +16,8 @@ function ATrendingCategories() {
                     `${API_BASE_URL}/admin/trending-categories`
                 );
 
-               
 
-                console.log("Trending Categories:", response.data);
+
                 setCategories(response.data);
             } catch (error) {
                 console.error(

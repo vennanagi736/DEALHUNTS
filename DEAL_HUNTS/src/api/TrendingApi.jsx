@@ -8,11 +8,8 @@ export const getTrendingItems = async () => {
             `${API_BASE_URL}/admin/promotions/trending`
         );
 
-        console.log("Trending API:", res.data);
-
         return res.data;
     } catch (error) {
-        console.log("Trending API Error:", error);
         return [];
     }
 };

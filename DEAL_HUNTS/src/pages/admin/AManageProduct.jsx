@@ -61,17 +61,13 @@ function AdminManageProduct() {
         const fetchProducts = async () => {
 
             try {
-
                 const res = await getAllProducts();
-
-                console.log("PRODUCTS:", res.data);
 
                 setProducts(
                     Array.isArray(res.data)
                         ? res.data
                         : []
                 );
-
             } catch (error) {
 
                 console.error(
@@ -119,13 +115,6 @@ function AdminManageProduct() {
     // =========================================================
 
     const handleProductClick = (product) => {
-
-        console.log(
-            "SELECTED PRODUCT:",
-            product
-        );
-
-
         // Don't open popup while selection mode is active
         if (selectionMode) {
             return;
@@ -135,7 +124,6 @@ function AdminManageProduct() {
         setSelectedProduct(product);
 
         setShowPopup(true);
-
     };
 
 

@@ -1036,16 +1036,6 @@ const BookVisit = () => {
                             response.data
                         );
 
-                    console.log(
-                        "Book Visit vendor response:",
-                        response.data
-                    );
-
-                    console.log(
-                        "Book Visit normalized vendors:",
-                        normalizedVendors
-                    );
-
                     setVendors(
                         normalizedVendors
                     );
@@ -1518,11 +1508,6 @@ const BookVisit = () => {
                 status: "PENDING",
             };
 
-            console.log(
-                "Book Visit payload:",
-                payload
-            );
-
             try {
                 setBookingLoading(
                     true
@@ -1553,11 +1538,6 @@ const BookVisit = () => {
                                   },
                         }
                     );
-
-                console.log(
-                    "Book Visit response:",
-                    response.data
-                );
 
                 const savedBookingId =
                     response.data?.id ??
@@ -1721,11 +1701,6 @@ const BookVisit = () => {
                                 : undefined,
                         }
                     );
-
-                console.log(
-                    "Cancel visit response:",
-                    response.data
-                );
 
                 setBookingStatus(
                     "cancelled"

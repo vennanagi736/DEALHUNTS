@@ -77,10 +77,10 @@ function resolveImageUrl(image) {
   }
 
   if (trimmed.startsWith("/")) {
-    return `${API_BASE}${trimmed}`;
+    return `${API_BASE_URL}${trimmed}`;
   }
 
-  return `${API_BASE}/${trimmed}`;
+  return `${API_BASE_URL}/${trimmed}`;
 }
 
 
@@ -1793,17 +1793,10 @@ function Home() {
       async () => {
 
         try {
-
           const response =
             await axios.get(
               `${API_BASE_URL}/admin/new-arrivals/all`
             );
-
-
-          console.log(
-            "User Home New Arrivals:",
-            response.data
-          );
 
 
           let arrivals = [];
@@ -1852,13 +1845,6 @@ function Home() {
           setNewArrivalProducts(
             arrivals
           );
-
-
-          console.log(
-            "Loaded New Arrivals:",
-            arrivals
-          );
-
         } catch (error) {
 
           console.error(
@@ -1888,17 +1874,10 @@ function Home() {
       async () => {
 
         try {
-
           const response =
             await axios.get(
               `${API_BASE_URL}/admin/coming-soon/all`
             );
-
-
-          console.log(
-            "User Home Coming Soon:",
-            response.data
-          );
 
 
           let comingSoon = [];
@@ -1951,13 +1930,6 @@ function Home() {
           setComingSoonProducts(
             comingSoon
           );
-
-
-          console.log(
-            "Loaded Coming Soon:",
-            comingSoon
-          );
-
         } catch (error) {
 
           console.error(
@@ -2036,15 +2008,8 @@ function Home() {
       async () => {
 
         try {
-
           const response =
             await getTrendingCategories();
-
-
-          console.log(
-            "User Home Trending Categories:",
-            response.data
-          );
 
 
           const categories =
@@ -2058,7 +2023,6 @@ function Home() {
           setTrendingCategories(
             categories
           );
-
         } catch (error) {
 
           console.error(
@@ -2088,15 +2052,8 @@ function Home() {
       async () => {
 
         try {
-
           const response =
             await getTrendingDeals();
-
-
-          console.log(
-            "User Home Trending Deals:",
-            response.data
-          );
 
 
           const deals =
@@ -2129,18 +2086,10 @@ function Home() {
 
 
             try {
-
               const imageResponse =
                 await getProductImages(
                   product.id
                 );
-
-
-              console.log(
-                "Trending deal images:",
-                product.id,
-                imageResponse.data
-              );
 
 
               const image =
@@ -2156,7 +2105,6 @@ function Home() {
                 ] = image;
 
               }
-
             } catch (imageError) {
 
               console.error(
@@ -2169,16 +2117,9 @@ function Home() {
           }
 
 
-          console.log(
-            "Trending Deal Image Map:",
-            imageMap
-          );
-
-
           setTrendingDealImages(
             imageMap
           );
-
         } catch (error) {
 
           console.error(

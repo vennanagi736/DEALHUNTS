@@ -167,15 +167,12 @@ function AccountActions() {
       <button
         type="button"
         className="header-icon"
-        onClick={() => {
-          console.log("Notifications clicked");
-        }}
+        onClick={() => {}}
         aria-label="Notifications"
         title="Notifications"
       >
         <FiBell />
       </button>
-
 
       {/* ------------------------------------------------------
           PROFILE

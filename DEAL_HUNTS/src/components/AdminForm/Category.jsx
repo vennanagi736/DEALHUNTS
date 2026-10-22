@@ -6,7 +6,6 @@ function Category({masterData,setMasterData}){
     const [categoryName, setCategoryName] = useState("");
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(categoryName);
         setCategoryName("");
     };
 

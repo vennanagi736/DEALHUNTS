@@ -20,20 +20,14 @@ function VendorLogin() {
 
 
   const handleVendorLogin = async (e) => {
-
     e.preventDefault();
-
-    console.log("Vendor login clicked");
 
     setError("");
     setMessage("");
     setLoading(true);
 
     try {
-
       const response = await vendorLogin(email, password);
-
-      console.log(response.data);
 
 
       // ============================================================
@@ -65,7 +59,6 @@ function VendorLogin() {
         response.data.success &&
         response.data.token
       ) {
-
         localStorage.setItem(
           "vendorJwtToken",
           response.data.token
@@ -86,12 +79,8 @@ function VendorLogin() {
         setError("");
         setMessage(response.data.message);
 
-        console.log("Vendor Login");
-        console.log(response.data);
-
         navigate("/vendorHome");
       }
-
     } catch (err) {
 
       console.error(err);

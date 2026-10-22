@@ -58,16 +58,7 @@ public class JWTFilter extends OncePerRequestFilter {
         String header =
                 request.getHeader("Authorization");
 
-        System.out.println("========================================");
-        System.out.println(
-                "Request URI: "
-                + request.getRequestURI()
-        );
 
-        System.out.println(
-                "Authorization Header: "
-                + header
-        );
 
         // =========================================================
         // CHECK BEARER TOKEN
@@ -84,9 +75,6 @@ public class JWTFilter extends OncePerRequestFilter {
                 boolean valid =
                         jwtUtil.validateToken(token);
 
-                System.out.println(
-                        "Token Valid: " + valid
-                );
 
                 if (valid) {
 
@@ -102,13 +90,7 @@ public class JWTFilter extends OncePerRequestFilter {
                     String role =
                             jwtUtil.extractRole(token);
 
-                    System.out.println(
-                            "Email: " + email
-                    );
 
-                    System.out.println(
-                            "Role From Token: " + role
-                    );
 
                     // =============================================
                     // NORMALIZE ROLE
@@ -154,58 +136,28 @@ public class JWTFilter extends OncePerRequestFilter {
                                 .getContext()
                                 .setAuthentication(auth);
 
-                        System.out.println(
-                                "Authentication Set Successfully"
-                        );
 
-                        System.out.println(
-                                "Authenticated Email: "
-                                + auth.getName()
-                        );
 
-                        System.out.println(
-                                "Authorities: "
-                                + auth.getAuthorities()
-                        );
                     }
 
                 } else {
 
-                    System.out.println(
-                            "Invalid JWT Token"
-                    );
                 }
 
             } catch (Exception e) {
 
-                System.out.println(
-                        "JWT ERROR: "
-                        + e.getMessage()
-                );
 
                 e.printStackTrace();
             }
 
         } else {
 
-            System.out.println(
-                    "No Bearer Token Found"
-            );
         }
 
         // =========================================================
         // SHOW CURRENT AUTHENTICATION
         // =========================================================
-        System.out.println(
-                "Current Authentication: "
-                + SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-        );
 
-        System.out.println(
-                "========================================"
-        );
 
         filterChain.doFilter(
                 request,

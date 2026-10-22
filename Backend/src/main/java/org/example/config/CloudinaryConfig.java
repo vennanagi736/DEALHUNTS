@@ -36,9 +36,5 @@ public class CloudinaryConfig {
     }
     @PostConstruct
 public void checkCloudinaryConfig() {
-    System.out.println("Cloud Name = " + cloudName);
-    System.out.println("API Key = " + apiKey);
-    System.out.println("API Secret Length = " +
-            (apiSecret == null ? "NULL" : apiSecret.length()));
 }
 }

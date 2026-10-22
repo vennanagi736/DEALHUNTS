@@ -232,9 +232,6 @@ function AdminDashboard() {
       );
 
     } catch (error) {
-
-      console.log(error);
-
       if (error.response?.status === 401) {
 
         localStorage.removeItem(
@@ -248,7 +245,6 @@ function AdminDashboard() {
         navigate("/adminLogin");
 
       }
-
     }
 
   };
@@ -263,14 +259,8 @@ function AdminDashboard() {
     const loadTrending = async () => {
 
       try {
-
         const response = await axios.get(
           `${API_BASE_URL}/admin/promotions/all`
-        );
-
-        console.log(
-          "Trending Deals response:",
-          response.data
         );
 
         setTrendingItems(
@@ -278,7 +268,6 @@ function AdminDashboard() {
             ? response.data
             : []
         );
-
       } catch (error) {
 
         console.error(

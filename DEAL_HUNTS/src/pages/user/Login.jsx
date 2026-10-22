@@ -29,8 +29,6 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    console.log("user clicked login");
-
     const errorMessage = validateLogin(
       email,
       password
@@ -49,11 +47,6 @@ function Login() {
       const response = await loginUser(
         email,
         password
-      );
-
-      console.log(
-        "USER LOGIN RESPONSE:",
-        response.data
       );
 
       if (response.data.success) {
@@ -88,32 +81,6 @@ function Login() {
         );
 
         // ======================================================
-        // VERIFY STORED USER ID
-        // ======================================================
-
-        console.log(
-          "Logged-in User ID:",
-          response.data.id
-        );
-
-        console.log(
-          "Stored userId:",
-          localStorage.getItem("userId")
-        );
-
-        console.log(
-          "Stored userEmail:",
-          localStorage.getItem("userEmail")
-        );
-
-        console.log(
-          "Stored userJwtToken:",
-          localStorage.getItem("userJwtToken")
-            ? "TOKEN PRESENT"
-            : "TOKEN MISSING"
-        );
-
-        // ======================================================
         // STORE USER ROLE
         // ======================================================
 
@@ -127,7 +94,6 @@ function Login() {
         // ======================================================
 
         navigate("/home");
-
       } else {
 
         setSuccess(false);
@@ -137,7 +103,6 @@ function Login() {
           "Login failed"
         );
       }
-
     } catch (error) {
 
       console.error(
@@ -159,9 +124,6 @@ function Login() {
   // ============================================================
 
   const handleGuest = () => {
-
-    console.log("Continuing as guest");
-
     /*
      * logout() clears:
      * 1. RoleContext state

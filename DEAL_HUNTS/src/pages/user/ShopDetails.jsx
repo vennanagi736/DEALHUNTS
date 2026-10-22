@@ -24,7 +24,6 @@ function ShopDetails() {
     const fetchVendor = async () => {
 
       try {
-
         setLoading(true);
         setError("");
 
@@ -32,10 +31,7 @@ function ShopDetails() {
           `${API_BASE_URL}/vendor/${vendorId}`
         );
 
-        console.log("Vendor Details:", response.data);
-
         setVendor(response.data);
-
       } catch (error) {
 
         console.error(

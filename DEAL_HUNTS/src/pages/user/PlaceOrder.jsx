@@ -290,7 +290,6 @@ export default function PlaceOrder() {
       setLoadingItems(true);
 
       try {
-
         /* ------------------------------------------------------
            AUTH TOKEN
         ------------------------------------------------------ */
@@ -330,19 +329,11 @@ export default function PlaceOrder() {
 
 
               if (normalizedItems.length > 0) {
-
-                console.log(
-                  "PlaceOrder - Using Buy Now items:",
-                  normalizedItems
-                );
-
-
                 setItems(normalizedItems);
 
                 setLoadingItems(false);
 
                 return;
-
               }
 
             }
@@ -376,11 +367,6 @@ export default function PlaceOrder() {
         }
 
 
-        console.log(
-          "PlaceOrder - Loading cart from backend..."
-        );
-
-
         const response =
           await axios.get(
             `${API_BASE_URL}/cart`,
@@ -393,22 +379,10 @@ export default function PlaceOrder() {
           );
 
 
-        console.log(
-          "PlaceOrder - Cart response:",
-          response.data
-        );
-
-
         const cartItems =
           extractCartItems(
             response.data
           );
-
-
-        console.log(
-          "PlaceOrder - Extracted cart items:",
-          cartItems
-        );
 
 
         const normalizedItems =
@@ -420,15 +394,7 @@ export default function PlaceOrder() {
             );
 
 
-        console.log(
-          "PlaceOrder - Normalized cart items:",
-          normalizedItems
-        );
-
-
         setItems(normalizedItems);
-
-
       } catch (error) {
 
         console.error(
@@ -729,7 +695,6 @@ export default function PlaceOrder() {
 
 
     try {
-
       /* ------------------------------------------------------
          AUTH TOKEN
       ------------------------------------------------------ */
@@ -799,12 +764,6 @@ export default function PlaceOrder() {
       };
 
 
-      console.log(
-        "Placing real order:",
-        requestData
-      );
-
-
       /* ------------------------------------------------------
          SAVE ADDRESS
       ------------------------------------------------------ */
@@ -841,11 +800,6 @@ export default function PlaceOrder() {
       ------------------------------------------------------ */
 
       const orders = response.data;
-
-      console.log(
-        "PlaceOrder - Orders created:",
-        orders
-      );
 
 
       /* ------------------------------------------------------
@@ -916,8 +870,6 @@ export default function PlaceOrder() {
       navigate(
         `/order-success?orderIds=${orderIds}`
       );
-
-
     } catch (error) {
 
       console.error(

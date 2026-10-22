@@ -128,7 +128,6 @@ export const getAllCategories = () => {
 
 // UPDATE CATEGORY
 export const updateCategory = (id, name, image) => {
-
     const formData = new FormData();
 
     formData.append(
@@ -145,31 +144,18 @@ export const updateCategory = (id, name, image) => {
 
     }
 
-    console.log(
-        "UPDATE CATEGORY URL:",
-        `${BASE_URL}/admin/categories/${id}`
-    );
-
     return axios.put(
         `${BASE_URL}/admin/categories/${id}`,
         formData
     );
-
 };
 
 
 // DELETE CATEGORY
 export const deleteCategory = (id) => {
-
-    console.log(
-        "DELETE CATEGORY URL:",
-        `${BASE_URL}/admin/categories/${id}`
-    );
-
     return axios.delete(
         `${BASE_URL}/admin/categories/${id}`
     );
-
 };
 
 

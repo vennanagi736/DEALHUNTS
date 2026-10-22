@@ -27,11 +27,6 @@ const getAuthHeaders = () => {
 // ADD INVENTORY
 // =====================================================
 export const addInventory = (inventoryData) => {
-
-    console.log("========== ADD INVENTORY ==========");
-    console.log("inventoryData:", inventoryData);
-    console.log("===================================");
-
     return axios.post(
         `${BASE_URL}/inventory/add`,
         inventoryData,
@@ -95,15 +90,9 @@ export const getInventoryById = (inventoryId) => {
 // UPDATE INVENTORY
 // =====================================================
 export const updateInventory = (inventoryId, inventoryData) => {
-
     if (!inventoryId) {
         throw new Error("Inventory ID is required");
     }
-
-    console.log("========== UPDATE INVENTORY ==========");
-    console.log("inventoryId:", inventoryId);
-    console.log("inventoryData:", inventoryData);
-    console.log("======================================");
 
     return axios.put(
         `${BASE_URL}/inventory/${inventoryId}`,

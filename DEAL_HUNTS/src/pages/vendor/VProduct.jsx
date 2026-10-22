@@ -442,11 +442,6 @@ function VendorProductPage() {
               ? inventoryResponse.data
               : [];
 
-          console.log(
-            "ALL VENDOR INVENTORY:",
-            vendorInventory
-          );
-
           // ==================================================
           // PRODUCTS ALREADY ADDED
           // ==================================================
@@ -1146,11 +1141,6 @@ function VendorProductPage() {
               )
           );
 
-        console.log(
-          "PRODUCT INVENTORY:",
-          productInventory
-        );
-
         setOriginalInventoryRecords(
           productInventory
         );
@@ -1243,28 +1233,6 @@ function VendorProductPage() {
               getInventoryId(
                 inventoryItem
               );
-
-            console.log(
-              "EDIT INVENTORY RECORD:",
-              {
-                inventoryId:
-                  recordId,
-
-                variantId,
-
-                colorId,
-
-                stock:
-                  getInventoryStock(
-                    inventoryItem
-                  ),
-
-                discount:
-                  getInventoryDiscount(
-                    inventoryItem
-                  ),
-              }
-            );
 
             /*
              * A product with variants must have
@@ -1496,11 +1464,6 @@ function VendorProductPage() {
             editSelections
           );
         }
-
-        console.log(
-          "FINAL EDIT SELECTIONS:",
-          editSelections
-        );
       } catch (error) {
         console.error(
           "Error loading product for edit:",
@@ -3174,11 +3137,6 @@ function VendorProductPage() {
                   )
               );
 
-          console.log(
-            "REMOVED INVENTORY IDS:",
-            removedInventoryIds
-          );
-
           // ================================================
           // DELETE REMOVED RECORDS
           // ================================================
@@ -3236,21 +3194,6 @@ function VendorProductPage() {
               record.data
             );
           }
-
-          console.log(
-            "UPDATED:",
-            recordsToUpdate.length
-          );
-
-          console.log(
-            "ADDED:",
-            recordsToAdd.length
-          );
-
-          console.log(
-            "DELETED:",
-            removedInventoryIds.length
-          );
 
           alert(
             "Product updated successfully."

@@ -27,11 +27,6 @@ export const getActiveProducts = () => {
         throw new Error("No Vendor ID found. Please login again.");
     }
 
-    console.log("========== GET ACTIVE PRODUCTS ==========");
-    console.log("Vendor ID:", vendorId);
-    console.log("Token exists:", !!token);
-    console.log("Request URL:", `${BASE_URL}/products/active`);
-
     return axios.get(`${BASE_URL}/products/active`, {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -136,12 +131,6 @@ export const vendorRegister = (
         role: "VENDOR",
         locationLink: locationLink || null,
     };
-
-    console.log("========== VENDOR REGISTER PAYLOAD ==========");
-    console.log("Shop:", payload.shopName);
-    console.log("Location Link:", payload.locationLink);
-    console.log("Latitude:", payload.latitude);
-    console.log("Longitude:", payload.longitude);
 
     return axios.post(`${BASE_URL}/register`, payload, {
         headers: {

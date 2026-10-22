@@ -1288,11 +1288,6 @@ function ProductComparison() {
                             `${API_BASE_URL}/inventory/product/${id}/vendors`
                         );
 
-                    console.log(
-                        "Product vendor response:",
-                        response?.data
-                    );
-
                     const list =
                         normalizeVendorResponse(
                             response?.data

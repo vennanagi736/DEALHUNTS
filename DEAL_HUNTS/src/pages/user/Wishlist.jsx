@@ -248,17 +248,7 @@ export default function Wishlist() {
 
   const handleAddToCart = (
     productId
-  ) => {
-    /*
-     * Connect your cart API here when
-     * the inventory/cart flow is ready.
-     */
-
-    console.log(
-      "Add to cart:",
-      productId
-    );
-  };
+  ) => {};
 
   // ============================================================
   // MAIN PAGE

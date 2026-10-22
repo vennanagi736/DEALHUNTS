@@ -342,13 +342,7 @@ function VendorRegister() {
 
     const handleVendorRegister =
         async (e) => {
-
             e.preventDefault();
-
-
-            console.log(
-                "========== VENDOR REGISTRATION =========="
-            );
 
 
             // ----------------------------------------------------
@@ -489,7 +483,6 @@ function VendorRegister() {
             // ====================================================
 
             try {
-
                 const response =
                     await vendorRegister(
 
@@ -515,12 +508,6 @@ function VendorRegister() {
                         password
 
                     );
-
-
-                console.log(
-                    "Vendor registration response:",
-                    response.data
-                );
 
 
                 // =================================================
@@ -555,7 +542,6 @@ function VendorRegister() {
                     "Vendor Registration Failed"
 
                 );
-
             } catch (err) {
 
                 console.error(
@@ -575,7 +561,6 @@ function VendorRegister() {
                 setMessage("");
 
             }
-
         };
 
 

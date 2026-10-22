@@ -46,7 +46,6 @@ public class AdminController {
     // ---------------- VENDOR REQUESTS ----------------
     @GetMapping("/vendor-requests")
     public List<Vendor> getAllVendorRequests() {
-        System.out.println("Admincontroller :/vendor-requests reached");
         return vendorService.getAllVendors();
     }
 
@@ -80,7 +79,6 @@ public class AdminController {
             }
 
             String token = jwtUtil.generateToken(admin.getEmail(), admin.getRole());
-            System.out.println("JWT TOKEN = " + token);
 
             return new LoginResponse(true, "Login successful",
                     token, admin.getEmail(), admin.getRole(), admin.getId());

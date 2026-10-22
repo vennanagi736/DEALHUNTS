@@ -35,13 +35,9 @@ public class ImageUploadService {
             Product product
     ) throws Exception {
 
-        System.out.println("Product id = " + product.getId());
 
         for (MultipartFile file : files) {
 
-            System.out.println(
-                    "file: " + file.getOriginalFilename()
-            );
 
             Map uploadResult =
                     cloudinary.uploader()
@@ -56,9 +52,6 @@ public class ImageUploadService {
             String imageUrl =
                     uploadResult.get("secure_url").toString();
 
-            System.out.println(
-                    "url: " + imageUrl
-            );
 
             Image image = new Image();
 
@@ -70,7 +63,6 @@ public class ImageUploadService {
 
             imageRepository.save(image);
 
-            System.out.println("Image saved");
         }
     }
 
@@ -134,10 +126,6 @@ public class ImageUploadService {
                 ObjectUtils.emptyMap()
         );
 
-        System.out.println(
-                "Deleted from Cloudinary: "
-                        + publicId
-        );
     }
 
     // =====================================================
@@ -166,10 +154,6 @@ public class ImageUploadService {
         // Delete from database
         imageRepository.delete(image);
 
-        System.out.println(
-                "Image deleted from database: "
-                        + imageId
-        );
     }
 
     // =====================================================
@@ -238,9 +222,5 @@ public class ImageUploadService {
 
         imageRepository.save(oldImage);
 
-        System.out.println(
-                "Image changed successfully: "
-                        + imageId
-        );
     }
 }

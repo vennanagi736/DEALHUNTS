@@ -8,11 +8,6 @@ function Brand({ masterData, setMasterData }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log({
-            category,
-            brandName
-        });
-
         setCategory("");
         setBrandName("");
     };

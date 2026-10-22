@@ -287,19 +287,6 @@ function AdminAddProduct() {
     // =====================================================
 
     useEffect(() => {
-
-        console.log(
-            "CATEGORY ID:",
-            categoryId
-        );
-
-
-        console.log(
-            "CATEGORY NAME:",
-            categoryName
-        );
-
-
         if (!categoryId) {
 
             setSelectedSpecifications([]);
@@ -312,19 +299,12 @@ function AdminAddProduct() {
         const loadSpecifications = async () => {
 
             try {
-
                 setAttributesLoading(true);
 
                 const response =
                     await getAttributesByCategory(
                         categoryId
                     );
-
-
-                console.log(
-                    "ATTRIBUTE RESPONSE:",
-                    response.data
-                );
 
 
                 const attributes =
@@ -336,8 +316,6 @@ function AdminAddProduct() {
                 setSelectedSpecifications(
                     attributes
                 );
-
-
             } catch (error) {
 
                 console.error(
@@ -364,7 +342,6 @@ function AdminAddProduct() {
 
 
         loadSpecifications();
-
     }, [categoryId, categoryName]);
 
 
@@ -851,7 +828,6 @@ function AdminAddProduct() {
     // =====================================================
 
     const handleCategoryChange = (e) => {
-
         const selectedCategoryId =
             Number(e.target.value);
 
@@ -862,12 +838,6 @@ function AdminAddProduct() {
                     Number(category.id) ===
                     selectedCategoryId
             );
-
-
-        console.log(
-            "Selected category:",
-            selectedCategory
-        );
 
 
         setSelectedSpecifications([]);
@@ -915,7 +885,6 @@ function AdminAddProduct() {
             ]
 
         }));
-
     };
 
 
@@ -1258,7 +1227,6 @@ function AdminAddProduct() {
     // =====================================================
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
 
 
@@ -1814,29 +1782,6 @@ function AdminAddProduct() {
 
 
         // =================================================
-        // DEBUG
-        // =================================================
-
-        console.log(
-            "========== FINAL PRODUCT REQUEST =========="
-        );
-
-
-        console.log(
-            JSON.stringify(
-                product,
-                null,
-                2
-            )
-        );
-
-
-        console.log(
-            "============================================"
-        );
-
-
-        // =================================================
         // API REQUEST
         // =================================================
 
@@ -1913,7 +1858,6 @@ function AdminAddProduct() {
             setLoading(false);
 
         }
-
     };
 
 

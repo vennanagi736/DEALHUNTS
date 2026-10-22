@@ -19,7 +19,6 @@ const TrendingCarousel = () => {
                     `${API_BASE_URL}/admin/promotions/all`
                 );
 
-                console.log("Carousel Data:", response.data);
                 setItems(response.data);
             } catch (error) {
                 console.error("Carousel Error:", error);

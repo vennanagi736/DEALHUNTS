@@ -201,50 +201,12 @@ const ProtectedRoute = ({
     children,
     allowedRoles = [],
 }) => {
-
     const location = useLocation();
 
     const {
         token,
         role,
     } = getCurrentSession(allowedRoles);
-
-
-    /* ========================================================
-       DEBUG
-    ======================================================== */
-
-    console.log(
-        "========================================"
-    );
-
-    console.log(
-        "ProtectedRoute"
-    );
-
-    console.log(
-        "Path:",
-        location.pathname
-    );
-
-    console.log(
-        "Allowed roles:",
-        allowedRoles
-    );
-
-    console.log(
-        "Token:",
-        token ? "EXISTS" : "NOT FOUND"
-    );
-
-    console.log(
-        "Detected role:",
-        role
-    );
-
-    console.log(
-        "========================================"
-    );
 
 
     /* ========================================================

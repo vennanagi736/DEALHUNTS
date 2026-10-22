@@ -23,7 +23,6 @@ public class CloudinaryService {
             ObjectUtils.emptyMap()
     );
 
-    System.out.println(uploadResult);
 
 
     String originalUrl = uploadResult

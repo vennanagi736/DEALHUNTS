@@ -130,10 +130,6 @@ public class VendorController {
     public ResponseEntity<?> resolveGoogleMapsLocation(
             @RequestParam String url) {
 
-        System.out.println();
-        System.out.println("==================================================");
-        System.out.println("GOOGLE MAPS LOCATION RESOLVER");
-        System.out.println("==================================================");
 
         if (url == null || url.trim().isEmpty()) {
 
@@ -195,8 +191,6 @@ public class VendorController {
             );
         }
 
-        System.out.println("Original Google Maps URL:");
-        System.out.println(originalUrl);
 
 
         // ========================================================
@@ -219,16 +213,9 @@ public class VendorController {
                             originalUrl
                     );
 
-            System.out.println();
-            System.out.println("Resolved Google Maps URL:");
-            System.out.println(finalUrl);
 
         } catch (Exception exception) {
 
-            System.out.println(
-                    "Google redirect resolution failed: "
-                            + exception.getMessage()
-            );
 
             /*
              * This is not fatal.
@@ -254,20 +241,7 @@ public class VendorController {
                         finalUrl
                 );
 
-        System.out.println();
-        System.out.println(
-                "Google Place ID: "
-                        + (placeId == null
-                        ? "NOT FOUND"
-                        : placeId)
-        );
 
-        System.out.println(
-                "Google Place Name from URL: "
-                        + (urlPlaceName == null
-                        ? "NOT FOUND"
-                        : urlPlaceName)
-        );
 
 
         // ========================================================
@@ -290,10 +264,6 @@ public class VendorController {
         //
         // ========================================================
 
-        System.out.println();
-        System.out.println(
-                "Opening Google Maps in Chromium..."
-        );
 
         GoogleMapsResolution googleResult =
                 null;
@@ -310,14 +280,7 @@ public class VendorController {
 
         } catch (Exception exception) {
 
-            System.out.println();
-            System.out.println(
-                    "Playwright Google Maps extraction failed:"
-            );
 
-            System.out.println(
-                    exception.getMessage()
-            );
         }
 
 
@@ -332,18 +295,8 @@ public class VendorController {
                         && googleResult.hasCoordinates()
         ) {
 
-            System.out.println();
-            System.out.println(
-                    "=================================================="
-            );
 
-            System.out.println(
-                    "EXACT GOOGLE MAPS LOCATION FOUND"
-            );
 
-            System.out.println(
-                    "=================================================="
-            );
 
             printCoordinates(
                     new double[]{
@@ -352,15 +305,7 @@ public class VendorController {
                     }
             );
 
-            System.out.println(
-                    "Place Name: "
-                            + googleResult.placeName
-            );
 
-            System.out.println(
-                    "Address: "
-                            + googleResult.address
-            );
 
 
             return successResponse(
@@ -391,10 +336,6 @@ public class VendorController {
 
         if (coordinates != null) {
 
-            System.out.println();
-            System.out.println(
-                    "Exact coordinates found in resolved URL."
-            );
 
             printCoordinates(
                     coordinates
@@ -448,30 +389,11 @@ public class VendorController {
         //
         // ========================================================
 
-        System.out.println();
-        System.out.println(
-                "=================================================="
-        );
 
-        System.out.println(
-                "EXACT GOOGLE PLACE COORDINATES NOT FOUND"
-        );
 
-        System.out.println(
-                "NO APPROXIMATE LOCATION USED"
-        );
 
-        System.out.println(
-                "NO ADDRESS GEOCODING USED"
-        );
 
-        System.out.println(
-                "NO CITY FALLBACK USED"
-        );
 
-        System.out.println(
-                "=================================================="
-        );
 
 
         String failurePlaceName =
@@ -580,14 +502,7 @@ public class VendorController {
         }
 
 
-        System.out.println();
-        System.out.println(
-                "Playwright opening:"
-        );
 
-        System.out.println(
-                browserUrl
-        );
 
 
         GoogleMapsResolution result =
@@ -665,9 +580,6 @@ public class VendorController {
                     // NAVIGATE
                     // ====================================================
 
-                    System.out.println(
-                            "Navigating Google Maps..."
-                    );
 
 
                     page.navigate(
@@ -699,14 +611,7 @@ public class VendorController {
                             page.url();
 
 
-                    System.out.println();
-                    System.out.println(
-                            "Playwright final URL:"
-                    );
 
-                    System.out.println(
-                            currentBrowserUrl
-                    );
 
 
                     // ====================================================
@@ -836,21 +741,12 @@ public class VendorController {
                                 );
 
 
-                                System.out.println(
-                                        "Canonical URL:"
-                                );
 
-                                System.out.println(
-                                        canonicalUrl
-                                );
                             }
                         }
 
                     } catch (Exception exception) {
 
-                        System.out.println(
-                                "Canonical URL unavailable."
-                        );
                     }
 
 
@@ -889,21 +785,12 @@ public class VendorController {
                                 );
 
 
-                                System.out.println(
-                                        "OG URL:"
-                                );
 
-                                System.out.println(
-                                        ogUrl
-                                );
                             }
                         }
 
                     } catch (Exception exception) {
 
-                        System.out.println(
-                                "OG URL unavailable."
-                        );
                     }
 
 
@@ -955,10 +842,6 @@ public class VendorController {
 
                     } catch (Exception exception) {
 
-                        System.out.println(
-                                "Could not collect rendered "
-                                        + "Google Maps links."
-                        );
                     }
 
 
@@ -977,11 +860,6 @@ public class VendorController {
                                     .toList();
 
 
-                    System.out.println();
-                    System.out.println(
-                            "Google Maps candidate URLs: "
-                                    + candidateUrls.size()
-                    );
 
 
                     // ====================================================
@@ -1031,9 +909,6 @@ public class VendorController {
                                         "Google Maps rendered place coordinates";
 
 
-                                System.out.println(
-                                        "Exact coordinates found using Place ID URL."
-                                );
 
 
                                 return result;
@@ -1082,9 +957,6 @@ public class VendorController {
                                     "Google Maps rendered place coordinates";
 
 
-                            System.out.println(
-                                    "Exact coordinates found in rendered place URL."
-                            );
 
 
                             return result;
@@ -1122,9 +994,6 @@ public class VendorController {
                                     "Google Maps rendered query coordinates";
 
 
-                            System.out.println(
-                                    "Exact coordinates found in rendered query URL."
-                            );
 
 
                             return result;
@@ -1157,9 +1026,6 @@ public class VendorController {
                                 "Google Maps final browser URL";
 
 
-                        System.out.println(
-                                "Exact coordinates found in final browser URL."
-                        );
 
 
                         return result;
@@ -1171,24 +1037,9 @@ public class VendorController {
                     // BUT PLACE DETAILS MAY STILL EXIST
                     // ====================================================
 
-                    System.out.println();
-                    System.out.println(
-                            "Google Maps page details:"
-                    );
 
-                    System.out.println(
-                            "Place Name = "
-                                    + result.placeName
-                    );
 
-                    System.out.println(
-                            "Address = "
-                                    + result.address
-                    );
 
-                    System.out.println(
-                            "Exact coordinates were not exposed."
-                    );
 
 
                     return result;
@@ -1208,10 +1059,6 @@ public class VendorController {
 
         } catch (Exception exception) {
 
-            System.out.println(
-                    "Playwright error: "
-                            + exception.getMessage()
-            );
 
             throw exception;
         }
@@ -1258,10 +1105,6 @@ public class VendorController {
                         )
                 ) {
 
-                    System.out.println(
-                            "Place name from H1: "
-                                    + text
-                    );
 
                     return text;
                 }
@@ -1269,9 +1112,6 @@ public class VendorController {
 
         } catch (Exception exception) {
 
-            System.out.println(
-                    "H1 place name unavailable."
-            );
         }
 
 
@@ -1311,10 +1151,6 @@ public class VendorController {
                         )
                 ) {
 
-                    System.out.println(
-                            "Place name from OG title: "
-                                    + title
-                    );
 
                     return title;
                 }
@@ -1322,9 +1158,6 @@ public class VendorController {
 
         } catch (Exception exception) {
 
-            System.out.println(
-                    "OG title unavailable."
-            );
         }
 
 
@@ -1361,10 +1194,6 @@ public class VendorController {
                         )
                 ) {
 
-                    System.out.println(
-                            "Place name from page title: "
-                                    + title
-                    );
 
                     return title;
                 }
@@ -1372,9 +1201,6 @@ public class VendorController {
 
         } catch (Exception exception) {
 
-            System.out.println(
-                    "Page title unavailable."
-            );
         }
 
 
@@ -1449,10 +1275,6 @@ public class VendorController {
                         )
                 ) {
 
-                    System.out.println(
-                            "Address found: "
-                                    + text
-                    );
 
                     return text;
                 }
@@ -1495,10 +1317,6 @@ public class VendorController {
                             )
                     ) {
 
-                        System.out.println(
-                                "Address found from aria-label: "
-                                        + ariaLabel
-                        );
 
                         return ariaLabel;
                     }
@@ -1507,10 +1325,6 @@ public class VendorController {
 
             } catch (Exception exception) {
 
-                System.out.println(
-                        "Address selector failed: "
-                                + selector
-                );
             }
         }
 
@@ -1567,10 +1381,6 @@ public class VendorController {
                             )
                     ) {
 
-                        System.out.println(
-                                "Address found from Google Maps text: "
-                                        + text
-                        );
 
                         return text;
                     }
@@ -1579,9 +1389,6 @@ public class VendorController {
 
         } catch (Exception exception) {
 
-            System.out.println(
-                    "Google Maps address text unavailable."
-            );
         }
 
 
@@ -2183,12 +1990,6 @@ public class VendorController {
                     response.statusCode();
 
 
-            System.out.println(
-                    "Redirect step "
-                            + (i + 1)
-                            + " status = "
-                            + status
-            );
 
 
             if (
@@ -2744,16 +2545,8 @@ public class VendorController {
         }
 
 
-        System.out.println(
-                "Latitude  = "
-                        + coordinates[0]
-        );
 
 
-        System.out.println(
-                "Longitude = "
-                        + coordinates[1]
-        );
     }
 
 
@@ -3093,9 +2886,6 @@ public ResponseEntity<?> checkEmail(
     public LoginResponse login(
             @RequestBody LoginRequest request) {
 
-        System.out.println(
-                "STEP 1"
-        );
 
 
         Vendor vendor =
@@ -3104,24 +2894,14 @@ public ResponseEntity<?> checkEmail(
                 );
 
 
-        System.out.println(
-                "STEP 2"
-        );
 
 
-        System.out.println(
-                "Vendor found: "
-                        + (vendor != null)
-        );
 
 
         if (
                 vendor == null
         ) {
 
-            System.out.println(
-                    "VENDOR NOT FOUND"
-            );
 
 
             return new LoginResponse(
@@ -3135,10 +2915,6 @@ public ResponseEntity<?> checkEmail(
         }
 
 
-        System.out.println(
-                "STATUS = "
-                        + vendor.getStatus()
-        );
 
 
         if (
@@ -3175,9 +2951,6 @@ public ResponseEntity<?> checkEmail(
         }
 
 
-        System.out.println(
-                "STEP 3"
-        );
 
 
         if (
@@ -3187,9 +2960,6 @@ public ResponseEntity<?> checkEmail(
                 )
         ) {
 
-            System.out.println(
-                    "WRONG PASSWORD"
-            );
 
 
             return new LoginResponse(
@@ -3203,9 +2973,6 @@ public ResponseEntity<?> checkEmail(
         }
 
 
-        System.out.println(
-                "STEP 4"
-        );
 
 
         String token =
@@ -3215,9 +2982,6 @@ public ResponseEntity<?> checkEmail(
                 );
 
 
-        System.out.println(
-                "STEP 5"
-        );
 
 
         return new LoginResponse(
@@ -3239,9 +3003,6 @@ public ResponseEntity<?> checkEmail(
     public String getStatus(
             @RequestParam String email) {
 
-        System.out.println(
-                "Status api hit"
-        );
 
 
         Vendor vendor =
@@ -3285,15 +3046,8 @@ public ResponseEntity<?> checkEmail(
             @RequestParam(name = "vendorId")
             Long vendorId) {
 
-        System.out.println(
-                "========== ACTIVE VENDOR PRODUCTS =========="
-        );
 
 
-        System.out.println(
-                "Vendor ID: "
-                        + vendorId
-        );
 
 
         List<VendorProductDTO> products =
@@ -3301,31 +3055,6 @@ public ResponseEntity<?> checkEmail(
                         .findActiveProductsByVendorId(
                                 vendorId
                         );
-
-
-        products.forEach(
-                product ->
-                        System.out.println(
-                                "Product: "
-                                        + product.getName()
-                                        + " | ID: "
-                                        + product.getProductId()
-                                        + " | Base Price: "
-                                        + product.getBasePrice()
-                                        + " | Discount: "
-                                        + product.getDiscount()
-                                        + " | Final Price: "
-                                        + product.getBasePrice()
-                                        + " | Stock: "
-                                        + product.getStock()
-                        )
-        );
-
-
-        System.out.println(
-                "============================================"
-        );
-
 
         return ResponseEntity.ok(
                 products
@@ -3342,19 +3071,12 @@ public ResponseEntity<?> checkEmail(
     getMyProducts(
             Authentication authentication) {
 
-        System.out.println(
-                "========== MY PRODUCTS =========="
-        );
 
 
         String email =
                 authentication.getName();
 
 
-        System.out.println(
-                "Logged-in Vendor Email: "
-                        + email
-        );
 
 
         Vendor vendor =
@@ -3367,10 +3089,6 @@ public ResponseEntity<?> checkEmail(
                 vendor == null
         ) {
 
-            System.out.println(
-                    "Vendor not found for email: "
-                            + email
-            );
 
 
             return ResponseEntity
@@ -3383,10 +3101,6 @@ public ResponseEntity<?> checkEmail(
                 vendor.getId();
 
 
-        System.out.println(
-                "Vendor ID: "
-                        + vendorId
-        );
 
 
         Long inventoryVendorId =
@@ -3398,30 +3112,6 @@ public ResponseEntity<?> checkEmail(
                         .findActiveProductsByVendorId(
                                 inventoryVendorId
                         );
-
-
-        products.forEach(
-                product ->
-                        System.out.println(
-                                "Product: "
-                                        + product.getName()
-                                        + " | ID: "
-                                        + product.getProductId()
-                                        + " | Base Price: "
-                                        + product.getBasePrice()
-                                        + " | Discount: "
-                                        + product.getDiscount()
-                                        + " | Final Price: "
-                                        + product.getBasePrice()
-                                        + " | Stock: "
-                                        + product.getStock()
-                        )
-        );
-
-
-        System.out.println(
-                "================================"
-        );
 
 
         return ResponseEntity.ok(

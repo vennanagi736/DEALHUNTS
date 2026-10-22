@@ -20,14 +20,8 @@ function ATrendingDeals() {
         const fetchTrendingDeals = async () => {
 
             try {
-
                 const response =
                     await getTrendingDeals();
-
-                console.log(
-                    "Dashboard Trending Products:",
-                    response.data
-                );
 
                 const trendingDeals =
                     response.data || [];
@@ -51,15 +45,8 @@ function ATrendingDeals() {
                     }
 
                     try {
-
                         const imageResponse =
                             await getProductImages(product.id);
-
-                        console.log(
-                            "Images for product:",
-                            product.id,
-                            imageResponse.data
-                        );
 
 
                         if (
@@ -76,7 +63,6 @@ function ATrendingDeals() {
                                 firstImage.url;
 
                         }
-
                     } catch (imageError) {
 
                         console.error(
@@ -89,13 +75,7 @@ function ATrendingDeals() {
                 }
 
 
-                console.log(
-                    "TRENDING IMAGE MAP:",
-                    imageMap
-                );
-
                 setProductImages(imageMap);
-
             } catch (error) {
 
                 console.error(

@@ -57,15 +57,7 @@ public class MasterDataController {
             @RequestBody Color color
     ) {
 
-        System.out.println(
-                "Name: " +
-                color.getName()
-        );
 
-        System.out.println(
-                "Hex code: " +
-                color.getHexCode()
-        );
 
         return masterDataService.addColor(
                 color
@@ -87,15 +79,7 @@ public class MasterDataController {
             @RequestBody Variant variant
     ) {
 
-        System.out.println(
-                "Variant Name: " +
-                variant.getName()
-        );
 
-        System.out.println(
-                "Attribute Values: " +
-                variant.getAttributeValues()
-        );
 
         return masterDataService.addVariant(
                 variant

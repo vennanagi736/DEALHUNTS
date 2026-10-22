@@ -38,10 +38,7 @@ function Color({masterData, setMasterData}) {
 };
 
     const handleSubmit = (e) => {
-
         e.preventDefault();
-
-        console.log(color);
 
         setColor({
             category: "",
@@ -51,7 +48,6 @@ function Color({masterData, setMasterData}) {
             name: "",
             hexCode: ""
         });
-
     };
 
 

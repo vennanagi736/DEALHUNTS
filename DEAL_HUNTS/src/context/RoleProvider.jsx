@@ -13,8 +13,6 @@ export const RoleProvider = ({ children }) => {
   }, []);
 
   const updateRole = (newRole) => {
-    console.log("Setting role:", newRole);
-
     setRole(newRole);
     localStorage.setItem("role", newRole);
   };

@@ -36,9 +36,6 @@ public class SecurityConfig {
 
     static {
 
-        System.out.println(
-                "=== SECURITY CONFIG CLASS LOADED ==="
-        );
     }
 
 
@@ -47,9 +44,6 @@ public class SecurityConfig {
             HttpSecurity http
     ) throws Exception {
 
-        System.out.println(
-                "=== MY SECURITY CONFIG IS LOADED ==="
-        );
 
 
         http

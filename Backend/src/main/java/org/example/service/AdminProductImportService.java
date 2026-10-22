@@ -355,12 +355,6 @@ public class AdminProductImportService {
 
                         variant = existingVariant.get();
 
-                        System.out.println(
-                            "Reusing existing variant: "
-                            + variantName
-                            + " for product: "
-                            + savedProduct.getName()
-                        );
 
                     } else {
 
@@ -481,12 +475,6 @@ public class AdminProductImportService {
                             variantRepository.save(variant);
 
 
-                        System.out.println(
-                            "Created new variant: "
-                            + variantName
-                            + " for product: "
-                            + savedProduct.getName()
-                        );
                     }
                 }
 
@@ -580,20 +568,8 @@ public class AdminProductImportService {
                         colorRepository.save(color);
 
 
-                        System.out.println(
-                            "Created color: "
-                            + cleanColorName
-                            + " for variant: "
-                            + variant.getName()
-                        );
                     } else {
 
-                        System.out.println(
-                            "Color already exists: "
-                            + cleanColorName
-                            + " for variant: "
-                            + variant.getName()
-                        );
                     }
                 }
 
@@ -602,10 +578,6 @@ public class AdminProductImportService {
                 // LOG
                 // =================================================
 
-                System.out.println(
-                    "Imported product successfully: "
-                    + name
-                );
             }
 
         } catch (Exception e) {

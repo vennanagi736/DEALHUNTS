@@ -5,12 +5,9 @@ import {
 } from "../../components/admin/AIcons";
 
 export default function TrendingProducts({ items = [] }) {
-
   const [index, setIndex] = useState(0);
 
   const count = items.length;
-
-  console.log("TrendingProducts items:", items);
 
   if (count === 0) {
     return (
