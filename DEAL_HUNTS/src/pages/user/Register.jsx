@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import UserRegistrationDetails from "../../components/UserRegistrationDetails";
-import { validateRegister } from "../../components/validation";
+import { validateRegister } from "../../components/Validation";
 import { registerUser } from "../../api/UserApi";
 
 import "../../styles/Register.css";
