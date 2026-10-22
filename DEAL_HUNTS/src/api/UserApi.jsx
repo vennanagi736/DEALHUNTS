@@ -1,5 +1,7 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:8080/user";
+import { API_BASE_URL } from "./config.js";
+
+const BASE_URL = `${API_BASE_URL}/user`;
 
 export const loginUser = (email, password) => {
   return axios.post(
