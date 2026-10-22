@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AAnalyticsChart from "./AAnalyticsChart";
+import AAnalyticsChart from "./AAnalyticschart";
 
 const METRICS = ["Sales", "Revenue", "Orders", "Products"];
 const PERIODS = ["Monthly", "Weekly", "Daily"];
