@@ -405,7 +405,7 @@ export const getVendorCategories = () => {
         getVendorToken();
 
     return axios.get(
-        "http://localhost:8080/admin/categories/all",
+        "${API_BASE_URL}/admin/categories/all",
         {
             headers: {
                 Authorization:
