@@ -6,7 +6,7 @@ import "../../styles/Login.css";
 
 import { useRole } from "../../context/UseRole";
 import LoginDetails from "../../components/LoginDetails";
-import { validateLogin } from "../../components/validation";
+import { validateLogin } from "../../components/Validation";
 
 function Login() {
   const navigate = useNavigate();
