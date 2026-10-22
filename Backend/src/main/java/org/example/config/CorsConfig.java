@@ -16,12 +16,14 @@ public class CorsConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        // React frontend
+        // Local development and deployed React frontend
         config.setAllowedOrigins(
-            List.of("http://localhost:5173")
+            List.of(
+                "http://localhost:5173",
+                "https://dealhunts-klagkyzo.onslate.in"
+            )
         );
 
-        // HTTP methods used by the application
         config.setAllowedMethods(
             List.of(
                 "GET",
@@ -33,7 +35,6 @@ public class CorsConfig {
             )
         );
 
-        // Headers sent by React/Axios
         config.setAllowedHeaders(
             List.of(
                 "Authorization",
@@ -44,16 +45,12 @@ public class CorsConfig {
             )
         );
 
-        // Allow Authorization credentials
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source =
             new UrlBasedCorsConfigurationSource();
 
-        source.registerCorsConfiguration(
-            "/**",
-            config
-        );
+        source.registerCorsConfiguration("/**", config);
 
         return source;
     }
