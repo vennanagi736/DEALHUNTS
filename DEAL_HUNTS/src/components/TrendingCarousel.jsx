@@ -1,10 +1,11 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../api/config.js";
 import "../styles/TrendingCarousel.css";
 
 const TrendingCarousel = () => {
-
     const [items, setItems] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -12,101 +13,64 @@ const TrendingCarousel = () => {
 
     // Load banners
     useEffect(() => {
-
         const loadTrending = async () => {
-
             try {
-
                 const response = await axios.get(
-                    "http://localhost:8080/admin/promotions/all"
+                    `${API_BASE_URL}/admin/promotions/all`
                 );
 
                 console.log("Carousel Data:", response.data);
-
                 setItems(response.data);
-
             } catch (error) {
-
                 console.error("Carousel Error:", error);
-
             }
-
         };
 
         loadTrending();
-
     }, []);
 
     // Auto slide
     useEffect(() => {
-
         if (items.length <= 1) {
             return;
         }
 
         const interval = setInterval(() => {
-
-            setCurrentIndex(prev =>
-                (prev + 1) % items.length
-            );
-
+            setCurrentIndex((prev) => (prev + 1) % items.length);
         }, 5000);
 
         return () => clearInterval(interval);
-
     }, [items]);
 
     if (items.length === 0) {
-
-        return (
-            <p>
-                No banners available
-            </p>
-        );
-
+        return <p>No banners available</p>;
     }
 
     return (
         <div className="carousel-container">
-
             <div className="carousel-item">
-
                 <img
                     src={items[currentIndex].imageUrl}
                     className="carousel-image"
                     alt={items[currentIndex].title}
-
                     onClick={() =>
                         items[currentIndex].url &&
                         navigate(items[currentIndex].url)
                     }
                 />
-
             </div>
 
             <div className="dots-container">
-
                 {items.map((_, index) => (
-
                     <span
                         key={index}
-
                         className={
-                            currentIndex === index
-                                ? "dot active"
-                                : "dot"
+                            currentIndex === index ? "dot active" : "dot"
                         }
-
-                        onClick={() =>
-                            setCurrentIndex(index)
-                        }
-                    >
-                    </span>
-
+                        onClick={() => setCurrentIndex(index)}
+                    />
                 ))}
-
             </div>
-
         </div>
     );
 };
