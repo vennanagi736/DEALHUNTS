@@ -12,27 +12,14 @@ import {
     useMap,
     useMapEvents,
 } from "react-leaflet";
-
 import {
     useNavigate,
 } from "react-router-dom";
-
 import L from "leaflet";
-
 import Popup from "../../components/Popup";
-
 import "../../styles/AvailableShopNearMe.css";
-
 import "leaflet/dist/leaflet.css";
-
-
-// ============================================================
-// API
-// ============================================================
-
-const API_BASE_URL =
-    "http://localhost:8080";
-
+import { API_BASE_URL } from "../../api/config.js";
 
 // ============================================================
 // CONSTANTS

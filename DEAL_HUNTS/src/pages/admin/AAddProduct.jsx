@@ -315,13 +315,6 @@ function AdminAddProduct() {
 
                 setAttributesLoading(true);
 
-
-                console.log(
-                    "REQUESTING:",
-                    `http://localhost:8080/attributes/category/${categoryId}`
-                );
-
-
                 const response =
                     await getAttributesByCategory(
                         categoryId

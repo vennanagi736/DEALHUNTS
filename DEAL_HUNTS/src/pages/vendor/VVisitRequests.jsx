@@ -22,10 +22,8 @@ import {
 
 import Header from "../../components/Header";
 import Sidebar from "../../components/SideBar";
-
+import { API_BASE_URL } from "../../api/config.js";
 import "../../styles/VBookVisitRequests.css";
-
-const API_BASE_URL = "http://localhost:8080";
 
 /* =========================================================
    HELPERS

@@ -17,13 +17,7 @@ import {
 } from "lucide-react";
 
 import "../../styles/Orders.css";
-
-
-/* ============================================================
-   API
-============================================================ */
-
-const API_BASE = "http://localhost:8080";
+import { API_BASE_URL } from "../../api/config.js";
 
 
 /* ============================================================
@@ -394,7 +388,7 @@ export default function Orders() {
 
         const response =
           await axios.get(
-            `${API_BASE}/order/my`,
+            `${API_BASE_URL}/order/my`,
             {
               headers: {
                 Authorization:

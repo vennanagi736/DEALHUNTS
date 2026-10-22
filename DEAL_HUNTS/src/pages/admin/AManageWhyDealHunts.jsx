@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { API_BASE_URL } from "../../api/config.js";
 import Popup from "../../components/Popup";
 
 import "../../styles/AManageWhyDealHunts.css";
@@ -73,7 +73,7 @@ function AdminManageWhyDealHunts() {
         try {
 
             const res = await fetch(
-                "http://localhost:8080/admin/why-dealhunts/all"
+                `${API_BASE_URL}/admin/why-dealhunts/all`
             );
 
             if (!res.ok) {
@@ -292,7 +292,7 @@ function AdminManageWhyDealHunts() {
         try {
 
             const res = await fetch(
-                "http://localhost:8080/admin/why-dealhunts/add",
+                `${API_BASE_URL}/admin/why-dealhunts/add`,
                 {
                     method: "POST",
 
@@ -389,7 +389,7 @@ function AdminManageWhyDealHunts() {
         try {
 
             const res = await fetch(
-                `http://localhost:8080/admin/why-dealhunts/${id}`,
+                `${API_BASE_URL}/admin/why-dealhunts/${id}`,
                 {
                     method: "DELETE"
                 }

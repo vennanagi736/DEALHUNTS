@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import "../../styles/AManageComingSoon.css";
-
+import { API_BASE_URL } from "../../api/config.js";
 
 function AdminManageComingSoon() {
 
@@ -37,7 +37,7 @@ function AdminManageComingSoon() {
     // BACKEND URL
     // ============================================================
 
-    const API = "http://localhost:8080";
+    const API = API_BASE_URL;
 
 
     // ============================================================

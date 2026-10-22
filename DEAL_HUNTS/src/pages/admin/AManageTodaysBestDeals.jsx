@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import { API_BASE_URL } from "../../api/config.js";
 import "../../styles/AManageTodaysBestDeals.css";
 
 import Popup from "../../components/Popup";
@@ -41,7 +41,7 @@ function AdminManageTodaysBestDeals() {
         try {
 
             const response = await axios.get(
-                "http://localhost:8080/admin/products/active"
+                `${API_BASE_URL}/admin/products/active`
             );
 
             const activeProducts = Array.isArray(response.data)
@@ -140,7 +140,7 @@ function AdminManageTodaysBestDeals() {
         try {
 
             const response = await axios.get(
-                "http://localhost:8080/admin/todays-best-deals/all"
+                `${API_BASE_URL}/admin/todays-best-deals/all`
             );
 
             const dealList = extractDealList(response.data);
@@ -474,7 +474,7 @@ function AdminManageTodaysBestDeals() {
             ) {
 
                 await axios.put(
-                    `http://localhost:8080/admin/todays-best-deals/${selectedDealId}`,
+                    `${API_BASE_URL}/admin/todays-best-deals/${selectedDealId}`,
                     dealData
                 );
 
@@ -485,7 +485,7 @@ function AdminManageTodaysBestDeals() {
             } else {
 
                 await axios.post(
-                    "http://localhost:8080/admin/todays-best-deals/add",
+                    `${API_BASE_URL}/admin/todays-best-deals/add`,
                     dealData
                 );
 
@@ -667,7 +667,7 @@ function AdminManageTodaysBestDeals() {
         try {
 
             await axios.delete(
-                `http://localhost:8080/admin/todays-best-deals/${deal.id}`
+                `${API_BASE_URL}/admin/todays-best-deals/${deal.id}`
             );
 
 

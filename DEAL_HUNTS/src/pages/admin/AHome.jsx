@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/Admin.css";
 import axios from "axios";
+import { API_BASE_URL } from "../../api/config.js";
 import { getTrendingItems } from "../../api/TrendingApi";
 import {
   getUserCount,
@@ -382,7 +383,7 @@ function AdminHome() {
 
 
         const response = await axios.get(
-          "http://localhost:8080/admin/promotions/all"
+          `${API_BASE_URL}/admin/promotions/all`
         );
 
 

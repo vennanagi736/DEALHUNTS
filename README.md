@@ -772,6 +772,29 @@ If Vite selects a different port because the default port is unavailable, use th
 
 DEALHUNTS supports CSV-based product import through the documented administrator import endpoint.
 
+## Production Deployment
+
+DEALHUNTS is configured for cloud deployment using separate services for the frontend, backend, and database.
+
+| Component | Hosting / Service |
+|---|---|
+| Frontend | Zoho Catalyst |
+| Backend | Render |
+| Database | Aiven MySQL |
+| Product image hosting | Cloudinary |
+
+### Production Configuration
+
+- The deployed frontend communicates with the Spring Boot backend using the configured production API base URL.
+- The backend connects to the hosted MySQL database using environment-specific connection settings.
+- Production credentials and secrets must be configured through the hosting providers' environment settings.
+- Backend CORS settings must allow the deployed frontend origin.
+- External services, authentication, product loading, inventory operations, and shopping workflows should be verified after deployment.
+
+**Production backend URL:** https://dealhunts.onrender.com
+
+The availability of individual features depends on the deployment configuration and successful verification of their corresponding workflows.
+
 ### 16.1 Endpoint
 
 ```http

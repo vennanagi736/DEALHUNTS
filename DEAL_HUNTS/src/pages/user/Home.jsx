@@ -23,9 +23,7 @@ import {
 } from "react-icons/fi";
 
 import "../../styles/Home.css";
-
-
-const API_BASE = "http://localhost:8080";
+import { API_BASE_URL } from "../../api/config.js";
 
 
 /* ============================================================
@@ -1798,7 +1796,7 @@ function Home() {
 
           const response =
             await axios.get(
-              `${API_BASE}/admin/new-arrivals/all`
+              `${API_BASE_URL}/admin/new-arrivals/all`
             );
 
 
@@ -1893,7 +1891,7 @@ function Home() {
 
           const response =
             await axios.get(
-              `${API_BASE}/admin/coming-soon/all`
+              `${API_BASE_URL}/admin/coming-soon/all`
             );
 
 
@@ -1992,7 +1990,7 @@ function Home() {
 
           const response =
             await axios.get(
-              `${API_BASE}/admin/promotions/all`
+              `${API_BASE_URL}/admin/promotions/all`
             );
 
 

@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-
 import Popup from "../../components/Popup";
-
 import "../../styles/AManageAvailableNearYou.css";
-
 import { getAllProducts } from "../../api/ProductApi";
-
+import { API_BASE_URL } from "../../api/config.js";
 
 function AdminManageAvailableNearYou() {
 
@@ -89,7 +86,7 @@ function AdminManageAvailableNearYou() {
         try {
 
             const response = await fetch(
-                "http://localhost:8080/admin/available-near-you/all"
+                `${API_BASE_URL}/admin/available-near-you/all`
             );
 
             if (!response.ok) {
@@ -261,7 +258,7 @@ function AdminManageAvailableNearYou() {
         try {
 
             const response = await fetch(
-                "http://localhost:8080/admin/available-near-you/add",
+                `${API_BASE_URL}/admin/available-near-you/add`,
                 {
                     method: "POST",
 
@@ -370,7 +367,7 @@ function AdminManageAvailableNearYou() {
         try {
 
             const response = await fetch(
-                `http://localhost:8080/admin/available-near-you/${id}`,
+                `${API_BASE_URL}/admin/available-near-you/${id}`,
                 {
                     method: "DELETE"
                 }

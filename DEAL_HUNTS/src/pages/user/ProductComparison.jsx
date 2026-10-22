@@ -25,13 +25,7 @@ import {
 } from "react-icons/fi";
 
 import "../../styles/UProductComparison.css";
-
-/* ============================================================
-   API
-============================================================ */
-
-const API_BASE_URL =
-    "http://localhost:8080";
+import { API_BASE_URL } from "../../api/config.js";
 
 /* ============================================================
    FORMAT / SAFE HELPERS

@@ -4,7 +4,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
-
+import { API_BASE_URL } from "../../api/config.js";
 import axios from "axios";
 
 import {
@@ -34,7 +34,6 @@ import { useNavigate } from "react-router-dom";
 
 import "../../styles/AVisitRequests.css";
 
-const API_BASE_URL = "http://localhost:8080";
 
 /* -----------------------------------------------------------------------
    API

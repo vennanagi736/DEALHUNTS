@@ -12,7 +12,7 @@ import {
 } from "../../api/VendorApi";
 
 import { deleteInventory } from "../../api/InventoryApi";
-
+import { API_BASE_URL } from "../../api/config.js";
 
 function VendorProductManage() {
 
@@ -98,7 +98,7 @@ function VendorProductManage() {
             for (const productId of productIds) {
 
                 const variantResponse = await axios.get(
-                    `http://localhost:8080/admin/products/${productId}/variants`
+                    `${API_BASE_URL}/admin/products/${productId}/variants`
                 );
 
                 const variants =
@@ -122,7 +122,7 @@ function VendorProductManage() {
                 for (const variant of variants) {
 
                     const colorResponse = await axios.get(
-                        `http://localhost:8080/admin/products/variants/${variant.id}/colors`
+                        `${API_BASE_URL}/admin/products/variants/${variant.id}/colors`
                     );
 
                     const colors =
@@ -196,7 +196,7 @@ function VendorProductManage() {
         try {
 
             const response = await axios.get(
-                `http://localhost:8080/vendor/myProducts?vendorId=${vendorId}`,
+                `${API_BASE_URL}/vendor/myProducts?vendorId=${vendorId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -347,7 +347,7 @@ function VendorProductManage() {
         try {
 
             const response = await axios.get(
-                "http://localhost:8080/vendor/myCategories",
+                `${API_BASE_URL}/vendor/myCategories`,
                 {
                     params: {
                         vendorId: vendorId
@@ -401,7 +401,7 @@ function VendorProductManage() {
         try {
 
             const response = await axios.get(
-                "http://localhost:8080/vendor/myBrands",
+                `${API_BASE_URL}/vendor/myBrands`,
                 {
                     params: {
                         vendorId: vendorId
@@ -532,7 +532,7 @@ function VendorProductManage() {
 
 
             await axios.post(
-                "http://localhost:8080/vendor/category",
+                `${API_BASE_URL}/vendor/category`,
                 null,
                 {
                     params: {
@@ -634,7 +634,7 @@ function VendorProductManage() {
 
 
             await axios.post(
-                "http://localhost:8080/vendor/brand",
+                `${API_BASE_URL}/vendor/brand`,
                 null,
                 {
                     params: {

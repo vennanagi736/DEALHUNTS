@@ -10,10 +10,8 @@ import {
   updateInventory,
   deleteInventory,
 } from "../../api/InventoryApi";
-
+import { API_BASE_URL } from "../../api/config.js";
 import "../../styles/ProductPreview.css";
-
-const API_BASE_URL = "http://localhost:8080";
 
 function VendorProductPage() {
   const navigate = useNavigate();

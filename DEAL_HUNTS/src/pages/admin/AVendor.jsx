@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../styles/Admin.css";
 import { getAllVendors } from "../../api/AdminApi";
 import axios from "axios";
+import { API_BASE_URL } from "../../api/config.js";
 
 function VendorsDetails() {
   const [vendors, setVendors] = useState([]);
@@ -31,7 +32,7 @@ function VendorsDetails() {
 
     try {
       await axios.delete(
-        `http://localhost:8080/admin/vendor/${selectedVendor.id}`,
+        `${API_BASE_URL}/admin/vendor/${selectedVendor.id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,

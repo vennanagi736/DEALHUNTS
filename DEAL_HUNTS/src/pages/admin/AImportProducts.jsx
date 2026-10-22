@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
 import "../../styles/AImportProducts.css";
+import { API_BASE_URL } from "../../api/config.js";
 
 function AdminImportProducts() {
 
@@ -20,7 +21,7 @@ function AdminImportProducts() {
     try {
 
       const response = await axios.post(
-        "http://localhost:8080/admin/import/products",
+        `${API_BASE_URL}/admin/import/products`,
         formData,
         {
           headers: {

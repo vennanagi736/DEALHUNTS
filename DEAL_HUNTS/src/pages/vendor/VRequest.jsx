@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../styles/Admin.css";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../api/config.js";
 
 function RequestStatus() {
     const { email } = useParams();
@@ -20,7 +21,7 @@ function RequestStatus() {
                 const encodedEmail = encodeURIComponent(email);
 
                 const response = await axios.get(
-                    `http://localhost:8080/vendor/status?email=${encodedEmail}`
+                    `${API_BASE_URL}/vendor/status?email=${encodedEmail}`
                 );
 
                 const vendorStatus = response.data;

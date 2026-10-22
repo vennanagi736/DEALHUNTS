@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { API_BASE_URL } from "../../api/config.js";
 import {
     FiArrowLeft,
     FiCalendar,
@@ -18,8 +18,6 @@ import {
 import Header from "../../components/Header";
 import Sidebar from "../../components/SideBar";
 import "../../styles/BookVisit.css";
-
-const API_BASE_URL = "http://localhost:8080";
 
 const TIME_SLOTS = [
     "10:00 AM",

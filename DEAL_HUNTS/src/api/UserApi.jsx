@@ -21,4 +21,3 @@ export const registerUser = (firstName, lastName, email, password, confirmPasswo
   });
   
 };
-

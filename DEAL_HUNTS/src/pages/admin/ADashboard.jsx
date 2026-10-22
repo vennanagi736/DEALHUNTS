@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../../api/config.js";
 
 import "../../styles/ADashboard.css";
 import "../../styles/AProduct.css";
@@ -222,7 +223,7 @@ function AdminDashboard() {
     try {
 
       await axios.get(
-        "http://localhost:8080/vendor/allProducts",
+        `${API_BASE_URL}/vendor/allProducts`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -264,7 +265,7 @@ function AdminDashboard() {
       try {
 
         const response = await axios.get(
-          "http://localhost:8080/admin/promotions/all"
+          `${API_BASE_URL}/admin/promotions/all`
         );
 
         console.log(

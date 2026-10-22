@@ -11,14 +11,7 @@ import {
 } from "lucide-react";
 
 import "../../styles/PlaceOrder.css";
-
-
-/* ============================================================
-   API
-============================================================ */
-
-const API_BASE = "http://localhost:8080";
-
+import { API_BASE_URL } from "../../api/config.js";
 
 /* ============================================================
    PAYMENT METHODS
@@ -390,7 +383,7 @@ export default function PlaceOrder() {
 
         const response =
           await axios.get(
-            `${API_BASE}/cart`,
+            `${API_BASE_URL}/cart`,
             {
               headers: {
                 Authorization:
@@ -828,7 +821,7 @@ export default function PlaceOrder() {
 
       const response =
         await axios.post(
-          `${API_BASE}/order/place`,
+          `${API_BASE_URL}/order/place`,
           requestData,
           {
             headers: {

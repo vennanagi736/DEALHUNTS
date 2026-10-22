@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../styles/Admin.css";
+import { API_BASE_URL } from "../../api/config.js";
 
 function AdminVendorRequest() {
   const token = localStorage.getItem("adminJwtToken");
@@ -16,7 +17,7 @@ function AdminVendorRequest() {
   const handleApprove = async (id) => {
     try {
       await axios.put(
-        `http://localhost:8080/admin/vendor/${id}/approve`,
+        `${API_BASE_URL}/admin/vendor/${id}/approve`,
         {},
         {
           headers: {
@@ -46,7 +47,7 @@ function AdminVendorRequest() {
   const handleReject = async (id) => {
     try {
       await axios.put(
-        `http://localhost:8080/admin/vendor/${id}/reject`,
+        `${API_BASE_URL}/admin/vendor/${id}/reject`,
         {},
         {
           headers: {
@@ -77,7 +78,7 @@ function AdminVendorRequest() {
     const fetchRequests = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8080/admin/vendor-requests",
+          `${API_BASE_URL}/admin/vendor-requests`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

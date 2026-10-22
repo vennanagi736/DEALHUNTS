@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 import "../../styles/ShopDetails.css";
-
+import { API_BASE_URL } from "../../api/config.js";
 import ShopHeader from "../../components/shop/ShopHeader";
 import ShopLocationCard from "../../components/shop/ShopLocationCard";
 import ShopContactCard from "../../components/shop/ShopContactCard";
@@ -29,7 +29,7 @@ function ShopDetails() {
         setError("");
 
         const response = await axios.get(
-          `http://localhost:8080/vendor/${vendorId}`
+          `${API_BASE_URL}/vendor/${vendorId}`
         );
 
         console.log("Vendor Details:", response.data);

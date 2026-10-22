@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-
 import "../../styles/TrendingCarousel.css";
-
+import { API_BASE_URL } from "../../api/config.js";
 import Popup from "../../components/Popup";
 import BannerCropPopup from "../../components/BannerCropPopup";
 import getCroppedImg from "../../utils/cropImage";
@@ -41,7 +40,7 @@ function AdminManageCarousel() {
     try {
 
       const res = await axios.get(
-        "http://localhost:8080/admin/promotions/all"
+        `${API_BASE_URL}/admin/promotions/all`
       );
 
       setPromotions(res.data);
@@ -71,7 +70,7 @@ function AdminManageCarousel() {
       try {
 
         const res = await axios.get(
-          "http://localhost:8080/admin/promotions/all"
+          `${API_BASE_URL}/admin/promotions/all`
         );
 
         if (mounted) {
@@ -158,7 +157,7 @@ function AdminManageCarousel() {
       if (isEdit) {
 
         await axios.put(
-          `http://localhost:8080/admin/promotions/${selectedPromotionId}`,
+          `${API_BASE_URL}/admin/promotions/${selectedPromotionId}`,
           formData,
           {
             headers: {
@@ -172,7 +171,7 @@ function AdminManageCarousel() {
       } else {
 
         await axios.post(
-          "http://localhost:8080/admin/promotions/add",
+          `${API_BASE_URL}/admin/promotions/add`,
           formData,
           {
             headers: {
@@ -319,7 +318,7 @@ function AdminManageCarousel() {
     try {
 
       await axios.delete(
-        `http://localhost:8080/admin/promotions/${id}`
+        `${API_BASE_URL}/admin/promotions/${id}`
       );
 
       setPromotions((prev) =>

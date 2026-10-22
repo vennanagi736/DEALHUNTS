@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import "../../styles/AManageNewArrivals.css";
-
+import { API_BASE_URL } from "../../api/config.js";
 
 function AdminManageNewArrivals() {
 
@@ -38,8 +38,7 @@ function AdminManageNewArrivals() {
     // BACKEND URL
     // ============================================================
 
-    const API = "http://localhost:8080";
-
+    const API = API_BASE_URL;
 
     // ============================================================
     // ADMIN AUTH

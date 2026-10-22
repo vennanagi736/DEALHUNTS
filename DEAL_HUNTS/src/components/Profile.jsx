@@ -4,9 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../api/config.js";
 import "../styles/Profile.css";
 
-
-const API_BASE_URL = "http://localhost:8080";
-
 const ROLE_CONFIG = {
     USER: {
         tokenKey: "userJwtToken",
