@@ -14,8 +14,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import '../../styles/USettings.css';
-import Sidebar from '../../components/SideB
-  ar';
+import Sidebar from '../../components/SideBar';
 
 const SECTIONS = [
   { id: 'profile', label: 'Profile', icon: User },
