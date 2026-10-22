@@ -1,7 +1,7 @@
 import axios from "axios";
+import { API_BASE_URL } from "./config.js";
 
-const BASE_URL =
-    "http://localhost:8080/admin/trending-deals";
+const BASE_URL = `${API_BASE_URL}/admin/trending-deals`;
 
 
 // ==========================================
