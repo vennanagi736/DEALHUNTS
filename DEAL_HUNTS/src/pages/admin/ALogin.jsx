@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { adminLogin } from "../../api/AdminApi";
 import Details from "../../components/LoginDetails";
-import { validateLogin } from "../../components/validation";
+import { validateLogin } from "../../components/Validation";
 import { useRole } from "../../context/UseRole";
 
 import "../../styles/ALogin.css";
