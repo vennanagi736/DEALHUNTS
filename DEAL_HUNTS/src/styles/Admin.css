@@ -2418,3 +2418,24 @@
     min-width: 780px;
   }
 }
+
+.dh-home-product-clickable-user {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dh-home-product-clickable-user:active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) {
+  .dh-home-product-clickable-user:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.dh-home-product-clickable-user:focus-visible {
+  outline: 2px solid #D4AF37;
+  outline-offset: 3px;
+}

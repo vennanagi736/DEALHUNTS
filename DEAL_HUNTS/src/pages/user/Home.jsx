@@ -237,22 +237,6 @@ function getFirstImageFromArray(
 
 
 /* ============================================================
-   FIND PRODUCT ID
-============================================================ */
-
-function getProductId(item) {
-
-  return (
-    item?.product?.id ||
-    item?.productId ||
-    item?.product?.productId ||
-    item?.id
-  );
-
-}
-
-
-/* ============================================================
    TRENDING PRODUCTS CAROUSEL
 ============================================================ */
 
@@ -265,6 +249,7 @@ function TrendingProducts({
 
   const count =
     items.length;
+    const safeIndex = count > 0 ? index % count : 0;
 
 
   useEffect(() => {
@@ -272,15 +257,6 @@ function TrendingProducts({
     if (count === 0) {
       return;
     }
-
-
-    if (index >= count) {
-
-      setIndex(0);
-
-      return;
-    }
-
 
     if (count <= 1) {
       return;
@@ -384,7 +360,7 @@ function TrendingProducts({
             type="button"
             className="dh-home-trending-arrow-user dh-home-trending-prev-user"
             onClick={() =>
-              goTo(index - 1)
+              goTo(safeIndex - 1)
             }
             aria-label="Previous trending product"
           >
@@ -510,7 +486,7 @@ function TrendingProducts({
             type="button"
             className="dh-home-trending-arrow-user dh-home-trending-next-user"
             onClick={() =>
-              goTo(index + 1)
+              goTo(safeIndex + 1)
             }
             aria-label="Next trending product"
           >
@@ -558,16 +534,19 @@ function TrendingProducts({
   );
 }
 
-
 /* ============================================================
    TRENDING DEALS
 ============================================================ */
+
 
 function TrendingDeals({
   deals = [],
   images = {},
   onViewAll,
-}) {
+})
+{
+
+const navigate = useNavigate();
 
   return (
     <section className="dh-home-trending-deals-section-user">
@@ -577,7 +556,6 @@ function TrendingDeals({
         <h2>
           Trending Deals
         </h2>
-
 
         <button
           type="button"
@@ -612,8 +590,8 @@ function TrendingDeals({
 
         <div className="dh-home-trending-deals-grid-user">
 
-          {deals.map(
-            (deal) => {
+        {deals.map(
+          (deal) => {
 
               const product =
                 deal.product;
@@ -627,9 +605,29 @@ function TrendingDeals({
 
               return (
                 <div
-                  className="dh-home-trending-deal-card-user"
-                  key={deal.id}
-                >
+                key={deal.product?.id ?? deal.id}
+                className="dh-home-trending-deal-card-user dh-home-product-clickable-user"
+                role="link"
+                tabIndex={0}
+                onClick={() => {
+                  const productId = deal?.product?.id;
+
+                  if (productId != null) {
+                    navigate(`/products/${productId}`);
+                  }
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+
+                    const productId = deal?.product?.id;
+
+                    if (productId != null) {
+                      navigate(`/products/${productId}`);
+                    }
+                  }
+                }}
+              >
 
                   <div className="dh-home-trending-deal-image-box-user">
 
@@ -804,151 +802,136 @@ function TodaysBestDeals({
   deals = [],
   images = {},
   onViewAll,
-}) {
+})
+{
+const navigate = useNavigate();
 
   return (
-    <section className="dh-home-best-deals-section-user">
+<section className="dh-home-best-deals-section-user">
 
-      <div className="dh-home-new-section-heading-user">
+  <div className="dh-home-new-section-heading-user">
 
-        <div>
+    <div>
+      <span className="dh-home-section-eyebrow-user">
+        SAVE MORE
+      </span>
 
-          <span className="dh-home-section-eyebrow-user">
-            SAVE MORE
-          </span>
+      <h2>
+        Today's Best Deals
+      </h2>
 
+      <p>
+        Discover products worth checking out today.
+      </p>
+    </div>
 
-          <h2>
-            Today's Best Deals
-          </h2>
+    <button
+      type="button"
+      className="dh-home-new-section-button-user"
+      onClick={onViewAll}
+    >
+      View All
+    </button>
 
+  </div>
 
-          <p>
-            Discover products worth checking out today.
-          </p>
+  {deals.length === 0 ? (
 
-        </div>
+    <div className="dh-home-new-empty-user">
+      <FiTag />
 
+      <span>
+        Best deals will appear here.
+      </span>
 
-        <button
-          type="button"
-          className="dh-home-new-section-button-user"
-          onClick={onViewAll}
-        >
-          View All
-        </button>
+      <p>
+        Check back soon for new offers.
+      </p>
+    </div>
 
-      </div>
+  ) : (
 
+    <div className="dh-home-best-deals-grid-user">
 
-      {deals.length === 0 ? (
+      {deals.slice(0, 4).map((deal) => {
 
-        <div className="dh-home-new-empty-user">
+        const product = deal.product;
 
-          <FiTag />
+        const productId = product?.id;
 
-          <span>
-            Best deals will appear here.
-          </span>
+        const image = productId
+          ? images[productId]
+          : "";
 
-          <p>
-            Check back soon for new offers.
-          </p>
-
-        </div>
-
-      ) : (
-
-        <div className="dh-home-best-deals-grid-user">
-
-          {deals
-            .slice(0, 4)
-            .map(
-              (deal) => {
-
-                const product =
-                  deal.product;
-
-
-                const image =
-                  product?.id
-                    ? images[product.id]
-                    : "";
-
-
-                return (
-                  <article
-                    className="dh-home-best-deal-card-user"
-                    key={
-                      `best-${deal.id}`
-                    }
-                  >
-
-                    <div className="dh-home-best-deal-image-user">
-
-                      {image ? (
-
-                        <img
-                          src={resolveImageUrl(
-                            image
-                          )}
-                          alt={
-                            product?.name ||
-                            "Best Deal"
-                          }
-                        />
-
-                      ) : (
-
-                        <div className="dh-home-new-image-fallback-user">
-
-                          No Image
-
-                        </div>
-
-                      )}
-
-                    </div>
-
-
-                    <div className="dh-home-best-deal-content-user">
-
-                      <span className="dh-home-deal-badge-user">
-
-                        BEST DEAL
-
-                      </span>
-
-
-                      <h3>
-                        {product?.name ||
-                          "Product"}
-                      </h3>
-
-
-                      {product?.brand?.name && (
-
-                        <p>
-                          {
-                            product.brand.name
-                          }
-                        </p>
-
-                      )}
-
-                    </div>
-
-                  </article>
-                );
-
+        return (
+          <article
+            key={`best-${deal.id}`}
+            className="dh-home-best-deal-card-user dh-home-product-clickable-user"
+            role="link"
+            tabIndex={productId != null ? 0 : -1}
+            onClick={() => {
+              if (productId != null) {
+                navigate(`/products/${productId}`);
               }
-            )}
+            }}
+            onKeyDown={(event) => {
+              if (
+                productId != null &&
+                (event.key === "Enter" || event.key === " ")
+              ) {
+                event.preventDefault();
+                navigate(`/products/${productId}`);
+              }
+            }}
+          >
 
-        </div>
+            <div className="dh-home-best-deal-image-user">
 
-      )}
+              {image ? (
 
-    </section>
+                <img
+                  src={resolveImageUrl(image)}
+                  alt={product?.name || "Best Deal"}
+                />
+
+              ) : (
+
+                <div className="dh-home-new-image-fallback-user">
+                  No Image
+                </div>
+
+              )}
+
+            </div>
+
+            <div className="dh-home-best-deal-content-user">
+
+              <span className="dh-home-deal-badge-user">
+                BEST DEAL
+              </span>
+
+              <h3>
+                {product?.name || "Product"}
+              </h3>
+
+              {product?.brand?.name && (
+                <p>
+                  {product.brand.name}
+                </p>
+              )}
+
+            </div>
+
+          </article>
+        );
+
+      })}
+
+    </div>
+
+  )}
+
+</section>
   );
 }
 
@@ -956,100 +939,42 @@ function TodaysBestDeals({
 /* ============================================================
    SEPARATE PRODUCT CAROUSEL HELPER
 ============================================================ */
-
 function ProductHighlightCarousel({
   products = [],
   type = "new",
 }) {
+  const navigate = useNavigate();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [
-    currentIndex,
-    setCurrentIndex,
-  ] = useState(0);
+  const count = products.length;
+  const safeIndex = count > 0 ? currentIndex % count : 0;
+  const currentItem = products[safeIndex];
 
+  const handlePrevious = () => {
+    setCurrentIndex((previous) =>
+      count > 0 ? (previous - 1 + count) % count : 0
+    );
+  };
 
-  const count =
-    products.length;
-
-
-  /* ----------------------------------------------------------
-     Keep index valid
-  ---------------------------------------------------------- */
-
-  useEffect(() => {
-
-    if (count === 0) {
-
-      setCurrentIndex(0);
-
-      return;
-    }
-
-
-    if (currentIndex >= count) {
-
-      setCurrentIndex(0);
-
-    }
-
-  }, [
-    count,
-    currentIndex,
-  ]);
-
-
-  /* ----------------------------------------------------------
-     Auto rotation
-  ---------------------------------------------------------- */
+  const handleNext = () => {
+    setCurrentIndex((previous) =>
+      count > 0 ? (previous + 1) % count : 0
+    );
+  };
 
   useEffect(() => {
+    if (count <= 1) return undefined;
 
-    if (count <= 1) {
-      return;
-    }
+    const interval = setInterval(() => {
+      setCurrentIndex((previous) => (previous + 1) % count);
+    }, 5000);
 
+    return () => clearInterval(interval);
+  }, [count]);
 
-    const interval =
-      setInterval(() => {
+  if (!currentItem) return null;
 
-        setCurrentIndex(
-          (previous) =>
-            (
-              previous + 1
-            ) %
-            count
-        );
-
-      }, 5000);
-
-
-    return () => {
-      clearInterval(interval);
-    };
-
-  }, [
-    count,
-  ]);
-
-
-  if (count === 0) {
-    return null;
-  }
-
-
-  const currentItem =
-    products[currentIndex];
-
-
-  if (!currentItem) {
-    return null;
-  }
-
-
-  const product =
-    currentItem.product ||
-    null;
-
+  const product = currentItem.product || null;
 
   const productName =
     currentItem.productName ||
@@ -1058,7 +983,6 @@ function ProductHighlightCarousel({
     product?.productName ||
     "Product";
 
-
   const brand =
     currentItem.brand?.name ||
     currentItem.brand ||
@@ -1066,12 +990,10 @@ function ProductHighlightCarousel({
     product?.brand ||
     "";
 
-
   const description =
     currentItem.description ||
     product?.description ||
     "";
-
 
   const displayFromDate =
     currentItem.displayFromDate ||
@@ -1079,138 +1001,92 @@ function ProductHighlightCarousel({
     currentItem.availableFrom ||
     "";
 
-
   const displayToDate =
     currentItem.displayToDate ||
     currentItem.endDate ||
     "";
 
-
-  let image =
-    getFirstImage(
-      currentItem
-    );
-
+  let image = getFirstImage(currentItem);
 
   if (!image) {
-
-    image =
-      getFirstImage(
-        product
-      );
-
+    image = getFirstImage(product);
   }
 
+  const isComingSoon = type === "coming";
+  const canOpenProduct = !isComingSoon;
 
-  const isComingSoon =
-    type === "coming";
+  const openProduct = () => {
+    if (!canOpenProduct) return;
 
+    const id =
+      currentItem?.product?.id ??
+      currentItem?.productId ??
+      currentItem?.product?.productId;
 
-  const handlePrevious =
-    () => {
+    if (id == null || id === "") return;
 
-      setCurrentIndex(
-        (previous) =>
-          previous === 0
-            ? count - 1
-            : previous - 1
-      );
+    navigate(`/products/${id}`);
+  };
 
-    };
-
-
-  const handleNext =
-    () => {
-
-      setCurrentIndex(
-        (previous) =>
-          (
-            previous + 1
-          ) %
-          count
-      );
-
-    };
-
+  const handleProductKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openProduct();
+    }
+  };
 
   return (
     <div className="dh-new-content-carousel-user">
-
       {count > 1 && (
-
         <button
           type="button"
           className="dh-new-content-arrow-user dh-new-content-arrow-left-user"
           onClick={handlePrevious}
-          aria-label={
-            `Previous ${
-              isComingSoon
-                ? "coming soon"
-                : "new arrival"
-            } product`
-          }
+          aria-label={`Previous ${
+            isComingSoon ? "coming soon" : "new arrival"
+          } product`}
         >
           <FiChevronLeft />
         </button>
-
       )}
 
-
-      <div className="dh-new-content-slide-user">
-
-        {/* --------------------------------------------------
-            IMAGE
-        -------------------------------------------------- */}
-
+      <div
+        className={`dh-new-content-slide-user ${
+          canOpenProduct ? "dh-home-product-clickable-user" : ""
+        }`}
+        role={canOpenProduct ? "link" : undefined}
+        tabIndex={canOpenProduct ? 0 : undefined}
+        onClick={canOpenProduct ? openProduct : undefined}
+        onKeyDown={canOpenProduct ? handleProductKeyDown : undefined}
+        aria-label={canOpenProduct ? `View ${productName}` : undefined}
+      >
         <div className="dh-new-content-image-user">
-
-          {image ? (
-
+          {image && (
             <img
               src={image}
               alt={productName}
               onError={(event) => {
-
-                event.currentTarget.style.display =
-                  "none";
+                event.currentTarget.style.display = "none";
 
                 const fallback =
-                  event.currentTarget
-                    .parentElement
-                    ?.querySelector(
-                      ".dh-new-content-image-fallback-user"
-                    );
+                  event.currentTarget.parentElement?.querySelector(
+                    ".dh-new-content-image-fallback-user"
+                  );
 
                 if (fallback) {
-
-                  fallback.style.display =
-                    "flex";
-
+                  fallback.style.display = "flex";
                 }
-
               }}
             />
-
-          ) : null}
-
+          )}
 
           <div
             className="dh-new-content-image-fallback-user"
-            style={{
-              display: image
-                ? "none"
-                : "flex",
-            }}
+            style={{ display: image ? "none" : "flex" }}
           >
-
             <FiShoppingBag />
-
-            <span>
-              Image unavailable
-            </span>
-
+            <span>Image unavailable</span>
           </div>
-
 
           <span
             className={
@@ -1219,108 +1095,57 @@ function ProductHighlightCarousel({
                 : "dh-new-content-badge-user new"
             }
           >
-
-            {isComingSoon
-              ? "Coming Soon"
-              : "New Arrival"}
-
+            {isComingSoon ? "Coming Soon" : "New Arrival"}
           </span>
-
         </div>
 
-
-        {/* --------------------------------------------------
-            INFORMATION
-        -------------------------------------------------- */}
-
         <div className="dh-new-content-info-user">
-
           <span className="dh-new-content-type-user">
-
-            {isComingSoon
-              ? "COMING SOON"
-              : "NEW ARRIVAL"}
-
+            {isComingSoon ? "COMING SOON" : "NEW ARRIVAL"}
           </span>
 
-
-          <h3>
-            {productName}
-          </h3>
-
+          <h3>{productName}</h3>
 
           {brand && (
-
-            <p className="dh-new-content-brand-user">
-              {brand}
-            </p>
-
+            <p className="dh-new-content-brand-user">{brand}</p>
           )}
 
-
           {description && (
-
             <p className="dh-new-content-description-user">
               {description}
             </p>
-
           )}
-
 
           {displayFromDate && (
-
             <div className="dh-new-content-date-user">
-
-              {isComingSoon
-                ? "Expected from "
-                : "Available from "}
-
+              {isComingSoon ? "Expected from " : "Available from "}
               {displayFromDate}
-
             </div>
-
           )}
-
 
           {displayToDate && (
-
             <div className="dh-new-content-end-date-user">
-
-              Until{" "}
-              {displayToDate}
-
+              Until {displayToDate}
             </div>
-
           )}
-
         </div>
-
       </div>
 
-
       {count > 1 && (
-
         <button
           type="button"
           className="dh-new-content-arrow-user dh-new-content-arrow-right-user"
           onClick={handleNext}
-          aria-label={
-            `Next ${
-              isComingSoon
-                ? "coming soon"
-                : "new arrival"
-            } product`
-          }
+          aria-label={`Next ${
+            isComingSoon ? "coming soon" : "new arrival"
+          } product`}
         >
           <FiChevronRight />
         </button>
-
       )}
-
     </div>
   );
 }
-
 
 /* ============================================================
    NEW ARRIVALS
@@ -1851,6 +1676,7 @@ function Home() {
             "New Arrivals error:",
             error
           );
+
 
           setNewArrivalProducts([]);
 

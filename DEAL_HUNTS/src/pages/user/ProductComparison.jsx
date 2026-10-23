@@ -3192,7 +3192,7 @@ function ProductComparison() {
                                 }
                             >
 
-                                Compare shops
+                                Compare Shops
 
                                 <FiArrowRight />
 

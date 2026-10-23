@@ -1,71 +1,103 @@
-import React, { useState, useRef } from "react";
 
-/* -------------------------------------------------------------------------
-   AnalyticsChart
-   Self-contained, dependency-free SVG line chart for the Business
-   Analytics card. Renders a smooth gold line + gold points on a light
-   grid, and shows a floating tooltip that tracks whichever point the
-   user is hovering, with a value/unit formatted for the active metric.
+import React, { useState, useRef, useEffect, useMemo } from "react";
 
-   Props:
-     data   -> [{ label: "Mar", value: 320 }, ...]
-     metric -> "Sales" | "Revenue" | "Orders" | "Products"
-     unit   -> fn(value) => string, e.g. v => `${v} units`
-------------------------------------------------------------------------- */
 function buildSmoothPath(points) {
   if (points.length < 2) return "";
+
   let d = `M ${points[0].x} ${points[0].y}`;
+
   for (let i = 0; i < points.length - 1; i++) {
     const p0 = points[i];
     const p1 = points[i + 1];
     const midX = (p0.x + p1.x) / 2;
+
     d += ` C ${midX} ${p0.y}, ${midX} ${p1.y}, ${p1.x} ${p1.y}`;
   }
+
   return d;
 }
 
-export default function AnalyticsChart({ data, metric, unit }) {
-  const [activeIndex, setActiveIndex] = useState(data.length - 1);
+export default function AnalyticsChart({ data = [], metric = "Sales", unit = (v) => v, period }) {
   const svgRef = useRef(null);
+  const safeData = useMemo(
+    () =>
+      (Array.isArray(data) ? data : []).filter(
+        (item) =>
+          item &&
+          item.label != null &&
+          Number.isFinite(Number(item.value))
+      ).map((item) => ({ ...item, value: Number(item.value) })),
+    [data]
+  );
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    setActiveIndex(Math.max(0, safeData.length - 1));
+  }, [safeData.length, metric, period]);
+
+  if (safeData.length === 0) {
+    return (
+      <div className="db-chart-wrap" role="status">
+        <p className="db-card-subtitle">
+          No {metric.toLowerCase()} data available for this period.
+        </p>
+      </div>
+    );
+  }
 
   const width = 640;
   const height = 240;
   const padding = { top: 20, right: 20, bottom: 30, left: 20 };
 
-  const max = Math.max(...data.map((d) => d.value));
-  const min = Math.min(...data.map((d) => d.value));
+  const values = safeData.map((d) => d.value);
+  const max = Math.max(...values);
+  const min = Math.min(...values);
   const range = max - min || 1;
+
   const innerW = width - padding.left - padding.right;
   const innerH = height - padding.top - padding.bottom;
 
-  const points = data.map((d, i) => {
-    const x = padding.left + (i * innerW) / (data.length - 1);
-    const y = padding.top + innerH - ((d.value - min) / range) * innerH;
-    return { x, y, ...d };
-  });
+  const points = safeData.map((d, i) => ({
+    ...d,
+    x:
+      padding.left +
+      (safeData.length === 1 ? innerW / 2 : (i * innerW) / (safeData.length - 1)),
+    y: padding.top + innerH - ((d.value - min) / range) * innerH,
+  }));
 
   const linePath = buildSmoothPath(points);
-  const areaPath = `${linePath} L ${points[points.length - 1].x} ${
-    height - padding.bottom
-  } L ${points[0].x} ${height - padding.bottom} Z`;
+  const areaPath =
+    points.length > 1
+      ? `${linePath} L ${points[points.length - 1].x} ${
+          height - padding.bottom
+        } L ${points[0].x} ${height - padding.bottom} Z`
+      : "";
+
+  const safeActiveIndex = Math.min(activeIndex, points.length - 1);
+  const active = points[safeActiveIndex];
 
   const handleMove = (e) => {
-    if (!svgRef.current) return;
+    if (!svgRef.current || points.length < 2) return;
+
     const rect = svgRef.current.getBoundingClientRect();
+    if (!rect.width) return;
+
     const relX = ((e.clientX - rect.left) / rect.width) * width;
     let closest = 0;
     let closestDist = Infinity;
-    points.forEach((p, i) => {
-      const dist = Math.abs(p.x - relX);
+
+    points.forEach((point, i) => {
+      const dist = Math.abs(point.x - relX);
       if (dist < closestDist) {
         closestDist = dist;
         closest = i;
       }
     });
+
     setActiveIndex(closest);
   };
 
-  const active = points[activeIndex];
   const tooltipLeftPct = (active.x / width) * 100;
   const tooltipFlip = tooltipLeftPct > 78;
 
@@ -77,7 +109,9 @@ export default function AnalyticsChart({ data, metric, unit }) {
         className="db-chart-svg"
         preserveAspectRatio="none"
         onMouseMove={handleMove}
-        onMouseLeave={() => setActiveIndex(data.length - 1)}
+        onMouseLeave={() => setActiveIndex(points.length - 1)}
+        role="img"
+        aria-label={`${metric} ${period || ""} analytics chart`}
       >
         <defs>
           <linearGradient id="dbAreaGold" x1="0" y1="0" x2="0" y2="1">
@@ -97,10 +131,13 @@ export default function AnalyticsChart({ data, metric, unit }) {
           />
         ))}
 
-        <path d={areaPath} fill="url(#dbAreaGold)" stroke="none" />
-        <path d={linePath} fill="none" className="db-chart-line" />
+        {points.length > 1 && (
+          <>
+            <path d={areaPath} fill="url(#dbAreaGold)" stroke="none" />
+            <path d={linePath} fill="none" className="db-chart-line" />
+          </>
+        )}
 
-        {/* hover guide line */}
         <line
           x1={active.x}
           x2={active.x}
@@ -109,26 +146,35 @@ export default function AnalyticsChart({ data, metric, unit }) {
           className="db-chart-guide"
         />
 
-        {points.map((p, i) => (
-          <g key={p.label}>
+        {points.map((point, i) => (
+          <g key={`${point.label}-${i}`}>
             <circle
-              cx={p.x}
-              cy={p.y}
-              r={i === activeIndex ? 6 : 3.5}
+              cx={point.x}
+              cy={point.y}
+              r={i === safeActiveIndex ? 6 : 3.5}
               className={
-                i === activeIndex ? "db-chart-dot db-chart-dot-active" : "db-chart-dot"
+                i === safeActiveIndex
+                  ? "db-chart-dot db-chart-dot-active"
+                  : "db-chart-dot"
               }
               onMouseEnter={() => setActiveIndex(i)}
             />
-            <text x={p.x} y={height - 8} textAnchor="middle" className="db-chart-axis-label">
-              {p.label}
+            <text
+              x={point.x}
+              y={height - 8}
+              textAnchor="middle"
+              className="db-chart-axis-label"
+            >
+              {point.label}
             </text>
           </g>
         ))}
       </svg>
 
       <div
-        className={`db-chart-tooltip ${tooltipFlip ? "db-chart-tooltip-flip" : ""}`}
+        className={`db-chart-tooltip ${
+          tooltipFlip ? "db-chart-tooltip-flip" : ""
+        }`}
         style={{
           left: `${tooltipLeftPct}%`,
           top: `${(active.y / height) * 100}%`,

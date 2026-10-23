@@ -1,180 +1,100 @@
-
 import axios from "axios";
 import { API_BASE_URL } from "./config.js";
 
+const BASE_URL = API_BASE_URL.replace(/\/+$/, "");
 
-const BASE_URL = API_BASE_URL;
+const adminApi = axios.create({
+    baseURL: BASE_URL,
+    timeout: 15000,
+});
+
+const getAdminConfig = () => {
+    const token = localStorage.getItem("adminJwtToken");
+
+    return {
+        headers: {
+            Authorization: `Bearer ${token || ""}`,
+        },
+    };
+};
 
 /* ============================================================
    ADMIN LOGIN
 ============================================================ */
 
 export const adminLogin = (email, password) => {
-    return axios.post(
-        `${BASE_URL}/admin/login`,
-        {
-            email,
-            password,
-        }
-    );
+    return adminApi.post("/admin/login", {
+        email: email.trim(),
+        password,
+    });
 };
-
 
 /* ============================================================
    VENDORS
 ============================================================ */
 
-export const getAllVendors = () => {
-    return axios.get(
-        `${BASE_URL}/admin/manage-vendors`,
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,
-            },
-        }
-    );
-};
-
+export const getAllVendors = () =>
+    adminApi.get("/admin/manage-vendors", getAdminConfig());
 
 /* ============================================================
    USERS COUNT
 ============================================================ */
 
-export const getUserCount = () => {
-    return axios.get(
-        `${BASE_URL}/user/count`,
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,
-            },
-        }
-    );
-};
-
+export const getUserCount = () =>
+    adminApi.get("/user/count", getAdminConfig());
 
 /* ============================================================
    VENDORS COUNT
 ============================================================ */
 
-export const getVendorCount = () => {
-    return axios.get(
-        `${BASE_URL}/vendor/count`,
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,
-            },
-        }
-    );
-};
-
+export const getVendorCount = () =>
+    adminApi.get("/vendor/count", getAdminConfig());
 
 /* ============================================================
    PRODUCTS COUNT
 ============================================================ */
 
-export const getProductCount = () => {
-    return axios.get(
-        `${BASE_URL}/admin/products/count`,
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,
-            },
-        }
-    );
-};
-
+export const getProductCount = () =>
+    adminApi.get("/admin/products/count", getAdminConfig());
 
 /* ============================================================
    ORDERS COUNT
 ============================================================ */
 
-export const getOrderCount = () => {
-    return axios.get(
-        `${BASE_URL}/order/count`,
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,
-            },
-        }
-    );
-};
-
+export const getOrderCount = () =>
+    adminApi.get("/order/count", getAdminConfig());
 
 /* ============================================================
    CATEGORIES COUNT
 ============================================================ */
 
-export const getCategoryCount = () => {
-    return axios.get(
-        `${BASE_URL}/admin/categories/count`,
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,
-            },
-        }
-    );
-};
-
+export const getCategoryCount = () =>
+    adminApi.get("/admin/categories/count", getAdminConfig());
 
 /* ============================================================
    ACTIVE PROMOTIONS COUNT
 ============================================================ */
 
-export const getPromotionCount = () => {
-    return axios.get(
-        `${BASE_URL}/admin/promotions/active/count`,
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,
-            },
-        }
-    );
-};
-
+export const getPromotionCount = () =>
+    adminApi.get("/admin/promotions/active/count", getAdminConfig());
 
 /* ============================================================
    COMPLAINTS COUNT
 ============================================================ */
 
-export const getComplaintsCount = () => {
-    return axios.get(
-        `${BASE_URL}/admin/complaints/count`,
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,
-            },
-        }
-    );
-};
-
+export const getComplaintsCount = () =>
+    adminApi.get("/admin/complaints/count", getAdminConfig());
 
 /* ============================================================
    FEEDBACK COUNT
 ============================================================ */
 
-export const getFeedbackCount = () => {
-    return axios.get(
-        `${BASE_URL}/admin/feedback/count`,
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,
-            },
-        }
-    );
-};
-
+export const getFeedbackCount = () =>
+    adminApi.get("/admin/feedback/count", getAdminConfig());
 
 /* ============================================================
    LOW STOCK ALERTS COUNT
 ============================================================ */
 
-export const getLowStockAlertsCount = () => {
-    return axios.get(
-        `${BASE_URL}/admin/inventory/low-stock/count`,
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("adminJwtToken")}`,
-            },
-        }
-    );
-};
+export const getLowStockAlertsCount = () =>
+    adminApi.get("/admin/inventory/low-stock/count", getAdminConfig());

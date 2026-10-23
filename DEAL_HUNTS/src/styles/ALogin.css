@@ -374,10 +374,8 @@
 ============================================================ */
 
 .al-admin-login-submit:hover:not(:disabled) {
-    background: #000000;
-    color: #d4af37;
-
-    border-color: #000000;
+    background: #d4af37;
+    color: #000000;
 
     transform: translateY(-1px);
 

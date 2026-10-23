@@ -50,7 +50,12 @@ export default function BusinessAnalytics({ data }) {
       </div>
 
       <div className="db-chart-area">
-        <AnalyticsChart data={data[metric]} metric={metric} unit={UNIT_FORMATTERS[metric]} />
+        <AAnalyticsChart
+          data={data?.[metric] ?? []}
+          metric={metric}
+          period={period}
+          unit={UNIT_FORMATTERS[metric]}
+        />
       </div>
     </div>
   );

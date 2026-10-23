@@ -1,3 +1,4 @@
+
 export const validateVendorRegister = (
     fullName,
     shopName,
@@ -12,13 +13,9 @@ export const validateVendorRegister = (
     confirmPassword
 ) => {
     if (!fullName.trim()) return "Enter full name";
-
     if (!shopName.trim()) return "Enter shop name";
-
     if (!state.trim()) return "Enter state";
-
     if (!city.trim()) return "Enter city";
-
     if (!pincode.trim()) return "Enter pincode";
 
     const pincodeRegex = /^\d{6}$/;
@@ -28,9 +25,7 @@ export const validateVendorRegister = (
     }
 
     if (!location) return "Enter location";
-
     if (!address.trim()) return "Enter address";
-
     if (!phone.trim()) return "Enter phone number";
 
     const phoneRegex = /^\d{10}$/;
@@ -71,9 +66,7 @@ export const validateRegister = (
     confirmPassword
 ) => {
     if (!firstName.trim()) return "Enter first name";
-
     if (!lastName.trim()) return "Enter last name";
-
     if (!email.trim()) return "Enter email";
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -100,7 +93,6 @@ export const validateRegister = (
 
 export const validateLogin = (email, password) => {
     if (!email.trim()) return "Enter email";
-
     if (!password) return "Enter password";
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
