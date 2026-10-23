@@ -1,4 +1,10 @@
+
 package org.example.service;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 import org.example.entity.NewArrival;
 import org.example.entity.Product;
@@ -7,64 +13,38 @@ import org.example.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 
 @Service
 public class NewArrivalService {
 
-    // ============================================================
-    // IMAGE STORAGE
-    // ============================================================
-
-    private static final String UPLOAD_DIR =
-            "uploads/new-arrivals";
-
-
-    // ============================================================
-    // REPOSITORIES
-    // ============================================================
+    private static final String CLOUDINARY_FOLDER =
+            "dealhunts/new-arrivals";
 
     private final NewArrivalRepository newArrivalRepository;
     private final ProductRepository productRepository;
-
-
-    // ============================================================
-    // CONSTRUCTOR
-    // ============================================================
+    private final Cloudinary cloudinary;
 
     public NewArrivalService(
             NewArrivalRepository newArrivalRepository,
-            ProductRepository productRepository
+            ProductRepository productRepository,
+            Cloudinary cloudinary
     ) {
-
         this.newArrivalRepository = newArrivalRepository;
         this.productRepository = productRepository;
+        this.cloudinary = cloudinary;
     }
 
-
-    // ============================================================
     // GET ALL NEW ARRIVALS
-    // ============================================================
 
     public List<NewArrival> getAllNewArrivals() {
-
         return newArrivalRepository.findAll();
     }
 
-
-    // ============================================================
     // GET NEW ARRIVAL BY ID
-    // ============================================================
 
     public NewArrival getNewArrivalById(Long id) {
-
         return newArrivalRepository.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException(
@@ -73,438 +53,248 @@ public class NewArrivalService {
                 );
     }
 
-
-    // ============================================================
     // ADD NEW ARRIVAL
-    // ============================================================
 
     public NewArrival addNewArrival(
-
             Long productId,
             LocalDate displayFromDate,
             LocalDate displayToDate,
             Integer priority,
             MultipartFile image
-
     ) {
-
-        // --------------------------------------------------------
-        // VALIDATION
-        // --------------------------------------------------------
-
-        validateDates(
-                displayFromDate,
-                displayToDate
-        );
-
+        validateDates(displayFromDate, displayToDate);
         validatePriority(priority);
 
-
-        // --------------------------------------------------------
-        // FIND PRODUCT
-        // --------------------------------------------------------
-
-        Product product =
-                productRepository.findById(productId)
-                        .orElseThrow(() ->
-                                new RuntimeException(
-                                        "Product not found with id: "
-                                                + productId
-                                )
-                        );
-
-
-        // --------------------------------------------------------
-        // CREATE NEW ARRIVAL
-        // --------------------------------------------------------
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Product not found with id: " + productId
+                        )
+                );
 
         NewArrival newArrival = new NewArrival();
-
         newArrival.setProduct(product);
-
-        newArrival.setDisplayFromDate(
-                displayFromDate
-        );
-
-        newArrival.setDisplayToDate(
-                displayToDate
-        );
-
+        newArrival.setDisplayFromDate(displayFromDate);
+        newArrival.setDisplayToDate(displayToDate);
         newArrival.setPriority(priority);
-
         newArrival.setActive(true);
 
-
-        // --------------------------------------------------------
-        // SAVE IMAGE
-        // --------------------------------------------------------
-
         if (image != null && !image.isEmpty()) {
-
-            String imageUrl =
-                    saveImage(image);
-
-            newArrival.setImageUrl(imageUrl);
+            newArrival.setImageUrl(saveImage(image));
         }
-
-
-        // --------------------------------------------------------
-        // SAVE DATABASE RECORD
-        // --------------------------------------------------------
 
         return newArrivalRepository.save(newArrival);
     }
 
-
-    // ============================================================
     // UPDATE NEW ARRIVAL
-    // ============================================================
 
     public NewArrival updateNewArrival(
-
             Long id,
             Long productId,
             LocalDate displayFromDate,
             LocalDate displayToDate,
             Integer priority,
             MultipartFile image
-
     ) {
+        NewArrival newArrival = getNewArrivalById(id);
 
-        // --------------------------------------------------------
-        // FIND EXISTING RECORD
-        // --------------------------------------------------------
-
-        NewArrival newArrival =
-                getNewArrivalById(id);
-
-
-        // --------------------------------------------------------
-        // VALIDATION
-        // --------------------------------------------------------
-
-        validateDates(
-                displayFromDate,
-                displayToDate
-        );
-
+        validateDates(displayFromDate, displayToDate);
         validatePriority(priority);
 
-
-        // --------------------------------------------------------
-        // FIND PRODUCT
-        // --------------------------------------------------------
-
-        Product product =
-                productRepository.findById(productId)
-                        .orElseThrow(() ->
-                                new RuntimeException(
-                                        "Product not found with id: "
-                                                + productId
-                                )
-                        );
-
-
-        // --------------------------------------------------------
-        // UPDATE BASIC INFORMATION
-        // --------------------------------------------------------
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Product not found with id: " + productId
+                        )
+                );
 
         newArrival.setProduct(product);
-
-        newArrival.setDisplayFromDate(
-                displayFromDate
-        );
-
-        newArrival.setDisplayToDate(
-                displayToDate
-        );
-
+        newArrival.setDisplayFromDate(displayFromDate);
+        newArrival.setDisplayToDate(displayToDate);
         newArrival.setPriority(priority);
 
-
-        // --------------------------------------------------------
-        // UPDATE IMAGE ONLY WHEN NEW IMAGE IS PROVIDED
-        // --------------------------------------------------------
-
         if (image != null && !image.isEmpty()) {
-
-            // Delete old image
-            deleteImage(
-                    newArrival.getImageUrl()
-            );
-
-            // Save new image
-            String imageUrl =
-                    saveImage(image);
-
-            newArrival.setImageUrl(imageUrl);
+            String newImageUrl = saveImage(image);
+            deleteImage(newArrival.getImageUrl());
+            newArrival.setImageUrl(newImageUrl);
         }
-
-
-        // --------------------------------------------------------
-        // SAVE
-        // --------------------------------------------------------
 
         return newArrivalRepository.save(newArrival);
     }
 
-
-    // ============================================================
     // DELETE NEW ARRIVAL
-    // ============================================================
 
     public void deleteNewArrival(Long id) {
+        NewArrival newArrival = getNewArrivalById(id);
 
-        NewArrival newArrival =
-                getNewArrivalById(id);
-
-
-        // Delete image from disk
-        deleteImage(
-                newArrival.getImageUrl()
-        );
-
-
-        // Delete database record
+        deleteImage(newArrival.getImageUrl());
         newArrivalRepository.delete(newArrival);
     }
 
-
-    // ============================================================
     // UPDATE ACTIVE STATUS
-    // ============================================================
 
-    public NewArrival updateActiveStatus(
-            Long id,
-            boolean active
-    ) {
-
-        NewArrival newArrival =
-                getNewArrivalById(id);
-
+    public NewArrival updateActiveStatus(Long id, boolean active) {
+        NewArrival newArrival = getNewArrivalById(id);
         newArrival.setActive(active);
-
         return newArrivalRepository.save(newArrival);
     }
 
+    // UPLOAD IMAGE TO CLOUDINARY
 
-    // ============================================================
-    // SAVE IMAGE
-    // ============================================================
-
-    private String saveImage(
-            MultipartFile image
-    ) {
+    private String saveImage(MultipartFile image) {
+        validateImage(image);
 
         try {
-
-            // ----------------------------------------------------
-            // VALIDATE FILE
-            // ----------------------------------------------------
-
-            if (image.isEmpty()) {
-
-                throw new IllegalArgumentException(
-                        "Image file is empty."
-                );
-            }
-
-
-            // ----------------------------------------------------
-            // MAX SIZE = 2 MB
-            // ----------------------------------------------------
-
-            long maxSize =
-                    2 * 1024 * 1024;
-
-            if (image.getSize() > maxSize) {
-
-                throw new IllegalArgumentException(
-                        "Image size must be less than 2 MB."
-                );
-            }
-
-
-            // ----------------------------------------------------
-            // VALIDATE IMAGE TYPE
-            // ----------------------------------------------------
-
-            String contentType =
-                    image.getContentType();
-
-            if (contentType == null ||
-                    !contentType.startsWith("image/")) {
-
-                throw new IllegalArgumentException(
-                        "Only image files are allowed."
-                );
-            }
-
-
-            // ----------------------------------------------------
-            // CREATE DIRECTORY
-            // ----------------------------------------------------
-
-            Path uploadPath =
-                    Paths.get(UPLOAD_DIR);
-
-            if (!Files.exists(uploadPath)) {
-
-                Files.createDirectories(uploadPath);
-            }
-
-
-            // ----------------------------------------------------
-            // GET EXTENSION
-            // ----------------------------------------------------
-
-            String originalName =
-                    image.getOriginalFilename();
-
-            String extension = "";
-
-            if (originalName != null &&
-                    originalName.contains(".")) {
-
-                extension =
-                        originalName.substring(
-                                originalName.lastIndexOf(".")
-                        );
-            }
-
-
-            // ----------------------------------------------------
-            // GENERATE UNIQUE FILE NAME
-            // ----------------------------------------------------
-
-            String fileName =
-                    UUID.randomUUID()
-                            + extension;
-
-
-            // ----------------------------------------------------
-            // SAVE FILE
-            // ----------------------------------------------------
-
-            Path filePath =
-                    uploadPath.resolve(fileName);
-
-            Files.copy(
-                    image.getInputStream(),
-                    filePath,
-                    StandardCopyOption.REPLACE_EXISTING
+            Map<?, ?> uploadResult = cloudinary.uploader().upload(
+                    image.getBytes(),
+                    ObjectUtils.asMap(
+                            "folder", CLOUDINARY_FOLDER,
+                            "resource_type", "image"
+                    )
             );
 
+            Object secureUrl = uploadResult.get("secure_url");
 
-            // ----------------------------------------------------
-            // RETURN URL
-            // ----------------------------------------------------
+            if (secureUrl == null) {
+                throw new RuntimeException(
+                        "Cloudinary did not return an image URL."
+                );
+            }
 
-            return "/uploads/new-arrivals/" + fileName;
+            return secureUrl.toString();
 
         } catch (IOException e) {
-
             throw new RuntimeException(
-                    "Failed to save New Arrival image.",
+                    "Failed to upload New Arrival image to Cloudinary.",
                     e
             );
         }
     }
 
+    // VALIDATE IMAGE
 
-    // ============================================================
-    // DELETE IMAGE
-    // ============================================================
+    private void validateImage(MultipartFile image) {
+        if (image == null || image.isEmpty()) {
+            throw new IllegalArgumentException("Image file is empty.");
+        }
 
-    private void deleteImage(
-            String imageUrl
-    ) {
+        if (image.getSize() > 2 * 1024 * 1024) {
+            throw new IllegalArgumentException(
+                    "Image size must be less than 2 MB."
+            );
+        }
 
-        if (imageUrl == null ||
-                imageUrl.isBlank()) {
+        String contentType = image.getContentType();
 
+        if (contentType == null ||
+                !contentType.toLowerCase().startsWith("image/")) {
+            throw new IllegalArgumentException(
+                    "Only image files are allowed."
+            );
+        }
+    }
+
+    // DELETE CLOUDINARY IMAGE
+    // Also safely ignores legacy local URLs.
+
+    private void deleteImage(String imageUrl) {
+        if (imageUrl == null || imageUrl.isBlank()) {
+            return;
+        }
+
+        if (!imageUrl.contains("/res.cloudinary.com/") &&
+                !imageUrl.startsWith("https://res.cloudinary.com/") &&
+                !imageUrl.startsWith("http://res.cloudinary.com/")) {
+            // Legacy local URL: no local-file deletion needed on Render.
             return;
         }
 
         try {
+            String publicId = extractPublicId(imageUrl);
 
-            String fileName =
-                    imageUrl.substring(
-                            imageUrl.lastIndexOf("/") + 1
-                    );
-
-            Path filePath =
-                    Paths.get(
-                            UPLOAD_DIR,
-                            fileName
-                    );
-
-            Files.deleteIfExists(filePath);
-
+            if (publicId != null && !publicId.isBlank()) {
+                cloudinary.uploader().destroy(
+                        publicId,
+                        ObjectUtils.emptyMap()
+                );
+            }
         } catch (Exception e) {
-
-            // Do not stop database operations
-            // if image deletion fails.
-
+            // Image deletion failure should not block database deletion.
             System.err.println(
-                    "Unable to delete New Arrival image: "
+                    "Unable to delete New Arrival image from Cloudinary: "
                             + e.getMessage()
             );
         }
     }
 
+    private String extractPublicId(String imageUrl) {
+        int uploadIndex = imageUrl.indexOf("/upload/");
 
-    // ============================================================
+        if (uploadIndex < 0) {
+            return null;
+        }
+
+        String path = imageUrl.substring(uploadIndex + "/upload/".length());
+
+        // Remove Cloudinary transformations if present.
+        if (path.startsWith("w_") ||
+                path.startsWith("c_") ||
+                path.startsWith("q_") ||
+                path.startsWith("f_")) {
+            int slashIndex = path.indexOf('/');
+            if (slashIndex >= 0) {
+                path = path.substring(slashIndex + 1);
+            }
+        }
+
+        // Remove version segment, e.g. v123456789/
+        if (path.matches("^v\\d+/.*")) {
+            path = path.substring(path.indexOf('/') + 1);
+        }
+
+        int extensionIndex = path.lastIndexOf('.');
+        if (extensionIndex >= 0) {
+            path = path.substring(0, extensionIndex);
+        }
+
+        return path;
+    }
+
     // DATE VALIDATION
-    // ============================================================
 
     private void validateDates(
-
             LocalDate displayFromDate,
             LocalDate displayToDate
-
     ) {
-
         if (displayFromDate == null) {
-
             throw new IllegalArgumentException(
                     "Display From Date is required."
             );
         }
 
         if (displayToDate == null) {
-
             throw new IllegalArgumentException(
                     "Display To Date is required."
             );
         }
 
         if (displayToDate.isBefore(displayFromDate)) {
-
             throw new IllegalArgumentException(
                     "Display To Date cannot be before Display From Date."
             );
         }
     }
 
-
-    // ============================================================
     // PRIORITY VALIDATION
-    // ============================================================
 
-    private void validatePriority(
-            Integer priority
-    ) {
-
+    private void validatePriority(Integer priority) {
         if (priority == null) {
-
             throw new IllegalArgumentException(
                     "Priority is required."
             );
         }
 
         if (priority < 1) {
-
             throw new IllegalArgumentException(
                     "Priority must be at least 1."
             );

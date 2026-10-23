@@ -1006,11 +1006,14 @@ function ProductHighlightCarousel({
     currentItem.endDate ||
     "";
 
-  let image = getFirstImage(currentItem);
+  
+const dedicatedImage = getFirstImage(currentItem);
+const productImage = getFirstImage(product);
 
-  if (!image) {
-    image = getFirstImage(product);
-  }
+const [image, setImage] = useState(
+  dedicatedImage || productImage
+);
+
 
   const isComingSoon = type === "coming";
   const canOpenProduct = !isComingSoon;
@@ -1061,24 +1064,40 @@ function ProductHighlightCarousel({
         aria-label={canOpenProduct ? `View ${productName}` : undefined}
       >
         <div className="dh-new-content-image-user">
-          {image && (
-            <img
-              src={image}
-              alt={productName}
-              onError={(event) => {
-                event.currentTarget.style.display = "none";
+          
+{image && (
+  <img
+      key={`${currentItem.id}-${image}`}
+      src={image}
+      alt={productName}
+      onError={(event) => {
+        const img = event.currentTarget;
+        const fallbackImage = getFirstImage(product);
 
-                const fallback =
-                  event.currentTarget.parentElement?.querySelector(
-                    ".dh-new-content-image-fallback-user"
-                  );
+        if (
+          fallbackImage &&
+          fallbackImage !== img.src &&
+          !img.dataset.fallbackTried
+        ) {
+          img.dataset.fallbackTried = "true";
+          img.src = fallbackImage;
+          return;
+        }
 
-                if (fallback) {
-                  fallback.style.display = "flex";
-                }
-              }}
-            />
-          )}
+        img.style.display = "none";
+
+        const fallback =
+          img.parentElement?.querySelector(
+            ".dh-new-content-image-fallback-user"
+          );
+
+        if (fallback) {
+          fallback.style.display = "flex";
+        }
+      }}
+    />
+  )}
+
 
           <div
             className="dh-new-content-image-fallback-user"
@@ -1898,60 +1917,40 @@ function Home() {
           const imageMap = {};
 
 
-          for (
-            const deal of deals
-          ) {
+          
+for (const deal of deals) {
+  const product = deal.product;
 
-            const product =
-              deal.product;
+  if (!product?.id) {
+    continue;
+  }
 
+  // First use the image already included with the product.
+  let image = getFirstImage(product);
 
-            if (!product?.id) {
-              continue;
-            }
+  // If the product has no image URL, try the product-images API.
+  if (!image) {
+    try {
+      const imageResponse = await getProductImages(product.id);
 
+      image = getFirstImageFromArray(imageResponse.data);
+    } catch (imageError) {
+      console.error(
+        `Failed to fetch image for product ${product.id}:`,
+        imageError
+      );
+    }
+  }
 
-            try {
-              const imageResponse =
-                await getProductImages(
-                  product.id
-                );
-
-
-              const image =
-                getFirstImageFromArray(
-                  imageResponse.data
-                );
-
-
-              if (image) {
-
-                imageMap[
-                  product.id
-                ] = image;
-
-              }
-            } catch (imageError) {
-
-              console.error(
-                `Failed to fetch image for product ${product.id}:`,
-                imageError
-              );
-
-            }
-
-          }
-
-
+  if (image) {
+    imageMap[product.id] = image;
+  }
+}
           setTrendingDealImages(
             imageMap
           );
         } catch (error) {
 
-          console.error(
-            "Trending deals error:",
-            error
-          );
 
           setTrendingDeals([]);
 
