@@ -1006,15 +1006,10 @@ function ProductHighlightCarousel({
     currentItem.endDate ||
     "";
 
-  
 const dedicatedImage = getFirstImage(currentItem);
 const productImage = getFirstImage(product);
 
-const [image, setImage] = useState(
-  dedicatedImage || productImage
-);
-
-
+const image = dedicatedImage || productImage;
   const isComingSoon = type === "coming";
   const canOpenProduct = !isComingSoon;
 

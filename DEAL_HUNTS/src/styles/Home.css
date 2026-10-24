@@ -1675,9 +1675,11 @@
 
 
 .dh-new-content-badge-user.coming {
-    background: #111111;
+    background: #d4af37;
+    margin-top: 5px !important;
+    margin-left: -10px !important;
 
-    color: #ffffff;
+    color: #000000;
 }
 
 
